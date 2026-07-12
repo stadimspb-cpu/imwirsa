@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MWApp — IMWIRSA</title>
+<meta name="description" content="MWApp: the Maritime Welfare Assistant. Port Cards, AI assistants, the Port Welfare Manager Telegram bot, and what's coming next.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.svg" alt="IMWIRSA" class="nav-logo-mark">
+      <div class="nav-logo-text">
+        <div class="org-name">IMWIRSA</div>
+        <div class="org-sub">International Maritime Welfare</div>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="no-dropdown">Home</a></li>
+      <li>
+        <a href="about.html">About <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="about.html#about-imwirsa">About IMWIRSA</a></li>
+          <li><a href="about.html#our-story">Our Story</a></li>
+          <li><a href="about.html#mission-vision">Mission &amp; Vision</a></li>
+          <li><a href="about.html#white-paper">White Paper (online version)</a></li>
+          <li><a href="about.html#roadmap">Roadmap 2026–2035</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="mwapp.html" class="app-link">⚓ MWApp <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="mwapp.html#overview">MWApp Overview</a></li>
+          <li><a href="mwapp.html#why-mwapp">Why MWApp?</a></li>
+          <li><a href="mwapp.html#port-cards">Port Cards</a></li>
+          <li><a href="mwapp.html#ai-assistants">AI Assistants</a></li>
+          <li><a href="mwapp.html#pwm-bot">Port Welfare Manager (Telegram Bot)</a></li>
+          <li><a href="mwapp.html#future">Future Development</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="projects.html">Projects <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="projects.html#pilot-network">Pilot Network</a></li>
+          <li><a href="projects.html#wellness-zones">Wellness Recovery Zones</a></li>
+          <li><a href="projects.html#port-database">Port Database</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="research.html">Research <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="research.html#overview">Research Overview</a></li>
+          <li><a href="research.html#commentary-series">IMWIRSA Scientific Commentary Series</a></li>
+          <li><a href="research.html#foundational-collection">Foundational Collection</a></li>
+          <li><a href="research.html#white-paper-full">White Paper (full version)</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="partners.html">Partners <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="partners.html#become-partner">Become a Partner</a></li>
+          <li><a href="partners.html#pwm-role">Port Welfare Manager</a></li>
+          <li><a href="partners.html#toolkit">Partner Toolkit</a></li>
+        </ul>
+      </li>
+      <li><a href="contact.html" class="no-dropdown">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="partners.html#become-partner" class="nav-cta">Join Our Network</a>
+      <button class="nav-burger" id="navBurger" aria-label="Toggle menu"><span></span></button>
+    </div>
+  </div>
+</nav>
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> <span>/</span> <span>MWApp</span></div>
+    <h1>MWApp — your Maritime Welfare Assistant</h1>
+    <p>A progressive web app that turns "where do I even start" into a live, personal guide to every port — no install, no account wall, available the moment you have signal.</p>
+    <div class="page-nav-pills">
+      <a href="#overview">Overview</a>
+      <a href="#why-mwapp">Why MWApp?</a>
+      <a href="#port-cards">Port Cards</a>
+      <a href="#ai-assistants">AI Assistants</a>
+      <a href="#pwm-bot">Port Welfare Manager</a>
+      <a href="#future">Future Development</a>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-inner">
+    <div class="mwapp-grid">
+      <div class="mwapp-phone-wrap">
+        <div class="phone-side-glow"></div>
+        <div class="phone-mockup">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status"><span>9:41</span><span>●●●● 🔋87%</span></div>
+            <div class="phone-header">
+              <div class="phone-header-top"><div><div class="phone-logo">⚓ MWApp</div><div class="phone-logo-sub">Your Maritime Welfare Assistant</div></div><div style="font-size:9px;color:rgba(255,255,255,0.6);">IMWIRSA</div></div>
+              <div class="phone-port">📍 Tallinn</div>
+              <div class="phone-port-sub">Estonia · Old City Harbour</div>
+              <div class="phone-badges"><div class="phone-badge green">✅ Open</div><div class="phone-badge">🌡 14°C</div><div class="phone-badge">UTC+3</div></div>
+            </div>
+            <div class="phone-content">
+              <div class="phone-assistant"><div class="assistant-avatar">👤</div><div><div class="assistant-name">Sophia — MWA Assistant</div><div class="assistant-text">"Welcome to Tallinn! The Seafarers' Centre is 900m away, open until 20:00."</div></div></div>
+              <div class="phone-section-title">🏠 Seafarers' Centre</div>
+              <div class="phone-row"><div class="phone-row-icon">🏛</div><div class="phone-row-body"><div class="phone-row-title">Tallinn Seafarers' Mission</div><div class="phone-row-sub">0.9 km · Uus-Sadama 21</div><div class="phone-row-tag">Open until 20:00</div></div></div>
+              <div class="phone-section-title">🩺 Medical</div>
+              <div class="phone-row"><div class="phone-row-icon">💊</div><div class="phone-row-body"><div class="phone-row-title">24h Pharmacy — Old Town</div><div class="phone-row-sub">1.2 km · English spoken</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span class="section-eyebrow fade-up">MWApp Overview</span>
+        <h2 class="section-title fade-up">One app, everything a port arrival needs</h2>
+        <p class="body-copy fade-up">MWApp is IMWIRSA's flagship product: a progressive web app (PWA) — meaning it runs straight in the browser, with no app-store install and no account to create. Open it, choose a language and an assistant, and it already knows which port you're in.</p>
+        <div class="mwapp-features fade-up">
+          <div class="mwapp-feature"><div class="feature-icon">🗺️</div><div class="feature-body"><h4>Live Port Card</h4><p>Transport, seafarers' centre, medical, safety — curated locally, not crowdsourced.</p></div></div>
+          <div class="mwapp-feature"><div class="feature-icon">🧑‍💼</div><div class="feature-body"><h4>A real local coordinator</h4><p>Every port card is maintained by a Port Welfare Manager who actually lives there.</p></div></div>
+          <div class="mwapp-feature"><div class="feature-icon">💬</div><div class="feature-body"><h4>24/7 volunteer line</h4><p>Anonymous, live, human — for anything from directions to a crisis.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:#ffffff;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#F4F7FA"/></svg></div>
+
+<!-- WHY MWAPP -->
+<section style="background:var(--slate);" id="why-mwapp">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <span class="section-eyebrow">The Case For MWApp</span>
+      <h2 class="section-title">Why MWApp?</h2>
+      <p class="section-sub">Because right now, finding real help in an unfamiliar port depends on luck — who you ask, whether they speak your language, whether the info is even current.</p>
+    </div>
+    <div class="card-grid fade-up">
+      <div class="info-card"><div class="icon">⏱️</div><h4>Port stays keep shrinking</h4><p>Turnaround times are falling. A seafarer with two hours ashore can't afford to search.</p></div>
+      <div class="info-card"><div class="icon">🌍</div><h4>One tool, every port</h4><p>The same app, the same logic, wherever the ship calls next — not a different flyer each time.</p></div>
+      <div class="info-card"><div class="icon">🗣️</div><h4>In your language</h4><p>English, Russian, Turkish and Filipino at MVP launch, chosen from real crew demographics.</p></div>
+      <div class="info-card"><div class="icon">🔒</div><h4>No install, no friction</h4><p>A PWA works instantly on any phone, over patchy port wifi, with no app-store account.</p></div>
+      <div class="info-card"><div class="icon">🧑‍🤝‍🧑</div><h4>Human behind the data</h4><p>Every port card has a named, contactable coordinator — not an anonymous database.</p></div>
+      <div class="info-card"><div class="icon">📊</div><h4>Built on evidence</h4><p>Designed around IMWIRSA's own research into what seafarers actually need on arrival.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:#F4F7FA;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C360,60 720,0 1080,30 C1200,40 1320,20 1440,30 L1440,60 L0,60 Z" fill="#ffffff"/></svg></div>
+
+<!-- PORT CARDS -->
+<section id="port-cards">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <span class="section-eyebrow">The Core Data Layer</span>
+      <h2 class="section-title">Port Cards</h2>
+      <p class="section-sub">Every pilot port gets a living "card": structured, always-current information across five categories, maintained by the local Port Welfare Manager.</p>
+    </div>
+    <div class="card-grid fade-up">
+      <div class="info-card"><div class="icon">🚌</div><h4>Transport</h4><p>Shuttles, taxis, walking routes and distances from the terminal gate.</p></div>
+      <div class="info-card"><div class="icon">🏛</div><h4>Seafarers' Centre</h4><p>Opening hours, services, contact and directions to the local centre or mission.</p></div>
+      <div class="info-card"><div class="icon">🛍️</div><h4>Shops & Essentials</h4><p>SIM cards, currency exchange, groceries, and what's actually open at 2 AM.</p></div>
+      <div class="info-card"><div class="icon">🩺</div><h4>Medical</h4><p>Pharmacies, clinics, and where English (or your language) is spoken.</p></div>
+      <div class="info-card"><div class="icon">🚨</div><h4>Safety</h4><p>Local emergency numbers, port security contacts and area risk notes.</p></div>
+    </div>
+    <div style="text-align:center; margin-top:32px;">
+      <a href="projects.html#pilot-network" class="btn-navy">See live pilot ports →</a>
+    </div>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:#ffffff;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#1B3A6B"/></svg></div>
+
+<!-- AI ASSISTANTS -->
+<section style="background:var(--navy);" id="ai-assistants">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <span class="section-eyebrow" style="color:#5DD3F0;">MWA — Maritime Welfare Assistant</span>
+      <h2 class="section-title" style="color:white;">Meet the AI Assistants</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.72); margin:0 auto;">On first launch, a seafarer chooses the assistant who feels right for them. That choice — and only that choice — shapes their entire MWApp experience.</p>
+    </div>
+    <div class="persona-grid fade-up">
+      <div class="persona-card">
+        <div class="persona-top"><div class="persona-avatar">🧑</div><div class="persona-name">Alex</div><div class="persona-role">General / European audience</div></div>
+        <div class="persona-body"><p>A young, neutral, approachable presence for a broad international crew.</p></div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-top"><div class="persona-avatar">👨</div><div class="persona-name">Omar</div><div class="persona-role">Arabic, Turkish, Middle Eastern audience</div></div>
+        <div class="persona-body"><p>An older, steady voice for seafarers who want a familiar, respectful tone.</p></div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-top"><div class="persona-avatar">👩</div><div class="persona-name">Sophia</div><div class="persona-role">European audience</div></div>
+        <div class="persona-body"><p>A young, warm female voice — the default guide for many first-time users.</p></div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-top"><div class="persona-avatar">🧕</div><div class="persona-name">Amina</div><div class="persona-role">Muslim audience, any country</div></div>
+        <div class="persona-body"><p>A respectful, culturally attuned presence for Muslim seafarers worldwide.</p></div>
+      </div>
+    </div>
+    <p class="body-copy fade-up" style="color:rgba(255,255,255,0.65); margin-top:28px; max-width:760px;">The assistant remembers the seafarer's name (with consent), greets them personally on return visits, and hands off smoothly to the local Port Welfare Manager or a dedicated Wellness Assistant when a situation calls for it. Changing assistant or language is always available in Settings.</p>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:#1B3A6B;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C360,60 720,10 1080,40 C1260,55 1380,20 1440,30 L1440,60 L0,60 Z" fill="#F4F7FA"/></svg></div>
+
+<!-- PWM TELEGRAM BOT -->
+<section id="pwm-bot">
+  <div class="section-inner">
+    <div class="mwapp-grid">
+      <div class="fade-up">
+        <span class="section-eyebrow">Behind Every Port Card</span>
+        <h2 class="section-title">Port Welfare Manager — Telegram Bot</h2>
+        <p class="section-sub" style="margin-bottom:24px;">Every port card is kept current by a real local coordinator — the Port Welfare Manager (PWM) — through a simple Telegram bot, no separate app or dashboard to learn.</p>
+        <div class="mwapp-features">
+          <div class="mwapp-feature"><div class="feature-icon">📝</div><div class="feature-body"><h4>Guided onboarding</h4><p>A 15–25 minute registration walks the PWM through 9 sections covering their details, the port and its services.</p></div></div>
+          <div class="mwapp-feature"><div class="feature-icon">🔄</div><div class="feature-body"><h4>One-tap updates</h4><p>Change opening hours, transport, or add an urgent notice in seconds, right from the chat.</p></div></div>
+          <div class="mwapp-feature"><div class="feature-icon">🚨</div><div class="feature-body"><h4>Urgent notifications</h4><p>Push a time-sensitive alert straight to every seafarer currently in port.</p></div></div>
+          <div class="mwapp-feature"><div class="feature-icon">📊</div><div class="feature-body"><h4>Simple analytics</h4><p>See how many seafarers viewed the port card and used each service — no separate reporting tool.</p></div></div>
+        </div>
+      </div>
+      <div class="fade-up">
+        <div class="phone-mockup" style="margin:0 auto;">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status"><span>9:41</span><span>●●●● 🔋87%</span></div>
+            <div class="phone-header" style="padding-bottom:14px;">
+              <div class="phone-header-top"><div><div class="phone-logo">⚓ IMWIRSA PWM Bot</div><div class="phone-logo-sub">@IMWIRSA_PWM_bot</div></div></div>
+            </div>
+            <div class="phone-content">
+              <div class="phone-assistant"><div class="assistant-avatar">🤖</div><div><div class="assistant-name">PWM Bot</div><div class="assistant-text">Welcome! I'll help you register your port in the Global Maritime Welfare Platform. This takes 15–25 minutes.</div></div></div>
+              <div class="phone-row"><div class="phone-row-icon">📝</div><div class="phone-row-body"><div class="phone-row-title">What's your name?</div><div class="phone-row-sub">e.g. Maria Kask</div></div></div>
+              <div class="phone-row"><div class="phone-row-icon">📞</div><div class="phone-row-body"><div class="phone-row-title">Your WhatsApp number?</div><div class="phone-row-sub">International format, e.g. +372 5555 1234</div></div></div>
+              <div class="phone-row"><div class="phone-row-icon">🚢</div><div class="phone-row-body"><div class="phone-row-title">Official port name</div><div class="phone-row-sub">e.g. Port of Tallinn</div><div class="phone-row-tag">Section 2 of 9</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:#ffffff;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C240,10 480,60 720,30 C960,0 1200,50 1440,20 L1440,60 L0,60 Z" fill="#F4F7FA"/></svg></div>
+
+<!-- FUTURE DEVELOPMENT -->
+<section style="background:var(--slate);" id="future">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <span class="section-eyebrow">What's Next</span>
+      <h2 class="section-title">Future Development</h2>
+      <p class="section-sub">MWApp launches as an MVP focused on getting the fundamentals right. Here's what's planned as the network grows.</p>
+    </div>
+    <div class="card-grid fade-up">
+      <div class="info-card"><div class="icon">👪</div><h4>Family support</h4><p>A dedicated space to help seafarers' families stay connected and supported ashore.</p></div>
+      <div class="info-card"><div class="icon">⚕️</div><h4>Telemedicine</h4><p>Online medical and legal consultations, integrated directly into the app.</p></div>
+      <div class="info-card"><div class="icon">🪪</div><h4>Union card access</h4><p>Priority services and the Wellness Recovery Zone unlocked through union membership.</p></div>
+      <div class="info-card"><div class="icon">🌐</div><h4>50+ ports by 2032</h4><p>Scaling the platform well beyond the five Phase 1 pilot ports.</p></div>
+      <div class="info-card"><div class="icon">🗣️</div><h4>More languages</h4><p>Expanding past the four MVP languages as the crew base of partner ports grows.</p></div>
+      <div class="info-card"><div class="icon">📈</div><h4>Continuous feedback</h4><p>A permanent channel for seafarers to shape what MWApp builds next.</p></div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-name">⚓ IMWIRSA</div>
+        <div class="brand-sub">International Maritime Welfare Innovation Research and Support Association</div>
+        <p>An independent international initiative dedicated to advancing evidence-based seafarer welfare through research, digital innovation and collaboration.</p>
+        <p style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.4);">📍 Tallinn, Estonia (HQ)</p>
+      </div>
+      <div class="footer-col">
+        <h4>Organisation</h4>
+        <ul>
+          <li><a href="about.html#about-imwirsa">About IMWIRSA</a></li>
+          <li><a href="about.html#our-story">Our Story</a></li>
+          <li><a href="about.html#roadmap">Roadmap 2026–2035</a></li>
+          <li><a href="research.html">Research</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>MWApp</h4>
+        <ul>
+          <li><a href="mwapp.html#overview">Discover MWApp</a></li>
+          <li><a href="mwapp.html#port-cards">Port Cards</a></li>
+          <li><a href="mwapp.html#ai-assistants">AI Assistants</a></li>
+          <li><a href="mwapp.html#pwm-bot">Port Welfare Manager</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="partners.html#become-partner">Join Our Network</a></li>
+          <li><a href="partners.html#toolkit">Partner Toolkit</a></li>
+          <li><a href="projects.html#pilot-network">Pilot Network</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 IMWIRSA. All rights reserved. · <a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+      <div class="footer-langs">
+        <button class="footer-lang">EN</button>
+        <button class="footer-lang">RU</button>
+        <button class="footer-lang">TR</button>
+        <button class="footer-lang">FIL</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body></html>
