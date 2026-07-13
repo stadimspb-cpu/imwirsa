@@ -73,13 +73,34 @@ const PORT_DATA = {
       { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
     ],
   },
+  wellness: {
+    title: "Wellness Recovery Zone",
+    rows: [
+      { icon: "💆", title: "Relaxation massage — 30 min", sub: "At the Seafarers' Centre · by appointment", tag: "Union card price: Free", action: "🧭" },
+      { icon: "🧠", title: "Confidential counselling session", sub: "Licensed counsellor · English, Russian", tag: "Union card price: Free", action: "💬" },
+      { icon: "🧘", title: "Quiet room", sub: "Open now · no booking needed", action: "🧭" },
+    ],
+  },
 };
 
 const state = {
   assistant: null,
   lang: null,
   name: "",
+  unionActive: false,
 };
+
+function saveState() {
+  try {
+    localStorage.setItem("mwapp_state", JSON.stringify(state));
+  } catch (e) {}
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem("mwapp_state");
+    if (raw) Object.assign(state, JSON.parse(raw));
+  } catch (e) {}
+}
 
 function gradientStyle(grad) {
   return `background: linear-gradient(135deg, ${grad[0]}, ${grad[1]});`;
@@ -138,6 +159,12 @@ function updateAssistantUI() {
 
   document.getElementById("settingsLangVal").textContent =
     (LANGUAGES.find((l) => l.code === state.lang) || {}).flag || "›";
+
+  document.getElementById("premiumBanner").classList.toggle("hidden", !state.unionActive);
+  const unionVal = document.getElementById("unionStatusVal");
+  if (unionVal) unionVal.textContent = state.unionActive ? "Active ✓" : "Not activated ›";
+
+  saveState();
 }
 
 function goToScreen(name) {
@@ -146,11 +173,14 @@ function goToScreen(name) {
   if (target) target.classList.add("active");
 
   const bottomNav = document.getElementById("bottomNav");
-  if (["home", "volunteer", "settings"].includes(name)) {
-    bottomNav.style.display = "flex";
+  const cornerQuick = document.getElementById("cornerQuick");
+  if (["home", "volunteer", "settings", "detail"].includes(name)) {
+    bottomNav.style.display = ["home", "volunteer", "settings"].includes(name) ? "flex" : "none";
+    cornerQuick.classList.remove("hidden");
     document.querySelectorAll(".nav-item").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
   } else {
     bottomNav.style.display = "none";
+    cornerQuick.classList.add("hidden");
   }
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
@@ -205,12 +235,23 @@ function sendChatMessage() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadState();
   renderAssistantGrid("assistantGrid", false);
   renderLangGrid("langGrid", false);
   renderAssistantGrid("assistantGridModal", true);
   renderLangGrid("langGridModal", true);
+  refreshOnboardContinue();
+
+  if (state.assistant && state.lang) {
+    // Returning user — first-launch screens are shown once in a lifetime only.
+    goToScreen("home");
+  }
 
   document.body.addEventListener("click", (e) => {
+    if (e.target.id === "nameSave") {
+      state.name = document.getElementById("nameInput").value.trim();
+    }
+
     const goEl = e.target.closest("[data-go]");
     if (goEl) { goToScreen(goEl.dataset.go); }
 
@@ -243,13 +284,39 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === document.getElementById("langModal")) closeModal("langModal");
     if (e.target === document.getElementById("assistantModal")) closeModal("assistantModal");
 
-    if (e.target.id === "nameSave") {
-      state.name = document.getElementById("nameInput").value.trim();
-    }
-
     if (e.target.id === "editNameRow" || e.target.closest("#editNameRow")) {
       goToScreen("name");
     }
+
+    if (e.target.id === "unionRow" || e.target.closest("#unionRow")) {
+      if (state.unionActive) {
+        document.getElementById("unionModalTitle").textContent = "Your Union Card is active";
+        document.getElementById("unionModalText").textContent = "Premium Welfare Services, including the Wellness Recovery Zone, are unlocked on your device.";
+        document.getElementById("unionActivateBtn").classList.add("hidden");
+      } else {
+        document.getElementById("unionModalTitle").textContent = "Activate your Union Card";
+        document.getElementById("unionModalText").textContent = "Union and club card members get access to Premium Welfare Services, including the Wellness Recovery Zone — local massage, physiotherapy and counselling near the seafarers' centre.";
+        document.getElementById("unionActivateBtn").classList.remove("hidden");
+      }
+      openModal("unionModal");
+    }
+
+    if (e.target.id === "unionActivateBtn") {
+      state.unionActive = true;
+      updateAssistantUI();
+      closeModal("unionModal");
+    }
+
+    if (e.target.id === "unionCloseBtn") {
+      closeModal("unionModal");
+    }
+
+    if (e.target.id === "resetAppRow" || e.target.closest("#resetAppRow")) {
+      localStorage.removeItem("mwapp_state");
+      location.reload();
+    }
+
+    if (e.target === document.getElementById("unionModal")) closeModal("unionModal");
 
     if (e.target.id === "chatSend") sendChatMessage();
   });
