@@ -322,17 +322,35 @@
 <!-- BECOME A PARTNER CTA -->
 <section class="partners-section" style="background:var(--navy);" id="become-a-partner">
   <div class="section-inner">
-    <div class="join-box fade-up" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12);">
-      <h3 style="color:white;">Ready to join our network?</h3>
-      <p style="color:rgba(255,255,255,0.72);">Whether you are a seafarers' centre, a mission, a union, a port authority or a shipping company — we want to hear from you. First meeting is online, 30 minutes.</p>
-      <div class="join-form">
-        <input class="join-input" type="email" placeholder="Your email address">
-        <button class="join-btn">Get in Touch →</button>
+    <div class="join-box fade-up" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12);" id="homeCtaBox">
+      <div id="homeCtaSent" style="display:none;">
+        <h3 style="color:white;">✅ Thanks — message sent</h3>
+        <p style="color:rgba(255,255,255,0.72);">We'll get back to you within 24 hours.</p>
       </div>
-      <p style="margin-top:16px; font-size:12px; color:rgba(255,255,255,0.5);">Or write directly: <strong>info@imwirsa.org</strong></p>
+      <div id="homeCtaForm">
+        <h3 style="color:white;">Ready to join our network?</h3>
+        <p style="color:rgba(255,255,255,0.72);">Whether you are a seafarers' centre, a mission, a union, a port authority or a shipping company — we want to hear from you. First meeting is online, 30 minutes.</p>
+        <form class="join-form" action="https://formsubmit.co/info@imwirsa.org" method="POST">
+          <input type="hidden" name="_subject" value="New Partner Interest — Home page CTA">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://imwirsa.org/index.html?sent=true#become-a-partner">
+          <input type="hidden" name="_captcha" value="true">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+          <input class="join-input" type="email" name="email" placeholder="Your email address" required>
+          <button class="join-btn" type="submit">Get in Touch →</button>
+        </form>
+        <p style="margin-top:16px; font-size:12px; color:rgba(255,255,255,0.5);">Or write directly: <strong>info@imwirsa.org</strong></p>
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  if (new URLSearchParams(window.location.search).get('sent') === 'true') {
+    document.getElementById('homeCtaSent').style.display = 'block';
+    document.getElementById('homeCtaForm').style.display = 'none';
+  }
+</script>
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
