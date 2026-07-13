@@ -173,14 +173,11 @@ function goToScreen(name) {
   if (target) target.classList.add("active");
 
   const bottomNav = document.getElementById("bottomNav");
-  const cornerQuick = document.getElementById("cornerQuick");
   if (["home", "volunteer", "settings", "detail"].includes(name)) {
-    bottomNav.style.display = ["home", "volunteer", "settings"].includes(name) ? "flex" : "none";
-    cornerQuick.classList.remove("hidden");
-    document.querySelectorAll(".nav-item").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
+    bottomNav.style.display = "flex";
+    document.querySelectorAll(".nav-item[data-nav]").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
   } else {
     bottomNav.style.display = "none";
-    cornerQuick.classList.add("hidden");
   }
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
