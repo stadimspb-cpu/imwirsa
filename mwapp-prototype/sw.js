@@ -1,4 +1,4 @@
-const CACHE = "mwapp-v1";
+const CACHE = "mwapp-v2";
 const ASSETS = [
   "./index.html",
   "./css/app.css",
@@ -20,19 +20,16 @@ self.addEventListener("activate", (e) => {
   self.clients.claim();
 });
 
+// Network-first: always try to fetch the latest version first (important while
+// the app is actively being updated). Falls back to cache only when offline.
 self.addEventListener("fetch", (e) => {
   e.respondWith(
-    caches.match(e.request).then((cached) => {
-      return (
-        cached ||
-        fetch(e.request)
-          .then((res) => {
-            const resClone = res.clone();
-            caches.open(CACHE).then((c) => c.put(e.request, resClone));
-            return res;
-          })
-          .catch(() => cached)
-      );
-    })
+    fetch(e.request)
+      .then((res) => {
+        const resClone = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, resClone));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
