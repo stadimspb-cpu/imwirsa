@@ -1,5 +1,17 @@
 // IMWIRSA — shared site behaviour
 
+// Language toggle for bilingual commentary pages
+document.querySelectorAll('.lang-toggle-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const lang = btn.dataset.lang;
+    document.querySelectorAll('.lang-toggle-btn').forEach((b) => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('[data-lang-content]').forEach((el) => {
+      el.style.display = (el.dataset.langContent === lang) ? '' : 'none';
+    });
+    window.scrollTo({ top: document.getElementById('commentary-body').offsetTop - 90, behavior: 'smooth' });
+  });
+});
+
 // Navbar background on scroll
 const navbar = document.getElementById('navbar');
 if (navbar) {
