@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>MWApp — Maritime Welfare Assistant</title>
+<meta name="theme-color" content="#1B3A6B">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div class="device-wrap">
+<div class="device">
+  <div class="device-notch"></div>
+  <div class="status-bar"><span>9:41</span><span>●●●● 📶 🔋87%</span></div>
+
+  <div class="app-shell" id="appShell">
+
+    <!-- SCREEN 1 — LIGHTHOUSE -->
+    <section class="screen screen-lighthouse active" data-screen="lighthouse">
+      <div class="lh-sky"><div class="lh-beam"></div></div>
+      <div class="lh-sub">IMWIRSA presents</div>
+      <div class="lh-tower">🗼</div>
+      <p class="lh-text">Welcome, Seafarer. The sea has connected people and nations for thousands of years. You are not alone. MWA is here to guide and support you wherever your journey takes you.</p>
+      <button class="btn-continue" data-go="onboard">CONTINUE</button>
+    </section>
+
+    <!-- SCREEN 2 — CHOOSE ASSISTANT + LANGUAGE -->
+    <section class="screen screen-onboard" data-screen="onboard">
+      <div class="ob-title">Welcome aboard</div>
+      <div class="ob-sub">Before we begin — choose the assistant you'd like to talk with, and your preferred language.</div>
+
+      <div class="section-label">Choose your assistant</div>
+      <div class="assistant-grid" id="assistantGrid"></div>
+
+      <div class="section-label">Choose your language</div>
+      <div class="lang-grid" id="langGrid"></div>
+
+      <button class="btn-primary-full" id="onboardContinue" disabled data-go="intro">Continue</button>
+    </section>
+
+    <!-- SCREEN 3 — ASSISTANT INTRO -->
+    <section class="screen screen-intro" data-screen="intro">
+      <div class="intro-avatar" id="introAvatar"></div>
+      <div class="intro-name" id="introName"></div>
+      <p class="intro-msg" id="introMsg"></p>
+      <button class="btn-continue" data-go="name">Continue</button>
+    </section>
+
+    <!-- SCREEN 4 — NAME CONSENT -->
+    <section class="screen screen-name" data-screen="name">
+      <div class="name-avatar" id="nameAvatar"></div>
+      <p class="name-msg">One more thing — completely optional. How would you like me to address you? You can skip this at any time.</p>
+      <input class="name-input" id="nameInput" type="text" placeholder="Enter your name or a nickname">
+      <div class="name-btns">
+        <button class="btn-primary-full" data-go="home" id="nameSave">Save</button>
+        <button class="btn-skip" data-go="home">Skip</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 5 — HOME / PORT CARD -->
+    <section class="screen screen-home" data-screen="home">
+      <div class="home-header">
+        <div class="home-header-top">
+          <div class="hh-brand"><img src="assets/icons/icon-mono.png" alt=""> MWApp</div>
+          <div class="hh-brand" style="font-weight:600; opacity:0.8;">IMWIRSA</div>
+        </div>
+        <div class="home-port-name">🇪🇪 Tallinn</div>
+        <div class="home-port-sub">Estonia · Old City Harbour</div>
+        <div class="home-badges">
+          <div class="hb open">✅ Open now</div>
+          <div class="hb">🌡 +14°C</div>
+          <div class="hb">⏱ UTC+3</div>
+        </div>
+      </div>
+      <div class="assistant-bubble">
+        <div class="ab-avatar" id="homeAbAvatar"></div>
+        <div>
+          <div class="ab-name" id="homeAbName"></div>
+          <div class="ab-text" id="homeAbText"></div>
+        </div>
+      </div>
+      <div class="home-content">
+        <div class="section-label">What do you need?</div>
+        <div class="category-grid">
+          <button class="cat-tile" data-detail="centre"><div class="cat-icon">🏛</div><div class="cat-label">Seafarers'<br>Centre</div></button>
+          <button class="cat-tile" data-detail="transport"><div class="cat-icon">🚌</div><div class="cat-label">Transport</div></button>
+          <button class="cat-tile" data-detail="connect"><div class="cat-icon">📶</div><div class="cat-label">SIM &amp;<br>Wi-Fi</div></button>
+          <button class="cat-tile" data-detail="shops"><div class="cat-icon">🛒</div><div class="cat-label">Shops &amp;<br>Food</div></button>
+          <button class="cat-tile" data-detail="medical"><div class="cat-icon">🏥</div><div class="cat-label">Medical</div></button>
+          <button class="cat-tile" data-detail="safety"><div class="cat-icon">🛡</div><div class="cat-label">Safety</div></button>
+        </div>
+        <div class="quick-row">
+          <button class="quick-btn" data-go="volunteer"><div class="qi">💬</div><div class="qt">Talk to a<br>volunteer</div></button>
+          <button class="quick-btn urgent" data-detail="emergency"><div class="qi">🚨</div><div class="qt">Emergency<br>contacts</div></button>
+        </div>
+      </div>
+      <div class="corner-quick">
+        <button class="corner-btn" data-modal="langModal">🌍</button>
+        <button class="corner-btn" data-modal="assistantModal">👤</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 6 — CATEGORY DETAIL -->
+    <section class="screen screen-detail" data-screen="detail">
+      <div class="detail-header">
+        <button class="back-btn" data-go="home">←</button>
+        <div class="detail-title" id="detailTitle">Category</div>
+      </div>
+      <div class="detail-list" id="detailList"></div>
+    </section>
+
+    <!-- SCREEN 7 — VOLUNTEER CHAT -->
+    <section class="screen screen-volunteer" data-screen="volunteer">
+      <div class="chat-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="home">←</button>
+          <div class="detail-title">💬 Volunteer Support</div>
+        </div>
+        <div class="chat-header-sub">Anonymous · Available 24/7</div>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="chat-status">Connecting you with a volunteer…</div>
+        <div class="chat-msg them">Hello, this is Kadri from the Volunteer Support Line. I'm here to listen — how are you doing today?</div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Type a message…">
+        <button class="chat-send" id="chatSend">➤</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 8 — SETTINGS -->
+    <section class="screen screen-settings" data-screen="settings">
+      <div class="settings-header"><div class="detail-title">Settings</div></div>
+      <div class="settings-list">
+        <div class="settings-current-assistant">
+          <div class="sca-avatar" id="settingsAvatar"></div>
+          <div>
+            <div style="font-weight:800; font-size:14.5px;" id="settingsName"></div>
+            <div style="font-size:11.5px; color:var(--gray);">Your Maritime Welfare Assistant</div>
+          </div>
+        </div>
+        <div class="settings-group-label">Preferences</div>
+        <button class="settings-row" data-modal="assistantModal"><div class="si">👤</div><div class="st">Change assistant</div><div class="sv">›</div></button>
+        <button class="settings-row" data-modal="langModal"><div class="si">🌍</div><div class="st">Language</div><div class="sv" id="settingsLangVal">›</div></button>
+        <button class="settings-row" id="editNameRow"><div class="si">✏️</div><div class="st">My name</div><div class="sv">›</div></button>
+        <div class="settings-group-label">Data &amp; Privacy</div>
+        <div class="settings-row"><div class="si">🔒</div><div class="st">Your name is stored only on this device</div></div>
+        <button class="settings-row"><div class="si">🗑</div><div class="st">Clear my data</div><div class="sv">›</div></button>
+        <div class="settings-group-label">About</div>
+        <div class="settings-row"><div class="si">ℹ️</div><div class="st">MWApp v0.1 (prototype)</div></div>
+        <div class="settings-row"><div class="si">🌐</div><div class="st">imwirsa.org</div></div>
+      </div>
+    </section>
+
+    <!-- BOTTOM NAV (home/volunteer/settings only) -->
+    <div class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" data-go="home" data-nav="home"><div class="ni">🏠</div><div class="nt">Port</div></button>
+      <button class="nav-item" data-go="volunteer" data-nav="volunteer"><div class="ni">💬</div><div class="nt">Volunteer</div></button>
+      <button class="nav-item" data-go="settings" data-nav="settings"><div class="ni">⚙️</div><div class="nt">Settings</div></button>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="langModal">
+      <div class="modal-sheet">
+        <div class="modal-title">Choose your language</div>
+        <div class="lang-grid" id="langGridModal"></div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="assistantModal">
+      <div class="modal-sheet">
+        <div class="modal-title">Choose your assistant</div>
+        <div class="assistant-grid" id="assistantGridModal"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
