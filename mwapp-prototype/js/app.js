@@ -181,6 +181,7 @@ function goToScreen(name) {
   }
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
+  if (name === "home") maybeShowInstallBanner();
 }
 
 function openDetail(key) {
@@ -230,6 +231,35 @@ function sendChatMessage() {
     body.scrollTop = body.scrollHeight;
   }, 900);
 }
+
+let deferredInstallPrompt = null;
+
+function isStandalone() {
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function maybeShowInstallBanner() {
+  if (isStandalone()) return;
+  if (localStorage.getItem("mwapp_install_dismissed") === "1") return;
+  const banner = document.getElementById("installBanner");
+  const sub = document.getElementById("installSub");
+  if (isIOS()) {
+    sub.textContent = "Tap 'Add', then follow 2 quick steps.";
+    banner.classList.remove("hidden");
+  } else if (deferredInstallPrompt) {
+    sub.textContent = "Get one-tap access next time, like a real app.";
+    banner.classList.remove("hidden");
+  }
+}
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  maybeShowInstallBanner();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
@@ -311,6 +341,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "resetAppRow" || e.target.closest("#resetAppRow")) {
       localStorage.removeItem("mwapp_state");
       location.reload();
+    }
+
+    if (e.target.id === "installBtn") {
+      if (isIOS()) {
+        openModal("iosInstallModal");
+      } else if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.finally(() => {
+          deferredInstallPrompt = null;
+          document.getElementById("installBanner").classList.add("hidden");
+        });
+      }
+    }
+
+    if (e.target.id === "installCloseBtn") {
+      document.getElementById("installBanner").classList.add("hidden");
+      localStorage.setItem("mwapp_install_dismissed", "1");
+    }
+
+    if (e.target.id === "iosInstallCloseBtn") {
+      closeModal("iosInstallModal");
+      document.getElementById("installBanner").classList.add("hidden");
+      localStorage.setItem("mwapp_install_dismissed", "1");
     }
 
     if (e.target === document.getElementById("unionModal")) closeModal("unionModal");
