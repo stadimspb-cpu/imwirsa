@@ -105,6 +105,16 @@
           </div>
           <div class="pb-arrow">›</div>
         </button>
+
+        <div class="install-banner hidden" id="installBanner">
+          <div class="install-icon">📲</div>
+          <div class="install-body">
+            <div class="install-title">Add MWApp to your Home Screen</div>
+            <div class="install-sub" id="installSub">Get one-tap access next time, like a real app.</div>
+          </div>
+          <button class="install-btn" id="installBtn">Add</button>
+          <button class="install-close" id="installCloseBtn">✕</button>
+        </div>
       </div>
     </section>
 
@@ -196,6 +206,17 @@
         </p>
         <button class="btn-primary-full" id="unionActivateBtn">Activate demo card</button>
         <button class="btn-skip" id="unionCloseBtn">Not now</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="iosInstallModal">
+      <div class="modal-sheet" style="text-align:center;">
+        <div style="font-size:40px; margin-bottom:12px;">📲</div>
+        <div class="modal-title">Add to Home Screen</div>
+        <div class="ios-step"><div class="ios-step-num">1</div><div class="ios-step-text">Tap the <strong>Share</strong> button <span class="ios-icon">⬆️</span> in your browser's toolbar</div></div>
+        <div class="ios-step"><div class="ios-step-num">2</div><div class="ios-step-text">Scroll down and tap <strong>"Add to Home Screen"</strong> <span class="ios-icon">➕</span></div></div>
+        <div class="ios-step"><div class="ios-step-num">3</div><div class="ios-step-text">Tap <strong>"Add"</strong> in the top corner</div></div>
+        <button class="btn-primary-full" id="iosInstallCloseBtn">Got it</button>
       </div>
     </div>
 
