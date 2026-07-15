@@ -69,13 +69,17 @@
           <div class="hh-emblem"><img src="assets/logo-badge.png" alt="IMWIRSA"></div>
           <div class="hh-brand">IMWIRSA</div>
         </div>
-        <div class="home-port-name">🇪🇪 Tallinn</div>
-        <div class="home-port-sub">Estonia · Old City Harbour</div>
+        <div class="home-port-name" id="homePortName">🇪🇪 Tallinn</div>
+        <div class="home-port-sub" id="homePortSub">Estonia · Old City Harbour</div>
         <div class="home-badges">
           <div class="hb open">✅ Open now</div>
           <div class="hb">🌡 +14°C</div>
           <div class="hb">⏱ UTC+3</div>
         </div>
+      </div>
+      <div class="access-toggle">
+        <button class="toggle-btn" id="btnAccessStd" data-access="std">⚓ Стандарт</button>
+        <button class="toggle-btn" id="btnAccessVip" data-access="vip">★ Профсоюз</button>
       </div>
       <div class="assistant-bubble">
         <div class="ab-avatar" id="homeAbAvatar"></div>
@@ -119,13 +123,28 @@
       </div>
     </section>
 
-    <!-- SCREEN 6 — CATEGORY DETAIL -->
+    <!-- SCREEN 6 — CATEGORY DETAIL (Level 2) -->
     <section class="screen screen-detail" data-screen="detail">
       <div class="detail-header">
-        <button class="back-btn" data-go="home">←</button>
-        <div class="detail-title" id="detailTitle">Category</div>
+        <div class="detail-crumb"><span id="detailCrumbPort">← Tallinn</span><span class="crumb-level" id="detailCrumbLevel">Уровень 2</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="home">←</button>
+          <div class="detail-title" id="detailTitle">Category</div>
+        </div>
       </div>
       <div class="detail-list" id="detailList"></div>
+    </section>
+
+    <!-- SCREEN 6b — SUB-DETAIL (Level 3) -->
+    <section class="screen screen-subdetail" data-screen="subdetail">
+      <div class="detail-header">
+        <div class="detail-crumb"><span id="subdetailCrumbPort">← Tallinn</span><span class="crumb-level">Уровень 3</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="detail">←</button>
+          <div class="detail-title" id="subdetailTitle">Details</div>
+        </div>
+      </div>
+      <div class="subdetail-list" id="subdetailBody"></div>
     </section>
 
     <!-- SCREEN 7 — VOLUNTEER CHAT -->
@@ -164,6 +183,9 @@
         <button class="settings-row" id="editNameRow"><div class="si">✏️</div><div class="st">My name</div><div class="sv">›</div></button>
         <div class="settings-group-label">Membership</div>
         <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st">Union / Club Card</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
+        <div class="settings-group-label">Port &amp; Location (dev preview)</div>
+        <button class="settings-row" data-modal="portModal"><div class="si">🌍</div><div class="st">Test port</div><div class="sv" id="settingsPortVal">›</div></button>
+        <button class="settings-row" data-modal="contextModal"><div class="si">📍</div><div class="st">Context (auto once GPS is added)</div><div class="sv" id="settingsContextVal">›</div></button>
         <div class="settings-group-label">Data &amp; Privacy</div>
         <div class="settings-row"><div class="si">🔒</div><div class="st">Your name is stored only on this device</div></div>
         <button class="settings-row"><div class="si">🗑</div><div class="st">Clear my data</div><div class="sv">›</div></button>
@@ -207,6 +229,29 @@
         </p>
         <button class="btn-primary-full" id="unionActivateBtn">Activate demo card</button>
         <button class="btn-skip" id="unionCloseBtn">Not now</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="portModal">
+      <div class="modal-sheet">
+        <div class="modal-title">Test port (dev preview)</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="settings-row" data-port="tallinn"><div class="si">🇪🇪</div><div class="st">Tallinn</div></button>
+          <button class="settings-row" data-port="constanta"><div class="si">🇷🇴</div><div class="st">Constanța</div></button>
+          <button class="settings-row" data-port="hamburg"><div class="si">🇩🇪</div><div class="st">Hamburg</div></button>
+          <button class="settings-row" data-port="istanbul"><div class="si">🇹🇷</div><div class="st">Istanbul</div></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="contextModal">
+      <div class="modal-sheet" style="text-align:center;">
+        <div class="modal-title">Where is the seafarer right now?</div>
+        <p style="font-size:12.5px; color:var(--gray); margin-bottom:16px; line-height:1.6;">This will be detected automatically once GPS is connected. For now, switch manually to preview both states.</p>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="settings-row" data-context="at_port"><div class="si">⚓</div><div class="st">At the port</div></button>
+          <button class="settings-row" data-context="in_city"><div class="si">🏙</div><div class="st">In the city</div></button>
+        </div>
       </div>
     </div>
 
