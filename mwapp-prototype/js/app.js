@@ -9,6 +9,10 @@ const ASSISTANTS = {
   amina:  { id: "amina",  name: "Amina",  icon: "🌙", tag: "Respectful guide",  grad: ["#E8523A", "#B8860B"], greet: "Hello! My name is Amina. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
 };
 
+// LINDA is not offered at onboarding — seafarers meet her only once inside a
+// Trade Union–gated section, where she looks after members' wellness services.
+const LINDA = { id: "linda", name: "Linda", icon: "💠", tag: "Trade Union Support", grad: ["#B8860B", "#8a6408"] };
+
 const LANGUAGES = [
   { code: "en", flag: "🇬🇧", label: "English" },
   { code: "ru", flag: "🇷🇺", label: "Русский" },
@@ -17,7 +21,7 @@ const LANGUAGES = [
 ];
 
 // Placeholder used for fields curators haven't filled in yet via the PWM Telegram bot.
-const TBD = "Информация уточняется куратором порта";
+const TBD = "Details coming soon from the port curator";
 
 // ---- SUB-DETAILS (Level 3) --------------------------------------------
 // Rendered by openSubDetail(). type: "hours_contacts" | "schedule" | "note"
@@ -26,34 +30,34 @@ const SUBDETAILS = {
     type: "hours_contacts",
     title: "Tallinn Seafarers' Centre",
     hours: [
-      ["Понедельник", "08:00 – 20:00", true], ["Вторник", "08:00 – 20:00"], ["Среда", "08:00 – 20:00"],
-      ["Четверг", "08:00 – 20:00"], ["Пятница", "08:00 – 20:00"], ["Суббота", "09:00 – 17:00"], ["Воскресенье", "10:00 – 15:00"],
+      ["Monday", "08:00 – 20:00", true], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
+      ["Thursday", "08:00 – 20:00"], ["Friday", "08:00 – 20:00"], ["Saturday", "09:00 – 17:00"], ["Sunday", "10:00 – 15:00"],
     ],
     contacts: [
-      { icon: "📞", title: "+372 5555 1234", sub: "Основная линия · Рус/Eng", action: "📞" },
-      { icon: "💬", title: "WhatsApp", sub: "Написать заранее", action: "💬" },
-      { icon: "🧑‍💼", title: "Marta Kask (PWM)", sub: "Куратор порта · доступна сейчас", action: "💬" },
+      { icon: "📞", title: "+372 5555 1234", sub: "Main line · English, Russian spoken", action: "📞" },
+      { icon: "💬", title: "WhatsApp", sub: "Message ahead of time", action: "💬" },
+      { icon: "🧑‍💼", title: "Marta Kask (PWM)", sub: "Port curator · available now", action: "💬" },
     ],
     directions: [
-      { icon: "🚐", title: "Шаттл от причала D", sub: "Каждые 2 часа · бесплатно", action: "›" },
-      { icon: "🚶", title: "Пешком: 12 минут", sub: "Sadama tn → поворот у маяка", action: "🗺" },
+      { icon: "🚐", title: "Shuttle from Gate D", sub: "Every 2 hours · free", action: "›" },
+      { icon: "🚶", title: "On foot: 12 minutes", sub: "Sadama tn → turn at the lighthouse", action: "🗺" },
     ],
   },
   tallinn_transport_shuttle: {
     type: "schedule",
-    title: "Shuttle — расписание",
-    from: "Отправление от Причала D",
+    title: "Shuttle — schedule",
+    from: "Departs from Gate D",
     times: ["09:00", "12:00", "14:30", "17:00", "19:00"],
     nextIndex: 2,
-    note: "Стоимость возврата в порт после 20:00 — " + TBD.toLowerCase() + ".",
+    note: "Return fare after 20:00 — " + TBD.toLowerCase() + ".",
   },
   wellness_gated: {
     type: "hours_contacts", gated: true,
     title: "Wellness Recovery Zone",
     contacts: [
-      { icon: "💆", title: "Массаж 30 мин", sub: "По записи · бесплатно по карте", action: "🧭" },
-      { icon: "🧠", title: "Психолог", sub: "+372 5555 9911", action: "📞" },
-      { icon: "🧘", title: "Тихая комната", sub: "Открыто сейчас", action: "🧭" },
+      { icon: "💆", title: "30-min massage", sub: "By appointment · free with union card", action: "🧭" },
+      { icon: "🧠", title: "Counsellor", sub: "+372 5555 9911", action: "📞" },
+      { icon: "🧘", title: "Quiet room", sub: "Open now", action: "🧭" },
     ],
   },
 };
@@ -66,16 +70,15 @@ const PORTS = {
       centre: {
         title: "Seafarers' Centre",
         rows: [
-          { icon: "🏛", title: "Tallinn Seafarers' Centre", sub: "Sadama 25 · 0.8 km from the terminal", tag: "Open until 20:00", action: "🧭", sd: "tallinn_centre_main" },
+          { icon: "🏛", title: "Tallinn Seafarers' Centre", sub: "Sadama 25 · 0.8 km from the terminal", tag: "Open until 20:00", action: "›", sd: "tallinn_centre_main" },
           { icon: "📞", title: "Call the centre", sub: "+372 5555 1234 · English, Russian spoken", action: "📞" },
-          { icon: "🧑‍💼", title: "Port Welfare Manager", sub: "Marta Kask · available now", action: "💬" },
           { icon: "🌐", title: "Centre services", sub: "Wi-Fi, lounge, chapel, shop, laundry", action: "›" },
         ],
       },
       transport: {
         title: "Transport",
         rows: [
-          { icon: "🚐", title: "Seafarers' Centre shuttle", sub: "Every 2 hours from Gate D · Free", tag: "Next: 14:30", action: "🧭", sd: "tallinn_transport_shuttle" },
+          { icon: "🚐", title: "Seafarers' Centre shuttle", sub: "Every 2 hours from Gate D · Free", tag: "Next: 14:30", action: "›", sd: "tallinn_transport_shuttle" },
           { icon: "🚕", title: "Taxi", sub: "Bolt, Uber available · ~€5 to city centre", action: "›" },
           { icon: "🚎", title: "City bus", sub: "Route 2 · Stop 300m from the gate", action: "🧭" },
         ],
@@ -122,9 +125,9 @@ const PORTS = {
       wellness: {
         title: "Wellness Recovery Zone", gated: true,
         rows: [
-          { icon: "💆", title: "Relaxation massage — 30 min", sub: "At the Seafarers' Centre · by appointment", tag: "Union card price: Free", action: "🧭", sd: "wellness_gated" },
-          { icon: "🧠", title: "Confidential counselling session", sub: "Licensed counsellor · English, Russian", tag: "Union card price: Free", action: "💬", sd: "wellness_gated" },
-          { icon: "🧘", title: "Quiet room", sub: "Open now · no booking needed", action: "🧭", sd: "wellness_gated" },
+          { icon: "💆", title: "Relaxation massage — 30 min", sub: "At the Seafarers' Centre · by appointment", tag: "Union card price: Free", action: "›", sd: "wellness_gated" },
+          { icon: "🧠", title: "Confidential counselling session", sub: "Licensed counsellor · English, Russian", tag: "Union card price: Free", action: "›", sd: "wellness_gated" },
+          { icon: "🧘", title: "Quiet room", sub: "Open now · no booking needed", action: "›", sd: "wellness_gated" },
         ],
       },
     },
@@ -138,15 +141,14 @@ const PORTS = {
         rows: [
           { icon: "🏛", title: "Seamen's Club Constanța", sub: "Str. Traian 62, Bloc K4 · Constanța", action: "🧭" },
           { icon: "📞", title: "Call the centre", sub: "+40 241 584 800", action: "📞" },
-          { icon: "🧑‍💼", title: "Port Welfare Manager", sub: "Olesja Hudu · Seamen's Club Romania", action: "💬" },
           { icon: "🌐", title: "Website", sub: "romania.seamensclub.ro", action: "›" },
         ],
       },
-      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "По запросу · бесплатно", action: "🧭" } ] },
-      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Появится после обновления через Telegram-бот" } ] },
-      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Появится после обновления через Telegram-бот" } ] },
+      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "On request · free", action: "🧭" } ] },
+      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
+      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
       medical: { title: "Medical", rows: [ { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" } ] },
-      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Данные уточняются" } ] },
+      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Details pending" } ] },
       emergency: {
         title: "Emergency Contacts",
         rows: [
@@ -154,7 +156,7 @@ const PORTS = {
           { icon: "🏛", title: "Seamen's Club Constanța", sub: "+40 241 584 800", action: "📞" },
         ],
       },
-      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Партнёрские услуги по профсоюзной карте уточняются" } ] },
+      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
     },
   },
 
@@ -166,15 +168,14 @@ const PORTS = {
         rows: [
           { icon: "🏛", title: "Duckdalben International Seamen's Club", sub: "Zellmannstraße 16, Hamburg", action: "🧭" },
           { icon: "📞", title: "Call the centre", sub: "+49 40 740 1661", action: "📞" },
-          { icon: "🧑‍💼", title: "Port Welfare Manager", sub: "Husemm Darkou", action: "💬" },
           { icon: "🌐", title: "Website", sub: "duckdalben.de", action: "›" },
         ],
       },
-      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "По запросу · бесплатно", action: "🧭" } ] },
-      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Появится после обновления через Telegram-бот" } ] },
-      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Появится после обновления через Telegram-бот" } ] },
+      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "On request · free", action: "🧭" } ] },
+      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
+      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
       medical: { title: "Medical", rows: [ { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" } ] },
-      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Данные уточняются" } ] },
+      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Details pending" } ] },
       emergency: {
         title: "Emergency Contacts",
         rows: [
@@ -182,7 +183,7 @@ const PORTS = {
           { icon: "🏛", title: "Duckdalben Club", sub: "+49 40 740 1661", action: "📞" },
         ],
       },
-      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Партнёрские услуги по профсоюзной карте уточняются" } ] },
+      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
     },
   },
 
@@ -195,14 +196,13 @@ const PORTS = {
           { icon: "🏛", title: "Istanbul Seafarers' Contact Centre", sub: "Kadıköy / İstanbul · ~2 km", action: "🧭" },
           { icon: "📞", title: "Call the centre", sub: "+90 216 347 3771", action: "📞" },
           { icon: "💬", title: "WhatsApp", sub: "+90 532 657 1252", action: "💬" },
-          { icon: "🧑‍💼", title: "Port Welfare Manager", sub: "Kety Kumman", action: "💬" },
         ],
       },
-      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "По запросу · бесплатно", action: "🧭" } ] },
-      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Появится после обновления через Telegram-бот" } ] },
-      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Появится после обновления через Telegram-бот" } ] },
+      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "On request · free", action: "🧭" } ] },
+      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
+      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
       medical: { title: "Medical", rows: [ { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" } ] },
-      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Данные уточняются" } ] },
+      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Details pending" } ] },
       emergency: {
         title: "Emergency Contacts",
         rows: [
@@ -210,7 +210,7 @@ const PORTS = {
           { icon: "🏛", title: "Istanbul Seafarers' Contact Centre", sub: "+90 216 347 3771", action: "📞" },
         ],
       },
-      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Партнёрские услуги по профсоюзной карте уточняются" } ] },
+      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
     },
   },
 };
@@ -337,6 +337,17 @@ function goToScreen(name) {
 
 let lastDetailKey = null;
 
+const CATEGORY_PROMPTS = {
+  centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
+  transport: "Need help getting around — shuttle times, taxis, buses? Just ask, I'm right here.",
+  connect: "Questions about SIM cards, Wi-Fi, or getting cash? I can walk you through it.",
+  shops: "Looking for food, supplies, or a pharmacy nearby? Let me know what you need.",
+  medical: "If you're unwell or need medical advice, tell me what's going on and I'll help you find the right care.",
+  safety: "Any safety concerns in the port area? I'm listening — let me know.",
+  emergency: "If this is urgent, use the contacts below right away. I'm also here if you want to talk it through.",
+  wellness: null, // handled separately via LINDA
+};
+
 function openDetail(key) {
   const data = currentCategories()[key];
   if (!data) return;
@@ -345,21 +356,44 @@ function openDetail(key) {
   const locked = !!data.gated && !state.unionActive;
 
   document.getElementById("detailCrumbPort").textContent = `← ${port.meta.name}`;
-  document.getElementById("detailCrumbLevel").textContent = "Уровень 2";
   document.getElementById("detailTitle").textContent = data.title + (locked ? " 🔒" : "");
 
-  document.getElementById("detailList").innerHTML = data.rows.map((r) => `
+  let bubbleHtml = "";
+  if (data.gated) {
+    bubbleHtml = `
+      <div class="assistant-bubble" style="margin:0 0 14px;">
+        <div class="ab-avatar" style="${gradientStyle(LINDA.grad)}">${LINDA.icon}</div>
+        <div>
+          <div class="ab-name">${LINDA.name} · Trade Union Support</div>
+          <div class="ab-text">Hi, I'm Linda — I look after Trade Union members' wellness services at this port. Tell me what you need, or confirm your card below to unlock booking.</div>
+        </div>
+      </div>`;
+  } else {
+    const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
+    const msg = CATEGORY_PROMPTS[key] || "How can I help you here?";
+    bubbleHtml = `
+      <div class="assistant-bubble" style="margin:0 0 14px;">
+        <div class="ab-avatar" style="${gradientStyle(a.grad)}">${a.icon}</div>
+        <div>
+          <div class="ab-name">${a.name}</div>
+          <div class="ab-text">${msg}</div>
+        </div>
+      </div>`;
+  }
+
+  const rowsHtml = data.rows.map((r) => `
     <div class="d-row ${r.sd ? 'clickable' : ''}" ${r.sd ? `data-sd="${r.sd}"` : ""}>
       <div class="d-icon">${r.icon}</div>
       <div class="d-body">
         <div class="d-title">${r.title}</div>
         <div class="d-sub">${r.sub}</div>
         ${r.tag ? `<span class="d-tag ${r.tagClosed ? 'closed' : ''}">${r.tag}</span>` : ""}
-        ${r.sd ? `<div class="d-tap-hint">Нажмите для подробностей →</div>` : ""}
       </div>
       ${r.action ? `<div class="d-action">${r.action}</div>` : ""}
     </div>
   `).join("");
+
+  document.getElementById("detailList").innerHTML = bubbleHtml + rowsHtml;
   goToScreen("detail");
 }
 
@@ -376,26 +410,26 @@ function openSubDetail(sdKey) {
   if (sd.type === "hours_contacts") {
     let inner = "";
     if (sd.hours) {
-      inner += `<div class="sd-card"><div class="sd-card-title">🕐 Часы работы</div><table class="hours-table">` +
+      inner += `<div class="sd-card"><div class="sd-card-title">🕐 Hours</div><table class="hours-table">` +
         sd.hours.map(([day, time, today]) => `<tr class="${today ? 'hours-today' : ''}"><td>${day}</td><td>${time}</td></tr>`).join("") +
         `</table></div>`;
     }
     if (sd.contacts) {
-      inner += `<div class="sd-card"><div class="sd-card-title">📞 Контакты</div>` +
+      inner += `<div class="sd-card"><div class="sd-card-title">📞 Contacts</div>` +
         sd.contacts.map((c) => `<div class="contact-row"><div class="c-icon">${c.icon}</div><div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>${c.action ? `<div class="c-action">${c.action}</div>` : ""}</div>`).join("") +
         `</div>`;
     }
     if (sd.directions) {
-      inner += `<div class="sd-card"><div class="sd-card-title">📍 Как добраться</div>` +
+      inner += `<div class="sd-card"><div class="sd-card-title">📍 Getting there</div>` +
         sd.directions.map((c) => `<div class="contact-row"><div class="c-icon">${c.icon}</div><div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>${c.action ? `<div class="c-action">${c.action}</div>` : ""}</div>`).join("") +
         `</div>`;
     }
     bodyHtml = wrapGate(inner, locked, sd);
   } else if (sd.type === "schedule") {
     let inner = `<div class="sd-card"><div class="sd-card-title">${sd.from}</div>` +
-      sd.times.map((t, i) => `<div class="sched-row ${i === sd.nextIndex ? 'next' : ''}"><span>${t}</span>${i === sd.nextIndex ? '<span class="sched-tag">БЛИЖАЙШИЙ</span>' : ''}</div>`).join("") +
+      sd.times.map((t, i) => `<div class="sched-row ${i === sd.nextIndex ? 'next' : ''}"><span>${t}</span>${i === sd.nextIndex ? '<span class="sched-tag">NEXT</span>' : ''}</div>`).join("") +
       `</div>`;
-    if (sd.note) inner += `<div class="sd-card"><div class="sd-card-title">ℹ️ Уточняется</div><div class="sd-note">${sd.note}</div></div>`;
+    if (sd.note) inner += `<div class="sd-card"><div class="sd-card-title">ℹ️ Pending</div><div class="sd-note">${sd.note}</div></div>`;
     bodyHtml = wrapGate(inner, locked, sd);
   }
 
@@ -409,9 +443,9 @@ function wrapGate(innerHtml, locked, sd) {
     <div class="gate-blur">${innerHtml}</div>
     <div class="gate-overlay">
       <div class="gate-lock">🔒</div>
-      <div class="gate-msg">Доступно держателям профсоюзной карты</div>
-      <div class="gate-sub">Контакты и запись открываются после подтверждения действующей карты профсоюза.</div>
-      <button class="gate-btn" data-modal="unionModal">Подтвердить карту</button>
+      <div class="gate-msg">Available to Trade Union card holders</div>
+      <div class="gate-sub">Contacts and booking unlock once your active Trade Union card is confirmed.</div>
+      <button class="gate-btn" data-modal="unionModal">Confirm card</button>
     </div>
   </div>`;
 }
