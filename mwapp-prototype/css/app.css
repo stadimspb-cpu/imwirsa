@@ -177,8 +177,14 @@ a { color: inherit; text-decoration: none; }
 }
 .home-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; position: relative; padding-top: 6px; }
 .hh-brand {
-  font-size: 19px; font-weight: 800; color: white; padding-bottom: 8px;
-  border-bottom: 2px solid rgba(93,211,240,0.6); flex: 1; min-width: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  flex: 1; min-width: 0;
 }
 .home-header-top .hh-brand:last-child { text-align: right; }
 .hh-emblem {
