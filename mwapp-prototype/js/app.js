@@ -51,13 +51,45 @@ const SUBDETAILS = {
     nextIndex: 2,
     note: "Return fare after 20:00 — " + TBD.toLowerCase() + ".",
   },
-  wellness_gated: {
+  legal_help: {
     type: "hours_contacts", gated: true,
-    title: "Wellness Recovery Zone",
+    title: "Legal Assistance",
     contacts: [
-      { icon: "💆", title: "30-min massage", sub: "By appointment · free with union card", action: "🧭" },
-      { icon: "🧠", title: "Counsellor", sub: "+372 5555 9911", action: "📞" },
-      { icon: "🧘", title: "Quiet room", sub: "Open now", action: "🧭" },
+      { icon: "⚖️", title: "ITF Inspector — Baltic region", sub: "Free legal advice for union members", action: "📞" },
+      { icon: "💬", title: "WhatsApp consultation", sub: "Response within 24h", action: "💬" },
+    ],
+    directions: [
+      { icon: "🏛", title: "In person at the Seafarers' Centre", sub: "By appointment only", action: "🧭" },
+    ],
+  },
+  medical_extended: {
+    type: "hours_contacts", gated: true,
+    title: "Medical — Extended Access",
+    hours: [
+      ["Monday", "08:00 – 20:00", true], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
+      ["Thursday", "08:00 – 20:00"], ["Friday", "08:00 – 20:00"], ["Saturday", "09:00 – 15:00"], ["Sunday", "Emergency only"],
+    ],
+    contacts: [
+      { icon: "🩺", title: "Tallinn Medical Clinic — priority booking", sub: "Union card covers consultation fee", action: "📞" },
+      { icon: "🚑", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" },
+    ],
+  },
+  psych_support: {
+    type: "hours_contacts", gated: true,
+    title: "Psychological Support",
+    contacts: [
+      { icon: "🧠", title: "Licensed counsellor", sub: "+372 5555 9911 · English, Russian", action: "📞" },
+      { icon: "💬", title: "Confidential chat", sub: "Available 24/7 via this app", action: "💬" },
+      { icon: "🧘", title: "Quiet room at the centre", sub: "Open now · no booking needed", action: "🧭" },
+    ],
+  },
+  port_discounts: {
+    type: "hours_contacts", gated: true,
+    title: "Port Discounts & Privileges",
+    contacts: [
+      { icon: "🛍", title: "Rimi Supermarket", sub: "5% off with union card", action: "🧭" },
+      { icon: "☕", title: "Seafarers' Centre café", sub: "Free coffee, discounted meals", action: "🧭" },
+      { icon: "🚕", title: "Partner taxi service", sub: "Fixed reduced rate to city centre", action: "🧭" },
     ],
   },
 };
@@ -123,11 +155,12 @@ const PORTS = {
         ],
       },
       wellness: {
-        title: "Wellness Recovery Zone", gated: true,
+        title: "Premium Welfare Services", gated: true,
         rows: [
-          { icon: "💆", title: "Relaxation massage — 30 min", sub: "At the Seafarers' Centre · by appointment", tag: "Union card price: Free", action: "›", sd: "wellness_gated" },
-          { icon: "🧠", title: "Confidential counselling session", sub: "Licensed counsellor · English, Russian", tag: "Union card price: Free", action: "›", sd: "wellness_gated" },
-          { icon: "🧘", title: "Quiet room", sub: "Open now · no booking needed", action: "›", sd: "wellness_gated" },
+          { icon: "⚖️", title: "Legal Assistance", sub: "ITF inspector, contract & wage disputes", action: "›", sd: "legal_help" },
+          { icon: "🩺", title: "Medical — Extended Access", sub: "Priority booking, covered consultation fee", action: "›", sd: "medical_extended" },
+          { icon: "🧠", title: "Psychological Support", sub: "Confidential counselling, 24/7 chat", action: "›", sd: "psych_support" },
+          { icon: "🏷", title: "Port Discounts & Privileges", sub: "Shops, café, transport near the terminal", action: "›", sd: "port_discounts" },
         ],
       },
     },
@@ -156,7 +189,7 @@ const PORTS = {
           { icon: "🏛", title: "Seamen's Club Constanța", sub: "+40 241 584 800", action: "📞" },
         ],
       },
-      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
     },
   },
 
@@ -183,7 +216,7 @@ const PORTS = {
           { icon: "🏛", title: "Duckdalben Club", sub: "+49 40 740 1661", action: "📞" },
         ],
       },
-      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
     },
   },
 
@@ -210,7 +243,7 @@ const PORTS = {
           { icon: "🏛", title: "Istanbul Seafarers' Contact Centre", sub: "+90 216 347 3771", action: "📞" },
         ],
       },
-      wellness: { title: "Wellness Recovery Zone", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
     },
   },
 };
@@ -218,11 +251,23 @@ const PORTS = {
 function currentPort() { return PORTS[state.portId] || PORTS.tallinn; }
 function currentCategories() { return currentPort().categories; }
 
+// ---- Trade Union card validity (must be reconfirmed every calendar month) ----
+function todayISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function monthKeyOf(isoDate) { return isoDate ? isoDate.slice(0, 7) : null; } // "YYYY-MM"
+function isUnionValid() {
+  if (!state.unionActive || !state.unionLastConfirmed) return false;
+  return monthKeyOf(state.unionLastConfirmed) === monthKeyOf(todayISO());
+}
+
 const state = {
   assistant: null,
   lang: null,
   name: "",
   unionActive: false,
+  unionLastConfirmed: null,  // ISO date "YYYY-MM-DD" of the last confirmation check
   portId: "tallinn",      // will be set automatically once geolocation is wired in; manual for now
   context: "at_port",     // "at_port" | "in_city" — reserved for the planned geolocation feature
   accessView: "std",      // "std" | "vip" — which toggle is selected on the port card
@@ -302,11 +347,17 @@ function updateAssistantUI() {
   document.getElementById("settingsLangVal").textContent =
     (LANGUAGES.find((l) => l.code === state.lang) || {}).flag || "›";
 
-  document.getElementById("premiumBanner").classList.toggle("hidden", !state.unionActive);
-  const unionVal = document.getElementById("unionStatusVal");
-  if (unionVal) unionVal.textContent = state.unionActive ? "Active ✓" : "Not activated ›";
+  // Premium panel shows only while the Trade Union view is selected — regardless of card status.
+  document.getElementById("premiumBanner").classList.toggle("hidden", state.accessView !== "vip");
 
-  document.getElementById("btnAccessStd").classList.toggle("active", !state.unionActive || state.accessView !== "vip");
+  const unionVal = document.getElementById("unionStatusVal");
+  if (unionVal) {
+    if (isUnionValid()) unionVal.textContent = "Active this month ✓";
+    else if (state.unionLastConfirmed) unionVal.textContent = "Needs reconfirmation ›";
+    else unionVal.textContent = "Not confirmed yet ›";
+  }
+
+  document.getElementById("btnAccessStd").classList.toggle("active", state.accessView !== "vip");
   document.getElementById("btnAccessVip").classList.toggle("active", state.accessView === "vip");
   document.getElementById("btnAccessVip").classList.toggle("vip", state.accessView === "vip");
 
@@ -353,19 +404,23 @@ function openDetail(key) {
   if (!data) return;
   lastDetailKey = key;
   const port = currentPort();
-  const locked = !!data.gated && !state.unionActive;
+  const valid = isUnionValid();
+  const locked = !!data.gated && !valid;
 
   document.getElementById("detailCrumbPort").textContent = `← ${port.meta.name}`;
   document.getElementById("detailTitle").textContent = data.title + (locked ? " 🔒" : "");
 
   let bubbleHtml = "";
   if (data.gated) {
+    const lindaMsg = valid
+      ? "Welcome back — your Trade Union card is confirmed for this month. Here's what's available to you."
+      : "Hi, I'm Linda — I look after Trade Union members' services at this port. To unlock these, please confirm your card status in Settings → Union / Trade Card.";
     bubbleHtml = `
       <div class="assistant-bubble" style="margin:0 0 14px;">
         <div class="ab-avatar" style="${gradientStyle(LINDA.grad)}">${LINDA.icon}</div>
         <div>
           <div class="ab-name">${LINDA.name} · Trade Union Support</div>
-          <div class="ab-text">Hi, I'm Linda — I look after Trade Union members' wellness services at this port. Tell me what you need, or confirm your card below to unlock booking.</div>
+          <div class="ab-text">${lindaMsg}</div>
         </div>
       </div>`;
   } else {
@@ -381,17 +436,20 @@ function openDetail(key) {
       </div>`;
   }
 
-  const rowsHtml = data.rows.map((r) => `
-    <div class="d-row ${r.sd ? 'clickable' : ''}" ${r.sd ? `data-sd="${r.sd}"` : ""}>
+  const rowsHtml = data.rows.map((r) => {
+    const rowClickable = !!r.sd && !locked;
+    return `
+    <div class="d-row ${rowClickable ? 'clickable' : ''}" ${rowClickable ? `data-sd="${r.sd}"` : ""}>
       <div class="d-icon">${r.icon}</div>
       <div class="d-body">
         <div class="d-title">${r.title}</div>
         <div class="d-sub">${r.sub}</div>
         ${r.tag ? `<span class="d-tag ${r.tagClosed ? 'closed' : ''}">${r.tag}</span>` : ""}
       </div>
-      ${r.action ? `<div class="d-action">${r.action}</div>` : ""}
+      ${r.sd ? `<div class="d-action">${locked ? '🔒' : '›'}</div>` : (r.action ? `<div class="d-action">${r.action}</div>` : "")}
     </div>
-  `).join("");
+  `;
+  }).join("");
 
   document.getElementById("detailList").innerHTML = bubbleHtml + rowsHtml;
   goToScreen("detail");
@@ -401,7 +459,7 @@ function openSubDetail(sdKey) {
   const sd = SUBDETAILS[sdKey];
   if (!sd) return;
   const port = currentPort();
-  const locked = !!sd.gated && !state.unionActive;
+  const locked = !!sd.gated && !isUnionValid();
 
   document.getElementById("subdetailCrumbPort").textContent = `← ${port.meta.name}`;
   document.getElementById("subdetailTitle").textContent = sd.title;
@@ -541,13 +599,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const accessEl = e.target.closest("[data-access]");
     if (accessEl) {
-      const view = accessEl.dataset.access;
-      if (view === "vip" && !state.unionActive) {
-        openModal("unionModal");
-      } else {
-        state.accessView = view;
-        updateAssistantUI();
-      }
+      state.accessView = accessEl.dataset.access;
+      updateAssistantUI();
     }
 
     const portEl = e.target.closest("[data-port]");
@@ -594,26 +647,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (e.target.id === "unionRow" || e.target.closest("#unionRow")) {
-      if (state.unionActive) {
-        document.getElementById("unionModalTitle").textContent = "Your Union Card is active";
-        document.getElementById("unionModalText").textContent = "Premium Welfare Services, including the Wellness Recovery Zone, are unlocked on your device.";
-        document.getElementById("unionActivateBtn").classList.add("hidden");
-      } else {
-        document.getElementById("unionModalTitle").textContent = "Activate your Union Card";
-        document.getElementById("unionModalText").textContent = "Union and club card members get access to Premium Welfare Services, including the Wellness Recovery Zone — local massage, physiotherapy and counselling near the seafarers' centre.";
-        document.getElementById("unionActivateBtn").classList.remove("hidden");
-      }
       openModal("unionModal");
     }
 
-    if (e.target.id === "unionActivateBtn") {
+    if (e.target.id === "unionSimActiveBtn") {
       state.unionActive = true;
-      updateAssistantUI();
+      state.unionLastConfirmed = todayISO();
       closeModal("unionModal");
+      state.accessView = "vip";
+      updateAssistantUI();
+      openDetail("wellness");
+    }
+
+    if (e.target.id === "unionSimInactiveBtn") {
+      state.unionActive = false;
+      state.unionLastConfirmed = todayISO();
+      closeModal("unionModal");
+      state.accessView = "std";
+      updateAssistantUI();
+      goToScreen("home");
+      openModal("unionDeniedModal");
     }
 
     if (e.target.id === "unionCloseBtn") {
       closeModal("unionModal");
+    }
+
+    if (e.target.id === "unionDeniedCloseBtn") {
+      closeModal("unionDeniedModal");
     }
 
     if (e.target.id === "resetAppRow" || e.target.closest("#resetAppRow")) {
@@ -645,6 +706,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (e.target === document.getElementById("unionModal")) closeModal("unionModal");
+    if (e.target === document.getElementById("unionDeniedModal")) closeModal("unionDeniedModal");
 
     if (e.target.id === "chatSend") sendChatMessage();
   });
