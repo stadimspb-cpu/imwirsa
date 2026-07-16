@@ -54,7 +54,7 @@ a { color: inherit; }
   display: flex; align-items: center; gap: 0;
   height: 78px;
 }
-}
+
 .nav-logo {
   display: flex; align-items: center; gap: 12px;
   text-decoration: none; flex-shrink: 0; margin-right: 30px;
