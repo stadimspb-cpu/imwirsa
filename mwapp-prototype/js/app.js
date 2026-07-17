@@ -51,6 +51,36 @@ const SUBDETAILS = {
     nextIndex: 2,
     note: "Return fare after 20:00 — " + TBD.toLowerCase() + ".",
   },
+  hamburg_centre_main: {
+    type: "hours_contacts",
+    title: "Duckdalben International Seamen's Club",
+    hours: [
+      ["Monday", "10:00 – 21:00", true], ["Tuesday", "10:00 – 21:00"], ["Wednesday", "10:00 – 21:00"],
+      ["Thursday", "10:00 – 21:00"], ["Friday", "10:00 – 21:00"], ["Saturday", "15:00 – 21:00"], ["Sunday", "15:00 – 21:00"],
+    ],
+    contacts: [
+      { icon: "📞", title: "+49 40 740 1661", sub: "Main line", action: "📞" },
+      { icon: "☎️", title: "Freecall 0800 382 5325236", sub: "For pickup requests from your ship", action: "📞" },
+      { icon: "🌐", title: "duckdalben.de", sub: "Club website", action: "›" },
+    ],
+    directions: [
+      { icon: "🚐", title: "Free shuttle to your ship", sub: "Call ahead · last pickup 19:30 daily", action: "📞" },
+      { icon: "🚌", title: "Bus 150 / 151 / 250 / 451", sub: "Nearest stop: Container Terminal Eurogate · ~6 min walk", action: "🧭" },
+      { icon: "⛴", title: "Ferry line 61", sub: "Waltershof stop", action: "🧭" },
+    ],
+  },
+  constanta_centre_main: {
+    type: "hours_contacts",
+    title: "Seamen's Club Constanța",
+    contacts: [
+      { icon: "📞", title: "+40 723 000 555", sub: "Constanța & Midia-Năvodari · also for shuttle pickup", action: "📞" },
+      { icon: "📞", title: "+40 723 218 090", sub: "Agigea (South Constanța)", action: "📞" },
+      { icon: "🌐", title: "romania.seamensclub.ro", sub: "Club website", action: "›" },
+    ],
+    directions: [
+      { icon: "🚐", title: "Free shuttle to your ship", sub: "Call ahead, or ask the gate guard to call for you", action: "📞" },
+    ],
+  },
   legal_help: {
     type: "hours_contacts", gated: true,
     title: "Legal Assistance",
@@ -172,21 +202,48 @@ const PORTS = {
       centre: {
         title: "Seafarers' Centre",
         rows: [
-          { icon: "🏛", title: "Seamen's Club Constanța", sub: "Str. Traian 62, Bloc K4 · Constanța", action: "🧭" },
-          { icon: "📞", title: "Call the centre", sub: "+40 241 584 800", action: "📞" },
-          { icon: "🌐", title: "Website", sub: "romania.seamensclub.ro", action: "›" },
+          { icon: "🏛", title: "Seamen's Club Constanța", sub: "Str. Traian 62, Bloc K4 · Constanța", action: "›", sd: "constanta_centre_main" },
+          { icon: "📞", title: "Call the centre", sub: "+40 723 000 555 · Constanța & Midia-Năvodari", action: "📞" },
+          { icon: "🌐", title: "Club facilities", sub: "Wi-Fi, gym, library, billiards, city tours", action: "›" },
         ],
       },
-      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "On request · free", action: "🧭" } ] },
-      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
-      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
+      transport: {
+        title: "Transport",
+        rows: [
+          { icon: "🚐", title: "Free shuttle to your ship", sub: "Call +40 723 000 555, or ask the gate guard", action: "📞" },
+          { icon: "🚕", title: "Taxi", sub: "Use authorised taxis only · confirm the fare first", action: "🧭" },
+        ],
+      },
+      connect: {
+        title: "SIM & Wi-Fi",
+        rows: [
+          { icon: "📶", title: "Wi-Fi at the Seamen's Club", sub: "Free for laptops, phones and tablets", action: "📋" },
+          { icon: "📡", title: "SIM card", sub: "Orange, Vodafone, Digi — available in the city", action: "›" },
+          { icon: "💱", title: "Currency exchange", sub: "Use only authorised exchange offices", action: "🧭" },
+        ],
+      },
+      shops: {
+        title: "Shops & Food",
+        rows: [
+          { icon: "🛍", title: "City Park Mall / VIVO Mall / TOM Centre", sub: "Free van transport from the Seamen's Club on request", action: "🧭" },
+          { icon: "🛒", title: "Kaufland Hypermarket", sub: "Free van transport via the Seamen's Club", action: "🧭" },
+        ],
+      },
       medical: { title: "Medical", rows: [ { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" } ] },
-      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Details pending" } ] },
+      safety: {
+        title: "Safety",
+        rows: [
+          { icon: "🪪", title: "Gate 1 only", sub: "Non-European seafarers must use Gate 1 to exit/enter the port" },
+          { icon: "⚠️", title: "Beware of scams", sub: "Some people falsely claim to represent the Seamen's Club and ask for money. Real staff never do — ignore them or call the police" },
+          { icon: "🧑‍🤝‍🧑", title: "Go out with colleagues", sub: "It's safer not to walk into town alone" },
+        ],
+      },
       emergency: {
         title: "Emergency Contacts",
         rows: [
           { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
-          { icon: "🏛", title: "Seamen's Club Constanța", sub: "+40 241 584 800", action: "📞" },
+          { icon: "🏛", title: "Seamen's Club Constanța", sub: "+40 723 000 555", action: "📞" },
+          { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
         ],
       },
       wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
@@ -199,21 +256,47 @@ const PORTS = {
       centre: {
         title: "Seafarers' Centre",
         rows: [
-          { icon: "🏛", title: "Duckdalben International Seamen's Club", sub: "Zellmannstraße 16, Hamburg", action: "🧭" },
+          { icon: "🏛", title: "Duckdalben International Seamen's Club", sub: "Zellmannstraße 16, Hamburg", tag: "Mon–Fri 10:00–21:00", action: "›", sd: "hamburg_centre_main" },
           { icon: "📞", title: "Call the centre", sub: "+49 40 740 1661", action: "📞" },
-          { icon: "🌐", title: "Website", sub: "duckdalben.de", action: "›" },
+          { icon: "🌐", title: "Club facilities", sub: "On-site shop, café, chapel, Wi-Fi, billiards, library", action: "›" },
         ],
       },
-      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "On request · free", action: "🧭" } ] },
-      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
-      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
-      medical: { title: "Medical", rows: [ { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" } ] },
-      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Details pending" } ] },
+      transport: {
+        title: "Transport",
+        rows: [
+          { icon: "🚐", title: "Free shuttle to your ship", sub: "Call the club's freecall number to arrange pickup · last pickup 19:30", action: "📞" },
+          { icon: "🚌", title: "Bus 150 / 151 / 250 / 451", sub: "Nearest stop: Container Terminal Eurogate · ~6 min walk", action: "🧭" },
+          { icon: "⛴", title: "Ferry line 61", sub: "Waltershof stop · scenic route into the city", action: "🧭" },
+        ],
+      },
+      connect: {
+        title: "SIM & Wi-Fi",
+        rows: [
+          { icon: "📶", title: "Wi-Fi at Duckdalben", sub: "Free for all visiting seafarers", action: "📋" },
+          { icon: "📡", title: "SIM card", sub: "Telekom, Vodafone, O2 — ask club staff for the nearest shop", action: "›" },
+        ],
+      },
+      shops: {
+        title: "Shops & Food",
+        rows: [
+          { icon: "🛍", title: "Club shop & supermarket", sub: "On-site at Duckdalben · snacks and essentials", tag: "During club hours", action: "🧭" },
+          { icon: "☕", title: "Club café", sub: "Coffee and budget-friendly meals", tag: "During club hours", action: "🧭" },
+        ],
+      },
+      medical: {
+        title: "Medical",
+        rows: [
+          { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" },
+          { icon: "🩺", title: "Port medical service (HPHC)", sub: "Free, anonymous consultation at the club — ask staff for current hours", action: "🧭" },
+        ],
+      },
+      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Low risk — normal precautions apply" } ] },
       emergency: {
         title: "Emergency Contacts",
         rows: [
           { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
           { icon: "🏛", title: "Duckdalben Club", sub: "+49 40 740 1661", action: "📞" },
+          { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
         ],
       },
       wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
@@ -241,6 +324,7 @@ const PORTS = {
         rows: [
           { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
           { icon: "🏛", title: "Istanbul Seafarers' Contact Centre", sub: "+90 216 347 3771", action: "📞" },
+          { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
         ],
       },
       wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
