@@ -144,7 +144,7 @@ const SUBDETAILS = {
 // ---- PORTS --------------------------------------------------------------
 const PORTS = {
   tallinn: {
-    meta: { flag: "🇪🇪", name: "Tallinn", sub: "Estonia · Old City Harbour", tz: "UTC+3" },
+    meta: { flag: "🇪🇪", name: "Tallinn", sub: "Estonia · Old City Harbour", tz: "UTC+3", lat: 59.4451, lng: 24.7654 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
@@ -216,7 +216,7 @@ const PORTS = {
   },
 
   constanta: {
-    meta: { flag: "🇷🇴", name: "Constanța", sub: "Romania · Port of Constanța", tz: "UTC+2" },
+    meta: { flag: "🇷🇴", name: "Constanța", sub: "Romania · Port of Constanța", tz: "UTC+2", lat: 44.1730, lng: 28.6520 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
@@ -270,7 +270,7 @@ const PORTS = {
   },
 
   hamburg: {
-    meta: { flag: "🇩🇪", name: "Hamburg", sub: "Germany · Port of Hamburg", tz: "UTC+2" },
+    meta: { flag: "🇩🇪", name: "Hamburg", sub: "Germany · Port of Hamburg", tz: "UTC+2", lat: 53.5335, lng: 9.9481 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
@@ -323,7 +323,7 @@ const PORTS = {
   },
 
   istanbul: {
-    meta: { flag: "🇹🇷", name: "Istanbul", sub: "Türkiye · Haydarpaşa Port", tz: "UTC+3" },
+    meta: { flag: "🇹🇷", name: "Istanbul", sub: "Türkiye · Haydarpaşa Port", tz: "UTC+3", lat: 41.0011, lng: 29.0192 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
@@ -352,6 +352,64 @@ const PORTS = {
 };
 
 function currentPort() { return PORTS[state.portId] || PORTS.tallinn; }
+
+// ---- Geolocation — nearest-port detection ---------------------------------
+// Privacy design: raw coordinates are used only in-memory, for the duration of
+// a single calculation, and are never written to state, localStorage, or sent
+// anywhere over the network. Only the *result* (which port, how far) is kept.
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371; // Earth radius, km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function nearestPort(lat, lng) {
+  let best = null;
+  for (const id of Object.keys(PORTS)) {
+    const m = PORTS[id].meta;
+    if (typeof m.lat !== "number" || typeof m.lng !== "number") continue;
+    const d = haversineKm(lat, lng, m.lat, m.lng);
+    if (!best || d < best.distanceKm) best = { portId: id, distanceKm: d };
+  }
+  return best;
+}
+
+const AT_PORT_RADIUS_KM = 3; // within this distance of a port's reference point, treat as "at the port"
+
+function requestLocation(onDone) {
+  if (!("geolocation" in navigator)) { onDone(false); return; }
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords; // used only for the next two lines, never persisted
+      const nearest = nearestPort(latitude, longitude);
+      if (nearest) {
+        state.portId = nearest.portId;
+        state.context = nearest.distanceKm <= AT_PORT_RADIUS_KM ? "at_port" : "in_city";
+        updateAssistantUI();
+      }
+      onDone(true);
+    },
+    () => { onDone(false); },
+    { enableHighAccuracy: false, timeout: 8000, maximumAge: 0 }
+  );
+}
+
+function dismissLocationBanner() {
+  localStorage.setItem("mwapp_geo_dismissed", "1");
+  const banner = document.getElementById("locationBanner");
+  if (banner) banner.classList.add("hidden");
+}
+
+function maybeShowLocationBanner() {
+  const banner = document.getElementById("locationBanner");
+  if (!banner) return;
+  if (!("geolocation" in navigator)) { banner.classList.add("hidden"); return; }
+  if (localStorage.getItem("mwapp_geo_dismissed") === "1") { banner.classList.add("hidden"); return; }
+  banner.classList.remove("hidden");
+}
 function currentCategories() { return currentPort().categories; }
 
 // ---- Trade Union card validity (must be reconfirmed every calendar month) ----
@@ -500,7 +558,7 @@ function goToScreen(name) {
   }
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
-  if (name === "home") maybeShowInstallBanner();
+  if (name === "home") { maybeShowInstallBanner(); maybeShowLocationBanner(); }
 }
 
 let lastDetailKey = null;
@@ -842,6 +900,32 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "installCloseBtn") {
       document.getElementById("installBanner").classList.add("hidden");
       localStorage.setItem("mwapp_install_dismissed", "1");
+    }
+
+    if (e.target.id === "locationEnableBtn") {
+      const btn = document.getElementById("locationEnableBtn");
+      const originalText = btn.textContent;
+      btn.textContent = "Locating…";
+      btn.disabled = true;
+      requestLocation((ok) => {
+        dismissLocationBanner();
+        if (!ok) { /* silently ignored — manual port selection remains available in Settings */ }
+        btn.textContent = originalText;
+        btn.disabled = false;
+      });
+    }
+
+    if (e.target.id === "locationCloseBtn") {
+      dismissLocationBanner();
+    }
+
+    if (e.target.id === "detectLocationRow" || e.target.closest("#detectLocationRow")) {
+      const row = document.getElementById("detectLocationRow");
+      const valEl = document.getElementById("detectLocationVal");
+      if (valEl) valEl.textContent = "Locating…";
+      requestLocation((ok) => {
+        if (valEl) valEl.textContent = ok ? "Updated ✓" : "Unavailable — pick manually below";
+      });
     }
 
     if (e.target.id === "iosInstallCloseBtn") {
