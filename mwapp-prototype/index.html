@@ -64,20 +64,20 @@
     <!-- SCREEN 5 — HOME / PORT CARD -->
     <section class="screen screen-home" data-screen="home">
       <div class="home-header">
-  <div class="home-header-top">
-    <div class="hh-brand">MWApp</div>
-    <div class="hh-emblem"><img src="assets/logo-emblem-compact.png" alt="IMWIRSA"></div>
-    <div class="hh-brand">IMWIRSA</div>
-  </div>
-  <div class="home-port-row">
-    <div class="home-port-name" id="homePortName">🇪🇪 Tallinn</div>
-    <div class="home-port-meta">
-      <div class="hb" id="homeWeather">🌡 +14°C</div>
-      <div class="hb" id="homeTz">⏱ UTC+3</div>
-    </div>
-  </div>
-  <div class="home-port-sub" id="homePortSub">Estonia · Old City Harbour</div>
-</div>
+        <div class="home-header-top">
+          <div class="hh-brand">MWApp</div>
+          <div class="hh-emblem"><img src="assets/logo-emblem-compact.png" alt="IMWIRSA"></div>
+          <div class="hh-brand">IMWIRSA</div>
+        </div>
+        <div class="home-port-row">
+          <div class="home-port-name" id="homePortName">🇪🇪 Tallinn</div>
+          <div class="home-port-meta">
+            <div class="hb" id="homeWeather">🌡 +14°C</div>
+            <div class="hb" id="homeTz">⏱ UTC+3</div>
+          </div>
+        </div>
+        <div class="home-port-sub" id="homePortSub">Estonia · Old City Harbour</div>
+      </div>
       <div class="access-toggle">
         <button class="toggle-btn" id="btnAccessStd" data-access="std">⚓ Standard</button>
         <button class="toggle-btn" id="btnAccessVip" data-access="vip">★ Trade Union</button>
@@ -120,6 +120,16 @@
           </div>
           <button class="install-btn" id="installBtn">Add</button>
           <button class="install-close" id="installCloseBtn">✕</button>
+        </div>
+
+        <div class="install-banner hidden" id="locationBanner">
+          <div class="install-icon">📍</div>
+          <div class="install-body">
+            <div class="install-title">Find your port automatically?</div>
+            <div class="install-sub">Used once, on this device, to detect the nearest port. Never sent to our servers or stored.</div>
+          </div>
+          <button class="install-btn" id="locationEnableBtn">Enable</button>
+          <button class="install-close" id="locationCloseBtn">✕</button>
         </div>
       </div>
     </section>
@@ -182,9 +192,11 @@
         <button class="settings-row" data-modal="assistantModal"><div class="si">👤</div><div class="st">Change assistant</div><div class="sv">›</div></button>
         <button class="settings-row" data-modal="langModal"><div class="si">🌍</div><div class="st">Language</div><div class="sv" id="settingsLangVal">›</div></button>
         <button class="settings-row" id="editNameRow"><div class="si">✏️</div><div class="st">My name</div><div class="sv">›</div></button>
-        <button class="settings-row"><div class="si">🆔</div><div class="st">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button><div class="settings-group-label">Membership</div>
+        <div class="settings-group-label">Membership</div>
+        <button class="settings-row"><div class="si">🆔</div><div class="st">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button>
         <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st">Union / Club Card</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
         <div class="settings-group-label">Port &amp; Location (dev preview)</div>
+        <button class="settings-row" id="detectLocationRow"><div class="si">📍</div><div class="st">Detect port by location</div><div class="sv" id="detectLocationVal">›</div></button>
         <button class="settings-row" data-modal="portModal"><div class="si">🌍</div><div class="st">Test port</div><div class="sv" id="settingsPortVal">›</div></button>
         <button class="settings-row" data-modal="contextModal"><div class="si">📍</div><div class="st">Context (auto once GPS is added)</div><div class="sv" id="settingsContextVal">›</div></button>
         <div class="settings-group-label">Data &amp; Privacy</div>
