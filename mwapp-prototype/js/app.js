@@ -421,6 +421,8 @@ function updateAssistantUI() {
   const port = currentPort();
   document.getElementById("homePortName").textContent = `${port.meta.flag} ${port.meta.name}`;
   document.getElementById("homePortSub").textContent = port.meta.sub;
+  const tzEl = document.getElementById("homeTz");
+  if (tzEl) tzEl.textContent = `⏱ ${port.meta.tz}`;
 
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
