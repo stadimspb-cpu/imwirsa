@@ -493,7 +493,7 @@ function openDetail(key) {
   const valid = isUnionValid();
   const locked = !!data.gated && !valid;
 
-  document.getElementById("detailCrumbPort").textContent = `← ${port.meta.name}`;
+  document.getElementById("detailCrumbPort").textContent = port.meta.name;
   document.getElementById("detailTitle").textContent = data.title + (locked ? " 🔒" : "");
 
   let bubbleHtml = "";
@@ -547,7 +547,7 @@ function openSubDetail(sdKey) {
   const port = currentPort();
   const locked = !!sd.gated && !isUnionValid();
 
-  document.getElementById("subdetailCrumbPort").textContent = `← ${port.meta.name}`;
+  document.getElementById("subdetailCrumbPort").textContent = port.meta.name;
   document.getElementById("subdetailTitle").textContent = sd.title;
 
   let bodyHtml = "";
