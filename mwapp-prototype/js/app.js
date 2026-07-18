@@ -81,6 +81,23 @@ const SUBDETAILS = {
       { icon: "🚐", title: "Free shuttle to your ship", sub: "Call ahead, or ask the gate guard to call for you", action: "📞" },
     ],
   },
+  premium_qr: {
+    type: "qr_code", gated: true,
+    title: "Your Premium QR Code",
+    note: "Show this code to partner staff for verification — supermarkets, cafés and transport partners near the centre. Demo mode: this is a static illustrative code. Live rotating verification, tied to your real MWA-ID and checked against IMWIRSA's server, will connect once the backend is ready.",
+  },
+  wellness_zone_tallinn: {
+    type: "hours_contacts", gated: true,
+    title: "Wellness Recovery Zone — Tallinn",
+    contacts: [
+      { icon: "🧑‍💼", title: "Kadri Saar — Wellness Coordinator", sub: "Book a session via WhatsApp", action: "💬" },
+      { icon: "💆", title: "Massage & physiotherapy", sub: "Partner specialist on-site, by appointment", action: "🧭" },
+      { icon: "🧠", title: "Confidential counselling", sub: "Private booking through MWApp, discreet", action: "🧭" },
+    ],
+    directions: [
+      { icon: "📍", title: "Next to the Seafarers' Centre", sub: "Sadama 25, Tallinn", action: "🧭" },
+    ],
+  },
   legal_help: {
     type: "hours_contacts", gated: true,
     title: "Legal Assistance",
@@ -187,6 +204,8 @@ const PORTS = {
       wellness: {
         title: "Premium Welfare Services", gated: true,
         rows: [
+          { icon: "🔳", title: "Your Premium QR Code", sub: "Show this to partner staff to verify your status", action: "›", sd: "premium_qr" },
+          { icon: "🌊", title: "Wellness Recovery Zone", sub: "Massage, counselling and quiet space near the centre", action: "›", sd: "wellness_zone_tallinn" },
           { icon: "⚖️", title: "Legal Assistance", sub: "ITF inspector, contract & wage disputes", action: "›", sd: "legal_help" },
           { icon: "🩺", title: "Medical — Extended Access", sub: "Priority booking, covered consultation fee", action: "›", sd: "medical_extended" },
           { icon: "🧠", title: "Psychological Support", sub: "Confidential counselling, 24/7 chat", action: "›", sd: "psych_support" },
@@ -350,12 +369,21 @@ const state = {
   assistant: null,
   lang: null,
   name: "",
+  mwaId: null,             // demo-only, generated and stored on-device. Real MWA-ID issuance and
+                           // cross-device recovery requires the backend described in the scope of work (section 4).
   unionActive: false,
   unionLastConfirmed: null,  // ISO date "YYYY-MM-DD" of the last confirmation check
   portId: "tallinn",      // will be set automatically once geolocation is wired in; manual for now
   context: "at_port",     // "at_port" | "in_city" — reserved for the planned geolocation feature
   accessView: "std",      // "std" | "vip" — which toggle is selected on the port card
 };
+
+function ensureMwaId() {
+  if (state.mwaId) return;
+  const n = Math.floor(1000000 + Math.random() * 8999999); // 7-digit demo number
+  state.mwaId = `MWA-${n}`;
+  saveState();
+}
 
 function saveState() {
   try {
@@ -443,6 +471,9 @@ function updateAssistantUI() {
     else unionVal.textContent = "Not confirmed yet ›";
   }
 
+  const mwaIdVal = document.getElementById("settingsMwaId");
+  if (mwaIdVal) mwaIdVal.textContent = state.mwaId || "";
+
   document.getElementById("btnAccessStd").classList.toggle("active", state.accessView !== "vip");
   document.getElementById("btnAccessVip").classList.toggle("active", state.accessView === "vip");
   document.getElementById("btnAccessVip").classList.toggle("vip", state.accessView === "vip");
@@ -473,6 +504,7 @@ function goToScreen(name) {
 }
 
 let lastDetailKey = null;
+let qrCountdownTimer = null;
 
 const CATEGORY_PROMPTS = {
   centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
@@ -575,10 +607,36 @@ function openSubDetail(sdKey) {
       `</div>`;
     if (sd.note) inner += `<div class="sd-card"><div class="sd-card-title">ℹ️ Pending</div><div class="sd-note">${sd.note}</div></div>`;
     bodyHtml = wrapGate(inner, locked, sd);
+  } else if (sd.type === "qr_code") {
+    const qrData = encodeURIComponent(state.mwaId || "MWA-DEMO");
+    const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${qrData}`;
+    let inner = `<div class="sd-card qr-card">
+      <div class="sd-card-title" style="justify-content:center;">🔳 ${sd.title}</div>
+      <div class="qr-id">${state.mwaId || ""}</div>
+      <div class="qr-image-wrap"><img src="${qrImgUrl}" alt="QR code" class="qr-image"></div>
+      <div class="qr-countdown" id="qrCountdown">Refreshes in 60s</div>
+    </div>
+    <div class="sd-card"><div class="sd-card-title">ℹ️ About this code</div><div class="sd-note">${sd.note}</div></div>`;
+    bodyHtml = wrapGate(inner, locked, sd);
   }
 
   document.getElementById("subdetailBody").innerHTML = bodyHtml;
+  clearInterval(qrCountdownTimer);
+  if (sd.type === "qr_code" && !locked) startQrCountdown();
   goToScreen("subdetail");
+}
+function startQrCountdown() {
+  let seconds = 60;
+  const el = document.getElementById("qrCountdown");
+  if (!el) return;
+  el.textContent = `Refreshes in ${seconds}s`;
+  qrCountdownTimer = setInterval(() => {
+    seconds -= 1;
+    if (seconds <= 0) seconds = 60; // demo loop — real rotation happens server-side once backend is live
+    const liveEl = document.getElementById("qrCountdown");
+    if (!liveEl) { clearInterval(qrCountdownTimer); return; }
+    liveEl.textContent = `Refreshes in ${seconds}s`;
+  }, 1000);
 }
 
 function wrapGate(innerHtml, locked, sd) {
@@ -655,6 +713,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
+  ensureMwaId();
   renderAssistantGrid("assistantGrid", false);
   renderLangGrid("langGrid", false);
   renderAssistantGrid("assistantGridModal", true);
