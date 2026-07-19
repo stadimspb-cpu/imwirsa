@@ -9,9 +9,8 @@ const ASSISTANTS = {
   amina:  { id: "amina",  name: "Amina",  icon: "🌙", tag: "Respectful guide",  grad: ["#E8523A", "#B8860B"], greet: "Hello! My name is Amina. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
 };
 
-// LINDA is not offered at onboarding — seafarers meet her only once inside a
-// Trade Union–gated section, where she looks after members' wellness services.
-const LINDA = { id: "linda", name: "Linda", icon: "💠", tag: "Trade Union Support", grad: ["#B8860B", "#8a6408"] };
+// Trade Union / Premium services are now presented by the seafarer's own chosen assistant
+// (Alex / Omar / Sophia / Amina) rather than a separate persona — Linda has been retired.
 
 const LANGUAGES = [
   { code: "en", flag: "🇬🇧", label: "English" },
@@ -513,8 +512,20 @@ function updateAssistantUI() {
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const namePart = state.name ? `, ${state.name}` : "";
-  document.getElementById("homeAbText").textContent =
-    `${timeGreeting}${namePart}! Welcome to ${port.meta.name}. Tap a category below for local help.`;
+  const homeBubble = document.getElementById("homeAssistantBubble");
+  const homeAbNameEl = document.getElementById("homeAbName");
+  if (state.accessView === "vip") {
+    if (homeBubble) homeBubble.classList.add("premium");
+    if (homeAbNameEl) homeAbNameEl.textContent = "Trade Union Support";
+    document.getElementById("homeAbText").textContent = isUnionValid()
+      ? `Welcome back${namePart}! Your Trade Union card is active this month — explore Premium Welfare Services below.`
+      : `Discover Premium Welfare Services — legal help, extended medical, wellness zone and more. Available to Trade Union card holders.`;
+  } else {
+    if (homeBubble) homeBubble.classList.remove("premium");
+    if (homeAbNameEl) homeAbNameEl.textContent = ASSISTANTS[state.assistant] ? ASSISTANTS[state.assistant].name : "";
+    document.getElementById("homeAbText").textContent =
+      `${timeGreeting}${namePart}! Welcome to ${port.meta.name}. Tap a category below for local help.`;
+  }
 
   document.getElementById("settingsLangVal").textContent =
     (LANGUAGES.find((l) => l.code === state.lang) || {}).flag || "›";
@@ -572,7 +583,7 @@ const CATEGORY_PROMPTS = {
   medical: "If you're unwell or need medical advice, tell me what's going on and I'll help you find the right care.",
   safety: "Any safety concerns in the port area? I'm listening — let me know.",
   emergency: "If this is urgent, use the contacts below right away. I'm also here if you want to talk it through.",
-  wellness: null, // handled separately via LINDA
+  wellness: null, // handled separately — presented by the seafarer's own chosen assistant, see openDetail()
 };
 
 function openDetail(key) {
@@ -588,15 +599,16 @@ function openDetail(key) {
 
   let bubbleHtml = "";
   if (data.gated) {
-    const lindaMsg = valid
+    const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
+    const msg = valid
       ? "Welcome back — your Trade Union card is confirmed for this month. Here's what's available to you."
-      : "Hi, I'm Linda — I look after Trade Union members' services at this port. To unlock these, please confirm your card status in Settings → Union / Trade Card.";
+      : "These are Trade Union member services. To unlock them, please confirm your card status in Settings → Union / Trade Card.";
     bubbleHtml = `
-      <div class="assistant-bubble" style="margin:0 0 14px;">
-        <div class="ab-avatar" style="${gradientStyle(LINDA.grad)}">${LINDA.icon}</div>
+      <div class="assistant-bubble premium" style="margin:0 0 14px;">
+        <div class="ab-avatar" style="${gradientStyle(a.grad)}">${a.icon}</div>
         <div>
-          <div class="ab-name">${LINDA.name} · Trade Union Support</div>
-          <div class="ab-text">${lindaMsg}</div>
+          <div class="ab-name">${a.name} · Trade Union Support</div>
+          <div class="ab-text">${msg}</div>
         </div>
       </div>`;
   } else {
