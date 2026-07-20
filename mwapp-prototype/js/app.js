@@ -2,11 +2,14 @@
 // MWApp prototype — vanilla JS state machine, no build step.
 // ============================================================
 
+// Visual identity only — name/tag/greet text now lives in js/i18n.js so it
+// can be translated per language. Use getAssistant(id) (defined in i18n.js)
+// to get an assistant merged with its translated text fields.
 const ASSISTANTS = {
-  alex:   { id: "alex",   name: "Alex",   icon: "⚓", tag: "General guide",     grad: ["#0D6E8A", "#0A5A72"], photo: "assets/avatars/alex.png",   greet: "Hello! My name is Alex. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
-  omar:   { id: "omar",   name: "Omar",   icon: "🧭", tag: "Steady & familiar", grad: ["#1B3A6B", "#B8860B"], photo: "assets/avatars/omar.png",   greet: "Hello, my friend. My name is Omar. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language any time in Settings. How may I help you today?" },
-  sophia: { id: "sophia", name: "Sophia", icon: "⭐", tag: "Warm & welcoming",  grad: ["#5DD3F0", "#0D6E8A"], photo: "assets/avatars/sophia.png", greet: "Hello! My name is Sophia. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
-  amina:  { id: "amina",  name: "Amina",  icon: "🌙", tag: "Respectful guide",  grad: ["#E8523A", "#B8860B"], photo: "assets/avatars/amina.png",  greet: "Hello! My name is Amina. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
+  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], photo: "assets/avatars/alex.png" },
+  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], photo: "assets/avatars/omar.png" },
+  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], photo: "assets/avatars/sophia.png" },
+  amina:  { id: "amina",  icon: "🌙", grad: ["#E8523A", "#B8860B"], photo: "assets/avatars/amina.png" },
 };
 
 // Trade Union / Premium services are now presented by the seafarer's own chosen assistant
@@ -460,13 +463,16 @@ function gradientStyle(grad) {
 
 function renderAssistantGrid(containerId, isModal) {
   const el = document.getElementById(containerId);
-  el.innerHTML = Object.values(ASSISTANTS).map((a) => `
+  el.innerHTML = Object.keys(ASSISTANTS).map((id) => {
+    const a = getAssistant(id);
+    return `
     <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}">
       <div class="assistant-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
       <div class="assistant-name">${a.name}</div>
       <div class="assistant-tag">${a.tag}</div>
     </button>
-  `).join("");
+  `;
+  }).join("");
 }
 
 function renderLangGrid(containerId, isModal) {
@@ -491,7 +497,7 @@ function setAvatarPhoto(elId, a) {
 }
 
 function updateAssistantUI() {
-  const a = ASSISTANTS[state.assistant];
+  const a = getAssistant(state.assistant);
   if (!a) return;
 
   setAvatarPhoto("introAvatar", a);
@@ -513,21 +519,21 @@ function updateAssistantUI() {
   if (tzEl) tzEl.textContent = `⏱ ${port.meta.tz}`;
 
   const hour = new Date().getHours();
-  const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const timeGreeting = hour < 12 ? t("home.greetingMorning") : hour < 18 ? t("home.greetingAfternoon") : t("home.greetingEvening");
   const namePart = state.name ? `, ${state.name}` : "";
   const homeBubble = document.getElementById("homeAssistantBubble");
   const homeAbNameEl = document.getElementById("homeAbName");
   if (state.accessView === "vip") {
     if (homeBubble) homeBubble.classList.add("premium");
-    if (homeAbNameEl) homeAbNameEl.textContent = "Trade Union Support";
+    if (homeAbNameEl) homeAbNameEl.textContent = t("home.tradeUnionSupportName");
     document.getElementById("homeAbText").textContent = isUnionValid()
-      ? `Welcome back${namePart}! Your Trade Union card is active this month — explore Premium Welfare Services below.`
-      : `Discover Premium Welfare Services — legal help, extended medical, wellness zone and more. Available to Trade Union card holders.`;
+      ? t("home.tradeUnionActiveText", { name: namePart })
+      : t("home.tradeUnionInactiveText");
   } else {
     if (homeBubble) homeBubble.classList.remove("premium");
-    if (homeAbNameEl) homeAbNameEl.textContent = ASSISTANTS[state.assistant] ? ASSISTANTS[state.assistant].name : "";
+    if (homeAbNameEl) homeAbNameEl.textContent = a.name || "";
     document.getElementById("homeAbText").textContent =
-      `${timeGreeting}${namePart}! Welcome to ${port.meta.name}. Tap a category below for local help.`;
+      `${timeGreeting}${namePart}! ` + t("home.welcomeToPort", { port: port.meta.name });
   }
 
   document.getElementById("settingsLangVal").textContent =
@@ -538,9 +544,9 @@ function updateAssistantUI() {
 
   const unionVal = document.getElementById("unionStatusVal");
   if (unionVal) {
-    if (isUnionValid()) unionVal.textContent = "Active this month ✓";
-    else if (state.unionLastConfirmed) unionVal.textContent = "Needs reconfirmation ›";
-    else unionVal.textContent = "Not confirmed yet ›";
+    if (isUnionValid()) unionVal.textContent = t("settings.unionActive");
+    else if (state.unionLastConfirmed) unionVal.textContent = t("settings.unionNeedsReconfirm");
+    else unionVal.textContent = t("settings.unionNotConfirmed");
   }
 
   const mwaIdVal = document.getElementById("settingsMwaId");
@@ -553,7 +559,7 @@ function updateAssistantUI() {
   const portSel = document.getElementById("settingsPortVal");
   if (portSel) portSel.textContent = `${port.meta.flag} ${port.meta.name} ›`;
   const ctxVal = document.getElementById("settingsContextVal");
-  if (ctxVal) ctxVal.textContent = state.context === "in_city" ? "In the city ›" : "At the port ›";
+  if (ctxVal) ctxVal.textContent = state.context === "in_city" ? t("settings.contextInCity") : t("settings.contextAtPort");
 
   saveState();
 }
@@ -583,16 +589,10 @@ function goToScreen(name) {
 let lastDetailKey = null;
 let qrCountdownTimer = null;
 
-const CATEGORY_PROMPTS = {
-  centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
-  transport: "Need help getting around — shuttle times, taxis, buses? Just ask, I'm right here.",
-  connect: "Questions about SIM cards, Wi-Fi, or getting cash? I can walk you through it.",
-  shops: "Looking for food, supplies, or a pharmacy nearby? Let me know what you need.",
-  medical: "If you're unwell or need medical advice, tell me what's going on and I'll help you find the right care.",
-  safety: "Any safety concerns in the port area? I'm listening — let me know.",
-  emergency: "If this is urgent, use the contacts below right away. I'm also here if you want to talk it through.",
-  wellness: null, // handled separately — presented by the seafarer's own chosen assistant, see openDetail()
-};
+// Category prompt text (categoryPrompts.*) and escalation/persona text now
+// live in js/i18n.js so they can be translated. "wellness" has no chat
+// prompt here — it's handled separately below, presented by the
+// seafarer's own chosen assistant.
 
 function openDetail(key) {
   const data = currentCategories()[key];
@@ -607,21 +607,19 @@ function openDetail(key) {
 
   let bubbleHtml = "";
   if (data.gated) {
-    const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
-    const msg = valid
-      ? "Welcome back — your Trade Union card is confirmed for this month. Here's what's available to you."
-      : "These are Trade Union member services. To unlock them, please confirm your card status in Settings → Union / Trade Card.";
+    const a = getAssistant(state.assistant) || getAssistant("alex");
+    const msg = valid ? t("wellness.unlockedIntro") : t("wellness.lockedIntro");
     bubbleHtml = `
       <div class="assistant-bubble premium" style="margin:0 0 14px;">
         <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
         <div>
-          <div class="ab-name">${a.name} · Trade Union Support</div>
+          <div class="ab-name">${a.name} · ${t("wellness.roleSuffix")}</div>
           <div class="ab-text">${msg}</div>
         </div>
       </div>`;
   } else {
-    const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
-    const msg = CATEGORY_PROMPTS[key] || "How can I help you here?";
+    const a = getAssistant(state.assistant) || getAssistant("alex");
+    const msg = t(`categoryPrompts.${key}`) || "How can I help you here?";
     bubbleHtml = `
       <div class="assistant-bubble" style="margin:0 0 14px;">
         <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
@@ -723,9 +721,9 @@ function wrapGate(innerHtml, locked, sd) {
     <div class="gate-blur">${innerHtml}</div>
     <div class="gate-overlay">
       <div class="gate-lock">🔒</div>
-      <div class="gate-msg">Available to Trade Union card holders</div>
-      <div class="gate-sub">Contacts and booking unlock once your active Trade Union card is confirmed.</div>
-      <button class="gate-btn" data-modal="unionModal">Confirm card</button>
+      <div class="gate-msg">${t("modals.gate.msg")}</div>
+      <div class="gate-sub">${t("modals.gate.sub")}</div>
+      <button class="gate-btn" data-modal="unionModal">${t("modals.gate.confirm")}</button>
     </div>
   </div>`;
 }
@@ -743,11 +741,7 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-const CHAT_REPLIES = [
-  "Thank you for sharing that. I'm listening — take your time.",
-  "That sounds difficult. You're not alone in this, and I'm here with you right now.",
-  "Would it help to talk through what's on your mind, or would you prefer some practical suggestions?",
-];
+// Coordinator demo replies now come from t("coordinator.demoReplies") in i18n.js.
 let chatReplyIndex = 0;
 
 function sendChatMessage() {
@@ -759,7 +753,8 @@ function sendChatMessage() {
   input.value = "";
   body.scrollTop = body.scrollHeight;
   setTimeout(() => {
-    const reply = CHAT_REPLIES[chatReplyIndex % CHAT_REPLIES.length];
+    const replies = t("coordinator.demoReplies");
+    const reply = replies[chatReplyIndex % replies.length];
     chatReplyIndex++;
     body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${reply}</div>`);
     body.scrollTop = body.scrollHeight;
@@ -770,12 +765,7 @@ function sendChatMessage() {
 // Prototype-level only: keyword matching stands in for the real AI classification
 // described in the scope of work (section 5). Real logic — grounding in port data,
 // the three-tier question model, and red-line detection — is the specialist's job.
-const ESCALATION_MESSAGES = {
-  alex: "This sounds like something worth talking through with a real person. I can connect you to the IMWIRSA Welfare Coordinator right now, or we can keep talking here — your choice.",
-  omar: "My friend, this is something worth speaking about with a real person, not just with me. I can bring in the IMWIRSA Welfare Coordinator right now — or if you'd rather keep talking to me a little longer, that's alright too.",
-  sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Welfare Coordinator right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
-  amina: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Welfare Coordinator now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
-};
+// Escalation phrasing per persona now lives in t("escalation.<id>") in i18n.js.
 
 const COMPLEX_TOPIC_KEYWORDS = [
   "sad", "lonely", "alone", "can't sleep", "cant sleep", "no one listens", "nobody listens",
@@ -790,15 +780,11 @@ function isComplexTopic(text) {
   return COMPLEX_TOPIC_KEYWORDS.some((kw) => t.includes(kw));
 }
 
-const ASSISTANT_DEMO_REPLIES = [
-  "Got it — let me know if you'd like directions or more details on that.",
-  "I can help with that. Is there anything else on your mind?",
-  "Sure thing. Feel free to ask me anything else about the port or the app.",
-];
+// Assistant demo replies now come from t("demoReplies") in i18n.js.
 let assistantReplyIndex = 0;
 
 function openAssistantChat() {
-  const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
+  const a = getAssistant(state.assistant) || getAssistant("alex");
   const header = document.getElementById("assistantChatHeader");
   if (header) header.style.cssText = gradientStyle(a.grad);
   setAvatarPhoto("chatAssistantAvatar", a);
@@ -822,18 +808,19 @@ function sendAssistantChatMessage() {
   input.value = "";
   body.scrollTop = body.scrollHeight;
 
-  const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
+  const a = getAssistant(state.assistant) || getAssistant("alex");
   setTimeout(() => {
     if (isComplexTopic(text)) {
-      const msg = ESCALATION_MESSAGES[a.id] || ESCALATION_MESSAGES.alex;
+      const msg = t(`escalation.${a.id}`) || t("escalation.alex");
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${msg}</div>`);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
-          <button class="esc-btn esc-continue" id="escContinueBtn">Continue</button>
-          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">Coordinator</button>
+          <button class="esc-btn esc-continue" id="escContinueBtn">${t("escalationToggle.continueBtn")}</button>
+          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("escalationToggle.coordinatorBtn")}</button>
         </div>`);
     } else {
-      const reply = ASSISTANT_DEMO_REPLIES[assistantReplyIndex % ASSISTANT_DEMO_REPLIES.length];
+      const replies = t("demoReplies");
+      const reply = replies[assistantReplyIndex % replies.length];
       assistantReplyIndex++;
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(reply)}</div>`);
     }
@@ -856,10 +843,10 @@ function maybeShowInstallBanner() {
   const banner = document.getElementById("installBanner");
   const sub = document.getElementById("installSub");
   if (isIOS()) {
-    sub.textContent = "Tap 'Add', then follow 2 quick steps.";
+    sub.textContent = t("home.install.subIOS");
     banner.classList.remove("hidden");
   } else if (deferredInstallPrompt) {
-    sub.textContent = "Get one-tap access next time, like a real app.";
+    sub.textContent = t("home.install.subDefault");
     banner.classList.remove("hidden");
   }
 }
@@ -873,6 +860,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
   ensureMwaId();
+  applyStaticI18n();
   renderAssistantGrid("assistantGrid", false);
   renderLangGrid("langGrid", false);
   renderAssistantGrid("assistantGridModal", true);
@@ -936,7 +924,10 @@ document.addEventListener("DOMContentLoaded", () => {
       state.lang = langEl.dataset.lang;
       renderLangGrid("langGrid", false);
       renderLangGrid("langGridModal", true);
+      renderAssistantGrid("assistantGrid", false);
+      renderAssistantGrid("assistantGridModal", true);
       refreshOnboardContinue();
+      applyStaticI18n();
       updateAssistantUI();
       if (langEl.dataset.modalTarget) closeModal(langEl.dataset.modalTarget);
     }
@@ -1006,7 +997,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "locationEnableBtn") {
       const btn = document.getElementById("locationEnableBtn");
       const originalText = btn.textContent;
-      btn.textContent = "Locating…";
+      btn.textContent = t("settings.detectLocating");
       btn.disabled = true;
       requestLocation((ok) => {
         dismissLocationBanner();
@@ -1023,9 +1014,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "detectLocationRow" || e.target.closest("#detectLocationRow")) {
       const row = document.getElementById("detectLocationRow");
       const valEl = document.getElementById("detectLocationVal");
-      if (valEl) valEl.textContent = "Locating…";
+      if (valEl) valEl.textContent = t("settings.detectLocating");
       requestLocation((ok) => {
-        if (valEl) valEl.textContent = ok ? "Updated ✓" : "Unavailable — pick manually below";
+        if (valEl) valEl.textContent = ok ? t("settings.detectUpdated") : t("settings.detectUnavailable");
       });
     }
 
