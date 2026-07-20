@@ -517,9 +517,6 @@ function updateAssistantUI() {
 
   setAvatarPhoto("nameAvatar", a, "nameScreen");
 
-  setAvatarPhoto("homeAbAvatar", a, "homeBubble");
-  document.getElementById("homeAbName").textContent = a.name;
-
   setAvatarPhoto("settingsAvatar", a, "settings");
   document.getElementById("settingsName").textContent = a.name;
 
@@ -529,23 +526,13 @@ function updateAssistantUI() {
   const tzEl = document.getElementById("homeTz");
   if (tzEl) tzEl.textContent = `⏱ ${port.meta.tz}`;
 
-  const hour = new Date().getHours();
-  const timeGreeting = hour < 12 ? t("home.greetingMorning") : hour < 18 ? t("home.greetingAfternoon") : t("home.greetingEvening");
-  const namePart = state.name ? `, ${state.name}` : "";
-  const homeBubble = document.getElementById("homeAssistantBubble");
-  const homeAbNameEl = document.getElementById("homeAbName");
-  if (state.accessView === "vip") {
-    if (homeBubble) homeBubble.classList.add("premium");
-    if (homeAbNameEl) homeAbNameEl.textContent = t("home.tradeUnionSupportName");
-    document.getElementById("homeAbText").textContent = isUnionValid()
-      ? t("home.tradeUnionActiveText", { name: namePart })
-      : t("home.tradeUnionInactiveText");
-  } else {
-    if (homeBubble) homeBubble.classList.remove("premium");
-    if (homeAbNameEl) homeAbNameEl.textContent = a.name || "";
-    document.getElementById("homeAbText").textContent =
-      `${timeGreeting}${namePart}! ` + t("home.welcomeToPort", { port: port.meta.name });
-  }
+  // Home hero — full-bleed portrait + guidance bubble. This replaced the old
+  // small circular "assistant bubble" (partner feedback: make the assistant
+  // read as the main guide of the screen, not an icon).
+  const heroImg = document.getElementById("homeHeroImg");
+  if (heroImg) heroImg.src = getAssistantPhoto(a.id, "homeBubble");
+  const heroBubble = document.getElementById("homeHeroBubble");
+  if (heroBubble) heroBubble.textContent = t("home.heroGreeting", { port: port.meta.name });
 
   document.getElementById("settingsLangVal").textContent =
     (LANGUAGES.find((l) => l.code === state.lang) || {}).flag || "›";
@@ -791,25 +778,26 @@ function isComplexTopic(text) {
 // Assistant demo replies now come from t("demoReplies") in i18n.js.
 let assistantReplyIndex = 0;
 
-// Quick-action chips shown on the hero "welcome" screen (partner reference).
-// type "detail" -> opens that port category; "screen" -> navigates straight
-// to that screen; "focusInput" -> just clears the welcome screen and lets
-// the seafarer type their own question.
+// Quick-action chips shown until the seafarer sends their first message.
+// Trimmed to items that don't already duplicate the home screen (partner
+// feedback) — Seafarers' Centre/Pharmacy/Medical/Emergency live as home
+// tiles or the Emergency card already, so they're not repeated here.
 const QUICK_ACTIONS = [
-  { key: "needTransport",    icon: "🚌", type: "detail", target: "transport" },
-  { key: "returnToShip",     icon: "🚢", type: "detail", target: "transport" },
-  { key: "seafarersCentre",  icon: "🏛", type: "detail", target: "centre" },
-  { key: "localCoordinator", icon: "👤", type: "screen", target: "volunteer" },
-  { key: "pharmacy",         icon: "💊", type: "detail", target: "shops" },
-  { key: "emergencyHelp",    icon: "🆘", type: "detail", target: "emergency", urgent: true },
-  { key: "medicalHelp",      icon: "➕", type: "detail", target: "medical" },
-  { key: "askMeAnything",    icon: "💬", type: "focusInput" },
+  { key: "returnToShip",        icon: "🚢", type: "detail", target: "transport" },
+  { key: "coordinator",         icon: "👤", type: "screen", target: "volunteer" },
+  { key: "needTransportToShip", icon: "🚌", type: "detail", target: "transport" },
 ];
 
-function hideAssistantChatHero() {
-  const hero = document.getElementById("chatHero");
+// Session state for the assistant-chat screen (point 8 fix): once opened,
+// the conversation stays intact — navigating into a category and pressing
+// "back" returns here instead of dumping the seafarer back on the standard
+// home screen. Only an explicit "go home" (bottom-nav Port, or this
+// screen's own back arrow) ends the session and resets it.
+let chatSessionOpen = false;
+let returnToChat = false;
+
+function hideAssistantChatQuickActions() {
   const qa = document.getElementById("qaGrid");
-  if (hero) hero.classList.add("hidden");
   if (qa) qa.classList.add("hidden");
 }
 
@@ -820,15 +808,9 @@ function openAssistantChat() {
   setAvatarPhoto("chatAssistantAvatar", a, "chatHeader");
   document.getElementById("chatAssistantName").textContent = a.name;
 
-  // Hero: big portrait (not a small circle) + greeting bubble beside it.
-  const heroImg = document.getElementById("chatHeroImg");
-  if (heroImg) heroImg.src = getAssistantPhoto(a.id, "chatHero");
-  const heroBubble = document.getElementById("chatHeroBubble");
-  if (heroBubble) heroBubble.textContent = a.greet;
-  const hero = document.getElementById("chatHero");
-  if (hero) hero.classList.remove("hidden");
+  if (chatSessionOpen) return; // resuming — leave the existing thread as-is
+  chatSessionOpen = true;
 
-  // Quick-action grid — shown only until the seafarer sends their first message.
   const qaGrid = document.getElementById("qaGrid");
   if (qaGrid) {
     qaGrid.classList.remove("hidden");
@@ -840,7 +822,7 @@ function openAssistantChat() {
   }
 
   const body = document.getElementById("assistantChatBody");
-  body.innerHTML = "";
+  body.innerHTML = `<div class="chat-msg them">${escapeHtml(a.greet)}</div>`;
   const input = document.getElementById("assistantChatInput");
   if (input) input.value = "";
 }
@@ -849,7 +831,7 @@ function sendAssistantChatMessage() {
   const input = document.getElementById("assistantChatInput");
   const text = input.value.trim();
   if (!text) return;
-  hideAssistantChatHero();
+  hideAssistantChatQuickActions();
   const body = document.getElementById("assistantChatBody");
   const existingToggle = document.getElementById("escalationToggle");
   if (existingToggle) existingToggle.remove(); // sending a new message supersedes an unanswered toggle
@@ -929,8 +911,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
-      if (goEl.dataset.go === "home") state.accessView = "std";
-      goToScreen(goEl.dataset.go);
+      const isBackBtn = goEl.classList.contains("back-btn");
+      const currentScreenEl = document.querySelector(".screen.active");
+      const currentScreen = currentScreenEl ? currentScreenEl.dataset.screen : null;
+      let target = goEl.dataset.go;
+
+      if (target === "home" && isBackBtn && returnToChat && currentScreen !== "assistantchat") {
+        // Came here from the assistant chat (via a quick action) — "back"
+        // should return to that ongoing conversation, not dump the seafarer
+        // on the standard home screen.
+        target = "assistantchat";
+      } else if (target === "home") {
+        // An explicit "go all the way home" (bottom-nav Port, this screen's
+        // own back arrow, Save/Skip on the name screen) — end the chat
+        // session and the premium view; both start fresh next time.
+        state.accessView = "std";
+        returnToChat = false;
+        chatSessionOpen = false;
+      }
+      goToScreen(target);
     }
 
     const detailEl = e.target.closest("[data-detail]");
@@ -940,13 +939,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (qaEl) {
       const qa = QUICK_ACTIONS.find((x) => x.key === qaEl.dataset.qa);
       if (qa) {
+        returnToChat = true; // leaving chat via a quick action — remember to come back here
         if (qa.type === "detail") { openDetail(qa.target); }
         else if (qa.type === "screen") { goToScreen(qa.target); }
-        else if (qa.type === "focusInput") {
-          hideAssistantChatHero();
-          const input = document.getElementById("assistantChatInput");
-          if (input) input.focus();
-        }
       }
     }
 
