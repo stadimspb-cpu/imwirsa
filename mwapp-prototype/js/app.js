@@ -3,10 +3,10 @@
 // ============================================================
 
 const ASSISTANTS = {
-  alex:   { id: "alex",   name: "Alex",   icon: "⚓", tag: "General guide",     grad: ["#0D6E8A", "#0A5A72"], greet: "Hello! My name is Alex. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
-  omar:   { id: "omar",   name: "Omar",   icon: "🧭", tag: "Steady & familiar", grad: ["#1B3A6B", "#B8860B"], greet: "Hello, my friend. My name is Omar. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language any time in Settings. How may I help you today?" },
-  sophia: { id: "sophia", name: "Sophia", icon: "⭐", tag: "Warm & welcoming",  grad: ["#5DD3F0", "#0D6E8A"], greet: "Hello! My name is Sophia. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
-  amina:  { id: "amina",  name: "Amina",  icon: "🌙", tag: "Respectful guide",  grad: ["#E8523A", "#B8860B"], greet: "Hello! My name is Amina. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
+  alex:   { id: "alex",   name: "Alex",   icon: "⚓", tag: "General guide",     grad: ["#0D6E8A", "#0A5A72"], photo: "assets/avatars/alex.png",   greet: "Hello! My name is Alex. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
+  omar:   { id: "omar",   name: "Omar",   icon: "🧭", tag: "Steady & familiar", grad: ["#1B3A6B", "#B8860B"], photo: "assets/avatars/omar.png",   greet: "Hello, my friend. My name is Omar. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language any time in Settings. How may I help you today?" },
+  sophia: { id: "sophia", name: "Sophia", icon: "⭐", tag: "Warm & welcoming",  grad: ["#5DD3F0", "#0D6E8A"], photo: "assets/avatars/sophia.png", greet: "Hello! My name is Sophia. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
+  amina:  { id: "amina",  name: "Amina",  icon: "🌙", tag: "Respectful guide",  grad: ["#E8523A", "#B8860B"], photo: "assets/avatars/amina.png",  greet: "Hello! My name is Amina. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?" },
 };
 
 // Trade Union / Premium services are now presented by the seafarer's own chosen assistant
@@ -462,7 +462,7 @@ function renderAssistantGrid(containerId, isModal) {
   const el = document.getElementById(containerId);
   el.innerHTML = Object.values(ASSISTANTS).map((a) => `
     <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}">
-      <div class="assistant-avatar" style="${gradientStyle(a.grad)}">${a.icon}</div>
+      <div class="assistant-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
       <div class="assistant-name">${a.name}</div>
       <div class="assistant-tag">${a.tag}</div>
     </button>
@@ -483,24 +483,27 @@ function refreshOnboardContinue() {
   btn.disabled = !(state.assistant && state.lang);
 }
 
+function setAvatarPhoto(elId, a) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.style.cssText = gradientStyle(a.grad);
+  el.innerHTML = `<img src="${a.photo}" alt="${a.name}" loading="lazy">`;
+}
+
 function updateAssistantUI() {
   const a = ASSISTANTS[state.assistant];
   if (!a) return;
 
-  document.getElementById("introAvatar").style.cssText = gradientStyle(a.grad);
-  document.getElementById("introAvatar").textContent = a.icon;
+  setAvatarPhoto("introAvatar", a);
   document.getElementById("introName").textContent = a.name;
   document.getElementById("introMsg").textContent = a.greet;
 
-  document.getElementById("nameAvatar").style.cssText = gradientStyle(a.grad);
-  document.getElementById("nameAvatar").textContent = a.icon;
+  setAvatarPhoto("nameAvatar", a);
 
-  document.getElementById("homeAbAvatar").style.cssText = gradientStyle(a.grad);
-  document.getElementById("homeAbAvatar").textContent = a.icon;
+  setAvatarPhoto("homeAbAvatar", a);
   document.getElementById("homeAbName").textContent = a.name;
 
-  document.getElementById("settingsAvatar").style.cssText = gradientStyle(a.grad);
-  document.getElementById("settingsAvatar").textContent = a.icon;
+  setAvatarPhoto("settingsAvatar", a);
   document.getElementById("settingsName").textContent = a.name;
 
   const port = currentPort();
@@ -569,6 +572,10 @@ function goToScreen(name) {
   }
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
+  if (name === "volunteer") {
+    const ctxEl = document.getElementById("chatPortContext");
+    if (ctxEl) ctxEl.textContent = currentPort().meta.name;
+  }
   if (name === "home") { maybeShowInstallBanner(); maybeShowLocationBanner(); }
 }
 
@@ -605,7 +612,7 @@ function openDetail(key) {
       : "These are Trade Union member services. To unlock them, please confirm your card status in Settings → Union / Trade Card.";
     bubbleHtml = `
       <div class="assistant-bubble premium" style="margin:0 0 14px;">
-        <div class="ab-avatar" style="${gradientStyle(a.grad)}">${a.icon}</div>
+        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
         <div>
           <div class="ab-name">${a.name} · Trade Union Support</div>
           <div class="ab-text">${msg}</div>
@@ -616,7 +623,7 @@ function openDetail(key) {
     const msg = CATEGORY_PROMPTS[key] || "How can I help you here?";
     bubbleHtml = `
       <div class="assistant-bubble" style="margin:0 0 14px;">
-        <div class="ab-avatar" style="${gradientStyle(a.grad)}">${a.icon}</div>
+        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
         <div>
           <div class="ab-name">${a.name}</div>
           <div class="ab-text">${msg}</div>
@@ -960,3 +967,4 @@ document.addEventListener("DOMContentLoaded", () => {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 });
+
