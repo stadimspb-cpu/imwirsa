@@ -47,6 +47,7 @@ const I18N = {
     home: {
       whatDoYouNeed: "What do you need?",
       tapToChat: "Tap to chat →",
+      heroGreeting: "Welcome to the Port of {port}. Choose a category below for local help, or just ask me.",
       emergencyContacts: "Emergency contacts",
       categories: {
         centre: "Seafarers'<br>Centre",
@@ -222,14 +223,9 @@ const I18N = {
       "Sure thing. Feel free to ask me anything else about the port or the app.",
     ],
     quickActions: {
-      needTransport: "I need transport",
       returnToShip: "Return to my ship",
-      seafarersCentre: "Seafarers' Centre",
-      localCoordinator: "Local Coordinator",
-      pharmacy: "Pharmacy",
-      emergencyHelp: "Emergency help",
-      medicalHelp: "Medical help",
-      askMeAnything: "Ask me anything",
+      coordinator: "Coordinator",
+      needTransportToShip: "I need transport to ship",
     },
   },
 
