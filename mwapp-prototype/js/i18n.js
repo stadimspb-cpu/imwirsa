@@ -221,6 +221,16 @@ const I18N = {
       "I can help with that. Is there anything else on your mind?",
       "Sure thing. Feel free to ask me anything else about the port or the app.",
     ],
+    quickActions: {
+      needTransport: "I need transport",
+      returnToShip: "Return to my ship",
+      seafarersCentre: "Seafarers' Centre",
+      localCoordinator: "Local Coordinator",
+      pharmacy: "Pharmacy",
+      emergencyHelp: "Emergency help",
+      medicalHelp: "Medical help",
+      askMeAnything: "Ask me anything",
+    },
   },
 
   // ---------------------------------------------------------------
@@ -278,6 +288,26 @@ function getAssistant(id, lang) {
     tag: langNode.tag || enNode.tag,
     greet: langNode.greet || enNode.greet,
   };
+}
+
+// Picks a photo for an assistant based on which screen is asking.
+// ASSISTANTS[id].photos is an array — today it usually holds just one
+// image, so every screen shows the same photo (safe default). Partners
+// can add more angles later (e.g. photos: ["alex.png", "alex-2.png",
+// "alex-3.png"]); once an array has more than one entry, each screen
+// context deterministically gets a different pose — same character,
+// different angle each time — instead of one static headshot everywhere.
+const PHOTO_SCREEN_ORDER = [
+  "onboardGrid", "introHero", "nameScreen", "homeBubble",
+  "chatHeader", "chatHero", "detailBubble", "settings",
+];
+function getAssistantPhoto(id, screenKey) {
+  const base = ASSISTANTS[id];
+  if (!base || !base.photos || !base.photos.length) return base ? base.photo : "";
+  if (base.photos.length === 1) return base.photos[0];
+  const idx = PHOTO_SCREEN_ORDER.indexOf(screenKey);
+  const pos = idx === -1 ? 0 : idx % base.photos.length;
+  return base.photos[pos];
 }
 
 // ---- static "chrome" text ---------------------------------------------
