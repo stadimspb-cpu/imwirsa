@@ -82,23 +82,18 @@
           <button class="toggle-btn" id="btnAccessVip" data-access="vip">★ Trade Union</button>
         </div>
       </div>
-      <button class="assistant-bubble assistant-bubble-cta" id="homeAssistantBubble" data-go="assistantchat">
-        <div class="ab-avatar ab-avatar-lg" id="homeAbAvatar"></div>
-        <div class="ab-body">
-          <div class="ab-name" id="homeAbName"></div>
-          <div class="ab-text" id="homeAbText"></div>
-          <div class="ab-cta">Tap to chat →</div>
+      <button class="home-hero" id="homeHero" data-go="assistantchat">
+        <div class="home-hero-media"><img id="homeHeroImg" src="" alt=""></div>
+        <div class="home-hero-content">
+          <div class="chat-msg them home-hero-bubble" id="homeHeroBubble"></div>
+          <div class="home-hero-cta" data-i18n="home.tapToChat">Tap to chat →</div>
         </div>
       </button>
       <div class="home-content">
-        <div class="section-label section-label-spaced" data-i18n="home.whatDoYouNeed">What do you need?</div>
-        <div class="category-grid category-grid-compact">
+        <div class="category-grid">
           <button class="cat-tile" data-detail="centre"><div class="cat-icon">🏛</div><div class="cat-label" data-i18n-html="home.categories.centre">Seafarers'<br>Centre</div></button>
           <button class="cat-tile" data-detail="transport"><div class="cat-icon">🚌</div><div class="cat-label" data-i18n="home.categories.transport">Transport</div></button>
-          <button class="cat-tile" data-detail="connect"><div class="cat-icon">📶</div><div class="cat-label" data-i18n-html="home.categories.connect">SIM &amp;<br>Wi-Fi</div></button>
           <button class="cat-tile" data-detail="shops"><div class="cat-icon">🛒</div><div class="cat-label" data-i18n-html="home.categories.shops">Shops &amp;<br>Food</div></button>
-          <button class="cat-tile" data-detail="medical"><div class="cat-icon">🏥</div><div class="cat-label" data-i18n="home.categories.medical">Medical</div></button>
-          <button class="cat-tile" data-detail="safety"><div class="cat-icon">🛡</div><div class="cat-label" data-i18n="home.categories.safety">Safety</div></button>
         </div>
         <div class="quick-row">
           <button class="quick-btn urgent full-width" data-detail="emergency"><div class="qi">🚨</div><div class="qt" data-i18n="home.emergencyContacts">Emergency contacts</div></button>
@@ -133,12 +128,6 @@
           <button class="back-btn" data-go="home">←</button>
           <div class="ab-avatar ab-avatar-header" id="chatAssistantAvatar"></div>
           <div class="detail-title" id="chatAssistantName">Assistant</div>
-        </div>
-      </div>
-      <div class="chat-hero" id="chatHero">
-        <div class="chat-hero-media"><img id="chatHeroImg" src="" alt=""></div>
-        <div class="chat-hero-bubble-wrap">
-          <div class="chat-msg them chat-hero-bubble" id="chatHeroBubble"></div>
         </div>
       </div>
       <div class="qa-grid" id="qaGrid"></div>
