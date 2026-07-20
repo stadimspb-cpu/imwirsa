@@ -90,16 +90,17 @@
         </div>
         <div class="pb-arrow">›</div>
       </button>
-      <div class="assistant-bubble" id="homeAssistantBubble">
-        <div class="ab-avatar" id="homeAbAvatar"></div>
-        <div>
+      <button class="assistant-bubble assistant-bubble-cta" id="homeAssistantBubble" data-go="assistantchat">
+        <div class="ab-avatar ab-avatar-lg" id="homeAbAvatar"></div>
+        <div class="ab-body">
           <div class="ab-name" id="homeAbName"></div>
           <div class="ab-text" id="homeAbText"></div>
+          <div class="ab-cta">Tap to chat →</div>
         </div>
-      </div>
+      </button>
       <div class="home-content">
-        <div class="section-label">What do you need?</div>
-        <div class="category-grid">
+        <div class="section-label section-label-spaced">What do you need?</div>
+        <div class="category-grid category-grid-compact">
           <button class="cat-tile" data-detail="centre"><div class="cat-icon">🏛</div><div class="cat-label">Seafarers'<br>Centre</div></button>
           <button class="cat-tile" data-detail="transport"><div class="cat-icon">🚌</div><div class="cat-label">Transport</div></button>
           <button class="cat-tile" data-detail="connect"><div class="cat-icon">📶</div><div class="cat-label">SIM &amp;<br>Wi-Fi</div></button>
@@ -108,8 +109,7 @@
           <button class="cat-tile" data-detail="safety"><div class="cat-icon">🛡</div><div class="cat-label">Safety</div></button>
         </div>
         <div class="quick-row">
-          <button class="quick-btn" data-go="volunteer"><div class="qi">💬</div><div class="qt">Talk to a<br>Coordinator</div></button>
-          <button class="quick-btn urgent" data-detail="emergency"><div class="qi">🚨</div><div class="qt">Emergency<br>contacts</div></button>
+          <button class="quick-btn urgent full-width" data-detail="emergency"><div class="qi">🚨</div><div class="qt">Emergency contacts</div></button>
         </div>
 
         <div class="install-banner hidden" id="installBanner">
@@ -131,6 +131,22 @@
           <button class="install-btn" id="locationEnableBtn">Enable</button>
           <button class="install-close" id="locationCloseBtn">✕</button>
         </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5b — ASSISTANT CHAT -->
+    <section class="screen screen-assistant-chat" data-screen="assistantchat">
+      <div class="chat-header" id="assistantChatHeader">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="home">←</button>
+          <div class="ab-avatar ab-avatar-header" id="chatAssistantAvatar"></div>
+          <div class="detail-title" id="chatAssistantName">Assistant</div>
+        </div>
+      </div>
+      <div class="chat-body" id="assistantChatBody"></div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="assistantChatInput" type="text" placeholder="Type a message…">
+        <button class="chat-send" id="assistantChatSend">➤</button>
       </div>
     </section>
 
@@ -192,6 +208,7 @@
         <button class="settings-row" data-modal="assistantModal"><div class="si">👤</div><div class="st">Change assistant</div><div class="sv">›</div></button>
         <button class="settings-row" data-modal="langModal"><div class="si">🌍</div><div class="st">Language</div><div class="sv" id="settingsLangVal">›</div></button>
         <button class="settings-row" id="editNameRow"><div class="si">✏️</div><div class="st">My name</div><div class="sv">›</div></button>
+        <button class="settings-row" data-go="volunteer"><div class="si">💬</div><div class="st">Talk to IMWIRSA Welfare Coordinator</div><div class="sv">›</div></button>
         <div class="settings-group-label">Membership</div>
         <button class="settings-row"><div class="si">🆔</div><div class="st">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button>
         <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st">Union / Club Card</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
