@@ -564,7 +564,7 @@ function goToScreen(name) {
   if (target) target.classList.add("active");
 
   const bottomNav = document.getElementById("bottomNav");
-  if (["home", "volunteer", "settings", "detail", "subdetail"].includes(name)) {
+  if (["home", "volunteer", "settings", "detail", "subdetail", "assistantchat"].includes(name)) {
     bottomNav.style.display = "flex";
     document.querySelectorAll(".nav-item[data-nav]").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
   } else {
@@ -576,6 +576,7 @@ function goToScreen(name) {
     const ctxEl = document.getElementById("chatPortContext");
     if (ctxEl) ctxEl.textContent = currentPort().meta.name;
   }
+  if (name === "assistantchat") openAssistantChat();
   if (name === "home") { maybeShowInstallBanner(); maybeShowLocationBanner(); }
 }
 
@@ -736,6 +737,12 @@ function closeModal(id) {
   document.getElementById(id).classList.remove("open");
 }
 
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 const CHAT_REPLIES = [
   "Thank you for sharing that. I'm listening — take your time.",
   "That sounds difficult. You're not alone in this, and I'm here with you right now.",
@@ -748,13 +755,88 @@ function sendChatMessage() {
   const text = input.value.trim();
   if (!text) return;
   const body = document.getElementById("chatBody");
-  body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${text}</div>`);
+  body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
   input.value = "";
   body.scrollTop = body.scrollHeight;
   setTimeout(() => {
     const reply = CHAT_REPLIES[chatReplyIndex % CHAT_REPLIES.length];
     chatReplyIndex++;
     body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${reply}</div>`);
+    body.scrollTop = body.scrollHeight;
+  }, 900);
+}
+
+// ---- ASSISTANT CHAT (demo) --------------------------------------------
+// Prototype-level only: keyword matching stands in for the real AI classification
+// described in the scope of work (section 5). Real logic — grounding in port data,
+// the three-tier question model, and red-line detection — is the specialist's job.
+const ESCALATION_MESSAGES = {
+  alex: "This sounds like something worth talking through with a real person. I can connect you to the IMWIRSA Welfare Coordinator right now, or we can keep talking here — your choice.",
+  omar: "My friend, this is something worth speaking about with a real person, not just with me. I can bring in the IMWIRSA Welfare Coordinator right now — or if you'd rather keep talking to me a little longer, that's alright too.",
+  sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Welfare Coordinator right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
+  amina: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Welfare Coordinator now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
+};
+
+const COMPLEX_TOPIC_KEYWORDS = [
+  "sad", "lonely", "alone", "can't sleep", "cant sleep", "no one listens", "nobody listens",
+  "depressed", "hopeless", "hurt myself", "suicide", "kill myself", "want to die",
+  "captain", "master", "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
+  "bar", "alcohol", "drink", "girl", "girlfriend", "women", "woman", "dating", "meet someone",
+  "bad news from home", "family problem", "divorce",
+];
+
+function isComplexTopic(text) {
+  const t = text.toLowerCase();
+  return COMPLEX_TOPIC_KEYWORDS.some((kw) => t.includes(kw));
+}
+
+const ASSISTANT_DEMO_REPLIES = [
+  "Got it — let me know if you'd like directions or more details on that.",
+  "I can help with that. Is there anything else on your mind?",
+  "Sure thing. Feel free to ask me anything else about the port or the app.",
+];
+let assistantReplyIndex = 0;
+
+function openAssistantChat() {
+  const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
+  const header = document.getElementById("assistantChatHeader");
+  if (header) header.style.cssText = gradientStyle(a.grad);
+  setAvatarPhoto("chatAssistantAvatar", a);
+  document.getElementById("chatAssistantName").textContent = a.name;
+
+  const body = document.getElementById("assistantChatBody");
+  body.innerHTML = `<div class="chat-msg them">${escapeHtml(a.greet)}</div>`;
+  const input = document.getElementById("assistantChatInput");
+  if (input) input.value = "";
+}
+
+function sendAssistantChatMessage() {
+  const input = document.getElementById("assistantChatInput");
+  const text = input.value.trim();
+  if (!text) return;
+  const body = document.getElementById("assistantChatBody");
+  const existingToggle = document.getElementById("escalationToggle");
+  if (existingToggle) existingToggle.remove(); // sending a new message supersedes an unanswered toggle
+
+  body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
+  input.value = "";
+  body.scrollTop = body.scrollHeight;
+
+  const a = ASSISTANTS[state.assistant] || ASSISTANTS.alex;
+  setTimeout(() => {
+    if (isComplexTopic(text)) {
+      const msg = ESCALATION_MESSAGES[a.id] || ESCALATION_MESSAGES.alex;
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${msg}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-continue" id="escContinueBtn">Continue</button>
+          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">Coordinator</button>
+        </div>`);
+    } else {
+      const reply = ASSISTANT_DEMO_REPLIES[assistantReplyIndex % ASSISTANT_DEMO_REPLIES.length];
+      assistantReplyIndex++;
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(reply)}</div>`);
+    }
     body.scrollTop = body.scrollHeight;
   }, 900);
 }
@@ -957,14 +1039,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === document.getElementById("unionDeniedModal")) closeModal("unionDeniedModal");
 
     if (e.target.id === "chatSend") sendChatMessage();
+
+    if (e.target.id === "assistantChatSend") sendAssistantChatMessage();
+    if (e.target.id === "escContinueBtn") {
+      const t = document.getElementById("escalationToggle");
+      if (t) t.remove();
+    }
+    if (e.target.id === "escCoordinatorBtn") {
+      const t = document.getElementById("escalationToggle");
+      if (t) t.remove();
+      goToScreen("volunteer");
+    }
   });
 
   document.getElementById("chatInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") sendChatMessage();
   });
 
+  document.getElementById("assistantChatInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendAssistantChatMessage();
+  });
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 });
-
