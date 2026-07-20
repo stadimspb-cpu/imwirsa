@@ -22,24 +22,24 @@
     <!-- SCREEN 1 — LIGHTHOUSE -->
     <section class="screen screen-lighthouse active" data-screen="lighthouse">
       <div class="lh-sky"><div class="lh-beam"></div></div>
-      <div class="lh-sub">IMWIRSA presents</div>
+      <div class="lh-sub" data-i18n="lighthouse.sub">IMWIRSA presents</div>
       <div class="lh-tower">🗼</div>
-      <p class="lh-text">Welcome, Seafarer. The sea has connected people and nations for thousands of years. You are not alone. MWA is here to guide and support you wherever your journey takes you.</p>
-      <button class="btn-continue" data-go="onboard">CONTINUE</button>
+      <p class="lh-text" data-i18n="lighthouse.text">Welcome, Seafarer. The sea has connected people and nations for thousands of years. You are not alone. MWA is here to guide and support you wherever your journey takes you.</p>
+      <button class="btn-continue" data-go="onboard" data-i18n="lighthouse.cta">CONTINUE</button>
     </section>
 
     <!-- SCREEN 2 — CHOOSE ASSISTANT + LANGUAGE -->
     <section class="screen screen-onboard" data-screen="onboard">
-      <div class="ob-title">Welcome aboard</div>
-      <div class="ob-sub">Before we begin — choose the assistant you'd like to talk with, and your preferred language.</div>
+      <div class="ob-title" data-i18n="onboard.title">Welcome aboard</div>
+      <div class="ob-sub" data-i18n="onboard.sub">Before we begin — choose the assistant you'd like to talk with, and your preferred language.</div>
 
-      <div class="section-label">Choose your assistant</div>
+      <div class="section-label" data-i18n="onboard.chooseAssistant">Choose your assistant</div>
       <div class="assistant-grid" id="assistantGrid"></div>
 
-      <div class="section-label">Choose your language</div>
+      <div class="section-label" data-i18n="onboard.chooseLanguage">Choose your language</div>
       <div class="lang-grid" id="langGrid"></div>
 
-      <button class="btn-primary-full" id="onboardContinue" disabled data-go="intro">Continue</button>
+      <button class="btn-primary-full" id="onboardContinue" disabled data-go="intro" data-i18n="onboard.continueBtn">Continue</button>
     </section>
 
     <!-- SCREEN 3 — ASSISTANT INTRO -->
@@ -47,17 +47,17 @@
       <div class="intro-avatar" id="introAvatar"></div>
       <div class="intro-name" id="introName"></div>
       <p class="intro-msg" id="introMsg"></p>
-      <button class="btn-continue" data-go="name">Continue</button>
+      <button class="btn-continue" data-go="name" data-i18n="intro.continueBtn">Continue</button>
     </section>
 
     <!-- SCREEN 4 — NAME CONSENT -->
     <section class="screen screen-name" data-screen="name">
       <div class="name-avatar" id="nameAvatar"></div>
-      <p class="name-msg">One more thing — completely optional. How would you like me to address you? You can skip this at any time.</p>
-      <input class="name-input" id="nameInput" type="text" placeholder="Enter your name or a nickname">
+      <p class="name-msg" data-i18n="name.msg">One more thing — completely optional. How would you like me to address you? You can skip this at any time.</p>
+      <input class="name-input" id="nameInput" type="text" placeholder="Enter your name or a nickname" data-i18n-placeholder="name.placeholder">
       <div class="name-btns">
-        <button class="btn-primary-full" data-go="home" id="nameSave">Save</button>
-        <button class="btn-skip" data-go="home">Skip</button>
+        <button class="btn-primary-full" data-go="home" id="nameSave" data-i18n="name.save">Save</button>
+        <button class="btn-skip" data-go="home" data-i18n="name.skip">Skip</button>
       </div>
     </section>
 
@@ -85,8 +85,8 @@
       <button class="premium-banner hidden" id="premiumBanner" data-detail="wellness">
         <div class="pb-icon">⭐</div>
         <div class="pb-body">
-          <div class="pb-title">Premium Welfare Services</div>
-          <div class="pb-sub">For active Trade Union or partner club card holders only</div>
+          <div class="pb-title" data-i18n="home.premium.title">Premium Welfare Services</div>
+          <div class="pb-sub" data-i18n="home.premium.sub">For active Trade Union or partner club card holders only</div>
         </div>
         <div class="pb-arrow">›</div>
       </button>
@@ -99,36 +99,36 @@
         </div>
       </button>
       <div class="home-content">
-        <div class="section-label section-label-spaced">What do you need?</div>
+        <div class="section-label section-label-spaced" data-i18n="home.whatDoYouNeed">What do you need?</div>
         <div class="category-grid category-grid-compact">
-          <button class="cat-tile" data-detail="centre"><div class="cat-icon">🏛</div><div class="cat-label">Seafarers'<br>Centre</div></button>
-          <button class="cat-tile" data-detail="transport"><div class="cat-icon">🚌</div><div class="cat-label">Transport</div></button>
-          <button class="cat-tile" data-detail="connect"><div class="cat-icon">📶</div><div class="cat-label">SIM &amp;<br>Wi-Fi</div></button>
-          <button class="cat-tile" data-detail="shops"><div class="cat-icon">🛒</div><div class="cat-label">Shops &amp;<br>Food</div></button>
-          <button class="cat-tile" data-detail="medical"><div class="cat-icon">🏥</div><div class="cat-label">Medical</div></button>
-          <button class="cat-tile" data-detail="safety"><div class="cat-icon">🛡</div><div class="cat-label">Safety</div></button>
+          <button class="cat-tile" data-detail="centre"><div class="cat-icon">🏛</div><div class="cat-label" data-i18n-html="home.categories.centre">Seafarers'<br>Centre</div></button>
+          <button class="cat-tile" data-detail="transport"><div class="cat-icon">🚌</div><div class="cat-label" data-i18n="home.categories.transport">Transport</div></button>
+          <button class="cat-tile" data-detail="connect"><div class="cat-icon">📶</div><div class="cat-label" data-i18n-html="home.categories.connect">SIM &amp;<br>Wi-Fi</div></button>
+          <button class="cat-tile" data-detail="shops"><div class="cat-icon">🛒</div><div class="cat-label" data-i18n-html="home.categories.shops">Shops &amp;<br>Food</div></button>
+          <button class="cat-tile" data-detail="medical"><div class="cat-icon">🏥</div><div class="cat-label" data-i18n="home.categories.medical">Medical</div></button>
+          <button class="cat-tile" data-detail="safety"><div class="cat-icon">🛡</div><div class="cat-label" data-i18n="home.categories.safety">Safety</div></button>
         </div>
         <div class="quick-row">
-          <button class="quick-btn urgent full-width" data-detail="emergency"><div class="qi">🚨</div><div class="qt">Emergency contacts</div></button>
+          <button class="quick-btn urgent full-width" data-detail="emergency"><div class="qi">🚨</div><div class="qt" data-i18n="home.emergencyContacts">Emergency contacts</div></button>
         </div>
 
         <div class="install-banner hidden" id="installBanner">
           <div class="install-icon">📲</div>
           <div class="install-body">
-            <div class="install-title">Add MWApp to your Home Screen</div>
+            <div class="install-title" data-i18n="home.install.title">Add MWApp to your Home Screen</div>
             <div class="install-sub" id="installSub">Get one-tap access next time, like a real app.</div>
           </div>
-          <button class="install-btn" id="installBtn">Add</button>
+          <button class="install-btn" id="installBtn" data-i18n="home.install.add">Add</button>
           <button class="install-close" id="installCloseBtn">✕</button>
         </div>
 
         <div class="install-banner hidden" id="locationBanner">
           <div class="install-icon">📍</div>
           <div class="install-body">
-            <div class="install-title">Find your port automatically?</div>
-            <div class="install-sub">Used once, on this device, to detect the nearest port. Never sent to our servers or stored.</div>
+            <div class="install-title" data-i18n="home.location.title">Find your port automatically?</div>
+            <div class="install-sub" data-i18n="home.location.sub">Used once, on this device, to detect the nearest port. Never sent to our servers or stored.</div>
           </div>
-          <button class="install-btn" id="locationEnableBtn">Enable</button>
+          <button class="install-btn" id="locationEnableBtn" data-i18n="home.location.enable">Enable</button>
           <button class="install-close" id="locationCloseBtn">✕</button>
         </div>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="chat-body" id="assistantChatBody"></div>
       <div class="chat-input-row">
-        <input class="chat-input" id="assistantChatInput" type="text" placeholder="Type a message…">
+        <input class="chat-input" id="assistantChatInput" type="text" placeholder="Type a message…" data-i18n-placeholder="chat.inputPlaceholder">
         <button class="chat-send" id="assistantChatSend">➤</button>
       </div>
     </section>
@@ -179,50 +179,50 @@
       <div class="chat-header">
         <div style="display:flex; align-items:center; gap:12px;">
           <button class="back-btn" data-go="home">←</button>
-          <div class="detail-title">💬 IMWIRSA Welfare Coordinator</div>
+          <div class="detail-title" data-i18n="coordinator.title">💬 IMWIRSA Welfare Coordinator</div>
         </div>
-        <div class="chat-header-sub">Anonymous · Available 24/7 · <span id="chatPortContext">Tallinn</span></div>
+        <div class="chat-header-sub"><span data-i18n="coordinator.statusAnonymous">Anonymous · Available 24/7 ·</span> <span id="chatPortContext">Tallinn</span></div>
       </div>
       <div class="chat-body" id="chatBody">
-        <div class="chat-status">Connecting you with a Coordinator…</div>
-        <div class="chat-msg them">Hello, this is Kadri, your IMWIRSA Welfare Coordinator. I'm here to listen — how are you doing today?</div>
+        <div class="chat-status" data-i18n="coordinator.connecting">Connecting you with a Coordinator…</div>
+        <div class="chat-msg them" data-i18n="coordinator.firstMessage">Hello, this is Kadri, your IMWIRSA Welfare Coordinator. I'm here to listen — how are you doing today?</div>
       </div>
       <div class="chat-input-row">
-        <input class="chat-input" id="chatInput" type="text" placeholder="Type a message…">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Type a message…" data-i18n-placeholder="chat.inputPlaceholder">
         <button class="chat-send" id="chatSend">➤</button>
       </div>
     </section>
 
     <!-- SCREEN 8 — SETTINGS -->
     <section class="screen screen-settings" data-screen="settings">
-      <div class="settings-header"><div class="detail-title">Settings</div></div>
+      <div class="settings-header"><div class="detail-title" data-i18n="settings.title">Settings</div></div>
       <div class="settings-list">
         <div class="settings-current-assistant">
           <div class="sca-avatar" id="settingsAvatar"></div>
           <div>
             <div style="font-weight:800; font-size:14.5px;" id="settingsName"></div>
-            <div style="font-size:11.5px; color:var(--gray);">Your Maritime Welfare Assistant</div>
+            <div style="font-size:11.5px; color:var(--gray);" data-i18n="settings.subtitleRole">Your Maritime Welfare Assistant</div>
           </div>
         </div>
-        <div class="settings-group-label">Preferences</div>
-        <button class="settings-row" data-modal="assistantModal"><div class="si">👤</div><div class="st">Change assistant</div><div class="sv">›</div></button>
-        <button class="settings-row" data-modal="langModal"><div class="si">🌍</div><div class="st">Language</div><div class="sv" id="settingsLangVal">›</div></button>
-        <button class="settings-row" id="editNameRow"><div class="si">✏️</div><div class="st">My name</div><div class="sv">›</div></button>
-        <button class="settings-row" data-go="volunteer"><div class="si">💬</div><div class="st">Talk to IMWIRSA Welfare Coordinator</div><div class="sv">›</div></button>
-        <div class="settings-group-label">Membership</div>
-        <button class="settings-row"><div class="si">🆔</div><div class="st">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button>
-        <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st">Union / Club Card</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
-        <div class="settings-group-label">Port &amp; Location (dev preview)</div>
-        <button class="settings-row" id="detectLocationRow"><div class="si">📍</div><div class="st">Detect port by location</div><div class="sv" id="detectLocationVal">›</div></button>
-        <button class="settings-row" data-modal="portModal"><div class="si">🌍</div><div class="st">Test port</div><div class="sv" id="settingsPortVal">›</div></button>
-        <button class="settings-row" data-modal="contextModal"><div class="si">📍</div><div class="st">Context (auto once GPS is added)</div><div class="sv" id="settingsContextVal">›</div></button>
-        <div class="settings-group-label">Data &amp; Privacy</div>
-        <div class="settings-row"><div class="si">🔒</div><div class="st">Your name is stored only on this device</div></div>
-        <button class="settings-row"><div class="si">🗑</div><div class="st">Clear my data</div><div class="sv">›</div></button>
-        <button class="settings-row" id="resetAppRow"><div class="si">🔄</div><div class="st">Start over (show first launch again)</div></button>
-        <div class="settings-group-label">About</div>
-        <div class="settings-row"><div class="si">ℹ️</div><div class="st">MWApp v0.1 (prototype)</div></div>
-        <div class="settings-row"><div class="si">🌐</div><div class="st">imwirsa.org</div></div>
+        <div class="settings-group-label" data-i18n="settings.preferences">Preferences</div>
+        <button class="settings-row" data-modal="assistantModal"><div class="si">👤</div><div class="st" data-i18n="settings.changeAssistant">Change assistant</div><div class="sv">›</div></button>
+        <button class="settings-row" data-modal="langModal"><div class="si">🌍</div><div class="st" data-i18n="settings.language">Language</div><div class="sv" id="settingsLangVal">›</div></button>
+        <button class="settings-row" id="editNameRow"><div class="si">✏️</div><div class="st" data-i18n="settings.myName">My name</div><div class="sv">›</div></button>
+        <button class="settings-row" data-go="volunteer"><div class="si">💬</div><div class="st" data-i18n="settings.talkToCoordinator">Talk to IMWIRSA Welfare Coordinator</div><div class="sv">›</div></button>
+        <div class="settings-group-label" data-i18n="settings.membership">Membership</div>
+        <button class="settings-row"><div class="si">🆔</div><div class="st" data-i18n="settings.yourMwaId">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button>
+        <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st" data-i18n="settings.unionCard">Union / Club Card</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
+        <div class="settings-group-label" data-i18n="settings.portLocationDev">Port &amp; Location (dev preview)</div>
+        <button class="settings-row" id="detectLocationRow"><div class="si">📍</div><div class="st" data-i18n="settings.detectLocation">Detect port by location</div><div class="sv" id="detectLocationVal">›</div></button>
+        <button class="settings-row" data-modal="portModal"><div class="si">🌍</div><div class="st" data-i18n="settings.testPort">Test port</div><div class="sv" id="settingsPortVal">›</div></button>
+        <button class="settings-row" data-modal="contextModal"><div class="si">📍</div><div class="st" data-i18n="settings.context">Context (auto once GPS is added)</div><div class="sv" id="settingsContextVal">›</div></button>
+        <div class="settings-group-label" data-i18n="settings.dataPrivacy">Data &amp; Privacy</div>
+        <div class="settings-row"><div class="si">🔒</div><div class="st" data-i18n="settings.nameStoredNote">Your name is stored only on this device</div></div>
+        <button class="settings-row"><div class="si">🗑</div><div class="st" data-i18n="settings.clearData">Clear my data</div><div class="sv">›</div></button>
+        <button class="settings-row" id="resetAppRow"><div class="si">🔄</div><div class="st" data-i18n="settings.startOver">Start over (show first launch again)</div></button>
+        <div class="settings-group-label" data-i18n="settings.about">About</div>
+        <div class="settings-row"><div class="si">ℹ️</div><div class="st" data-i18n="settings.versionLabel">MWApp v0.1 (prototype)</div></div>
+        <div class="settings-row"><div class="si">🌐</div><div class="st" data-i18n="settings.website">imwirsa.org</div></div>
       </div>
     </section>
 
@@ -230,60 +230,60 @@
 
     <!-- BOTTOM NAV (5 items: Port / Volunteer / Settings / Language / Assistant) -->
     <div class="bottom-nav" id="bottomNav">
-      <button class="nav-item active" data-go="home" data-nav="home"><div class="ni">🏠</div><div class="nt">Port</div></button>
-      <button class="nav-item" data-go="volunteer" data-nav="volunteer"><div class="ni">💬</div><div class="nt">Coordinator</div></button>
-      <button class="nav-item" data-go="settings" data-nav="settings"><div class="ni">⚙️</div><div class="nt">Settings</div></button>
-      <button class="nav-item" data-modal="langModal"><div class="ni">🌍</div><div class="nt">Language</div></button>
-      <button class="nav-item" data-modal="assistantModal"><div class="ni">👤</div><div class="nt">Assistant</div></button>
+      <button class="nav-item active" data-go="home" data-nav="home"><div class="ni">🏠</div><div class="nt" data-i18n="nav.port">Port</div></button>
+      <button class="nav-item" data-go="volunteer" data-nav="volunteer"><div class="ni">💬</div><div class="nt" data-i18n="nav.coordinator">Coordinator</div></button>
+      <button class="nav-item" data-go="settings" data-nav="settings"><div class="ni">⚙️</div><div class="nt" data-i18n="nav.settings">Settings</div></button>
+      <button class="nav-item" data-modal="langModal"><div class="ni">🌍</div><div class="nt" data-i18n="nav.language">Language</div></button>
+      <button class="nav-item" data-modal="assistantModal"><div class="ni">👤</div><div class="nt" data-i18n="nav.assistant">Assistant</div></button>
     </div>
 
     <!-- MODALS -->
     <div class="modal-overlay" id="langModal">
       <div class="modal-sheet">
-        <div class="modal-title">Choose your language</div>
+        <div class="modal-title" data-i18n="modals.lang.title">Choose your language</div>
         <div class="lang-grid" id="langGridModal"></div>
       </div>
     </div>
     <div class="modal-overlay" id="assistantModal">
       <div class="modal-sheet">
-        <div class="modal-title">Choose your assistant</div>
+        <div class="modal-title" data-i18n="modals.assistant.title">Choose your assistant</div>
         <div class="assistant-grid" id="assistantGridModal"></div>
       </div>
     </div>
     <div class="modal-overlay" id="unionModal">
       <div class="modal-sheet" style="text-align:center;">
         <div style="font-size:40px; margin-bottom:12px;">🪪</div>
-        <div class="modal-title">Check your card status</div>
-        <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:6px;">
+        <div class="modal-title" data-i18n="modals.union.title">Check your card status</div>
+        <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:6px;" data-i18n="modals.union.text1">
           This confirms your Trade Union or partner club card is active. Confirmation is required once a month — first on setup, then again on the 1st of every following month.
         </p>
-        <p style="font-size:11.5px; color:var(--gray); line-height:1.5; margin-bottom:20px; font-style:italic;">
+        <p style="font-size:11.5px; color:var(--gray); line-height:1.5; margin-bottom:20px; font-style:italic;" data-i18n="modals.union.text2">
           Demo mode: real-time verification with your union is coming soon. For now, simulate a result below.
         </p>
-        <button class="btn-primary-full" id="unionSimActiveBtn">Simulate: card is Active</button>
-        <button class="btn-skip" id="unionSimInactiveBtn" style="margin-top:8px;">Simulate: card is Not active</button>
-        <button class="btn-skip" id="unionCloseBtn">Cancel</button>
+        <button class="btn-primary-full" id="unionSimActiveBtn" data-i18n="modals.union.simActive">Simulate: card is Active</button>
+        <button class="btn-skip" id="unionSimInactiveBtn" style="margin-top:8px;" data-i18n="modals.union.simInactive">Simulate: card is Not active</button>
+        <button class="btn-skip" id="unionCloseBtn" data-i18n="modals.union.cancel">Cancel</button>
       </div>
     </div>
 
     <div class="modal-overlay" id="unionDeniedModal">
       <div class="modal-sheet" style="text-align:center;">
         <div style="font-size:40px; margin-bottom:12px;">🔒</div>
-        <div class="modal-title">Premium Welfare Services unavailable</div>
-        <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:14px;">
+        <div class="modal-title" data-i18n="modals.unionDenied.title">Premium Welfare Services unavailable</div>
+        <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:14px;" data-i18n-html="modals.unionDenied.text1">
           Your Trade Union / club card isn't currently active, so this level isn't available right now. You can keep using everything under <strong>Standard</strong>.
         </p>
-        <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:20px;">
+        <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:20px;" data-i18n="modals.unionDenied.text2">
           To get or renew a card, contact IMWIRSA support:
         </p>
-        <a class="btn-primary-full" style="display:block; text-decoration:none; box-sizing:border-box;" href="https://wa.me/37255613815" target="_blank" rel="noopener">💬 WhatsApp +372 5561 3815</a>
-        <button class="btn-skip" id="unionDeniedCloseBtn">Close</button>
+        <a class="btn-primary-full" style="display:block; text-decoration:none; box-sizing:border-box;" href="https://wa.me/37255613815" target="_blank" rel="noopener" data-i18n="modals.unionDenied.whatsapp">💬 WhatsApp +372 5561 3815</a>
+        <button class="btn-skip" id="unionDeniedCloseBtn" data-i18n="modals.unionDenied.close">Close</button>
       </div>
     </div>
 
     <div class="modal-overlay" id="portModal">
       <div class="modal-sheet">
-        <div class="modal-title">Test port (dev preview)</div>
+        <div class="modal-title" data-i18n="modals.port.title">Test port (dev preview)</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
           <button class="settings-row" data-port="tallinn"><div class="si">🇪🇪</div><div class="st">Tallinn</div></button>
           <button class="settings-row" data-port="constanta"><div class="si">🇷🇴</div><div class="st">Constanța</div></button>
@@ -295,11 +295,11 @@
 
     <div class="modal-overlay" id="contextModal">
       <div class="modal-sheet" style="text-align:center;">
-        <div class="modal-title">Where is the seafarer right now?</div>
-        <p style="font-size:12.5px; color:var(--gray); margin-bottom:16px; line-height:1.6;">This will be detected automatically once GPS is connected. For now, switch manually to preview both states.</p>
+        <div class="modal-title" data-i18n="modals.context.title">Where is the seafarer right now?</div>
+        <p style="font-size:12.5px; color:var(--gray); margin-bottom:16px; line-height:1.6;" data-i18n="modals.context.text">This will be detected automatically once GPS is connected. For now, switch manually to preview both states.</p>
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="settings-row" data-context="at_port"><div class="si">⚓</div><div class="st">At the port</div></button>
-          <button class="settings-row" data-context="in_city"><div class="si">🏙</div><div class="st">In the city</div></button>
+          <button class="settings-row" data-context="at_port"><div class="si">⚓</div><div class="st" data-i18n="modals.context.atPort">At the port</div></button>
+          <button class="settings-row" data-context="in_city"><div class="si">🏙</div><div class="st" data-i18n="modals.context.inCity">In the city</div></button>
         </div>
       </div>
     </div>
@@ -307,17 +307,18 @@
     <div class="modal-overlay" id="iosInstallModal">
       <div class="modal-sheet" style="text-align:center;">
         <div style="font-size:40px; margin-bottom:12px;">📲</div>
-        <div class="modal-title">Add to Home Screen</div>
-        <div class="ios-step"><div class="ios-step-num">1</div><div class="ios-step-text">Tap the <strong>Share</strong> button <span class="ios-icon">⬆️</span> in your browser's toolbar</div></div>
-        <div class="ios-step"><div class="ios-step-num">2</div><div class="ios-step-text">Scroll down and tap <strong>"Add to Home Screen"</strong> <span class="ios-icon">➕</span></div></div>
-        <div class="ios-step"><div class="ios-step-num">3</div><div class="ios-step-text">Tap <strong>"Add"</strong> in the top corner</div></div>
-        <button class="btn-primary-full" id="iosInstallCloseBtn">Got it</button>
+        <div class="modal-title" data-i18n="modals.iosInstall.title">Add to Home Screen</div>
+        <div class="ios-step"><div class="ios-step-num">1</div><div class="ios-step-text" data-i18n-html="modals.iosInstall.step1">Tap the <strong>Share</strong> button <span class="ios-icon">⬆️</span> in your browser's toolbar</div></div>
+        <div class="ios-step"><div class="ios-step-num">2</div><div class="ios-step-text" data-i18n-html="modals.iosInstall.step2">Scroll down and tap <strong>"Add to Home Screen"</strong> <span class="ios-icon">➕</span></div></div>
+        <div class="ios-step"><div class="ios-step-num">3</div><div class="ios-step-text" data-i18n-html="modals.iosInstall.step3">Tap <strong>"Add"</strong> in the top corner</div></div>
+        <button class="btn-primary-full" id="iosInstallCloseBtn" data-i18n="modals.iosInstall.gotIt">Got it</button>
       </div>
     </div>
 
 </div>
 </div>
 
+<script src="js/i18n.js?v=1"></script>
 <script src="js/app.js?v=2"></script>
 </body>
 </html>
