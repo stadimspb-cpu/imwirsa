@@ -5,11 +5,18 @@
 // Visual identity only — name/tag/greet text now lives in js/i18n.js so it
 // can be translated per language. Use getAssistant(id) (defined in i18n.js)
 // to get an assistant merged with its translated text fields.
+// "photos" holds every pose variant available for a persona. Right now each
+// one has just a single image, so getAssistantPhoto() (in i18n.js) returns
+// the same photo everywhere — safe default. To add more poses (see partner
+// reference sheet), just add more entries in file/angle order, e.g.:
+//   photos: ["assets/avatars/alex.png", "assets/avatars/alex-2.png", "assets/avatars/alex-3.png"]
+// Different screens will then automatically start showing different
+// angles of the same character — no other code changes needed.
 const ASSISTANTS = {
-  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], photo: "assets/avatars/alex.png" },
-  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], photo: "assets/avatars/omar.png" },
-  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], photo: "assets/avatars/sophia.png" },
-  amina:  { id: "amina",  icon: "🌙", grad: ["#E8523A", "#B8860B"], photo: "assets/avatars/amina.png" },
+  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"] },
+  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"] },
+  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"] },
+  amina:  { id: "amina",  icon: "🌙", grad: ["#E8523A", "#B8860B"], photo: "assets/avatars/amina.png",  photos: ["assets/avatars/amina.png"] },
 };
 
 // Trade Union / Premium services are now presented by the seafarer's own chosen assistant
@@ -465,11 +472,14 @@ function renderAssistantGrid(containerId, isModal) {
   const el = document.getElementById(containerId);
   el.innerHTML = Object.keys(ASSISTANTS).map((id) => {
     const a = getAssistant(id);
+    const photo = getAssistantPhoto(id, "onboardGrid");
     return `
     <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}">
-      <div class="assistant-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
-      <div class="assistant-name">${a.name}</div>
-      <div class="assistant-tag">${a.tag}</div>
+      <div class="assistant-avatar" style="${gradientStyle(a.grad)}"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
+      <div class="assistant-card-text">
+        <div class="assistant-name">${a.name}</div>
+        <div class="assistant-tag">${a.tag}</div>
+      </div>
     </button>
   `;
   }).join("");
@@ -489,27 +499,28 @@ function refreshOnboardContinue() {
   btn.disabled = !(state.assistant && state.lang);
 }
 
-function setAvatarPhoto(elId, a) {
+function setAvatarPhoto(elId, a, screenKey) {
   const el = document.getElementById(elId);
   if (!el) return;
+  const photo = screenKey ? getAssistantPhoto(a.id, screenKey) : a.photo;
   el.style.cssText = gradientStyle(a.grad);
-  el.innerHTML = `<img src="${a.photo}" alt="${a.name}" loading="lazy">`;
+  el.innerHTML = `<img src="${photo}" alt="${a.name}" loading="lazy">`;
 }
 
 function updateAssistantUI() {
   const a = getAssistant(state.assistant);
   if (!a) return;
 
-  setAvatarPhoto("introAvatar", a);
+  setAvatarPhoto("introAvatar", a, "introHero");
   document.getElementById("introName").textContent = a.name;
   document.getElementById("introMsg").textContent = a.greet;
 
-  setAvatarPhoto("nameAvatar", a);
+  setAvatarPhoto("nameAvatar", a, "nameScreen");
 
-  setAvatarPhoto("homeAbAvatar", a);
+  setAvatarPhoto("homeAbAvatar", a, "homeBubble");
   document.getElementById("homeAbName").textContent = a.name;
 
-  setAvatarPhoto("settingsAvatar", a);
+  setAvatarPhoto("settingsAvatar", a, "settings");
   document.getElementById("settingsName").textContent = a.name;
 
   const port = currentPort();
@@ -538,9 +549,6 @@ function updateAssistantUI() {
 
   document.getElementById("settingsLangVal").textContent =
     (LANGUAGES.find((l) => l.code === state.lang) || {}).flag || "›";
-
-  // Premium panel shows only while the Trade Union view is selected — regardless of card status.
-  document.getElementById("premiumBanner").classList.toggle("hidden", state.accessView !== "vip");
 
   const unionVal = document.getElementById("unionStatusVal");
   if (unionVal) {
@@ -611,7 +619,7 @@ function openDetail(key) {
     const msg = valid ? t("wellness.unlockedIntro") : t("wellness.lockedIntro");
     bubbleHtml = `
       <div class="assistant-bubble premium" style="margin:0 0 14px;">
-        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
+        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${getAssistantPhoto(a.id, "detailBubble")}" alt="${a.name}" loading="lazy"></div>
         <div>
           <div class="ab-name">${a.name} · ${t("wellness.roleSuffix")}</div>
           <div class="ab-text">${msg}</div>
@@ -622,7 +630,7 @@ function openDetail(key) {
     const msg = t(`categoryPrompts.${key}`) || "How can I help you here?";
     bubbleHtml = `
       <div class="assistant-bubble" style="margin:0 0 14px;">
-        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${a.photo}" alt="${a.name}" loading="lazy"></div>
+        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${getAssistantPhoto(a.id, "detailBubble")}" alt="${a.name}" loading="lazy"></div>
         <div>
           <div class="ab-name">${a.name}</div>
           <div class="ab-text">${msg}</div>
@@ -783,15 +791,56 @@ function isComplexTopic(text) {
 // Assistant demo replies now come from t("demoReplies") in i18n.js.
 let assistantReplyIndex = 0;
 
+// Quick-action chips shown on the hero "welcome" screen (partner reference).
+// type "detail" -> opens that port category; "screen" -> navigates straight
+// to that screen; "focusInput" -> just clears the welcome screen and lets
+// the seafarer type their own question.
+const QUICK_ACTIONS = [
+  { key: "needTransport",    icon: "🚌", type: "detail", target: "transport" },
+  { key: "returnToShip",     icon: "🚢", type: "detail", target: "transport" },
+  { key: "seafarersCentre",  icon: "🏛", type: "detail", target: "centre" },
+  { key: "localCoordinator", icon: "👤", type: "screen", target: "volunteer" },
+  { key: "pharmacy",         icon: "💊", type: "detail", target: "shops" },
+  { key: "emergencyHelp",    icon: "🆘", type: "detail", target: "emergency", urgent: true },
+  { key: "medicalHelp",      icon: "➕", type: "detail", target: "medical" },
+  { key: "askMeAnything",    icon: "💬", type: "focusInput" },
+];
+
+function hideAssistantChatHero() {
+  const hero = document.getElementById("chatHero");
+  const qa = document.getElementById("qaGrid");
+  if (hero) hero.classList.add("hidden");
+  if (qa) qa.classList.add("hidden");
+}
+
 function openAssistantChat() {
   const a = getAssistant(state.assistant) || getAssistant("alex");
   const header = document.getElementById("assistantChatHeader");
   if (header) header.style.cssText = gradientStyle(a.grad);
-  setAvatarPhoto("chatAssistantAvatar", a);
+  setAvatarPhoto("chatAssistantAvatar", a, "chatHeader");
   document.getElementById("chatAssistantName").textContent = a.name;
 
+  // Hero: big portrait (not a small circle) + greeting bubble beside it.
+  const heroImg = document.getElementById("chatHeroImg");
+  if (heroImg) heroImg.src = getAssistantPhoto(a.id, "chatHero");
+  const heroBubble = document.getElementById("chatHeroBubble");
+  if (heroBubble) heroBubble.textContent = a.greet;
+  const hero = document.getElementById("chatHero");
+  if (hero) hero.classList.remove("hidden");
+
+  // Quick-action grid — shown only until the seafarer sends their first message.
+  const qaGrid = document.getElementById("qaGrid");
+  if (qaGrid) {
+    qaGrid.classList.remove("hidden");
+    qaGrid.innerHTML = QUICK_ACTIONS.map((qa) => `
+      <button class="qa-chip ${qa.urgent ? "urgent" : ""}" data-qa="${qa.key}">
+        <span class="qa-icon">${qa.icon}</span><span>${t(`quickActions.${qa.key}`)}</span>
+      </button>
+    `).join("");
+  }
+
   const body = document.getElementById("assistantChatBody");
-  body.innerHTML = `<div class="chat-msg them">${escapeHtml(a.greet)}</div>`;
+  body.innerHTML = "";
   const input = document.getElementById("assistantChatInput");
   if (input) input.value = "";
 }
@@ -800,6 +849,7 @@ function sendAssistantChatMessage() {
   const input = document.getElementById("assistantChatInput");
   const text = input.value.trim();
   if (!text) return;
+  hideAssistantChatHero();
   const body = document.getElementById("assistantChatBody");
   const existingToggle = document.getElementById("escalationToggle");
   if (existingToggle) existingToggle.remove(); // sending a new message supersedes an unanswered toggle
@@ -878,10 +928,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const goEl = e.target.closest("[data-go]");
-    if (goEl) { goToScreen(goEl.dataset.go); }
+    if (goEl) {
+      if (goEl.dataset.go === "home") state.accessView = "std";
+      goToScreen(goEl.dataset.go);
+    }
 
     const detailEl = e.target.closest("[data-detail]");
     if (detailEl) { openDetail(detailEl.dataset.detail); }
+
+    const qaEl = e.target.closest("[data-qa]");
+    if (qaEl) {
+      const qa = QUICK_ACTIONS.find((x) => x.key === qaEl.dataset.qa);
+      if (qa) {
+        if (qa.type === "detail") { openDetail(qa.target); }
+        else if (qa.type === "screen") { goToScreen(qa.target); }
+        else if (qa.type === "focusInput") {
+          hideAssistantChatHero();
+          const input = document.getElementById("assistantChatInput");
+          if (input) input.focus();
+        }
+      }
+    }
 
     const sdEl = e.target.closest("[data-sd]");
     if (sdEl) { openSubDetail(sdEl.dataset.sd); }
@@ -893,6 +960,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (accessEl) {
       state.accessView = accessEl.dataset.access;
       updateAssistantUI();
+      // Partner feedback: fewer taps. Tapping "Trade Union" jumps the
+      // seafarer straight to the premium level — the assistant greets them
+      // there and explains card activation. No intermediate "explore
+      // premium" banner step on the home screen anymore.
+      if (accessEl.dataset.access === "vip") {
+        openDetail("wellness");
+      }
     }
 
     const portEl = e.target.closest("[data-port]");
