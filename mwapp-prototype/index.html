@@ -82,14 +82,6 @@
           <button class="toggle-btn" id="btnAccessVip" data-access="vip">★ Trade Union</button>
         </div>
       </div>
-      <button class="premium-banner hidden" id="premiumBanner" data-detail="wellness">
-        <div class="pb-icon">⭐</div>
-        <div class="pb-body">
-          <div class="pb-title" data-i18n="home.premium.title">Premium Welfare Services</div>
-          <div class="pb-sub" data-i18n="home.premium.sub">For active Trade Union or partner club card holders only</div>
-        </div>
-        <div class="pb-arrow">›</div>
-      </button>
       <button class="assistant-bubble assistant-bubble-cta" id="homeAssistantBubble" data-go="assistantchat">
         <div class="ab-avatar ab-avatar-lg" id="homeAbAvatar"></div>
         <div class="ab-body">
@@ -143,6 +135,13 @@
           <div class="detail-title" id="chatAssistantName">Assistant</div>
         </div>
       </div>
+      <div class="chat-hero" id="chatHero">
+        <div class="chat-hero-media"><img id="chatHeroImg" src="" alt=""></div>
+        <div class="chat-hero-bubble-wrap">
+          <div class="chat-msg them chat-hero-bubble" id="chatHeroBubble"></div>
+        </div>
+      </div>
+      <div class="qa-grid" id="qaGrid"></div>
       <div class="chat-body" id="assistantChatBody"></div>
       <div class="chat-input-row">
         <input class="chat-input" id="assistantChatInput" type="text" placeholder="Type a message…" data-i18n-placeholder="chat.inputPlaceholder">
