@@ -163,6 +163,11 @@ a { color: inherit; text-decoration: none; }
 /* ── SCREEN: NAME CONSENT ─────────────────────────────────────────── */
 .screen-name { background: var(--slate); align-items:center; justify-content:center; padding: 40px 26px; text-align:center; }
 .name-avatar { width: 88px; height: 88px; border-radius: 50%; margin: 0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:800; color:white; }
+
+/* Persona photos fill any avatar circle (assistant-avatar, intro-avatar, name-avatar, ab-avatar, sca-avatar) */
+.assistant-avatar img, .intro-avatar img, .name-avatar img, .ab-avatar img, .sca-avatar img {
+  width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;
+}
 .name-msg { font-size: 15px; line-height: 1.65; color: var(--dark); max-width: 280px; margin-bottom: 24px; }
 .name-input {
   width: 100%; max-width: 280px; border: 2px solid var(--border); border-radius: 14px;
