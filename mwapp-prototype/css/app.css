@@ -89,6 +89,25 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(180deg, rgba(6,11,24,0.02) 0%, rgba(6,11,24,0.05) 40%, rgba(8,14,28,0.22) 62%, rgba(6,10,20,0.4) 100%);
 }
 
+/* Subtle "living" beam overlay — anchored at the lamp's exact position in the
+   photo (15.1% across, 48.5% down) and angled to match the photo's own
+   baked-in beam (~50° from horizontal). It only sways a few degrees and
+   pulses gently — a full wide sweep would visibly point away from the
+   photo's fixed beam and look like two separate lights. */
+.lh-beam-live {
+  position: absolute; bottom: 53.1%; left: 28.9%;
+  width: 3px; height: 50vh; max-height: 400px;
+  background: linear-gradient(to top, rgba(255,250,225,0.75), rgba(220,240,255,0.18) 55%, transparent);
+  transform-origin: bottom center;
+  animation: beamLiveSway 4.5s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+@keyframes beamLiveSway {
+  0%   { transform: rotate(47deg); opacity: 0.55; }
+  50%  { transform: rotate(53deg); opacity: 0.85; }
+  100% { transform: rotate(47deg); opacity: 0.55; }
+}
+
 .lh-content {
   position: absolute; left: 0; right: 0; top: 30%; bottom: 0; z-index: 5;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
