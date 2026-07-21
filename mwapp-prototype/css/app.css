@@ -100,8 +100,8 @@ a { color: inherit; text-decoration: none; }
   opacity: 0; animation: lhFadeIn 1s ease 0.2s forwards;
 }
 .lh-emblem {
-  width: 58px; height: 58px; margin-bottom: 18px;
-  filter: drop-shadow(0 0 14px rgba(217,174,71,0.55));
+  width: 87px; height: 87px; margin-bottom: 16px;
+  filter: drop-shadow(0 0 16px rgba(217,174,71,0.55));
   opacity: 0; animation: lhFadeIn 1.2s ease 0.45s forwards;
 }
 .lh-emblem img { width: 100%; height: 100%; object-fit: contain; display: block; }
