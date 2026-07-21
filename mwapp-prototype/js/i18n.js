@@ -25,7 +25,8 @@ const I18N = {
   en: {
     lighthouse: {
       sub: "IMWIRSA presents",
-      text: "Welcome, Seafarer. The sea has connected people and nations for thousands of years. You are not alone. MWA is here to guide and support you wherever your journey takes you.",
+      headline: "Welcome, Seafarer.",
+      text: "The sea has connected people and nations for thousands of years. You are not alone. MWApp is here to guide and support you wherever your journey takes you.",
       cta: "CONTINUE",
     },
     onboard: {
