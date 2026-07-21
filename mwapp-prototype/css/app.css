@@ -74,142 +74,20 @@ a { color: inherit; text-decoration: none; }
 }
 .screen.active { opacity: 1; pointer-events: auto; }
 
-/* ── SCREEN: LIGHTHOUSE INTRO — night port scene (photographic-style, CSS-built) ── */
-.screen-lighthouse {
-  background: linear-gradient(180deg, #060b18 0%, #0d1830 38%, #241b3a 58%, #3a2440 68%, #5a3040 78%, #0a1424 100%);
-  overflow: hidden;
+/* ── SCREEN: LIGHTHOUSE INTRO — real photo background, code-drawn text/UI ──
+   The night port scene is a photo (assets/scenes/lighthouse-port.jpg); the
+   emblem is a transparent PNG (assets/scenes/emblem.png). Everything else
+   (headline, body copy, button) stays real HTML so it's translatable and
+   clickable, unlike text baked into an image. */
+.screen-lighthouse { overflow: hidden; background: #0a1424; }
+.lh-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center top; background-repeat: no-repeat;
 }
-.lh-sky { position: absolute; top: 0; left: 0; right: 0; height: 62%; overflow: hidden; }
-.lh-sky::before {
-  content: ""; position: absolute; inset: 0;
-  box-shadow: 32.4vw 8.3vh 0 rgba(255,255,255,0.44),
-    53.6vw 20.1vh 0 rgba(255,255,255,0.95),
-    21.5vw 4.7vh 1px rgba(255,255,255,0.44),
-    9.1vw 23.3vh 0 rgba(255,255,255,0.97),
-    63.1vw 32.1vh 0 rgba(255,255,255,0.75),
-    39.7vw 53.7vh 0 rgba(255,255,255,0.73),
-    13.3vw 23.1vh 0 rgba(255,255,255,0.74),
-    56.0vw 37.5vh 0 rgba(255,255,255,0.75),
-    63.9vw 20.5vh 0 rgba(255,255,255,0.74),
-    61.9vw 27.3vh 1px rgba(255,255,255,0.87),
-    46.6vw 50.8vh 0 rgba(255,255,255,0.58),
-    79.4vw 38.4vh 0 rgba(255,255,255,0.45),
-    30.0vw 27.2vh 0 rgba(255,255,255,0.84),
-    28.8vw 53.9vh 0 rgba(255,255,255,0.71),
-    16.5vw 18.8vh 1px rgba(255,255,255,0.65),
-    96.2vw 4.3vh 0 rgba(255,255,255,0.6),
-    35.0vw 27.3vh 1px rgba(255,255,255,0.44),
-    9.4vw 14.8vh 0 rgba(255,255,255,0.44),
-    70.1vw 35.6vh 1px rgba(255,255,255,0.57),
-    38.6vw 36.8vh 0 rgba(255,255,255,0.96),
-    35.5vw 33.6vh 1px rgba(255,255,255,0.44),
-    76.8vw 7.1vh 0 rgba(255,255,255,0.64),
-    91.7vw 27.3vh 0 rgba(255,255,255,0.67),
-    54.9vw 48.6vh 1px rgba(255,255,255,0.92),
-    27.8vw 22.8vh 0 rgba(255,255,255,0.81),
-    38.0vw 12.7vh 0 rgba(255,255,255,0.51),
-    23.2vw 12.8vh 1px rgba(255,255,255,0.9),
-    18.2vw 15.5vh 0 rgba(255,255,255,0.65),
-    36.9vw 31.1vh 0 rgba(255,255,255,0.81),
-    51.5vw 34.0vh 0 rgba(255,255,255,0.67),
-    87.1vw 52.4vh 1px rgba(255,255,255,0.64),
-    39.4vw 26.5vh 1px rgba(255,255,255,0.44),
-    6.7vw 11.5vh 0 rgba(255,255,255,0.47),
-    60.1vw 5.6vh 0 rgba(255,255,255,0.72),
-    94.9vw 33.8vh 0 rgba(255,255,255,0.92),
-    61.4vw 8.2vh 0 rgba(255,255,255,0.97),
-    60.2vw 26.1vh 0 rgba(255,255,255,0.91),
-    99.3vw 25.6vh 1px rgba(255,255,255,0.59),
-    14.4vw 41.2vh 0 rgba(255,255,255,0.69),
-    69.2vw 28.4vh 0 rgba(255,255,255,0.97),
-    52.8vw 8.1vh 0 rgba(255,255,255,0.85),
-    29.8vw 35.4vh 0 rgba(255,255,255,0.82),
-    26.1vw 20.2vh 0 rgba(255,255,255,0.61),
-    22.3vw 29.8vh 0 rgba(255,255,255,0.78),
-    61.3vw 43.4vh 0 rgba(255,255,255,0.88),
-    81.8vw 40.7vh 0 rgba(255,255,255,0.52),
-    49.3vw 40.2vh 0 rgba(255,255,255,0.87),
-    47.2vw 10.7vh 0 rgba(255,255,255,0.67),
-    93.7vw 54.3vh 0 rgba(255,255,255,0.45),
-    10.2vw 25.9vh 0 rgba(255,255,255,0.52),
-    62.4vw 49.5vh 0 rgba(255,255,255,0.69),
-    65.3vw 44.0vh 0 rgba(255,255,255,0.9),
-    12.0vw 21.4vh 0 rgba(255,255,255,0.69),
-    17.9vw 43.4vh 0 rgba(255,255,255,0.45),
-    94.6vw 39.7vh 1px rgba(255,255,255,0.64),
-    94.7vw 39.9vh 0 rgba(255,255,255,1.0),
-    2.8vw 32.5vh 1px rgba(255,255,255,0.88),
-    14.6vw 45.5vh 1px rgba(255,255,255,0.79),
-    35.0vw 30.2vh 0 rgba(255,255,255,0.41),
-    79.9vw 40.0vh 0 rgba(255,255,255,0.72),
-    93.4vw 23.9vh 0 rgba(255,255,255,0.9),
-    21.1vw 13.9vh 0 rgba(255,255,255,0.7),
-    76.4vw 17.9vh 1px rgba(255,255,255,0.9),
-    6.1vw 40.7vh 1px rgba(255,255,255,0.8),
-    81.5vw 28.4vh 0 rgba(255,255,255,0.72),
-    52.4vw 1.0vh 1px rgba(255,255,255,0.87),
-    60.9vw 42.7vh 0 rgba(255,255,255,0.5),
-    47.3vw 39.9vh 0 rgba(255,255,255,0.6),
-    51.8vw 30.5vh 0 rgba(255,255,255,0.93),
-    5.7vw 10.5vh 0 rgba(255,255,255,0.86);
-  border-radius: 50%;
+.lh-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(6,11,24,0.05) 0%, rgba(6,11,24,0.05) 46%, rgba(8,14,28,0.55) 66%, rgba(6,10,20,0.8) 100%);
 }
-.lh-milkyway {
-  position: absolute; top: -10%; left: 10%; width: 90%; height: 70%;
-  background: radial-gradient(ellipse 60% 100% at 60% 20%, rgba(196,168,230,0.22), transparent 65%),
-              radial-gradient(ellipse 40% 80% at 50% 10%, rgba(255,214,214,0.12), transparent 70%);
-  transform: rotate(18deg); filter: blur(2px);
-}
-.lh-beam {
-  position: absolute; bottom: 34%; left: 15%;
-  width: 3px; height: 46vh; max-height: 320px;
-  background: linear-gradient(to top, rgba(255,255,255,0.85), rgba(220,240,255,0.15) 60%, transparent);
-  transform-origin: bottom center;
-  animation: beamSweep 5s ease-in-out infinite;
-  filter: blur(0.5px);
-  opacity: 0.8;
-}
-@keyframes beamSweep {
-  0%, 100% { transform: rotate(-30deg); opacity: 0.55; }
-  50% { transform: rotate(38deg); opacity: 0.9; }
-}
-.lh-water {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
-  background: linear-gradient(180deg, #1a2a44 0%, #101d33 30%, #0a1424 100%);
-}
-.lh-water::before {
-  content: ""; position: absolute; inset: 0; opacity: 0.35;
-  background: repeating-linear-gradient(178deg, rgba(255,255,255,0.05) 0px, transparent 2px, transparent 9px, rgba(255,255,255,0.04) 11px);
-}
-.lh-city-lights {
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: repeating-linear-gradient(90deg, rgba(255,196,120,0.9) 0px, rgba(255,196,120,0.9) 2px, transparent 2px, transparent 14px);
-  box-shadow: 0 0 8px 1px rgba(255,196,120,0.5);
-  opacity: 0.8;
-}
-.lh-reflection {
-  position: absolute; top: 0; left: 12%; width: 10%; height: 100%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.05) 70%, transparent);
-  filter: blur(3px); transform: skewX(-3deg);
-}
-.lh-tower {
-  position: absolute; bottom: 38%; left: 9%; width: 26px; height: 15%; z-index: 3;
-  background: linear-gradient(180deg, #f4f4f4 0%, #e2e2e2 60%, #cfcfcf 100%);
-  clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
-  box-shadow: 0 0 24px 4px rgba(120,200,255,0.25);
-}
-.lh-tower::before {
-  content: ""; position: absolute; left: -3px; right: -3px; top: 42%; height: 14%;
-  background: #d3453a;
-}
-.lh-tower-light {
-  position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
-  width: 10px; height: 10px; border-radius: 50%;
-  background: radial-gradient(circle, #fffbe0, #ffd76a 60%, transparent 100%);
-  box-shadow: 0 0 12px 4px rgba(255,215,110,0.85);
-  animation: towerPulse 1.8s ease-in-out infinite;
-}
-@keyframes towerPulse { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
 
 .lh-content {
   position: absolute; left: 0; right: 0; top: 30%; bottom: 0; z-index: 5;
@@ -217,24 +95,25 @@ a { color: inherit; text-decoration: none; }
   text-align: center; padding: 0 28px 34px;
 }
 .lh-sub {
-  color: rgba(255,255,255,0.75); font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
-  margin-bottom: 14px; opacity: 0; animation: lhFadeIn 1s ease 0.2s forwards;
+  color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+  margin-bottom: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  opacity: 0; animation: lhFadeIn 1s ease 0.2s forwards;
 }
 .lh-emblem {
   width: 58px; height: 58px; margin-bottom: 18px;
   filter: drop-shadow(0 0 14px rgba(217,174,71,0.55));
   opacity: 0; animation: lhFadeIn 1.2s ease 0.45s forwards;
 }
-.lh-emblem svg { width: 100%; height: 100%; }
+.lh-emblem img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .lh-headline {
   font-size: 27px; font-weight: 800; color: white; margin-bottom: 14px;
-  text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+  text-shadow: 0 2px 18px rgba(0,0,0,0.65);
   opacity: 0; animation: lhFadeIn 1.2s ease 0.7s forwards;
 }
 @keyframes lhFadeIn { from { opacity:0; transform: translateY(14px);} to {opacity:1; transform:none;} }
 .lh-text {
-  color: rgba(255,255,255,0.92); font-size: 16px; line-height: 1.7; max-width: 320px;
-  text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+  color: rgba(255,255,255,0.94); font-size: 16px; line-height: 1.7; max-width: 320px;
+  text-shadow: 0 1px 14px rgba(0,0,0,0.6);
   opacity: 0; animation: lhFadeIn 1.2s ease 0.95s forwards;
   margin-bottom: 30px;
 }
