@@ -13,20 +13,20 @@
 // Different screens will then automatically start showing different
 // angles of the same character — no other code changes needed.
 const ASSISTANTS = {
-  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"] },
-  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"] },
-  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"] },
-  amina:  { id: "amina",  icon: "🌙", grad: ["#E8523A", "#B8860B"], photo: "assets/avatars/amina.png",  photos: ["assets/avatars/amina.png"] },
+  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"] },
+  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"] },
+  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"] },
+  amina:  { id: "amina",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/amina.png",  photos: ["assets/avatars/amina.png"] },
 };
 
 // Trade Union / Premium services are now presented by the seafarer's own chosen assistant
 // (Alex / Omar / Sophia / Amina) rather than a separate persona — Linda has been retired.
 
 const LANGUAGES = [
-  { code: "en", flag: "🇬🇧", label: "English" },
-  { code: "ru", flag: "🇷🇺", label: "Русский" },
-  { code: "tr", flag: "🇹🇷", label: "Türkçe" },
-  { code: "fil", flag: "🇵🇭", label: "Filipino" },
+  { code: "en", flag: "🇬🇧", label: "English", accent: "#29C5FF" },
+  { code: "ru", flag: "🇷🇺", label: "Русский", accent: "#2AD9A8" },
+  { code: "tr", flag: "🇹🇷", label: "Türkçe", accent: "#FF4D6D" },
+  { code: "fil", flag: "🇵🇭", label: "Filipino", accent: "#FFA83D" },
 ];
 
 // Placeholder used for fields curators haven't filled in yet via the PWM Telegram bot.
@@ -474,12 +474,13 @@ function renderAssistantGrid(containerId, isModal) {
     const a = getAssistant(id);
     const photo = getAssistantPhoto(id, "onboardGrid");
     return `
-    <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}">
-      <div class="assistant-avatar" style="${gradientStyle(a.grad)}"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
+    <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}" style="--accent:${a.accent}">
+      <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
       <div class="assistant-card-text">
-        <div class="assistant-name">${a.name}</div>
+        <div class="assistant-name" style="color:${a.accent}">${a.name}</div>
         <div class="assistant-tag">${a.tag}</div>
       </div>
+      <div class="assistant-chip" style="background:${a.accent}">💬</div>
     </button>
   `;
   }).join("");
@@ -488,7 +489,7 @@ function renderAssistantGrid(containerId, isModal) {
 function renderLangGrid(containerId, isModal) {
   const el = document.getElementById(containerId);
   el.innerHTML = LANGUAGES.map((l) => `
-    <button class="lang-pill ${state.lang === l.code ? 'selected' : ''}" data-lang="${l.code}" data-modal-target="${isModal ? 'langModal' : ''}">
+    <button class="lang-pill ${state.lang === l.code ? 'selected' : ''}" data-lang="${l.code}" data-modal-target="${isModal ? 'langModal' : ''}" style="--accent:${l.accent}">
       <span class="lang-flag">${l.flag}</span> ${l.label}
     </button>
   `).join("");
