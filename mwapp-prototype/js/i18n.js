@@ -188,17 +188,17 @@ const I18N = {
         tag: "I'll guide you with care and answer your questions.",
         greet: "Hello! My name is Sophia. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
       },
-      amina: {
-        name: "Amina",
+      grace: {
+        name: "Grace",
         tag: "I'll support you every step of your journey.",
-        greet: "Hello! My name is Amina. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
+        greet: "Hello! My name is Grace. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
       },
     },
     escalation: {
       alex: "This sounds like something worth talking through with a real person. I can connect you to the IMWIRSA Welfare Coordinator right now, or we can keep talking here — your choice.",
       omar: "My friend, this is something worth speaking about with a real person, not just with me. I can bring in the IMWIRSA Welfare Coordinator right now — or if you'd rather keep talking to me a little longer, that's alright too.",
       sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Welfare Coordinator right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
-      amina: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Welfare Coordinator now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
+      grace: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Welfare Coordinator now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
     },
     escalationToggle: {
       continueBtn: "Continue",

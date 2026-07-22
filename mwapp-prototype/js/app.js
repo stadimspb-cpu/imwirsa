@@ -16,11 +16,11 @@ const ASSISTANTS = {
   alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"] },
   omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"] },
   sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"] },
-  amina:  { id: "amina",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/amina.png",  photos: ["assets/avatars/amina.png"] },
+  grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/grace.png",  photos: ["assets/avatars/grace.png"] },
 };
 
 // Trade Union / Premium services are now presented by the seafarer's own chosen assistant
-// (Alex / Omar / Sophia / Amina) rather than a separate persona — Linda has been retired.
+// (Alex / Omar / Sophia / Grace) rather than a separate persona — Linda has been retired.
 
 const LANGUAGES = [
   { code: "en", flag: "🇬🇧", label: "English", accent: "#29C5FF" },
