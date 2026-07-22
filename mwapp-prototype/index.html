@@ -61,16 +61,21 @@
 
     <!-- SCREEN 2 — CHOOSE ASSISTANT + LANGUAGE -->
     <section class="screen screen-onboard" data-screen="onboard">
-      <div class="ob-title" data-i18n="onboard.title">Welcome aboard</div>
-      <div class="ob-sub" data-i18n="onboard.sub">Before we begin — choose the assistant you'd like to talk with, and your preferred language.</div>
+      <div class="ob-bg" style="background-image: url('assets/scenes/onboard-bg.jpg');"></div>
+      <div class="ob-inner">
+        <div class="ob-title" data-i18n="onboard.title">Welcome aboard</div>
+        <div class="ob-sub" data-i18n="onboard.sub">Before we begin — choose the assistant you'd like to talk with, and your preferred language.</div>
 
-      <div class="section-label" data-i18n="onboard.chooseAssistant">Choose your assistant</div>
-      <div class="assistant-grid" id="assistantGrid"></div>
+        <div class="assistant-grid" id="assistantGrid"></div>
 
-      <div class="section-label" data-i18n="onboard.chooseLanguage">Choose your language</div>
-      <div class="lang-grid" id="langGrid"></div>
+        <div class="section-label" data-i18n="onboard.chooseLanguage">Choose your language</div>
+        <div class="lang-grid" id="langGrid"></div>
 
-      <button class="btn-primary-full" id="onboardContinue" disabled data-go="intro" data-i18n="onboard.continueBtn">Continue</button>
+        <button class="btn-onboard-continue" id="onboardContinue" disabled data-go="intro">
+          <span data-i18n="onboard.continueBtn">Continue</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
     </section>
 
     <!-- SCREEN 3 — ASSISTANT INTRO -->
