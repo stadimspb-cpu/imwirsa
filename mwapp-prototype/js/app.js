@@ -889,6 +889,49 @@ window.addEventListener("beforeinstallprompt", (e) => {
   maybeShowInstallBanner();
 });
 
+// ---- Lighthouse beam positioning ---------------------------------------
+// .lh-bg is shown with background-size:cover, which crops unpredictably
+// depending on the VISITOR's actual screen ratio — guessing a fixed CSS
+// percentage for where the lamp lands broke on real phones twice before.
+// Instead, this replicates the browser's own cover-fit math using the
+// REAL rendered size of .lh-bg, and sets the beam's origin as CSS
+// variables the browser applies itself — correct on any device.
+const LH_IMG_W = 992, LH_IMG_H = 1586; // natural size of assets/scenes/lighthouse-port.jpg
+const LH_LAMP_X_PCT = 15.62, LH_LAMP_Y_PCT = 48.55; // lamp position within that source image
+
+function positionBeamAndEmblem() {
+  const beam = document.getElementById("lhBeamLive");
+  const bgEl = document.querySelector(".lh-bg");
+  if (!beam || !bgEl) return;
+  const rect = bgEl.getBoundingClientRect();
+  const cw = rect.width, ch = rect.height;
+  if (!cw || !ch) return;
+
+  const scaleW = cw / LH_IMG_W, scaleH = ch / LH_IMG_H;
+  let lampPctX, lampPctY;
+
+  if (scaleH >= scaleW) {
+    // Normal case for phones: screen proportionally taller than the photo.
+    // Height drives the scale -> full image height shows (no vertical crop,
+    // position:top is moot), sides get cropped equally (position:center).
+    const scale = scaleH;
+    const scaledW = LH_IMG_W * scale;
+    const cropX = (scaledW - cw) / 2;
+    lampPctX = (((LH_LAMP_X_PCT / 100) * scaledW - cropX) / cw) * 100;
+    lampPctY = LH_LAMP_Y_PCT;
+  } else {
+    // Screen proportionally wider/shorter than the photo: width drives the
+    // scale, full width shows, excess height is cropped off the BOTTOM only.
+    const scale = scaleW;
+    const scaledH = LH_IMG_H * scale;
+    lampPctX = LH_LAMP_X_PCT;
+    lampPctY = (((LH_LAMP_Y_PCT / 100) * scaledH) / ch) * 100;
+  }
+
+  beam.style.setProperty("--beam-left", lampPctX + "%");
+  beam.style.setProperty("--beam-bottom", (100 - lampPctY) + "%");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
   ensureMwaId();
@@ -898,6 +941,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAssistantGrid("assistantGridModal", true);
   renderLangGrid("langGridModal", true);
   refreshOnboardContinue();
+  positionBeamAndEmblem();
+  window.addEventListener("resize", positionBeamAndEmblem);
+  window.addEventListener("orientationchange", () => setTimeout(positionBeamAndEmblem, 150));
 
   if (state.assistant && state.lang) {
     // Returning user — first-launch screens are shown once in a lifetime only.
