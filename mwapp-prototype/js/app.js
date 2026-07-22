@@ -12,11 +12,16 @@
 //   photos: ["assets/avatars/alex.png", "assets/avatars/alex-2.png", "assets/avatars/alex-3.png"]
 // Different screens will then automatically start showing different
 // angles of the same character — no other code changes needed.
+// onboardScale corrects for inconsistent framing between the source photos
+// (some were shot/cropped closer than others, making heads look bigger or
+// smaller relative to each other). Measured from each photo's actual
+// head-to-shoulder proportion — if a photo is replaced, this should be
+// re-measured and updated, not left as-is.
 const ASSISTANTS = {
-  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"] },
-  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"] },
-  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"] },
-  grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/grace.png",  photos: ["assets/avatars/grace.png"] },
+  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"],   onboardScale: 1.08 },
+  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"],   onboardScale: 0.85 },
+  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"], onboardScale: 1.16 },
+  grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/grace.png",  photos: ["assets/avatars/grace.png"],  onboardScale: 0.96 },
 };
 
 // Trade Union / Premium services are now presented by the seafarer's own chosen assistant
@@ -473,9 +478,10 @@ function renderAssistantGrid(containerId, isModal) {
   el.innerHTML = Object.keys(ASSISTANTS).map((id) => {
     const a = getAssistant(id);
     const photo = getAssistantPhoto(id, "onboardGrid");
+    const scale = a.onboardScale || 1;
     return `
     <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}" style="--accent:${a.accent}">
-      <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
+      <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy" style="transform: scale(${scale}); transform-origin: bottom center;"></div>
       <div class="assistant-name" style="color:${a.accent}">${a.name}</div>
     </button>
   `;
