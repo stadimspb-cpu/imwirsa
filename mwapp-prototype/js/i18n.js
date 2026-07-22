@@ -30,8 +30,8 @@ const I18N = {
       cta: "CONTINUE",
     },
     onboard: {
-      title: "Welcome aboard",
-      sub: "Before we begin — choose the assistant you'd like to talk with, and your preferred language.",
+      title: "Choose your assistant",
+      sub: "We're here to support you every step of the way.",
       chooseAssistant: "Choose your assistant",
       chooseLanguage: "Choose your language",
       continueBtn: "Continue",
@@ -175,22 +175,22 @@ const I18N = {
     assistants: {
       alex: {
         name: "Alex",
-        tag: "General guide",
+        tag: "I'll help you find information and guidance.",
         greet: "Hello! My name is Alex. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
       },
       omar: {
         name: "Omar",
-        tag: "Steady & familiar",
+        tag: "I'll make sure you feel supported and informed.",
         greet: "Hello, my friend. My name is Omar. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language any time in Settings. How may I help you today?",
       },
       sophia: {
         name: "Sophia",
-        tag: "Warm & welcoming",
+        tag: "I'll guide you with care and answer your questions.",
         greet: "Hello! My name is Sophia. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
       },
       amina: {
         name: "Amina",
-        tag: "Respectful guide",
+        tag: "I'll support you every step of your journey.",
         greet: "Hello! My name is Amina. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
       },
     },
