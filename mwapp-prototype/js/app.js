@@ -478,10 +478,9 @@ function renderAssistantGrid(containerId, isModal) {
   el.innerHTML = Object.keys(ASSISTANTS).map((id) => {
     const a = getAssistant(id);
     const photo = getAssistantPhoto(id, "onboardGrid");
-    const scale = a.onboardScale || 1;
     return `
     <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}" style="--accent:${a.accent}">
-      <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy" style="transform: scale(${scale}); transform-origin: bottom center;"></div>
+      <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
       <div class="assistant-name" style="color:${a.accent}">${a.name}</div>
     </button>
   `;
