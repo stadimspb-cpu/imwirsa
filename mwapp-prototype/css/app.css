@@ -104,29 +104,32 @@ a { color: inherit; text-decoration: none; }
   50% { opacity: 1; transform: scale(1.15); }
 }
 
-/* Subtle "living" beam overlay — anchored at the lamp's exact position in the
-   photo (15.1% across, 48.5% down) and angled to match the photo's own
-   baked-in beam (~50° from horizontal). It only sways a few degrees and
-   pulses gently — a full wide sweep would visibly point away from the
-   photo's fixed beam and look like two separate lights. */
+/* Subtle "living" beam overlay — angled to match this photo's own baked-in
+   beam (74° from vertical). Position (left/bottom) is set at runtime by
+   positionBeamAndEmblem() in app.js, which reads the ACTUAL rendered size
+   of .lh-bg and replicates the browser's own background-size:cover math —
+   this is what makes it land correctly regardless of the visitor's actual
+   phone screen ratio, instead of guessing fixed percentages (which broke
+   on real devices twice before). The values below are just a sane
+   fallback in case JS hasn't run yet. */
 .lh-beam-live {
-  position: absolute; bottom: 53.1%; left: 28.9%;
-  width: 3px; height: 50vh; max-height: 400px;
+  position: absolute; bottom: var(--beam-bottom, 51.5%); left: var(--beam-left, 15.6%);
+  width: 3px; height: 55vh; max-height: 430px;
   background: linear-gradient(to top, rgba(255,250,225,0.75), rgba(220,240,255,0.18) 55%, transparent);
   transform-origin: bottom center;
   animation: beamLiveSway 4.5s ease-in-out infinite;
   mix-blend-mode: screen;
 }
 @keyframes beamLiveSway {
-  0%   { transform: rotate(47deg); opacity: 0.55; }
-  50%  { transform: rotate(53deg); opacity: 0.85; }
-  100% { transform: rotate(47deg); opacity: 0.55; }
+  0%   { transform: rotate(71deg); opacity: 0.55; }
+  50%  { transform: rotate(77deg); opacity: 0.85; }
+  100% { transform: rotate(71deg); opacity: 0.55; }
 }
 
 .lh-content {
-  position: absolute; left: 0; right: 0; top: 20%; bottom: 0; z-index: 5;
+  position: absolute; left: 0; right: 0; top: 34%; bottom: 0; z-index: 5;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  text-align: center; padding: 0 28px 34px;
+  text-align: center; padding: 0 28px 18px;
 }
 .lh-sub {
   color: rgba(255,255,255,0.85); font-size: 12.5px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
@@ -135,10 +138,13 @@ a { color: inherit; text-decoration: none; }
 }
 .lh-emblem {
   width: 116px; height: 116px; margin-bottom: 16px;
-  filter: drop-shadow(0 0 16px rgba(217,174,71,0.55));
-  opacity: 0; animation: lhFadeIn 1.2s ease 0.45s forwards;
+  opacity: 0; animation: lhFadeIn 1.2s ease 0.45s forwards, emblemGlow 2.6s ease-in-out 1.6s infinite;
 }
 .lh-emblem img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@keyframes emblemGlow {
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(217,174,71,0.5)); }
+  50% { filter: drop-shadow(0 0 34px rgba(255,220,130,0.95)) drop-shadow(0 0 60px rgba(255,200,90,0.5)); }
+}
 .lh-headline {
   font-size: 27px; font-weight: 800; color: white; margin-bottom: 14px;
   text-shadow: 0 2px 18px rgba(0,0,0,0.65);
@@ -152,13 +158,25 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 30px;
 }
 .btn-continue {
-  background: linear-gradient(135deg, #4FC3F7 0%, #1565C0 100%);
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #22E1FF 0%, #0066FF 55%, #0022AA 100%);
   color: white; font-weight: 800; font-size: 16px; letter-spacing: 0.5px;
   padding: 17px 54px; border-radius: 32px; opacity: 0;
+  margin-top: auto;
   animation: lhFadeIn 1s ease 1.3s forwards;
-  box-shadow: 0 0 28px 4px rgba(79,195,247,0.55), 0 10px 30px rgba(0,0,0,0.35);
+  box-shadow: 0 0 34px 6px rgba(34,209,255,0.6), 0 0 70px 16px rgba(0,90,255,0.35), 0 10px 30px rgba(0,0,0,0.4);
 }
 .btn-continue:active { transform: scale(0.97); }
+.btn-shimmer {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
+  background-size: 260% 100%;
+  animation: btnShimmerSweep 2.8s linear infinite;
+}
+@keyframes btnShimmerSweep {
+  0% { background-position: 160% 0; }
+  100% { background-position: -100% 0; }
+}
 
 /* ── SCREEN: ONBOARDING (assistant + language) ───────────────────── */
 .screen-onboard { background: var(--navy-deep); padding: 26px 22px 22px; color: white; }
