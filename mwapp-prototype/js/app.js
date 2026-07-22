@@ -476,11 +476,7 @@ function renderAssistantGrid(containerId, isModal) {
     return `
     <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}" style="--accent:${a.accent}">
       <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
-      <div class="assistant-card-text">
-        <div class="assistant-name" style="color:${a.accent}">${a.name}</div>
-        <div class="assistant-tag">${a.tag}</div>
-      </div>
-      <div class="assistant-chip" style="background:${a.accent}">💬</div>
+      <div class="assistant-name" style="color:${a.accent}">${a.name}</div>
     </button>
   `;
   }).join("");
