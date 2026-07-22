@@ -196,8 +196,27 @@ a { color: inherit; text-decoration: none; }
   display: flex; flex-direction: column; align-items: center;
 }
 .assistant-card.selected .assistant-avatar img {
-  filter: drop-shadow(0 0 28px color-mix(in srgb, var(--accent, #29C5FF) 90%, transparent));
-  transform: scale(1.06);
+  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--accent, #29C5FF) 95%, transparent))
+          drop-shadow(0 0 55px color-mix(in srgb, var(--accent, #29C5FF) 60%, transparent));
+  transform: scale(1.08);
+  animation: avatarSelectedPulse 1.8s ease-in-out infinite;
+}
+@keyframes avatarSelectedPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 30px color-mix(in srgb, var(--accent, #29C5FF) 95%, transparent))
+            drop-shadow(0 0 55px color-mix(in srgb, var(--accent, #29C5FF) 60%, transparent));
+  }
+  50% {
+    filter: drop-shadow(0 0 42px color-mix(in srgb, var(--accent, #29C5FF) 100%, transparent))
+            drop-shadow(0 0 75px color-mix(in srgb, var(--accent, #29C5FF) 80%, transparent));
+  }
+}
+.assistant-card.selected .assistant-name {
+  animation: nameSelectedGlow 1.8s ease-in-out infinite;
+}
+@keyframes nameSelectedGlow {
+  0%, 100% { text-shadow: 0 0 6px color-mix(in srgb, var(--accent, #29C5FF) 70%, transparent); opacity: 1; }
+  50% { text-shadow: 0 0 18px color-mix(in srgb, var(--accent, #29C5FF) 100%, transparent), 0 0 30px color-mix(in srgb, var(--accent, #29C5FF) 60%, transparent); opacity: 0.82; }
 }
 .assistant-avatar {
   width: 128px; height: 136px; margin: 0 auto 4px;
@@ -234,6 +253,7 @@ a { color: inherit; text-decoration: none; }
 .btn-primary-full:not(:disabled):active { transform: scale(0.98); }
 
 .btn-onboard-continue {
+  position: relative; overflow: visible;
   width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
   background: linear-gradient(100deg, #29C5FF 0%, #7B5CFF 55%, #B15CFF 100%);
   color: white; font-weight: 800; font-size: 16px; letter-spacing: 0.3px;
@@ -243,6 +263,16 @@ a { color: inherit; text-decoration: none; }
 .btn-onboard-continue:disabled { opacity: 0.35; box-shadow: none; }
 .btn-onboard-continue:not(:disabled):active { transform: scale(0.98); }
 .btn-arrow { font-size: 18px; }
+.btn-wave {
+  position: absolute; inset: 0; border-radius: 30px; pointer-events: none;
+  border: 2px solid rgba(255,255,255,0.85); opacity: 0;
+}
+.btn-wave.pulse { animation: btnWaveExpand 0.9s ease-out; }
+@keyframes btnWaveExpand {
+  0% { transform: scale(1); opacity: 0.9; border-color: rgba(255,255,255,0.9); }
+  60% { border-color: rgba(177,92,255,0.7); }
+  100% { transform: scale(1.4); opacity: 0; border-color: rgba(123,92,255,0); }
+}
 
 /* ── SCREEN: ASSISTANT INTRO ──────────────────────────────────────── */
 .screen-intro {
