@@ -493,7 +493,17 @@ function renderLangGrid(containerId, isModal) {
 
 function refreshOnboardContinue() {
   const btn = document.getElementById("onboardContinue");
-  btn.disabled = !(state.assistant && state.lang);
+  const wasDisabled = btn.disabled;
+  const nowEnabled = !!(state.assistant && state.lang);
+  btn.disabled = !nowEnabled;
+  if (wasDisabled && nowEnabled) {
+    const wave = document.getElementById("btnWave");
+    if (wave) {
+      wave.classList.remove("pulse");
+      void wave.offsetWidth; // restart animation even if triggered again later
+      wave.classList.add("pulse");
+    }
+  }
 }
 
 function setAvatarPhoto(elId, a, screenKey) {
