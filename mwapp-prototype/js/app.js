@@ -992,6 +992,17 @@ document.addEventListener("DOMContentLoaded", () => {
   refreshOnboardContinue();
   layoutOnboardGrid();
   positionBeamAndEmblem();
+  // The very first layoutOnboardGrid() call above can run before web fonts
+  // finish loading, measuring fallback-font text metrics that are slightly
+  // off from the real ones — the grid would then stay pinned at that wrong
+  // size until something else (like a language switch) happened to
+  // recalculate it. Re-run once fonts are confirmed ready, and once more
+  // shortly after as a fallback for browsers without the Font Loading API,
+  // so it self-corrects without needing any user interaction.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => { layoutOnboardGrid(); positionBeamAndEmblem(); });
+  }
+  setTimeout(() => { layoutOnboardGrid(); positionBeamAndEmblem(); }, 400);
   window.addEventListener("resize", () => { positionBeamAndEmblem(); layoutOnboardGrid(); });
   window.addEventListener("orientationchange", () => setTimeout(() => { positionBeamAndEmblem(); layoutOnboardGrid(); }, 150));
 
@@ -1077,10 +1088,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const assistantEl = e.target.closest("[data-assistant]");
     if (assistantEl) {
       state.assistant = assistantEl.dataset.assistant;
-      renderAssistantGrid("assistantGrid", false);
-      renderAssistantGrid("assistantGridModal", true);
+      document.querySelectorAll(".assistant-card").forEach((card) => {
+        card.classList.toggle("selected", card.dataset.assistant === state.assistant);
+      });
       refreshOnboardContinue();
       updateAssistantUI();
+      layoutOnboardGrid();
       if (assistantEl.dataset.modalTarget) closeModal(assistantEl.dataset.modalTarget);
     }
 
