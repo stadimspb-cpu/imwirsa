@@ -473,13 +473,13 @@ function gradientStyle(grad) {
   return `background: linear-gradient(135deg, ${grad[0]}, ${grad[1]});`;
 }
 
-function renderAssistantGrid(containerId, isModal) {
+function renderAssistantGrid(containerId, modalTargetId) {
   const el = document.getElementById(containerId);
   el.innerHTML = Object.keys(ASSISTANTS).map((id) => {
     const a = getAssistant(id);
     const photo = getAssistantPhoto(id, "onboardGrid");
     return `
-    <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${isModal ? 'assistantModal' : ''}" style="--accent:${a.accent}">
+    <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${modalTargetId || ''}" style="--accent:${a.accent}">
       <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
       <div class="assistant-name" style="color:${a.accent}">${a.name}</div>
     </button>
@@ -487,10 +487,10 @@ function renderAssistantGrid(containerId, isModal) {
   }).join("");
 }
 
-function renderLangGrid(containerId, isModal) {
+function renderLangGrid(containerId, modalTargetId) {
   const el = document.getElementById(containerId);
   el.innerHTML = LANGUAGES.map((l) => `
-    <button class="lang-pill ${state.lang === l.code ? 'selected' : ''}" data-lang="${l.code}" data-modal-target="${isModal ? 'langModal' : ''}" style="--accent:${l.accent}">
+    <button class="lang-pill ${state.lang === l.code ? 'selected' : ''}" data-lang="${l.code}" data-modal-target="${modalTargetId || ''}" style="--accent:${l.accent}">
       <span class="lang-flag">${l.flag}</span> ${l.label}
     </button>
   `).join("");
@@ -953,10 +953,12 @@ document.addEventListener("DOMContentLoaded", () => {
   loadState();
   ensureMwaId();
   applyStaticI18n();
-  renderAssistantGrid("assistantGrid", false);
-  renderLangGrid("langGrid", false);
-  renderAssistantGrid("assistantGridModal", true);
-  renderLangGrid("langGridModal", true);
+  renderAssistantGrid("assistantGrid", "");
+  renderLangGrid("langGrid", "");
+  renderAssistantGrid("assistantGridModal", "assistantModal");
+  renderLangGrid("langGridModal", "langModal");
+  renderAssistantGrid("assistantGridPrefs", "prefsModal");
+  renderLangGrid("langGridPrefs", "prefsModal");
   refreshOnboardContinue();
   positionBeamAndEmblem();
   window.addEventListener("resize", positionBeamAndEmblem);
@@ -1055,10 +1057,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const langEl = e.target.closest("[data-lang]");
     if (langEl) {
       state.lang = langEl.dataset.lang;
-      renderLangGrid("langGrid", false);
-      renderLangGrid("langGridModal", true);
-      renderAssistantGrid("assistantGrid", false);
-      renderAssistantGrid("assistantGridModal", true);
+      renderLangGrid("langGrid", "");
+      renderLangGrid("langGridModal", "langModal");
+      renderLangGrid("langGridPrefs", "prefsModal");
+      renderAssistantGrid("assistantGrid", "");
+      renderAssistantGrid("assistantGridModal", "assistantModal");
+      renderAssistantGrid("assistantGridPrefs", "prefsModal");
       refreshOnboardContinue();
       applyStaticI18n();
       updateAssistantUI();
