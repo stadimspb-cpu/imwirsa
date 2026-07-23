@@ -37,6 +37,10 @@ const I18N = {
       continueBtn: "Continue",
     },
     intro: {
+      hello: "Hello!",
+      imText: "I'm",
+      role: "your MWA Assistant.",
+      changeLink: "Change assistant or language",
       continueBtn: "Continue",
     },
     name: {
