@@ -81,10 +81,31 @@
 
     <!-- SCREEN 3 — ASSISTANT INTRO -->
     <section class="screen screen-intro" data-screen="intro">
-      <div class="intro-avatar" id="introAvatar"></div>
-      <div class="intro-name" id="introName"></div>
-      <p class="intro-msg" id="introMsg"></p>
-      <button class="btn-continue" data-go="name" data-i18n="intro.continueBtn">Continue</button>
+      <div class="intro-bg" style="background-image: url('assets/scenes/deck-day.jpg');"></div>
+      <div class="intro-progress">
+        <span class="intro-dot done"></span>
+        <span class="intro-dot done"></span>
+        <span class="intro-dot active"></span>
+        <span class="intro-dot"></span>
+      </div>
+      <div class="intro-photo" id="introAvatar"></div>
+      <div class="intro-content">
+        <div class="intro-headline">
+          <span data-i18n="intro.hello">Hello!</span><br>
+          <span data-i18n="intro.imText">I'm</span> <span class="intro-name" id="introName"></span>,<br>
+          <span data-i18n="intro.role">your MWA Assistant.</span>
+        </div>
+        <div class="intro-divider"></div>
+        <p class="intro-msg" id="introMsg"></p>
+      </div>
+      <div class="intro-bottom">
+        <button class="btn-onboard-continue" data-go="name">
+          <span class="btn-wave"></span>
+          <span data-i18n="intro.continueBtn">Continue</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <button class="intro-change-link" data-modal="assistantModal" data-i18n="intro.changeLink">Change assistant or language</button>
+      </div>
     </section>
 
     <!-- SCREEN 4 — NAME CONSENT -->
