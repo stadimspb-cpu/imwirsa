@@ -915,59 +915,6 @@ const LH_LAMP_X_PCT = 15.62, LH_LAMP_Y_PCT = 48.55; // lamp position within that
 // The assistant photo grid should fill whatever vertical space is left
 // after the title, language row, and Continue button — but CSS flex/grid
 // have a well-known quirk where 1fr tracks won't shrink below their
-// content's natural size without very specific minmax(0,1fr)/min-height:0
-// chains at every nested level, and even that didn't fully resolve it here.
-// Simpler and more reliable: measure the real height of everything else at
-// runtime and set the grid's height to exactly fill what's left. Re-run on
-// resize/orientation change and after language switches (translated text
-// can wrap to a different number of lines and change the fixed footprint).
-// The web font (Inter, loaded via Google Fonts with font-display:swap) can
-// take a moment to arrive — until it does, text renders in a fallback font
-// with different metrics, which used to make the first layoutOnboardGrid()
-// measurement slightly wrong and visibly "jump" once corrected. Instead of
-// guessing a timeout, we keep the grid invisible (see .assistant-grid
-// opacity:0 / .ready in CSS) until fonts are confirmed settled, do one
-// final accurate measurement, and only then fade it in — so the seafarer
-// never sees a jump, just a brief natural-feeling fade.
-function revealOnboardGridWhenReady() {
-  const grid = document.querySelector(".assistant-grid");
-  if (!grid) return;
-  const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
-  const safetyTimeout = new Promise((resolve) => setTimeout(resolve, 600)); // never stay hidden forever
-  Promise.race([fontsReady, safetyTimeout]).then(() => {
-    layoutOnboardGrid();
-    positionBeamAndEmblem();
-    grid.classList.add("ready");
-  });
-}
-
-function layoutOnboardGrid() {
-  const inner = document.querySelector(".ob-inner");
-  const grid = document.querySelector(".assistant-grid");
-  if (!inner || !grid) return;
-  const title = document.querySelector(".ob-title");
-  const sub = document.querySelector(".ob-sub");
-  const label = document.querySelector(".screen-onboard .section-label");
-  const langGrid = document.querySelector(".screen-onboard .lang-grid");
-  const btn = document.getElementById("onboardContinue");
-
-  const innerStyle = getComputedStyle(inner);
-  const innerPadding = parseFloat(innerStyle.paddingTop) + parseFloat(innerStyle.paddingBottom);
-
-  const fixedEls = [title, sub, label, langGrid, btn].filter(Boolean);
-  let fixedTotal = 0;
-  fixedEls.forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    const cs = getComputedStyle(el);
-    fixedTotal += rect.height + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom);
-  });
-  const gridStyle = getComputedStyle(grid);
-  fixedTotal += parseFloat(gridStyle.marginBottom);
-
-  const available = inner.clientHeight - innerPadding - fixedTotal;
-  grid.style.height = Math.max(available, 120) + "px"; // 120px floor so it never collapses to nothing
-}
-
 function positionBeamAndEmblem() {
   const beam = document.getElementById("lhBeamLive");
   const bgEl = document.querySelector(".lh-bg");
@@ -1010,11 +957,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAssistantGrid("assistantGridModal", true);
   renderLangGrid("langGridModal", true);
   refreshOnboardContinue();
-  layoutOnboardGrid(); // size it immediately so it's ready the instant we reveal it
   positionBeamAndEmblem();
-  revealOnboardGridWhenReady();
-  window.addEventListener("resize", () => { positionBeamAndEmblem(); layoutOnboardGrid(); });
-  window.addEventListener("orientationchange", () => setTimeout(() => { positionBeamAndEmblem(); layoutOnboardGrid(); }, 150));
+  window.addEventListener("resize", positionBeamAndEmblem);
+  window.addEventListener("orientationchange", () => setTimeout(positionBeamAndEmblem, 150));
 
   if (state.assistant && state.lang) {
     // Returning user — first-launch screens are shown once in a lifetime only.
@@ -1103,7 +1048,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       refreshOnboardContinue();
       updateAssistantUI();
-      layoutOnboardGrid();
       if (assistantEl.dataset.modalTarget) closeModal(assistantEl.dataset.modalTarget);
     }
 
@@ -1117,7 +1061,6 @@ document.addEventListener("DOMContentLoaded", () => {
       refreshOnboardContinue();
       applyStaticI18n();
       updateAssistantUI();
-      layoutOnboardGrid();
       if (langEl.dataset.modalTarget) closeModal(langEl.dataset.modalTarget);
     }
 
