@@ -921,6 +921,26 @@ const LH_LAMP_X_PCT = 15.62, LH_LAMP_Y_PCT = 48.55; // lamp position within that
 // runtime and set the grid's height to exactly fill what's left. Re-run on
 // resize/orientation change and after language switches (translated text
 // can wrap to a different number of lines and change the fixed footprint).
+// The web font (Inter, loaded via Google Fonts with font-display:swap) can
+// take a moment to arrive — until it does, text renders in a fallback font
+// with different metrics, which used to make the first layoutOnboardGrid()
+// measurement slightly wrong and visibly "jump" once corrected. Instead of
+// guessing a timeout, we keep the grid invisible (see .assistant-grid
+// opacity:0 / .ready in CSS) until fonts are confirmed settled, do one
+// final accurate measurement, and only then fade it in — so the seafarer
+// never sees a jump, just a brief natural-feeling fade.
+function revealOnboardGridWhenReady() {
+  const grid = document.querySelector(".assistant-grid");
+  if (!grid) return;
+  const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  const safetyTimeout = new Promise((resolve) => setTimeout(resolve, 600)); // never stay hidden forever
+  Promise.race([fontsReady, safetyTimeout]).then(() => {
+    layoutOnboardGrid();
+    positionBeamAndEmblem();
+    grid.classList.add("ready");
+  });
+}
+
 function layoutOnboardGrid() {
   const inner = document.querySelector(".ob-inner");
   const grid = document.querySelector(".assistant-grid");
@@ -990,19 +1010,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAssistantGrid("assistantGridModal", true);
   renderLangGrid("langGridModal", true);
   refreshOnboardContinue();
-  layoutOnboardGrid();
+  layoutOnboardGrid(); // size it immediately so it's ready the instant we reveal it
   positionBeamAndEmblem();
-  // The very first layoutOnboardGrid() call above can run before web fonts
-  // finish loading, measuring fallback-font text metrics that are slightly
-  // off from the real ones — the grid would then stay pinned at that wrong
-  // size until something else (like a language switch) happened to
-  // recalculate it. Re-run once fonts are confirmed ready, and once more
-  // shortly after as a fallback for browsers without the Font Loading API,
-  // so it self-corrects without needing any user interaction.
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => { layoutOnboardGrid(); positionBeamAndEmblem(); });
-  }
-  setTimeout(() => { layoutOnboardGrid(); positionBeamAndEmblem(); }, 400);
+  revealOnboardGridWhenReady();
   window.addEventListener("resize", () => { positionBeamAndEmblem(); layoutOnboardGrid(); });
   window.addEventListener("orientationchange", () => setTimeout(() => { positionBeamAndEmblem(); layoutOnboardGrid(); }, 150));
 
