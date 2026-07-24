@@ -130,32 +130,34 @@
 
     <!-- SCREEN 5 — HOME / PORT CARD -->
     <section class="screen screen-home" data-screen="home">
-      <div class="home-header">
-        <div class="home-header-top">
-          <div class="hh-brand">MWApp</div>
-          <div class="hh-emblem"><img src="assets/logo-emblem-compact.png" alt="IMWIRSA"></div>
-          <div class="hh-brand">IMWIRSA</div>
-        </div>
-        <div class="home-port-row">
-          <div class="home-port-name" id="homePortName">🇪🇪 Tallinn</div>
-          <div class="home-port-meta">
-            <div class="hb" id="homeWeather">🌡 +14°C</div>
-            <div class="hb" id="homeTz">⏱ UTC+3</div>
+      <div class="home-topzone">
+        <div class="home-header">
+          <div class="home-header-top">
+            <div class="hh-brand">MWApp</div>
+            <div class="hh-emblem"><img src="assets/logo-emblem-compact.png" alt="IMWIRSA"></div>
+            <div class="hh-brand">IMWIRSA</div>
+          </div>
+          <div class="home-port-row">
+            <div class="home-port-name" id="homePortName">🇪🇪 Tallinn</div>
+            <div class="home-port-meta">
+              <div class="hb" id="homeWeather">🌡 +14°C</div>
+              <div class="hb" id="homeTz">⏱ UTC+3</div>
+            </div>
+          </div>
+          <div class="home-port-sub" id="homePortSub">Estonia · Old City Harbour</div>
+          <div class="access-toggle">
+            <button class="toggle-btn" id="btnAccessStd" data-access="std">⚓ Standard</button>
+            <button class="toggle-btn" id="btnAccessVip" data-access="vip">★ Trade Union</button>
           </div>
         </div>
-        <div class="home-port-sub" id="homePortSub">Estonia · Old City Harbour</div>
-        <div class="access-toggle">
-          <button class="toggle-btn" id="btnAccessStd" data-access="std">⚓ Standard</button>
-          <button class="toggle-btn" id="btnAccessVip" data-access="vip">★ Trade Union</button>
-        </div>
+        <button class="home-hero" id="homeHero" data-go="assistantchat">
+          <div class="home-hero-media"><img id="homeHeroImg" src="" alt=""></div>
+          <div class="home-hero-content">
+            <div class="chat-msg them home-hero-bubble" id="homeHeroBubble"></div>
+            <div class="home-hero-cta" data-i18n="home.tapToChat">Tap to chat →</div>
+          </div>
+        </button>
       </div>
-      <button class="home-hero" id="homeHero" data-go="assistantchat">
-        <div class="home-hero-media"><img id="homeHeroImg" src="" alt=""></div>
-        <div class="home-hero-content">
-          <div class="chat-msg them home-hero-bubble" id="homeHeroBubble"></div>
-          <div class="home-hero-cta" data-i18n="home.tapToChat">Tap to chat →</div>
-        </div>
-      </button>
       <div class="home-content">
         <div class="category-grid">
           <button class="cat-tile" data-detail="centre"><div class="cat-icon">🏛</div><div class="cat-label" data-i18n-html="home.categories.centre">Seafarers'<br>Centre</div></button>
