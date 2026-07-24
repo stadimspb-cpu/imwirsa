@@ -20,7 +20,6 @@
 // a curator/translator per port, and is a separate pass once the
 // port data model is finalised.
 // ============================================================
-
 const I18N = {
   en: {
     lighthouse: {
@@ -233,31 +232,25 @@ const I18N = {
       needTransportToShip: "I need transport to ship",
     },
   },
-
   // ---------------------------------------------------------------
   // RUSSIAN — TODO: replace with real translations.
   // Leave keys empty ({}) until ready; the app will show English
   // for this language until this object is filled in.
   // ---------------------------------------------------------------
   ru: {},
-
   // ---------------------------------------------------------------
   // TURKISH — TODO: replace with real translations.
   // ---------------------------------------------------------------
   tr: {},
-
   // ---------------------------------------------------------------
   // FILIPINO — TODO: replace with real translations.
   // ---------------------------------------------------------------
   fil: {},
 };
-
 // ---- lookup helpers ---------------------------------------------------
-
 function getPath(obj, path) {
   return path.split(".").reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
 }
-
 // t("home.whatDoYouNeed") reads the current language (state.lang), and
 // falls back to English for any language object that's empty or missing
 // that specific key — so partially-translated languages never break.
@@ -272,7 +265,6 @@ function t(path, vars) {
   }
   return node;
 }
-
 // Returns an assistant persona merged with its translated name/tag/greet
 // for the current (or given) language. Visual fields — icon, gradient,
 // photo — never change with language, so those stay on ASSISTANTS in
@@ -290,7 +282,6 @@ function getAssistant(id, lang) {
     greet: langNode.greet || enNode.greet,
   };
 }
-
 // Picks a photo for an assistant based on which screen is asking.
 // ASSISTANTS[id].photos is an array — today it usually holds just one
 // image, so every screen shows the same photo (safe default). Partners
@@ -310,7 +301,6 @@ function getAssistantPhoto(id, screenKey) {
   const pos = idx === -1 ? 0 : idx % base.photos.length;
   return base.photos[pos];
 }
-
 // ---- static "chrome" text ---------------------------------------------
 // Walks every element carrying a data-i18n* attribute and fills it from
 // the dictionary. Call once on load, and again whenever the language
