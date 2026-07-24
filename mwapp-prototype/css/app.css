@@ -399,7 +399,7 @@ a { color: inherit; text-decoration: none; }
 .home-topzone {
   position: relative;
   flex-shrink: 0;
-  background-image: url("assets/scenes/home-neutral.jpg");
+  background-image: url("../assets/scenes/home-neutral.jpg");
   background-color: #123A5E; /* shows briefly while the photo loads, and if it's ever missing */
   background-size: cover;
   background-position: center;
@@ -702,7 +702,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ── BOTTOM NAV ────────────────────────────────────────────────────── */
 .bottom-nav {
-  display: flex; background: white; border-top: 1px solid var(--border);
+  display: none; background: white; border-top: 1px solid var(--border);
   padding: 8px 6px calc(6px + var(--safe-bottom)); flex-shrink: 0; z-index: 10;
   transition: background .15s ease, border-color .15s ease;
 }
