@@ -585,6 +585,9 @@ function goToScreen(name) {
   } else {
     bottomNav.style.display = "none";
   }
+  // Transparent nav styling only makes sense over the Home screen's photo
+  // backdrop — every other screen keeps the normal solid white nav.
+  bottomNav.classList.toggle("on-photo", name === "home");
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
   if (name === "volunteer") {
