@@ -110,12 +110,21 @@
 
     <!-- SCREEN 4 — NAME CONSENT -->
     <section class="screen screen-name" data-screen="name">
-      <div class="name-avatar" id="nameAvatar"></div>
+      <div class="name-bg" style="background-image: url('assets/scenes/cabin-evening.jpg');"></div>
+      <div class="intro-progress">
+        <span class="intro-dot done"></span>
+        <span class="intro-dot done"></span>
+        <span class="intro-dot done"></span>
+        <span class="intro-dot active"></span>
+      </div>
       <p class="name-msg" data-i18n="name.msg">One more thing — completely optional. How would you like me to address you? You can skip this at any time.</p>
-      <input class="name-input" id="nameInput" type="text" placeholder="Enter your name or a nickname" data-i18n-placeholder="name.placeholder">
-      <div class="name-btns">
-        <button class="btn-primary-full" data-go="home" id="nameSave" data-i18n="name.save">Save</button>
-        <button class="btn-skip" data-go="home" data-i18n="name.skip">Skip</button>
+      <div class="name-photo" id="nameAvatar"></div>
+      <div class="name-bottom">
+        <input class="name-input" id="nameInput" type="text" placeholder="Enter your name or a nickname" data-i18n-placeholder="name.placeholder">
+        <div class="name-btns">
+          <button class="btn-primary-full" data-go="home" id="nameSave" data-i18n="name.save">Save</button>
+          <button class="btn-skip" data-go="home" data-i18n="name.skip">Skip</button>
+        </div>
       </div>
     </section>
 
