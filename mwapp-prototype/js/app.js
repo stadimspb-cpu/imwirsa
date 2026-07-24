@@ -528,7 +528,8 @@ function updateAssistantUI() {
   document.getElementById("introName").textContent = a.name;
   document.getElementById("introMsg").textContent = a.greet;
 
-  setAvatarPhoto("nameAvatar", a, "nameScreen");
+  const namePhoto = getAssistantPhoto(a.id, "nameScreen");
+  document.getElementById("nameAvatar").innerHTML = `<img src="${namePhoto}" alt="${a.name}" loading="lazy">`;
 
   setAvatarPhoto("settingsAvatar", a, "settings");
   document.getElementById("settingsName").textContent = a.name;
