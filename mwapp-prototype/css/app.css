@@ -127,18 +127,20 @@ a { color: inherit; text-decoration: none; }
 }
 
 .lh-content {
-  position: absolute; left: 0; right: 0; top: 34%; bottom: 0; z-index: 5;
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  text-align: center; padding: 0 28px 18px;
+  position: absolute; left: 0; right: 0; top: 9%; bottom: 0; z-index: 5;
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
+  text-align: left; padding: 0 32px 18px;
 }
 .lh-sub {
+  align-self: center; text-align: center;
   color: rgba(255,255,255,0.85); font-size: 12.5px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
   margin-bottom: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.6);
-  opacity: 0; animation: lhFadeIn 1s ease 0.2s forwards;
+  opacity: 0; animation: lhFadeIn 1s ease 0.95s forwards;
 }
 .lh-emblem {
-  width: 116px; height: 116px; margin-bottom: 16px;
-  opacity: 0; animation: lhFadeIn 1.2s ease 0.45s forwards, emblemGlow 2.6s ease-in-out 1.6s infinite;
+  align-self: center; margin-top: auto;
+  width: 150px; height: 150px; margin-bottom: 16px;
+  opacity: 0; animation: lhFadeIn 1.2s ease 0.7s forwards, emblemGlow 2.6s ease-in-out 1.9s infinite;
 }
 .lh-emblem img { width: 100%; height: 100%; object-fit: contain; display: block; }
 @keyframes emblemGlow {
@@ -146,18 +148,19 @@ a { color: inherit; text-decoration: none; }
   50% { filter: drop-shadow(0 0 34px rgba(255,220,130,0.95)) drop-shadow(0 0 60px rgba(255,200,90,0.5)); }
 }
 .lh-headline {
-  font-size: 27px; font-weight: 800; color: white; margin-bottom: 14px;
+  font-size: 30px; font-weight: 800; color: white; margin-bottom: 20px; max-width: 260px;
   text-shadow: 0 2px 18px rgba(0,0,0,0.65);
-  opacity: 0; animation: lhFadeIn 1.2s ease 0.7s forwards;
+  opacity: 0; animation: lhFadeIn 1.2s ease 0.2s forwards;
 }
 @keyframes lhFadeIn { from { opacity:0; transform: translateY(14px);} to {opacity:1; transform:none;} }
 .lh-text {
-  color: rgba(255,255,255,0.94); font-size: 16px; line-height: 1.7; max-width: 320px;
+  color: rgba(255,255,255,0.94); font-size: 15px; line-height: 1.65; max-width: 290px;
   text-shadow: 0 1px 14px rgba(0,0,0,0.6);
-  opacity: 0; animation: lhFadeIn 1.2s ease 0.95s forwards;
-  margin-bottom: 30px;
+  opacity: 0; animation: lhFadeIn 1.2s ease 0.45s forwards;
+  margin-bottom: 0;
 }
 .btn-continue {
+  align-self: center;
   position: relative; overflow: hidden;
   background: linear-gradient(135deg, #22E1FF 0%, #0066FF 55%, #0022AA 100%);
   color: white; font-weight: 800; font-size: 16px; letter-spacing: 0.5px;
