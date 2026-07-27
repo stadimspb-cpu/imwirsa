@@ -863,16 +863,6 @@ function isComplexTopic(text) {
 // Assistant demo replies now come from t("demoReplies") in i18n.js.
 let assistantReplyIndex = 0;
 
-// Quick-action chips shown until the seafarer sends their first message.
-// Trimmed to items that don't already duplicate the home screen (partner
-// feedback) — Seafarers' Centre/Pharmacy/Medical/Emergency live as home
-// tiles or the Emergency card already, so they're not repeated here.
-const QUICK_ACTIONS = [
-  { key: "returnToShip",        icon: "🚢", type: "detail", target: "transport" },
-  { key: "coordinator",         icon: "👤", type: "screen", target: "volunteer" },
-  { key: "needTransportToShip", icon: "🚌", type: "detail", target: "transport" },
-];
-
 // Session state for the assistant-chat screen (point 8 fix): once opened,
 // the conversation stays intact — navigating into a category and pressing
 // "back" returns here instead of dumping the seafarer back on the standard
@@ -881,30 +871,20 @@ const QUICK_ACTIONS = [
 let chatSessionOpen = false;
 let returnToChat = false;
 
-function hideAssistantChatQuickActions() {
-  const qa = document.getElementById("qaGrid");
-  if (qa) qa.classList.add("hidden");
+function setChatHeaderPhoto(a) {
+  const el = document.getElementById("chatAssistantPhoto");
+  if (!el) return;
+  const photo = getAssistantPhoto(a.id, "chatHero");
+  el.innerHTML = `<img src="${photo}" alt="${a.name}" loading="lazy">`;
 }
 
 function openAssistantChat() {
   const a = getAssistant(state.assistant) || getAssistant("alex");
-  const header = document.getElementById("assistantChatHeader");
-  if (header) header.style.cssText = gradientStyle(a.grad);
-  setAvatarPhoto("chatAssistantAvatar", a, "chatHeader");
+  setChatHeaderPhoto(a);
   document.getElementById("chatAssistantName").textContent = a.name;
 
   if (chatSessionOpen) return; // resuming — leave the existing thread as-is
   chatSessionOpen = true;
-
-  const qaGrid = document.getElementById("qaGrid");
-  if (qaGrid) {
-    qaGrid.classList.remove("hidden");
-    qaGrid.innerHTML = QUICK_ACTIONS.map((qa) => `
-      <button class="qa-chip ${qa.urgent ? "urgent" : ""}" data-qa="${qa.key}">
-        <span class="qa-icon">${qa.icon}</span><span>${t(`quickActions.${qa.key}`)}</span>
-      </button>
-    `).join("");
-  }
 
   const body = document.getElementById("assistantChatBody");
   body.innerHTML = `<div class="chat-msg them">${escapeHtml(a.greet)}</div>`;
@@ -916,7 +896,6 @@ function sendAssistantChatMessage() {
   const input = document.getElementById("assistantChatInput");
   const text = input.value.trim();
   if (!text) return;
-  hideAssistantChatQuickActions();
   const body = document.getElementById("assistantChatBody");
   const existingToggle = document.getElementById("escalationToggle");
   if (existingToggle) existingToggle.remove(); // sending a new message supersedes an unanswered toggle
@@ -1075,16 +1054,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const detailEl = e.target.closest("[data-detail]");
     if (detailEl) { openDetail(detailEl.dataset.detail); }
-
-    const qaEl = e.target.closest("[data-qa]");
-    if (qaEl) {
-      const qa = QUICK_ACTIONS.find((x) => x.key === qaEl.dataset.qa);
-      if (qa) {
-        returnToChat = true; // leaving chat via a quick action — remember to come back here
-        if (qa.type === "detail") { openDetail(qa.target); }
-        else if (qa.type === "screen") { goToScreen(qa.target); }
-      }
-    }
 
     const sdEl = e.target.closest("[data-sd]");
     if (sdEl) { openSubDetail(sdEl.dataset.sd); }
