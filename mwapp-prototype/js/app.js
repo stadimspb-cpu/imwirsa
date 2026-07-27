@@ -223,6 +223,187 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
+  // ── TALLINN · CITY LIFE ────────────────────────────────────────────
+  // Static places only — no timed walking routes and no live event feed.
+  // Both were deliberately dropped: a route implies the app has worked out
+  // that the seafarer will be back before the ship sails, which we cannot
+  // promise, and live events need a backend and someone to keep them fresh.
+  tallinn_city_parks: {
+    title: "Parks & Waterfronts",
+    sections: [
+      { icon: "🌊", title: "Waterfront", rows: [
+        { icon: "🚶", title: "Kultuurikilomeeter promenade", sub: "Starts right outside the port · flat seaside walk, benches along the way", action: "🧭" },
+        { icon: "🌅", title: "Patarei seafront", sub: "Open view over the bay · quiet in the evening", action: "🧭" },
+      ]},
+      { icon: "🌳", title: "Green space", rows: [
+        { icon: "🌲", title: "Kadriorg park", sub: "3 km · large wooded park, ponds, benches · free, always open", action: "🧭" },
+        { icon: "🪑", title: "Tornide väljak", sub: "1.5 km · lawn under the old town wall · popular quiet spot", action: "🧭" },
+      ]},
+      { icon: "👁", title: "Viewpoints", rows: [
+        { icon: "🏰", title: "Kohtuotsa platform, Toompea", sub: "Free · the classic view over the rooftops and the port", action: "🧭" },
+      ]},
+    ],
+    note: "If you only have an hour and want air rather than sightseeing, the promenade outside the port is the simplest choice — you never lose sight of the harbour.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_city_culture: {
+    title: "Culture & Must-See",
+    sections: [
+      { icon: "⭐", title: "Top 5", rows: [
+        { icon: "1️⃣", title: "Old Town & Town Hall Square", sub: "UNESCO medieval centre · 2 km · free to walk", action: "🧭" },
+        { icon: "2️⃣", title: "Toompea hill & viewing platforms", sub: "Upper town, cathedral, panorama over the port", action: "🧭" },
+        { icon: "3️⃣", title: "Alexander Nevsky Cathedral", sub: "Orthodox cathedral on Toompea · free entry, modest dress", action: "🧭" },
+        { icon: "4️⃣", title: "Seaplane Harbour (Lennusadam)", sub: "Maritime museum in a seaplane hangar · submarine, icebreaker · 1.5 km", action: "🧭" },
+        { icon: "5️⃣", title: "Kadriorg Palace & park", sub: "Baroque palace and art museum · 3 km", action: "🧭" },
+      ]},
+    ],
+    note: "Seaplane Harbour is the one most seafarers come back talking about — it is close to the port, indoors, and makes sense whatever the weather.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_city_free: {
+    title: "Free Time & Relax",
+    sections: [
+      { icon: "🆓", title: "Free to visit", rows: [
+        { icon: "🏰", title: "Old Town streets & city wall", sub: "Walking the medieval centre costs nothing" },
+        { icon: "⛪", title: "Churches and the cathedral", sub: "Free entry · donations optional" },
+        { icon: "👁", title: "Kohtuotsa & Patkuli platforms", sub: "Free viewpoints over the city and the harbour", action: "🧭" },
+      ]},
+      { icon: "📞", title: "Somewhere to call home", rows: [
+        { icon: "🏛", title: "Seafarers' Centre lounge", sub: "Free Wi-Fi, power sockets, quiet corner · no obligation to buy anything", action: "🧭" },
+        { icon: "📚", title: "Tallinn Central Library", sub: "Free Wi-Fi, warm, seats, sockets · no purchase needed · 2 km", action: "🧭" },
+        { icon: "🏬", title: "Viru keskus seating areas", sub: "Free Wi-Fi, open until 21:00", action: "🧭" },
+      ]},
+    ],
+    note: "If you just need a warm place with signal to speak to your family, the centre's lounge is the safest bet — nobody there will hurry you along.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_city_safety: {
+    title: "Safety",
+    // The one genuine danger of a city card is a seafarer losing track of time.
+    // Rather than build timed routes (rejected — the app cannot promise you'll
+    // make it back), the callout points at the Ship screen, which already
+    // solves the "which gate was it?" problem.
+    callout: { tone: "warn", text: "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen. Finding the right gate again after dark is the single most common problem ashore." },
+    sections: [
+      { icon: "🟢", title: "General risk", rows: [
+        { icon: "🛡", title: "Low risk — normal precautions", sub: "Tallinn is a safe city · ordinary big-city care is enough" },
+      ]},
+      { icon: "🌙", title: "At night", rows: [
+        { icon: "🧑‍🤝‍🧑", title: "Go ashore with colleagues", sub: "Safer than walking into town alone, especially late" },
+        { icon: "🚕", title: "Use an app taxi after dark", sub: "Bolt or Uber · avoid unmarked cars offering rides at the terminal" },
+        { icon: "🍺", title: "Alcohol", sub: "Bars close late · drinking in public streets and parks is prohibited" },
+      ]},
+      { icon: "⚠️", title: "Watch out for", rows: [
+        { icon: "💸", title: "Fixed-price offers without a meter", sub: "The usual way seafarers get overcharged near the terminal" },
+        { icon: "🎭", title: "People claiming to represent the centre", sub: "Real staff never ask you for money · ignore them, or call the police" },
+      ]},
+      { icon: "📞", title: "If something goes wrong", rows: [
+        { icon: "🚨", title: "112", sub: "Police and ambulance · free · 24/7 · English spoken", action: "📞" },
+        { icon: "🏛", title: "Seafarers' Centre", sub: "+372 5555 1234 · they deal with these situations regularly", action: "📞" },
+      ]},
+    ],
+    updated: "24 July 2026",
+  },
+
+  // ── TALLINN · SPIRITUAL CARE ───────────────────────────────────────
+  // Static contacts only. No built-in chat with anyone outside IMWIRSA:
+  // that would create a second escalation path around the Coordinator.
+  // The neutral "no particular faith" row is kept first on the level-2
+  // list, because a seafarer who simply wants a human conversation should
+  // not have to pick a denomination before he can ask for one.
+  tallinn_spiritual_stella: {
+    title: "Stella Maris",
+    sections: [
+      { icon: "🤝", title: "What they offer", rows: [
+        { icon: "💬", title: "Ship visits and conversation", sub: "Chaplain comes aboard on request · no religious obligation" },
+        { icon: "🙏", title: "Prayer, confession, blessing", sub: "Catholic chaplaincy · other denominations welcome" },
+        { icon: "🚐", title: "Transport and practical help", sub: "Shopping runs, SIM cards, help contacting family" },
+      ]},
+      { icon: "🕐", title: "When", rows: [
+        { icon: "📅", title: "Mon–Sat, 10:00 – 18:00", sub: "Ship visits by arrangement, including outside these hours" },
+      ]},
+    ],
+    contacts: [
+      { icon: "🧑‍💼", title: "Fr. Mihkel Laar — port chaplain", sub: "English, Estonian, Russian", action: "💬" },
+      { icon: "📞", title: "+372 5555 2210", sub: "Also WhatsApp", action: "📞" },
+    ],
+    updated: "24 July 2026",
+  },
+
+  tallinn_spiritual_mts: {
+    title: "The Mission to Seafarers",
+    sections: [
+      { icon: "🤝", title: "What they offer", rows: [
+        { icon: "💬", title: "Ship visits and a listening ear", sub: "Anglican chaplaincy · open to seafarers of any faith or none" },
+        { icon: "📶", title: "Help getting online", sub: "Wi-Fi access and SIM cards for calling home" },
+        { icon: "⚖️", title: "Support in difficulty", sub: "Abandonment, unpaid wages, bereavement · they know who to call" },
+      ]},
+      { icon: "🕐", title: "When", rows: [
+        { icon: "📅", title: "Mon–Fri, 09:00 – 17:00", sub: "Emergency ship visits outside hours by phone" },
+      ]},
+    ],
+    contacts: [
+      { icon: "📞", title: "+372 5555 2244", sub: "English spoken", action: "📞" },
+      { icon: "🌐", title: "missiontoseafarers.org", sub: "Global network · chaplains in most major ports", action: "›" },
+    ],
+    updated: "24 July 2026",
+  },
+
+  tallinn_spiritual_muslim: {
+    title: "Muslim Support",
+    sections: [
+      { icon: "🕌", title: "Where", rows: [
+        { icon: "📍", title: "Tallinn Islamic Centre", sub: "Keevise 9 · prayer hall, washing facilities · 4 km from the port", action: "🧭" },
+        { icon: "🕐", title: "Open for the five daily prayers", sub: "Friday prayer around midday · arrive a little early" },
+      ]},
+      { icon: "🤝", title: "Help available", rows: [
+        { icon: "💬", title: "Conversation in Arabic, Turkish, Russian", sub: "Ask at the centre · volunteers are usually present" },
+        { icon: "🍽", title: "Halal food", sub: "Several shops and cafés in the city · ask the centre for the nearest" },
+      ]},
+    ],
+    contacts: [
+      { icon: "📞", title: "+372 5555 2277", sub: "Islamic Centre, general enquiries", action: "📞" },
+    ],
+    updated: "24 July 2026",
+  },
+
+  tallinn_spiritual_other: {
+    title: "Other Faith Communities",
+    sections: [
+      { icon: "☦️", title: "Orthodox", rows: [
+        { icon: "⛪", title: "Alexander Nevsky Cathedral, Toompea", sub: "Daily services · Church Slavonic and Estonian", action: "🧭" },
+        { icon: "⛪", title: "St Nicholas Church, Old Town", sub: "Russian Orthodox parish · 2 km", action: "🧭" },
+      ]},
+      { icon: "✝️", title: "Protestant & Catholic", rows: [
+        { icon: "⛪", title: "St Peter and St Paul, Old Town", sub: "Roman Catholic · Sunday Mass in several languages", action: "🧭" },
+        { icon: "⛪", title: "Charles's Church", sub: "Estonian Evangelical Lutheran · 2.5 km", action: "🧭" },
+      ]},
+      { icon: "🕊", title: "Not listed here?", rows: [
+        { icon: "💬", title: "Ask the Seafarers' Centre", sub: "They keep contacts for communities not shown in the app", action: "📞" },
+      ]},
+    ],
+    updated: "24 July 2026",
+  },
+
+  tallinn_spiritual_prayer: {
+    title: "Places for Prayer",
+    sections: [
+      { icon: "🏛", title: "In the port", rows: [
+        { icon: "🕊", title: "Prayer room, Seafarers' Centre", sub: "Multi-faith · open during centre hours · no booking, no questions asked", action: "🧭" },
+        { icon: "🤫", title: "Quiet room, Seafarers' Centre", sub: "For being alone for a while · not religious in itself", action: "🧭" },
+      ]},
+      { icon: "🏙", title: "In the city", rows: [
+        { icon: "⛪", title: "Old Town churches", sub: "Most open to visitors during the day · sitting quietly is normal", action: "🧭" },
+        { icon: "🕌", title: "Tallinn Islamic Centre", sub: "Prayer hall and washing facilities · Keevise 9", action: "🧭" },
+      ]},
+    ],
+    note: "The prayer room and the quiet room at the centre are the closest options to the ship, and neither requires you to explain yourself to anyone.",
+    updated: "24 July 2026",
+  },
+
   // ── OTHER PORTS — real data we already hold, kept under the new shape ──
   hamburg_centre_about: {
     title: "About the Centre",
@@ -352,6 +533,9 @@ function spiritualSkeleton() {
   return {
     title: "Spiritual Care",
     rows: [
+      // Available in every port regardless of curator data: wanting to talk to
+      // someone doesn't depend on which missions a port has registered yet.
+      { icon: "💬", title: "No particular faith — I'd just like to talk", sub: "Speak with your assistant, who can bring in the IMWIRSA Coordinator", action: "›", go: "assistantchat" },
       PENDING("🕊", "Missions & Chaplains", "Seafarers' missions, chaplains and local contacts"),
       PENDING("🙏", "Places for Prayer", "Prayer rooms, quiet places, opening hours"),
     ],
@@ -391,8 +575,28 @@ const PORTS = {
           { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "tallinn_shops_pharmacies" },
         ],
       },
-      citylife: citylifeSkeleton(),
-      spiritual: spiritualSkeleton(),
+      citylife: {
+        title: "City Life",
+        rows: [
+          { icon: "🌳", title: "Parks & Waterfronts", sub: "Promenade, parks, quiet green space, viewpoints", action: "›", sd: "tallinn_city_parks" },
+          { icon: "🏛", title: "Culture & Must-See", sub: "Top 5 city places, museums, historic centre", action: "›", sd: "tallinn_city_culture" },
+          { icon: "🧘", title: "Free Time & Relax", sub: "Free places, viewpoints, somewhere to sit and call home", action: "›", sd: "tallinn_city_free" },
+          { icon: "🛡", title: "Safety", sub: "What to know before going into the city", action: "›", sd: "tallinn_city_safety" },
+        ],
+      },
+      spiritual: {
+        title: "Spiritual Care",
+        rows: [
+          // Neutral option first, deliberately: someone who simply wants to talk
+          // should not have to choose a denomination in order to ask.
+          { icon: "💬", title: "No particular faith — I'd just like to talk", sub: "Speak with your assistant, who can bring in the IMWIRSA Coordinator", action: "›", go: "assistantchat" },
+          { icon: "⚓", title: "Stella Maris", sub: "Catholic chaplaincy · ship visits, practical help", action: "›", sd: "tallinn_spiritual_stella" },
+          { icon: "✝️", title: "The Mission to Seafarers", sub: "Anglican chaplaincy · open to any faith or none", action: "›", sd: "tallinn_spiritual_mts" },
+          { icon: "🕌", title: "Muslim Support", sub: "Islamic Centre · prayer hall, conversation, halal food", action: "›", sd: "tallinn_spiritual_muslim" },
+          { icon: "⛪", title: "Other Faith Communities", sub: "Orthodox, Lutheran, Catholic parishes in the city", action: "›", sd: "tallinn_spiritual_other" },
+          { icon: "🙏", title: "Places for Prayer", sub: "Prayer room and quiet room at the centre, places in the city", action: "›", sd: "tallinn_spiritual_prayer" },
+        ],
+      },
       emergency: {
         title: "Emergency Contacts",
         rows: [
@@ -867,16 +1071,21 @@ function openDetail(key) {
       </div>
     </div>`;
     }
-    const rowClickable = !!r.sd && !locked;
+    // A row normally opens a level-3 subdetail (`sd`). A few rows instead
+    // hand straight off to a screen (`go`) — used for the neutral "I'd just
+    // like to talk" entry in Spiritual Care, which belongs in that list but
+    // has no reference page behind it, only the assistant.
+    const rowClickable = (!!r.sd || !!r.go) && !locked;
+    const attrs = locked ? "" : (r.sd ? `data-sd="${r.sd}"` : (r.go ? `data-go="${r.go}"` : ""));
     return `
-    <div class="d-row ${rowClickable ? 'clickable' : ''}" ${rowClickable ? `data-sd="${r.sd}"` : ""}>
+    <div class="d-row ${rowClickable ? 'clickable' : ''}" ${attrs}>
       <div class="d-icon">${r.icon}</div>
       <div class="d-body">
         <div class="d-title">${r.title}</div>
         <div class="d-sub">${r.sub}</div>
         ${r.tag ? `<span class="d-tag ${r.tagClosed ? 'closed' : ''}">${r.tag}</span>` : ""}
       </div>
-      ${r.sd ? `<div class="d-action">${locked ? '🔒' : '›'}</div>` : (r.action ? `<div class="d-action">${r.action}</div>` : "")}
+      ${(r.sd || r.go) ? `<div class="d-action">${locked ? '🔒' : '›'}</div>` : (r.action ? `<div class="d-action">${r.action}</div>` : "")}
     </div>`;
   }).join("");
 
