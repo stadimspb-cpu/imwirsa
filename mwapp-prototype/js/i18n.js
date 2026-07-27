@@ -132,6 +132,7 @@ const I18N = {
     },
     nav: {
       port: "Port",
+      ship: "Ship",
       coordinator: "Coordinator",
       settings: "Settings",
       language: "Language",
@@ -230,6 +231,17 @@ const I18N = {
       returnToShip: "Return to my ship",
       coordinator: "Coordinator",
       needTransportToShip: "I need transport to ship",
+    },
+    ship: {
+      title: "My Ship",
+      introText: "Before you go ashore, mark exactly where your ship is docked. If you're not sure how to get back — especially at night, or if the port has several gates — MWApp will guide you to this exact spot, not just \"the port\".",
+      markBtn: "📍 Mark my ship's location",
+      markedLabel: "Location marked",
+      markedToday: "Today",
+      navigateBtn: "🧭 Navigate back to my ship",
+      remarkBtn: "Mark a new location",
+      errorText: "Couldn't get your location. Please check that location access is allowed for this browser, then try again.",
+      privacyNote: "Saved only on this device. Never sent to our servers.",
     },
   },
   // ---------------------------------------------------------------

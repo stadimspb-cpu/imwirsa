@@ -411,6 +411,71 @@ function requestLocation(onDone) {
   );
 }
 
+// ---- Ship location — mark exit point, navigate back -----------------------
+// Deliberately simple and cheap: one GPS point taken once, saved only on
+// this device (inside state / localStorage — same mechanism as everything
+// else in state), then handed to the phone's own maps app as a destination.
+// No live tracking, no AIS subscription, no server involved.
+function formatShipTimestamp(ts) {
+  const d = new Date(ts);
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return sameDay ? `${t("ship.markedToday") || "Today"}, ${time}` : `${d.toLocaleDateString()}, ${time}`;
+}
+
+function renderShipScreen() {
+  const noPointEl = document.getElementById("shipNoPoint");
+  const hasPointEl = document.getElementById("shipHasPoint");
+  const errorEl = document.getElementById("shipError");
+  if (!noPointEl || !hasPointEl) return;
+  errorEl.classList.add("hidden");
+  if (state.shipPoint) {
+    noPointEl.classList.add("hidden");
+    hasPointEl.classList.remove("hidden");
+    document.getElementById("shipMarkedTime").textContent = formatShipTimestamp(state.shipPoint.ts);
+  } else {
+    noPointEl.classList.remove("hidden");
+    hasPointEl.classList.add("hidden");
+  }
+}
+
+function shipMarkLocation() {
+  const errorEl = document.getElementById("shipError");
+  const btn = document.getElementById("shipMarkBtn");
+  if (!("geolocation" in navigator)) { errorEl.classList.remove("hidden"); return; }
+  if (btn) btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      state.shipPoint = { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: Date.now() };
+      saveState();
+      if (btn) btn.disabled = false;
+      renderShipScreen();
+    },
+    () => {
+      if (btn) btn.disabled = false;
+      errorEl.classList.remove("hidden");
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+}
+
+function shipNavigateBack() {
+  if (!state.shipPoint) return;
+  const { lat, lng } = state.shipPoint;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const url = isIOS
+    ? `https://maps.apple.com/?daddr=${lat},${lng}`
+    : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+  window.open(url, "_blank");
+}
+
+function shipClearPoint() {
+  state.shipPoint = null;
+  saveState();
+  renderShipScreen();
+}
+
 function dismissLocationBanner() {
   localStorage.setItem("mwapp_geo_dismissed", "1");
   const banner = document.getElementById("locationBanner");
@@ -448,6 +513,8 @@ const state = {
   portId: "tallinn",      // will be set automatically once geolocation is wired in; manual for now
   context: "at_port",     // "at_port" | "in_city" — reserved for the planned geolocation feature
   accessView: "std",      // "std" | "vip" — which toggle is selected on the port card
+  shipPoint: null,        // { lat, lng, ts } — where the seafarer marked their ship before going ashore.
+                           // Saved locally only (see saveState/loadState), never sent anywhere.
 };
 
 function ensureMwaId() {
@@ -579,7 +646,7 @@ function goToScreen(name) {
   if (target) target.classList.add("active");
 
   const bottomNav = document.getElementById("bottomNav");
-  if (["home", "volunteer", "settings", "detail", "subdetail", "assistantchat"].includes(name)) {
+  if (["home", "volunteer", "settings", "detail", "subdetail", "assistantchat", "ship"].includes(name)) {
     bottomNav.style.display = "flex";
     document.querySelectorAll(".nav-item[data-nav]").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
   } else {
@@ -595,6 +662,7 @@ function goToScreen(name) {
     if (ctxEl) ctxEl.textContent = currentPort().meta.name;
   }
   if (name === "assistantchat") openAssistantChat();
+  if (name === "ship") renderShipScreen();
   if (name === "home") { maybeShowInstallBanner(); maybeShowLocationBanner(); }
 }
 
@@ -977,6 +1045,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "nameSave") {
       state.name = document.getElementById("nameInput").value.trim();
     }
+
+    if (e.target.id === "shipMarkBtn" || e.target.closest("#shipMarkBtn")) shipMarkLocation();
+    if (e.target.id === "shipNavigateBtn" || e.target.closest("#shipNavigateBtn")) shipNavigateBack();
+    if (e.target.id === "shipRemarkBtn" || e.target.closest("#shipRemarkBtn")) shipClearPoint();
 
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
