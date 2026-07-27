@@ -674,6 +674,13 @@ let qrCountdownTimer = null;
 // prompt here — it's handled separately below, presented by the
 // seafarer's own chosen assistant.
 
+function setDetailHeaderPhoto(a) {
+  const el = document.getElementById("detailHeaderPhoto");
+  if (!el) return;
+  const photo = getAssistantPhoto(a.id, "detailHeader");
+  el.innerHTML = `<img src="${photo}" alt="${a.name}" loading="lazy">`;
+}
+
 function openDetail(key) {
   const data = currentCategories()[key];
   if (!data) return;
@@ -685,28 +692,25 @@ function openDetail(key) {
   document.getElementById("detailCrumbPort").textContent = port.meta.name;
   document.getElementById("detailTitle").textContent = data.title + (locked ? " 🔒" : "");
 
+  const a = getAssistant(state.assistant) || getAssistant("alex");
+  setDetailHeaderPhoto(a);
+
   let bubbleHtml = "";
   if (data.gated) {
-    const a = getAssistant(state.assistant) || getAssistant("alex");
     const msg = valid ? t("wellness.unlockedIntro") : t("wellness.lockedIntro");
     bubbleHtml = `
       <div class="assistant-bubble premium" style="margin:0 0 14px;">
-        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${getAssistantPhoto(a.id, "detailBubble")}" alt="${a.name}" loading="lazy"></div>
-        <div>
-          <div class="ab-name">${a.name} · ${t("wellness.roleSuffix")}</div>
-          <div class="ab-text">${msg}</div>
-        </div>
+        <div class="ab-name">${a.name} · ${t("wellness.roleSuffix")}</div>
+        <div class="ab-text">${msg}</div>
+        <button class="ab-cta" data-go="assistantchat">${t("askMe.wellness") || t("askMe.default")}</button>
       </div>`;
   } else {
-    const a = getAssistant(state.assistant) || getAssistant("alex");
     const msg = t(`categoryPrompts.${key}`) || "How can I help you here?";
     bubbleHtml = `
       <div class="assistant-bubble" style="margin:0 0 14px;">
-        <div class="ab-avatar" style="${gradientStyle(a.grad)}"><img src="${getAssistantPhoto(a.id, "detailBubble")}" alt="${a.name}" loading="lazy"></div>
-        <div>
-          <div class="ab-name">${a.name}</div>
-          <div class="ab-text">${msg}</div>
-        </div>
+        <div class="ab-name">${a.name}</div>
+        <div class="ab-text">${msg}</div>
+        <button class="ab-cta" data-go="assistantchat">${t(`askMe.${key}`) || t("askMe.default")}</button>
       </div>`;
   }
 

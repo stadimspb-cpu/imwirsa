@@ -217,6 +217,17 @@ const I18N = {
       safety: "Any safety concerns in the port area? I'm listening — let me know.",
       emergency: "If this is urgent, use the contacts below right away. I'm also here if you want to talk it through.",
     },
+    askMe: {
+      centre: "Not sure where to start? Ask me →",
+      transport: "Can't find your ride? Ask me →",
+      connect: "Need help getting online? Ask me →",
+      shops: "Looking for something specific? Ask me →",
+      medical: "Unsure what to do? Ask me →",
+      safety: "Something doesn't feel right? Ask me →",
+      emergency: "Need help right now? Ask me →",
+      wellness: "Have a question about this? Ask me →",
+      default: "Not sure? Ask me →",
+    },
     wellness: {
       unlockedIntro: "Welcome back — your Trade Union card is confirmed for this month. Here's what's available to you.",
       lockedIntro: "These are Trade Union member services. To unlock them, please confirm your card status in Settings → Union / Trade Card.",
@@ -303,7 +314,7 @@ function getAssistant(id, lang) {
 // different angle each time — instead of one static headshot everywhere.
 const PHOTO_SCREEN_ORDER = [
   "onboardGrid", "introHero", "nameScreen", "homeBubble",
-  "chatHeader", "chatHero", "detailBubble", "settings",
+  "chatHeader", "chatHero", "detailHeader", "settings",
 ];
 function getAssistantPhoto(id, screenKey) {
   const base = ASSISTANTS[id];
