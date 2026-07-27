@@ -207,6 +207,35 @@
       </div>
     </section>
 
+    <!-- SCREEN 5c — SHIP (mark exit point + navigate back) -->
+    <section class="screen screen-ship" data-screen="ship">
+      <div class="detail-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="home">←</button>
+          <div class="detail-title" data-i18n="ship.title">My Ship</div>
+        </div>
+      </div>
+      <div class="ship-body">
+        <div class="ship-icon">⚓</div>
+
+        <div id="shipNoPoint">
+          <p class="ship-text" data-i18n="ship.introText">Before you go ashore, mark exactly where your ship is docked. If you're not sure how to get back — especially at night, or if the port has several gates — MWApp will guide you to this exact spot, not just "the port".</p>
+          <button class="btn-primary-full" id="shipMarkBtn" data-i18n="ship.markBtn">📍 Mark my ship's location</button>
+        </div>
+
+        <div id="shipHasPoint" class="hidden">
+          <div class="ship-marked-badge">✅ <span data-i18n="ship.markedLabel">Location marked</span></div>
+          <div class="ship-marked-time" id="shipMarkedTime"></div>
+          <button class="btn-primary-full" id="shipNavigateBtn" data-i18n="ship.navigateBtn">🧭 Navigate back to my ship</button>
+          <button class="btn-skip" id="shipRemarkBtn" data-i18n="ship.remarkBtn">Mark a new location</button>
+        </div>
+
+        <div class="ship-error hidden" id="shipError" data-i18n="ship.errorText">Couldn't get your location. Please check that location access is allowed for this browser, then try again.</div>
+
+        <div class="ship-note" data-i18n="ship.privacyNote">Saved only on this device. Never sent to our servers.</div>
+      </div>
+    </section>
+
     <!-- SCREEN 6 — CATEGORY DETAIL (Level 2) -->
     <section class="screen screen-detail" data-screen="detail">
       <div class="detail-header">
@@ -285,13 +314,11 @@
 
   </div>
 
-    <!-- BOTTOM NAV (5 items: Port / Volunteer / Settings / Language / Assistant) -->
+    <!-- BOTTOM NAV (3 items: Port / Ship / Settings — Language & Assistant moved into Settings) -->
     <div class="bottom-nav" id="bottomNav">
       <button class="nav-item active" data-go="home" data-nav="home"><div class="ni">🏠</div><div class="nt" data-i18n="nav.port">Port</div></button>
-      <button class="nav-item" data-go="volunteer" data-nav="volunteer"><div class="ni">💬</div><div class="nt" data-i18n="nav.coordinator">Coordinator</div></button>
+      <button class="nav-item" data-go="ship" data-nav="ship"><div class="ni">⚓</div><div class="nt" data-i18n="nav.ship">Ship</div></button>
       <button class="nav-item" data-go="settings" data-nav="settings"><div class="ni">⚙️</div><div class="nt" data-i18n="nav.settings">Settings</div></button>
-      <button class="nav-item" data-modal="langModal"><div class="ni">🌍</div><div class="nt" data-i18n="nav.language">Language</div></button>
-      <button class="nav-item" data-modal="assistantModal"><div class="ni">👤</div><div class="nt" data-i18n="nav.assistant">Assistant</div></button>
     </div>
 
     <!-- MODALS -->
