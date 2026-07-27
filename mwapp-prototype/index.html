@@ -192,14 +192,15 @@
 
     <!-- SCREEN 5b — ASSISTANT CHAT -->
     <section class="screen screen-assistant-chat" data-screen="assistantchat">
-      <div class="chat-header" id="assistantChatHeader">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <button class="back-btn" data-go="home">←</button>
-          <div class="ab-avatar ab-avatar-header" id="chatAssistantAvatar"></div>
-          <div class="detail-title" id="chatAssistantName">Assistant</div>
+      <div class="ac-header" id="assistantChatHeader">
+        <div class="ac-header-photo" id="chatAssistantPhoto"></div>
+        <div class="ac-header-scrim"></div>
+        <button class="ac-back-btn" data-go="home">←</button>
+        <div class="ac-header-text">
+          <div class="ac-header-name" id="chatAssistantName">Assistant</div>
+          <div class="ac-header-role" data-i18n="settings.subtitleRole">Your Maritime Welfare Assistant</div>
         </div>
       </div>
-      <div class="qa-grid" id="qaGrid"></div>
       <div class="chat-body" id="assistantChatBody"></div>
       <div class="chat-input-row">
         <input class="chat-input" id="assistantChatInput" type="text" placeholder="Type a message…" data-i18n-placeholder="chat.inputPlaceholder">
