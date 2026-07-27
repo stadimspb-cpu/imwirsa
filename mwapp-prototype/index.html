@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="assets/icons/icon-192b.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=3">
+<link rel="stylesheet" href="css/app.css?v=4">
 </head>
 <body>
 
@@ -159,10 +159,17 @@
         </button>
       </div>
       <div class="home-content">
+        <!-- Six tiles, 3×2. Emergency stays a separate red banner below the
+             grid, not a tile, so it never competes visually with routine
+             browsing. The sixth tile is not a category — it goes straight to
+             the assistant, which is the fallback whenever nothing here fits. -->
         <div class="category-grid">
           <button class="cat-tile" data-detail="centre"><div class="cat-icon">🏛</div><div class="cat-label" data-i18n-html="home.categories.centre">Seafarers'<br>Centre</div></button>
           <button class="cat-tile" data-detail="transport"><div class="cat-icon">🚌</div><div class="cat-label" data-i18n="home.categories.transport">Transport</div></button>
           <button class="cat-tile" data-detail="shops"><div class="cat-icon">🛒</div><div class="cat-label" data-i18n-html="home.categories.shops">Shops &amp;<br>Food</div></button>
+          <button class="cat-tile" data-detail="citylife"><div class="cat-icon">🏙</div><div class="cat-label" data-i18n="home.categories.citylife">City Life</div></button>
+          <button class="cat-tile" data-detail="spiritual"><div class="cat-icon">🕊</div><div class="cat-label" data-i18n-html="home.categories.spiritual">Spiritual<br>Care</div></button>
+          <button class="cat-tile cat-tile-ask" data-go="assistantchat"><div class="cat-icon">💬</div><div class="cat-label" data-i18n-html="home.categories.ask">Ask the<br>assistant</div></button>
         </div>
         <div class="quick-row">
           <button class="quick-btn urgent full-width" data-detail="emergency"><div class="qi">🚨</div><div class="qt" data-i18n="home.emergencyContacts">Emergency contacts</div></button>
@@ -317,7 +324,7 @@
 
   </div>
 
-    <!-- BOTTOM NAV (3 items: Port / Ship / Settings — Language & Assistant moved into Settings) -->
+    <!-- BOTTOM NAV (3 items: Port / Ship / Settings) -->
     <div class="bottom-nav" id="bottomNav">
       <button class="nav-item active" data-go="home" data-nav="home"><div class="ni">🏠</div><div class="nt" data-i18n="nav.port">Port</div></button>
       <button class="nav-item" data-go="ship" data-nav="ship"><div class="ni">⚓</div><div class="nt" data-i18n="nav.ship">Ship</div></button>
@@ -413,7 +420,7 @@
 </div>
 </div>
 
-<script src="js/i18n.js?v=1"></script>
-<script src="js/app.js?v=2"></script>
+<script src="js/i18n.js?v=2"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>
