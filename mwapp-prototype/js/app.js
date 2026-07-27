@@ -2,30 +2,15 @@
 // MWApp prototype — vanilla JS state machine, no build step.
 // ============================================================
 
-// Visual identity only — name/tag/greet text now lives in js/i18n.js so it
-// can be translated per language. Use getAssistant(id) (defined in i18n.js)
-// to get an assistant merged with its translated text fields.
-// "photos" holds every pose variant available for a persona. Right now each
-// one has just a single image, so getAssistantPhoto() (in i18n.js) returns
-// the same photo everywhere — safe default. To add more poses (see partner
-// reference sheet), just add more entries in file/angle order, e.g.:
-//   photos: ["assets/avatars/alex.png", "assets/avatars/alex-2.png", "assets/avatars/alex-3.png"]
-// Different screens will then automatically start showing different
-// angles of the same character — no other code changes needed.
-// onboardScale corrects for inconsistent framing between the source photos
-// (some were shot/cropped closer than others, making heads look bigger or
-// smaller relative to each other). Measured from each photo's actual
-// head-to-shoulder proportion — if a photo is replaced, this should be
-// re-measured and updated, not left as-is.
+// Visual identity only — name/tag/greet text lives in js/i18n.js so it can be
+// translated per language. Use getAssistant(id) (defined in i18n.js) to get an
+// assistant merged with its translated text fields.
 const ASSISTANTS = {
   alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"],   onboardScale: 1.08 },
   omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"],   onboardScale: 0.85 },
   sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"], onboardScale: 1.16 },
   grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/grace.png",  photos: ["assets/avatars/grace.png"],  onboardScale: 0.96 },
 };
-
-// Trade Union / Premium services are now presented by the seafarer's own chosen assistant
-// (Alex / Omar / Sophia / Grace) rather than a separate persona — Linda has been retired.
 
 const LANGUAGES = [
   { code: "en", flag: "🇬🇧", label: "English", accent: "#29C5FF" },
@@ -38,38 +23,68 @@ const LANGUAGES = [
 const TBD = "Details coming soon from the port curator";
 
 // ---- SUB-DETAILS (Level 3) --------------------------------------------
-// Rendered by openSubDetail(). type: "hours_contacts" | "schedule" | "note"
+// Rendered by openSubDetail(), which walks a fixed block order:
+//   hours → groups → contacts → directions → maps → schedule → qr → note → updated
+// A subdetail only needs the fields it actually uses; missing blocks are skipped.
 const SUBDETAILS = {
-  tallinn_centre_main: {
-    type: "hours_contacts",
-    title: "Tallinn Seafarers' Centre",
+
+  // ── TALLINN · SEAFARERS' CENTRE ────────────────────────────────────
+  tallinn_centre_about: {
+    title: "About the Centre",
     hours: [
-      ["Monday", "08:00 – 20:00", true], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
+      ["Monday", "08:00 – 20:00"], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
       ["Thursday", "08:00 – 20:00"], ["Friday", "08:00 – 20:00"], ["Saturday", "09:00 – 17:00"], ["Sunday", "10:00 – 15:00"],
     ],
     contacts: [
       { icon: "📞", title: "+372 5555 1234", sub: "Main line · English, Russian spoken", action: "📞" },
-      { icon: "💬", title: "WhatsApp", sub: "Message ahead of time", action: "💬" },
-      { icon: "🧑‍💼", title: "Marta Kask (PWM)", sub: "Port curator · available now", action: "💬" },
+      { icon: "🧑‍💼", title: "Marta Kask", sub: "Centre Coordinator", action: "💬" },
+      { icon: "🌐", title: "seafarerscentre.ee", sub: "Centre website", action: "›" },
+      { icon: "✉️", title: "info@seafarerscentre.ee", sub: "Email", action: "✉️" },
     ],
-    directions: [
-      { icon: "🚐", title: "Shuttle from Gate D", sub: "Every 2 hours · free", action: "›" },
-      { icon: "🚶", title: "On foot: 12 minutes", sub: "Sadama tn → turn at the lighthouse", action: "🗺" },
+    note: "This page holds only the core details. Anything else about the centre — ask your assistant.",
+  },
+
+  tallinn_centre_services: {
+    title: "Services",
+    groups: [
+      { label: "Hospitality", icon: "☕", items: ["Coffee & tea", "Snacks", "TV lounge", "Outdoor terrace"] },
+      { label: "Recreation", icon: "🎱", items: ["Rest & relaxation area", "Games room", "Billiards", "Table tennis", "Library", "Book exchange"] },
+      { label: "Connectivity", icon: "📶", items: ["Free Wi-Fi", "SIM cards"] },
+      { label: "Welfare services", icon: "🤝", items: ["Welfare shop", "Volunteers", "Events & excursions", "Currency exchange"] },
+      { label: "Spiritual care", icon: "🕊", items: ["Prayer room"] },
     ],
   },
-  tallinn_transport_shuttle: {
-    type: "schedule",
-    title: "Shuttle — schedule",
+
+  tallinn_centre_shuttle: {
+    title: "Free Shuttle Bus",
     from: "Departs from Gate D",
     times: ["09:00", "12:00", "14:30", "17:00", "19:00"],
     nextIndex: 2,
+    directions: [
+      { icon: "📍", title: "Pickup point", sub: "Gate D, next to the checkpoint barrier", action: "🧭" },
+      { icon: "🚐", title: "How to recognise it", sub: "White minibus, blue IMWIRSA anchor decal on both doors", action: "" },
+      { icon: "🔄", title: "Return schedule", sub: "Leaves the centre 20 minutes after each arrival", action: "" },
+    ],
     note: "Return fare after 20:00 — " + TBD.toLowerCase() + ".",
   },
-  hamburg_centre_main: {
-    type: "hours_contacts",
-    title: "Duckdalben International Seamen's Club",
+
+  tallinn_centre_location: {
+    title: "Location & Route",
+    contacts: [
+      { icon: "📍", title: "Sadama 25, Tallinn 10111", sub: "0.8 km from the passenger terminal", action: "" },
+    ],
+    maps: { lat: 59.4468, lng: 24.7621, label: "Tallinn Seafarers' Centre" },
+    directions: [
+      { icon: "🚐", title: "Shuttle from Gate D", sub: "Every 2 hours · free", action: "›" },
+      { icon: "🚶", title: "On foot: 12 minutes", sub: "Sadama tn → turn at the lighthouse", action: "🧭" },
+    ],
+  },
+
+  // ── OTHER PORTS — real data we already hold, kept under the new shape ──
+  hamburg_centre_about: {
+    title: "About the Centre",
     hours: [
-      ["Monday", "10:00 – 21:00", true], ["Tuesday", "10:00 – 21:00"], ["Wednesday", "10:00 – 21:00"],
+      ["Monday", "10:00 – 21:00"], ["Tuesday", "10:00 – 21:00"], ["Wednesday", "10:00 – 21:00"],
       ["Thursday", "10:00 – 21:00"], ["Friday", "10:00 – 21:00"], ["Saturday", "15:00 – 21:00"], ["Sunday", "15:00 – 21:00"],
     ],
     contacts: [
@@ -77,31 +92,24 @@ const SUBDETAILS = {
       { icon: "☎️", title: "Freecall 0800 382 5325236", sub: "For pickup requests from your ship", action: "📞" },
       { icon: "🌐", title: "duckdalben.de", sub: "Club website", action: "›" },
     ],
-    directions: [
-      { icon: "🚐", title: "Free shuttle to your ship", sub: "Call ahead · last pickup 19:30 daily", action: "📞" },
-      { icon: "🚌", title: "Bus 150 / 151 / 250 / 451", sub: "Nearest stop: Container Terminal Eurogate · ~6 min walk", action: "🧭" },
-      { icon: "⛴", title: "Ferry line 61", sub: "Waltershof stop", action: "🧭" },
-    ],
   },
-  constanta_centre_main: {
-    type: "hours_contacts",
-    title: "Seamen's Club Constanța",
+  constanta_centre_about: {
+    title: "About the Centre",
     contacts: [
       { icon: "📞", title: "+40 723 000 555", sub: "Constanța & Midia-Năvodari · also for shuttle pickup", action: "📞" },
       { icon: "📞", title: "+40 723 218 090", sub: "Agigea (South Constanța)", action: "📞" },
       { icon: "🌐", title: "romania.seamensclub.ro", sub: "Club website", action: "›" },
     ],
-    directions: [
-      { icon: "🚐", title: "Free shuttle to your ship", sub: "Call ahead, or ask the gate guard to call for you", action: "📞" },
-    ],
   },
+
+  // ── PREMIUM / TRADE UNION (unchanged) ──────────────────────────────
   premium_qr: {
     type: "qr_code", gated: true,
     title: "Your Premium QR Code",
     note: "Show this code to partner staff for verification — supermarkets, cafés and transport partners near the centre. Demo mode: this is a static illustrative code. Live rotating verification, tied to your real MWA-ID and checked against IMWIRSA's server, will connect once the backend is ready.",
   },
   wellness_zone_tallinn: {
-    type: "hours_contacts", gated: true,
+    gated: true,
     title: "Wellness Recovery Zone — Tallinn",
     contacts: [
       { icon: "🧑‍💼", title: "Kadri Saar — Wellness Coordinator", sub: "Book a session via WhatsApp", action: "💬" },
@@ -113,7 +121,7 @@ const SUBDETAILS = {
     ],
   },
   legal_help: {
-    type: "hours_contacts", gated: true,
+    gated: true,
     title: "Legal Consultation (Paid)",
     note: "Free basic information and union/ITF contacts are always available to every seafarer under Emergency Contacts — this is specifically a paid, in-depth consultation with a maritime lawyer for Trade Union members.",
     contacts: [
@@ -124,10 +132,10 @@ const SUBDETAILS = {
     ],
   },
   medical_extended: {
-    type: "hours_contacts", gated: true,
+    gated: true,
     title: "Medical — Extended Access",
     hours: [
-      ["Monday", "08:00 – 20:00", true], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
+      ["Monday", "08:00 – 20:00"], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
       ["Thursday", "08:00 – 20:00"], ["Friday", "08:00 – 20:00"], ["Saturday", "09:00 – 15:00"], ["Sunday", "Emergency only"],
     ],
     contacts: [
@@ -136,7 +144,7 @@ const SUBDETAILS = {
     ],
   },
   psych_support: {
-    type: "hours_contacts", gated: true,
+    gated: true,
     title: "Psychological Support",
     contacts: [
       { icon: "🧠", title: "Licensed counsellor", sub: "+372 5555 9911 · English, Russian", action: "📞" },
@@ -145,7 +153,7 @@ const SUBDETAILS = {
     ],
   },
   port_discounts: {
-    type: "hours_contacts", gated: true,
+    gated: true,
     title: "Port Discounts & Privileges",
     contacts: [
       { icon: "🛍", title: "Rimi Supermarket", sub: "5% off with union card", action: "🧭" },
@@ -155,6 +163,58 @@ const SUBDETAILS = {
   },
 };
 
+// ---- Level-2 skeletons -------------------------------------------------
+// Rows marked pending:true are shown greyed and are NOT clickable — the third
+// level behind them opens only once a port curator fills it in via the PWM
+// Telegram bot. Deliberately NOT the 🔒 lock icon: that means "needs a Trade
+// Union card", and reusing it here would send seafarers to ask about cards.
+const PENDING = (icon, title, sub) => ({ icon, title, sub, pending: true });
+
+function transportSkeleton(realShuttleSd) {
+  return {
+    title: "Transport",
+    rows: [
+      PENDING("🚪", "Leaving the Port", "Exit rules, required documents, gate information"),
+      realShuttleSd
+        ? { icon: "🚐", title: "Port Shuttle", sub: "Timetable, pickup point, how to recognise it", action: "›", sd: realShuttleSd }
+        : PENDING("🚐", "Port Shuttle", "Timetable, pickup point, how to recognise it"),
+      PENDING("🚕", "Taxi", "Trusted companies, apps, estimated fare, safety tips"),
+      PENDING("🚎", "Public Transport", "Nearest stop, routes, tickets, journey to the city"),
+    ],
+  };
+}
+function shopsSkeleton() {
+  return {
+    title: "Shops & Food",
+    rows: [
+      PENDING("🛒", "Supermarkets", "Nearest stores, shopping centres, 24/7 shops"),
+      PENDING("🍽", "Food & Drinks", "Fast food, local restaurants, seafarer-friendly places"),
+      PENDING("📱", "Electronics & SIM Cards", "Mobile operators, SIM cards, chargers & adapters"),
+      PENDING("💊", "Pharmacies", "Nearest and 24/7 pharmacies, prescription & OTC medicines"),
+    ],
+  };
+}
+function citylifeSkeleton() {
+  return {
+    title: "City Life",
+    rows: [
+      PENDING("🌳", "Parks & Waterfronts", "Nearest park, promenade, quiet green zone, viewpoints"),
+      PENDING("🏛", "Culture & Must-See", "Top 5 city places, museums, historic buildings"),
+      PENDING("🧘", "Free Time & Relax", "Free attractions, viewpoints, Wi-Fi & chill spots"),
+      PENDING("🛡", "Safety", "What to know before going into the city"),
+    ],
+  };
+}
+function spiritualSkeleton() {
+  return {
+    title: "Spiritual Care",
+    rows: [
+      PENDING("🕊", "Missions & Chaplains", "Seafarers' missions, chaplains and local contacts"),
+      PENDING("🙏", "Places for Prayer", "Prayer rooms, quiet places, opening hours"),
+    ],
+  };
+}
+
 // ---- PORTS --------------------------------------------------------------
 const PORTS = {
   tallinn: {
@@ -162,55 +222,23 @@ const PORTS = {
     categories: {
       centre: {
         title: "Seafarers' Centre",
+        statusFrom: "tallinn_centre_about",
         rows: [
-          { icon: "🏛", title: "Tallinn Seafarers' Centre", sub: "Sadama 25 · 0.8 km from the terminal", tag: "Open until 20:00", action: "›", sd: "tallinn_centre_main" },
-          { icon: "📞", title: "Call the centre", sub: "+372 5555 1234 · English, Russian spoken", action: "📞" },
-          { icon: "🌐", title: "Centre services", sub: "Wi-Fi, lounge, chapel, shop, laundry", action: "›" },
+          { icon: "ℹ️", title: "About the Centre", sub: "Opening hours, phone, coordinator, website", action: "›", sd: "tallinn_centre_about" },
+          { icon: "🎱", title: "Services", sub: "Hospitality, recreation, connectivity, welfare", action: "›", sd: "tallinn_centre_services" },
+          { icon: "🚐", title: "Free Shuttle Bus", sub: "Timetable, pickup point, how to recognise it", action: "›", sd: "tallinn_centre_shuttle" },
+          { icon: "📍", title: "Location & Route", sub: "Address, map, how to get there on foot", action: "›", sd: "tallinn_centre_location" },
         ],
       },
-      transport: {
-        title: "Transport",
-        rows: [
-          { icon: "🚐", title: "Seafarers' Centre shuttle", sub: "Every 2 hours from Gate D · Free", tag: "Next: 14:30", action: "›", sd: "tallinn_transport_shuttle" },
-          { icon: "🚕", title: "Taxi", sub: "Bolt, Uber available · ~€5 to city centre", action: "›" },
-          { icon: "🚎", title: "City bus", sub: "Route 2 · Stop 300m from the gate", action: "🧭" },
-        ],
-      },
-      connect: {
-        title: "SIM & Wi-Fi",
-        rows: [
-          { icon: "📡", title: "SIM card", sub: "Tele2, Elisa — R-Kiosk at port exit · ~€5 / 3GB", action: "›" },
-          { icon: "📶", title: "Port Wi-Fi", sub: "Network: TallinnPort · Password: seafarer2026", action: "📋" },
-          { icon: "💱", title: "ATM / currency exchange", sub: "SEB Bank · 400m from the gate · EUR", action: "🧭" },
-        ],
-      },
-      shops: {
-        title: "Shops & Food",
-        rows: [
-          { icon: "🛍", title: "Rimi Supermarket", sub: "600m from the gate · 08:00–22:00", tag: "Open now", action: "🧭" },
-          { icon: "☕", title: "Seafarers' Centre café", sub: "Hot meals · lunch ~€6 · free coffee", tag: "Until 19:00", action: "🧭" },
-          { icon: "💊", title: "Apotheka Pharmacy", sub: "Sadama 15 · 500m · Mon–Fri 9:00–20:00", tag: "Closed weekends", tagClosed: true, action: "🧭" },
-        ],
-      },
-      medical: {
-        title: "Medical",
-        rows: [
-          { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" },
-          { icon: "🩺", title: "Tallinn Medical Clinic", sub: "1.2 km · paid service · English spoken", action: "🧭" },
-        ],
-      },
-      safety: {
-        title: "Safety",
-        rows: [
-          { icon: "🟢", title: "General area risk", sub: "Low risk — normal precautions apply" },
-          { icon: "🪪", title: "Port pass", sub: "Seafarer ID required · Gate 1 checkpoint", action: "›" },
-          { icon: "⚠️", title: "Notice", sub: "Icy walkways reported near Gate 2 this week" },
-        ],
-      },
+      transport: transportSkeleton("tallinn_centre_shuttle"),
+      shops: shopsSkeleton(),
+      citylife: citylifeSkeleton(),
+      spiritual: spiritualSkeleton(),
       emergency: {
         title: "Emergency Contacts",
         rows: [
           { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
+          { icon: "🩺", title: "Tallinn Medical Clinic", sub: "1.2 km · paid service · English spoken", action: "🧭" },
           { icon: "🏛", title: "Seafarers' Centre", sub: "+372 5555 1234", action: "📞" },
           { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
           { icon: "⚖️", title: "ITF Inspector — Baltic region", sub: "Free basic advice on wages, contracts & seafarers' rights", action: "📞" },
@@ -236,42 +264,16 @@ const PORTS = {
       centre: {
         title: "Seafarers' Centre",
         rows: [
-          { icon: "🏛", title: "Seamen's Club Constanța", sub: "Str. Traian 62, Bloc K4 · Constanța", action: "›", sd: "constanta_centre_main" },
-          { icon: "📞", title: "Call the centre", sub: "+40 723 000 555 · Constanța & Midia-Năvodari", action: "📞" },
-          { icon: "🌐", title: "Club facilities", sub: "Wi-Fi, gym, library, billiards, city tours", action: "›" },
+          { icon: "ℹ️", title: "About the Centre", sub: "Seamen's Club Constanța · phones, website", action: "›", sd: "constanta_centre_about" },
+          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
+          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
+          PENDING("📍", "Location & Route", "Address, map, how to get there"),
         ],
       },
-      transport: {
-        title: "Transport",
-        rows: [
-          { icon: "🚐", title: "Free shuttle to your ship", sub: "Call +40 723 000 555, or ask the gate guard", action: "📞" },
-          { icon: "🚕", title: "Taxi", sub: "Use authorised taxis only · confirm the fare first", action: "🧭" },
-        ],
-      },
-      connect: {
-        title: "SIM & Wi-Fi",
-        rows: [
-          { icon: "📶", title: "Wi-Fi at the Seamen's Club", sub: "Free for laptops, phones and tablets", action: "📋" },
-          { icon: "📡", title: "SIM card", sub: "Orange, Vodafone, Digi — available in the city", action: "›" },
-          { icon: "💱", title: "Currency exchange", sub: "Use only authorised exchange offices", action: "🧭" },
-        ],
-      },
-      shops: {
-        title: "Shops & Food",
-        rows: [
-          { icon: "🛍", title: "City Park Mall / VIVO Mall / TOM Centre", sub: "Free van transport from the Seamen's Club on request", action: "🧭" },
-          { icon: "🛒", title: "Kaufland Hypermarket", sub: "Free van transport via the Seamen's Club", action: "🧭" },
-        ],
-      },
-      medical: { title: "Medical", rows: [ { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" } ] },
-      safety: {
-        title: "Safety",
-        rows: [
-          { icon: "🪪", title: "Gate 1 only", sub: "Non-European seafarers must use Gate 1 to exit/enter the port" },
-          { icon: "⚠️", title: "Beware of scams", sub: "Some people falsely claim to represent the Seamen's Club and ask for money. Real staff never do — ignore them or call the police" },
-          { icon: "🧑‍🤝‍🧑", title: "Go out with colleagues", sub: "It's safer not to walk into town alone" },
-        ],
-      },
+      transport: transportSkeleton(null),
+      shops: shopsSkeleton(),
+      citylife: citylifeSkeleton(),
+      spiritual: spiritualSkeleton(),
       emergency: {
         title: "Emergency Contacts",
         rows: [
@@ -280,7 +282,7 @@ const PORTS = {
           { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
         ],
       },
-      wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
     },
   },
 
@@ -289,42 +291,18 @@ const PORTS = {
     categories: {
       centre: {
         title: "Seafarers' Centre",
+        statusFrom: "hamburg_centre_about",
         rows: [
-          { icon: "🏛", title: "Duckdalben International Seamen's Club", sub: "Zellmannstraße 16, Hamburg", tag: "Mon–Fri 10:00–21:00", action: "›", sd: "hamburg_centre_main" },
-          { icon: "📞", title: "Call the centre", sub: "+49 40 740 1661", action: "📞" },
-          { icon: "🌐", title: "Club facilities", sub: "On-site shop, café, chapel, Wi-Fi, billiards, library", action: "›" },
+          { icon: "ℹ️", title: "About the Centre", sub: "Duckdalben International Seamen's Club", action: "›", sd: "hamburg_centre_about" },
+          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
+          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
+          PENDING("📍", "Location & Route", "Address, map, how to get there"),
         ],
       },
-      transport: {
-        title: "Transport",
-        rows: [
-          { icon: "🚐", title: "Free shuttle to your ship", sub: "Call the club's freecall number to arrange pickup · last pickup 19:30", action: "📞" },
-          { icon: "🚌", title: "Bus 150 / 151 / 250 / 451", sub: "Nearest stop: Container Terminal Eurogate · ~6 min walk", action: "🧭" },
-          { icon: "⛴", title: "Ferry line 61", sub: "Waltershof stop · scenic route into the city", action: "🧭" },
-        ],
-      },
-      connect: {
-        title: "SIM & Wi-Fi",
-        rows: [
-          { icon: "📶", title: "Wi-Fi at Duckdalben", sub: "Free for all visiting seafarers", action: "📋" },
-          { icon: "📡", title: "SIM card", sub: "Telekom, Vodafone, O2 — ask club staff for the nearest shop", action: "›" },
-        ],
-      },
-      shops: {
-        title: "Shops & Food",
-        rows: [
-          { icon: "🛍", title: "Club shop & supermarket", sub: "On-site at Duckdalben · snacks and essentials", tag: "During club hours", action: "🧭" },
-          { icon: "☕", title: "Club café", sub: "Coffee and budget-friendly meals", tag: "During club hours", action: "🧭" },
-        ],
-      },
-      medical: {
-        title: "Medical",
-        rows: [
-          { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" },
-          { icon: "🩺", title: "Port medical service (HPHC)", sub: "Free, anonymous consultation at the club — ask staff for current hours", action: "🧭" },
-        ],
-      },
-      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Low risk — normal precautions apply" } ] },
+      transport: transportSkeleton(null),
+      shops: shopsSkeleton(),
+      citylife: citylifeSkeleton(),
+      spiritual: spiritualSkeleton(),
       emergency: {
         title: "Emergency Contacts",
         rows: [
@@ -333,7 +311,7 @@ const PORTS = {
           { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
         ],
       },
-      wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
     },
   },
 
@@ -343,16 +321,16 @@ const PORTS = {
       centre: {
         title: "Seafarers' Centre",
         rows: [
-          { icon: "🏛", title: "Istanbul Seafarers' Contact Centre", sub: "Kadıköy / İstanbul · ~2 km", action: "🧭" },
-          { icon: "📞", title: "Call the centre", sub: "+90 216 347 3771", action: "📞" },
-          { icon: "💬", title: "WhatsApp", sub: "+90 532 657 1252", action: "💬" },
+          PENDING("ℹ️", "About the Centre", "Opening hours, phone, coordinator, website"),
+          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
+          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
+          PENDING("📍", "Location & Route", "Address, map, how to get there"),
         ],
       },
-      transport: { title: "Transport", rows: [ { icon: "🚐", title: "Shuttle", sub: "On request · free", action: "🧭" } ] },
-      connect: { title: "SIM & Wi-Fi", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
-      shops: { title: "Shops & Food", rows: [ { icon: "ℹ️", title: TBD, sub: "Will appear once updated via the PWM Telegram bot" } ] },
-      medical: { title: "Medical", rows: [ { icon: "🏥", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" } ] },
-      safety: { title: "Safety", rows: [ { icon: "🟢", title: "General area risk", sub: "Details pending" } ] },
+      transport: transportSkeleton(null),
+      shops: shopsSkeleton(),
+      citylife: citylifeSkeleton(),
+      spiritual: spiritualSkeleton(),
       emergency: {
         title: "Emergency Contacts",
         rows: [
@@ -361,19 +339,41 @@ const PORTS = {
           { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
         ],
       },
-      wellness: { title: "Premium Welfare Services", gated: true, rows: [ { icon: "ℹ️", title: TBD, sub: "Trade Union partner services pending confirmation" } ] },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
     },
   },
 };
 
 function currentPort() { return PORTS[state.portId] || PORTS.tallinn; }
+function currentCategories() { return currentPort().categories; }
+
+// ---- Opening-hours status ------------------------------------------------
+// Computes "Open until 20:00" / "Closed · opens 09:00" from an hours table,
+// rather than storing a hardcoded status string that silently goes stale.
+// hours rows are ordered Monday-first; JS getDay() is Sunday-first, hence the shift.
+function todayHoursIndex() { return (new Date().getDay() + 6) % 7; }
+
+function computeStatus(hours) {
+  if (!hours || !hours.length) return null;
+  const row = hours[todayHoursIndex()];
+  if (!row) return null;
+  const m = String(row[1]).match(/(\d{1,2}):(\d{2})\s*[–—-]\s*(\d{1,2}):(\d{2})/);
+  if (!m) return { open: false, text: row[1] };
+  const now = new Date();
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const from = (+m[1]) * 60 + (+m[2]);
+  const to = (+m[3]) * 60 + (+m[4]);
+  if (mins >= from && mins < to) return { open: true, text: t("status.openUntil", { time: `${m[3]}:${m[4]}` }) };
+  if (mins < from) return { open: false, text: t("status.closedOpensAt", { time: `${m[1]}:${m[2]}` }) };
+  return { open: false, text: t("status.closedForToday") };
+}
 
 // ---- Geolocation — nearest-port detection ---------------------------------
 // Privacy design: raw coordinates are used only in-memory, for the duration of
 // a single calculation, and are never written to state, localStorage, or sent
 // anywhere over the network. Only the *result* (which port, how far) is kept.
 function haversineKm(lat1, lng1, lat2, lng2) {
-  const R = 6371; // Earth radius, km
+  const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLng = (lng2 - lng1) * Math.PI / 180;
   const a = Math.sin(dLat / 2) ** 2 +
@@ -392,13 +392,13 @@ function nearestPort(lat, lng) {
   return best;
 }
 
-const AT_PORT_RADIUS_KM = 3; // within this distance of a port's reference point, treat as "at the port"
+const AT_PORT_RADIUS_KM = 3;
 
 function requestLocation(onDone) {
   if (!("geolocation" in navigator)) { onDone(false); return; }
   navigator.geolocation.getCurrentPosition(
     (pos) => {
-      const { latitude, longitude } = pos.coords; // used only for the next two lines, never persisted
+      const { latitude, longitude } = pos.coords; // used only here, never persisted
       const nearest = nearestPort(latitude, longitude);
       if (nearest) {
         state.portId = nearest.portId;
@@ -413,10 +413,13 @@ function requestLocation(onDone) {
 }
 
 // ---- Ship location — mark exit point, navigate back -----------------------
-// Deliberately simple and cheap: one GPS point taken once, saved only on
-// this device (inside state / localStorage — same mechanism as everything
-// else in state), then handed to the phone's own maps app as a destination.
-// No live tracking, no AIS subscription, no server involved.
+function mapsUrl(lat, lng) {
+  const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  return isIOSDevice
+    ? `https://maps.apple.com/?daddr=${lat},${lng}`
+    : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+}
+
 function formatShipTimestamp(ts) {
   const d = new Date(ts);
   const now = new Date();
@@ -453,29 +456,17 @@ function shipMarkLocation() {
       if (btn) btn.disabled = false;
       renderShipScreen();
     },
-    () => {
-      if (btn) btn.disabled = false;
-      errorEl.classList.remove("hidden");
-    },
+    () => { if (btn) btn.disabled = false; errorEl.classList.remove("hidden"); },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
 }
 
 function shipNavigateBack() {
   if (!state.shipPoint) return;
-  const { lat, lng } = state.shipPoint;
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const url = isIOS
-    ? `https://maps.apple.com/?daddr=${lat},${lng}`
-    : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
-  window.open(url, "_blank");
+  window.open(mapsUrl(state.shipPoint.lat, state.shipPoint.lng), "_blank");
 }
 
-function shipClearPoint() {
-  state.shipPoint = null;
-  saveState();
-  renderShipScreen();
-}
+function shipClearPoint() { state.shipPoint = null; saveState(); renderShipScreen(); }
 
 function dismissLocationBanner() {
   localStorage.setItem("mwapp_geo_dismissed", "1");
@@ -490,14 +481,13 @@ function maybeShowLocationBanner() {
   if (localStorage.getItem("mwapp_geo_dismissed") === "1") { banner.classList.add("hidden"); return; }
   banner.classList.remove("hidden");
 }
-function currentCategories() { return currentPort().categories; }
 
-// ---- Trade Union card validity (must be reconfirmed every calendar month) ----
+// ---- Trade Union card validity (reconfirmed every calendar month) ----
 function todayISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
-function monthKeyOf(isoDate) { return isoDate ? isoDate.slice(0, 7) : null; } // "YYYY-MM"
+function monthKeyOf(isoDate) { return isoDate ? isoDate.slice(0, 7) : null; }
 function isUnionValid() {
   if (!state.unionActive || !state.unionLastConfirmed) return false;
   return monthKeyOf(state.unionLastConfirmed) === monthKeyOf(todayISO());
@@ -507,29 +497,23 @@ const state = {
   assistant: null,
   lang: null,
   name: "",
-  mwaId: null,             // demo-only, generated and stored on-device. Real MWA-ID issuance and
-                           // cross-device recovery requires the backend described in the scope of work (section 4).
+  mwaId: null,
   unionActive: false,
-  unionLastConfirmed: null,  // ISO date "YYYY-MM-DD" of the last confirmation check
-  portId: "tallinn",      // will be set automatically once geolocation is wired in; manual for now
-  context: "at_port",     // "at_port" | "in_city" — reserved for the planned geolocation feature
-  accessView: "std",      // "std" | "vip" — which toggle is selected on the port card
-  shipPoint: null,        // { lat, lng, ts } — where the seafarer marked their ship before going ashore.
-                           // Saved locally only (see saveState/loadState), never sent anywhere.
+  unionLastConfirmed: null,
+  portId: "tallinn",
+  context: "at_port",
+  accessView: "std",
+  shipPoint: null,
 };
 
 function ensureMwaId() {
   if (state.mwaId) return;
-  const n = Math.floor(1000000 + Math.random() * 8999999); // 7-digit demo number
+  const n = Math.floor(1000000 + Math.random() * 8999999);
   state.mwaId = `MWA-${n}`;
   saveState();
 }
 
-function saveState() {
-  try {
-    localStorage.setItem("mwapp_state", JSON.stringify(state));
-  } catch (e) {}
-}
+function saveState() { try { localStorage.setItem("mwapp_state", JSON.stringify(state)); } catch (e) {} }
 function loadState() {
   try {
     const raw = localStorage.getItem("mwapp_state");
@@ -537,9 +521,7 @@ function loadState() {
   } catch (e) {}
 }
 
-function gradientStyle(grad) {
-  return `background: linear-gradient(135deg, ${grad[0]}, ${grad[1]});`;
-}
+function gradientStyle(grad) { return `background: linear-gradient(135deg, ${grad[0]}, ${grad[1]});`; }
 
 function renderAssistantGrid(containerId, modalTargetId) {
   const el = document.getElementById(containerId);
@@ -550,8 +532,7 @@ function renderAssistantGrid(containerId, modalTargetId) {
     <button class="assistant-card ${state.assistant === a.id ? 'selected' : ''}" data-assistant="${a.id}" data-modal-target="${modalTargetId || ''}" style="--accent:${a.accent}">
       <div class="assistant-avatar"><img src="${photo}" alt="${a.name}" loading="lazy"></div>
       <div class="assistant-name" style="color:${a.accent}">${a.name}</div>
-    </button>
-  `;
+    </button>`;
   }).join("");
 }
 
@@ -560,8 +541,7 @@ function renderLangGrid(containerId, modalTargetId) {
   el.innerHTML = LANGUAGES.map((l) => `
     <button class="lang-pill ${state.lang === l.code ? 'selected' : ''}" data-lang="${l.code}" data-modal-target="${modalTargetId || ''}" style="--accent:${l.accent}">
       <span class="lang-flag">${l.flag}</span> ${l.label}
-    </button>
-  `).join("");
+    </button>`).join("");
 }
 
 function refreshOnboardContinue() {
@@ -571,11 +551,7 @@ function refreshOnboardContinue() {
   btn.disabled = !nowEnabled;
   if (wasDisabled && nowEnabled) {
     const wave = document.getElementById("btnWave");
-    if (wave) {
-      wave.classList.remove("pulse");
-      void wave.offsetWidth; // restart animation even if triggered again later
-      wave.classList.add("pulse");
-    }
+    if (wave) { wave.classList.remove("pulse"); void wave.offsetWidth; wave.classList.add("pulse"); }
   }
 }
 
@@ -608,9 +584,6 @@ function updateAssistantUI() {
   const tzEl = document.getElementById("homeTz");
   if (tzEl) tzEl.textContent = `⏱ ${port.meta.tz}`;
 
-  // Home hero — full-bleed portrait + guidance bubble. This replaced the old
-  // small circular "assistant bubble" (partner feedback: make the assistant
-  // read as the main guide of the screen, not an icon).
   const heroImg = document.getElementById("homeHeroImg");
   if (heroImg) heroImg.src = getAssistantPhoto(a.id, "homeBubble");
   const heroBubble = document.getElementById("homeHeroBubble");
@@ -653,8 +626,6 @@ function goToScreen(name) {
   } else {
     bottomNav.style.display = "none";
   }
-  // Transparent nav styling only makes sense over the Home screen's photo
-  // backdrop — every other screen keeps the normal solid white nav.
   bottomNav.classList.toggle("on-photo", name === "home");
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
@@ -670,11 +641,6 @@ function goToScreen(name) {
 let lastDetailKey = null;
 let qrCountdownTimer = null;
 
-// Category prompt text (categoryPrompts.*) and escalation/persona text now
-// live in js/i18n.js so they can be translated. "wellness" has no chat
-// prompt here — it's handled separately below, presented by the
-// seafarer's own chosen assistant.
-
 function setDetailHeaderPhoto(a) {
   const el = document.getElementById("detailHeaderPhoto");
   if (!el) return;
@@ -682,6 +648,7 @@ function setDetailHeaderPhoto(a) {
   el.innerHTML = `<img src="${photo}" alt="${a.name}" loading="lazy">`;
 }
 
+// ---- LEVEL 2 -----------------------------------------------------------
 function openDetail(key) {
   const data = currentCategories()[key];
   if (!data) return;
@@ -695,6 +662,20 @@ function openDetail(key) {
 
   const a = getAssistant(state.assistant) || getAssistant("alex");
   setDetailHeaderPhoto(a);
+
+  // Hero status strip — shown ONLY where a category declares statusFrom
+  // (today: the Seafarers' Centre). Deliberately not repeated on every
+  // category: while a seafarer is looking at Transport or Shops, the
+  // centre's opening status is noise that steals screen space.
+  let statusHtml = "";
+  if (data.statusFrom) {
+    const st = computeStatus((SUBDETAILS[data.statusFrom] || {}).hours);
+    if (st) {
+      statusHtml = `<div class="hero-status ${st.open ? 'is-open' : 'is-closed'}">
+        <span class="hs-dot"></span><span class="hs-text">${escapeHtml(st.text)}</span>
+      </div>`;
+    }
+  }
 
   let bubbleHtml = "";
   if (data.gated) {
@@ -716,6 +697,17 @@ function openDetail(key) {
   }
 
   const rowsHtml = data.rows.map((r) => {
+    if (r.pending) {
+      return `
+    <div class="d-row pending">
+      <div class="d-icon">${r.icon}</div>
+      <div class="d-body">
+        <div class="d-title">${r.title}</div>
+        <div class="d-sub">${r.sub}</div>
+        <span class="d-tag awaiting">${t("common.awaitingData")}</span>
+      </div>
+    </div>`;
+    }
     const rowClickable = !!r.sd && !locked;
     return `
     <div class="d-row ${rowClickable ? 'clickable' : ''}" ${rowClickable ? `data-sd="${r.sd}"` : ""}>
@@ -726,14 +718,15 @@ function openDetail(key) {
         ${r.tag ? `<span class="d-tag ${r.tagClosed ? 'closed' : ''}">${r.tag}</span>` : ""}
       </div>
       ${r.sd ? `<div class="d-action">${locked ? '🔒' : '›'}</div>` : (r.action ? `<div class="d-action">${r.action}</div>` : "")}
-    </div>
-  `;
+    </div>`;
   }).join("");
 
-  document.getElementById("detailList").innerHTML = bubbleHtml + rowsHtml;
+  document.getElementById("detailList").innerHTML = statusHtml + bubbleHtml + rowsHtml;
   goToScreen("detail");
 }
 
+// ---- LEVEL 3 -----------------------------------------------------------
+// Renders whichever blocks a subdetail declares, in a fixed reading order.
 function openSubDetail(sdKey) {
   const sd = SUBDETAILS[sdKey];
   if (!sd) return;
@@ -743,61 +736,88 @@ function openSubDetail(sdKey) {
   document.getElementById("subdetailCrumbPort").textContent = port.meta.name;
   document.getElementById("subdetailTitle").textContent = sd.title;
 
-  let bodyHtml = "";
-  if (sd.type === "hours_contacts") {
-    let inner = "";
-    if (sd.hours) {
-      inner += `<div class="sd-card"><div class="sd-card-title">🕐 Hours</div><table class="hours-table">` +
-        sd.hours.map(([day, time, today]) => `<tr class="${today ? 'hours-today' : ''}"><td>${day}</td><td>${time}</td></tr>`).join("") +
-        `</table></div>`;
-    }
-    if (sd.contacts) {
-      inner += `<div class="sd-card"><div class="sd-card-title">📞 Contacts</div>` +
-        sd.contacts.map((c) => `<div class="contact-row"><div class="c-icon">${c.icon}</div><div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>${c.action ? `<div class="c-action">${c.action}</div>` : ""}</div>`).join("") +
-        `</div>`;
-    }
-    if (sd.directions) {
-      inner += `<div class="sd-card"><div class="sd-card-title">📍 Getting there</div>` +
-        sd.directions.map((c) => `<div class="contact-row"><div class="c-icon">${c.icon}</div><div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>${c.action ? `<div class="c-action">${c.action}</div>` : ""}</div>`).join("") +
-        `</div>`;
-    }
-    if (sd.note) inner += `<div class="sd-card"><div class="sd-card-title">ℹ️ Good to know</div><div class="sd-note">${sd.note}</div></div>`;
-    bodyHtml = wrapGate(inner, locked, sd);
-  } else if (sd.type === "schedule") {
-    let inner = `<div class="sd-card"><div class="sd-card-title">${sd.from}</div>` +
-      sd.times.map((t, i) => `<div class="sched-row ${i === sd.nextIndex ? 'next' : ''}"><span>${t}</span>${i === sd.nextIndex ? '<span class="sched-tag">NEXT</span>' : ''}</div>`).join("") +
+  const contactRows = (list) => list.map((c) => `
+    <div class="contact-row">
+      <div class="c-icon">${c.icon}</div>
+      <div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>
+      ${c.action ? `<div class="c-action">${c.action}</div>` : ""}
+    </div>`).join("");
+
+  let inner = "";
+
+  if (sd.hours) {
+    const todayIdx = todayHoursIndex();
+    inner += `<div class="sd-card"><div class="sd-card-title">🕐 ${t("common.hours")}</div><table class="hours-table">` +
+      sd.hours.map(([day, time], i) => `<tr class="${i === todayIdx ? 'hours-today' : ''}"><td>${day}</td><td>${time}</td></tr>`).join("") +
+      `</table></div>`;
+  }
+
+  if (sd.groups) {
+    inner += sd.groups.map((g) => `
+      <div class="sd-card">
+        <div class="sd-card-title">${g.icon} ${g.label}</div>
+        <div class="svc-list">${g.items.map((i) => `<span class="svc-chip">${i}</span>`).join("")}</div>
+      </div>`).join("");
+  }
+
+  if (sd.contacts) {
+    inner += `<div class="sd-card"><div class="sd-card-title">📞 ${t("common.contacts")}</div>${contactRows(sd.contacts)}</div>`;
+  }
+
+  if (sd.times) {
+    inner += `<div class="sd-card"><div class="sd-card-title">${sd.from || t("common.schedule")}</div>` +
+      sd.times.map((time, i) => `<div class="sched-row ${i === sd.nextIndex ? 'next' : ''}"><span>${time}</span>${i === sd.nextIndex ? `<span class="sched-tag">${t("common.next")}</span>` : ''}</div>`).join("") +
       `</div>`;
-    if (sd.note) inner += `<div class="sd-card"><div class="sd-card-title">ℹ️ Pending</div><div class="sd-note">${sd.note}</div></div>`;
-    bodyHtml = wrapGate(inner, locked, sd);
-  } else if (sd.type === "qr_code") {
+  }
+
+  if (sd.directions) {
+    inner += `<div class="sd-card"><div class="sd-card-title">📍 ${t("common.gettingThere")}</div>${contactRows(sd.directions)}</div>`;
+  }
+
+  if (sd.maps) {
+    inner += `<div class="sd-card">
+      <div class="sd-card-title">🗺 ${t("common.openInMaps")}</div>
+      <button class="map-btn" data-map="${sd.maps.lat},${sd.maps.lng}">🧭 ${t("common.openMapsBtn")}</button>
+      <div class="sd-note" style="margin-top:10px;">${sd.maps.lat.toFixed(4)}, ${sd.maps.lng.toFixed(4)}</div>
+    </div>`;
+  }
+
+  if (sd.type === "qr_code") {
     const qrData = encodeURIComponent(state.mwaId || "MWA-DEMO");
     const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${qrData}`;
-    let inner = `<div class="sd-card qr-card">
+    inner += `<div class="sd-card qr-card">
       <div class="sd-card-title" style="justify-content:center;">🔳 ${sd.title}</div>
       <div class="qr-id">${state.mwaId || ""}</div>
       <div class="qr-image-wrap"><img src="${qrImgUrl}" alt="QR code" class="qr-image"></div>
-      <div class="qr-countdown" id="qrCountdown">Refreshes in 60s</div>
-    </div>
-    <div class="sd-card"><div class="sd-card-title">ℹ️ About this code</div><div class="sd-note">${sd.note}</div></div>`;
-    bodyHtml = wrapGate(inner, locked, sd);
+      <div class="qr-countdown" id="qrCountdown"></div>
+    </div>`;
   }
 
-  document.getElementById("subdetailBody").innerHTML = bodyHtml;
+  if (sd.note) inner += `<div class="sd-card"><div class="sd-card-title">ℹ️ ${t("common.goodToKnow")}</div><div class="sd-note">${sd.note}</div></div>`;
+
+  // Provenance line for anything supplied by a port curator, so a seafarer can
+  // judge how fresh it is instead of assuming the app is authoritative.
+  if (sd.updated) inner += `<div class="sd-updated">${t("common.lastUpdated", { date: sd.updated })}</div>`;
+
+  document.getElementById("subdetailBody").innerHTML = wrapGate(inner, locked, sd);
   clearInterval(qrCountdownTimer);
   if (sd.type === "qr_code" && !locked) startQrCountdown();
   goToScreen("subdetail");
 }
+
 function startQrCountdown() {
   let seconds = 60;
-  const el = document.getElementById("qrCountdown");
-  if (!el) return;
-  el.textContent = `Refreshes in ${seconds}s`;
+  const paint = (s) => {
+    const el = document.getElementById("qrCountdown");
+    if (!el) { clearInterval(qrCountdownTimer); return false; }
+    el.textContent = t("common.qrRefresh", { s });
+    return true;
+  };
+  if (!paint(seconds)) return;
   qrCountdownTimer = setInterval(() => {
     seconds -= 1;
     if (seconds <= 0) seconds = 60; // demo loop — real rotation happens server-side once backend is live
-    const liveEl = document.getElementById("qrCountdown");
-    if (!liveEl) { clearInterval(qrCountdownTimer); return; }
-    liveEl.textContent = `Refreshes in ${seconds}s`;
+    paint(seconds);
   }, 1000);
 }
 
@@ -814,12 +834,8 @@ function wrapGate(innerHtml, locked, sd) {
   </div>`;
 }
 
-function openModal(id) {
-  document.getElementById(id).classList.add("open");
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove("open");
-}
+function openModal(id) { document.getElementById(id).classList.add("open"); }
+function closeModal(id) { document.getElementById(id).classList.remove("open"); }
 
 function escapeHtml(str) {
   const div = document.createElement("div");
@@ -827,7 +843,6 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// Coordinator demo replies now come from t("coordinator.demoReplies") in i18n.js.
 let chatReplyIndex = 0;
 
 function sendChatMessage() {
@@ -842,17 +857,14 @@ function sendChatMessage() {
     const replies = t("coordinator.demoReplies");
     const reply = replies[chatReplyIndex % replies.length];
     chatReplyIndex++;
-    body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${reply}</div>`);
+    body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(reply)}</div>`);
     body.scrollTop = body.scrollHeight;
   }, 900);
 }
 
 // ---- ASSISTANT CHAT (demo) --------------------------------------------
 // Prototype-level only: keyword matching stands in for the real AI classification
-// described in the scope of work (section 5). Real logic — grounding in port data,
-// the three-tier question model, and red-line detection — is the specialist's job.
-// Escalation phrasing per persona now lives in t("escalation.<id>") in i18n.js.
-
+// described in the scope of work (section 5).
 const COMPLEX_TOPIC_KEYWORDS = [
   "sad", "lonely", "alone", "can't sleep", "cant sleep", "no one listens", "nobody listens",
   "depressed", "hopeless", "hurt myself", "suicide", "kill myself", "want to die",
@@ -862,36 +874,26 @@ const COMPLEX_TOPIC_KEYWORDS = [
 ];
 
 function isComplexTopic(text) {
-  const t = text.toLowerCase();
-  return COMPLEX_TOPIC_KEYWORDS.some((kw) => t.includes(kw));
+  const lower = text.toLowerCase();
+  return COMPLEX_TOPIC_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
-// Assistant demo replies now come from t("demoReplies") in i18n.js.
 let assistantReplyIndex = 0;
-
-// Session state for the assistant-chat screen (point 8 fix): once opened,
-// the conversation stays intact — navigating into a category and pressing
-// "back" returns here instead of dumping the seafarer back on the standard
-// home screen. Only an explicit "go home" (bottom-nav Port, or this
-// screen's own back arrow) ends the session and resets it.
 let chatSessionOpen = false;
 let returnToChat = false;
 
 function setChatHeaderPhoto(a) {
   const el = document.getElementById("chatAssistantPhoto");
   if (!el) return;
-  const photo = getAssistantPhoto(a.id, "chatHero");
-  el.innerHTML = `<img src="${photo}" alt="${a.name}" loading="lazy">`;
+  el.innerHTML = `<img src="${getAssistantPhoto(a.id, "chatHero")}" alt="${a.name}" loading="lazy">`;
 }
 
 function openAssistantChat() {
   const a = getAssistant(state.assistant) || getAssistant("alex");
   setChatHeaderPhoto(a);
   document.getElementById("chatAssistantName").textContent = a.name;
-
-  if (chatSessionOpen) return; // resuming — leave the existing thread as-is
+  if (chatSessionOpen) return;
   chatSessionOpen = true;
-
   const body = document.getElementById("assistantChatBody");
   body.innerHTML = `<div class="chat-msg them">${escapeHtml(a.greet)}</div>`;
   const input = document.getElementById("assistantChatInput");
@@ -904,7 +906,7 @@ function sendAssistantChatMessage() {
   if (!text) return;
   const body = document.getElementById("assistantChatBody");
   const existingToggle = document.getElementById("escalationToggle");
-  if (existingToggle) existingToggle.remove(); // sending a new message supersedes an unanswered toggle
+  if (existingToggle) existingToggle.remove();
 
   body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
   input.value = "";
@@ -914,7 +916,7 @@ function sendAssistantChatMessage() {
   setTimeout(() => {
     if (isComplexTopic(text)) {
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
-      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${msg}</div>`);
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
           <button class="esc-btn esc-continue" id="escContinueBtn">${t("escalationToggle.continueBtn")}</button>
@@ -935,22 +937,15 @@ let deferredInstallPrompt = null;
 function isStandalone() {
   return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
 }
-function isIOS() {
-  return /iphone|ipad|ipod/i.test(navigator.userAgent);
-}
+function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
 
 function maybeShowInstallBanner() {
   if (isStandalone()) return;
   if (localStorage.getItem("mwapp_install_dismissed") === "1") return;
   const banner = document.getElementById("installBanner");
   const sub = document.getElementById("installSub");
-  if (isIOS()) {
-    sub.textContent = t("home.install.subIOS");
-    banner.classList.remove("hidden");
-  } else if (deferredInstallPrompt) {
-    sub.textContent = t("home.install.subDefault");
-    banner.classList.remove("hidden");
-  }
+  if (isIOS()) { sub.textContent = t("home.install.subIOS"); banner.classList.remove("hidden"); }
+  else if (deferredInstallPrompt) { sub.textContent = t("home.install.subDefault"); banner.classList.remove("hidden"); }
 }
 
 window.addEventListener("beforeinstallprompt", (e) => {
@@ -960,19 +955,9 @@ window.addEventListener("beforeinstallprompt", (e) => {
 });
 
 // ---- Lighthouse beam positioning ---------------------------------------
-// .lh-bg is shown with background-size:cover, which crops unpredictably
-// depending on the VISITOR's actual screen ratio — guessing a fixed CSS
-// percentage for where the lamp lands broke on real phones twice before.
-// Instead, this replicates the browser's own cover-fit math using the
-// REAL rendered size of .lh-bg, and sets the beam's origin as CSS
-// variables the browser applies itself — correct on any device.
-const LH_IMG_W = 992, LH_IMG_H = 1586; // natural size of assets/scenes/lighthouse-port.jpg
-const LH_LAMP_X_PCT = 15.62, LH_LAMP_Y_PCT = 48.55; // lamp position within that source image
+const LH_IMG_W = 992, LH_IMG_H = 1586;
+const LH_LAMP_X_PCT = 15.62, LH_LAMP_Y_PCT = 48.55;
 
-// ---- Onboarding grid sizing ---------------------------------------------
-// The assistant photo grid should fill whatever vertical space is left
-// after the title, language row, and Continue button — but CSS flex/grid
-// have a well-known quirk where 1fr tracks won't shrink below their
 function positionBeamAndEmblem() {
   const beam = document.getElementById("lhBeamLive");
   const bgEl = document.querySelector(".lh-bg");
@@ -985,17 +970,12 @@ function positionBeamAndEmblem() {
   let lampPctX, lampPctY;
 
   if (scaleH >= scaleW) {
-    // Normal case for phones: screen proportionally taller than the photo.
-    // Height drives the scale -> full image height shows (no vertical crop,
-    // position:top is moot), sides get cropped equally (position:center).
     const scale = scaleH;
     const scaledW = LH_IMG_W * scale;
     const cropX = (scaledW - cw) / 2;
     lampPctX = (((LH_LAMP_X_PCT / 100) * scaledW - cropX) / cw) * 100;
     lampPctY = LH_LAMP_Y_PCT;
   } else {
-    // Screen proportionally wider/shorter than the photo: width drives the
-    // scale, full width shows, excess height is cropped off the BOTTOM only.
     const scale = scaleW;
     const scaledH = LH_IMG_H * scale;
     lampPctX = LH_LAMP_X_PCT;
@@ -1021,19 +1001,20 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", positionBeamAndEmblem);
   window.addEventListener("orientationchange", () => setTimeout(positionBeamAndEmblem, 150));
 
-  if (state.assistant && state.lang) {
-    // Returning user — first-launch screens are shown once in a lifetime only.
-    goToScreen("home");
-  }
+  if (state.assistant && state.lang) goToScreen("home");
 
   document.body.addEventListener("click", (e) => {
-    if (e.target.id === "nameSave") {
-      state.name = document.getElementById("nameInput").value.trim();
-    }
+    if (e.target.id === "nameSave") state.name = document.getElementById("nameInput").value.trim();
 
     if (e.target.id === "shipMarkBtn" || e.target.closest("#shipMarkBtn")) shipMarkLocation();
     if (e.target.id === "shipNavigateBtn" || e.target.closest("#shipNavigateBtn")) shipNavigateBack();
     if (e.target.id === "shipRemarkBtn" || e.target.closest("#shipRemarkBtn")) shipClearPoint();
+
+    const mapEl = e.target.closest("[data-map]");
+    if (mapEl) {
+      const [la, ln] = mapEl.dataset.map.split(",");
+      window.open(mapsUrl(la, ln), "_blank");
+    }
 
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
@@ -1043,14 +1024,8 @@ document.addEventListener("DOMContentLoaded", () => {
       let target = goEl.dataset.go;
 
       if (target === "home" && isBackBtn && returnToChat && currentScreen !== "assistantchat") {
-        // Came here from the assistant chat (via a quick action) — "back"
-        // should return to that ongoing conversation, not dump the seafarer
-        // on the standard home screen.
         target = "assistantchat";
       } else if (target === "home") {
-        // An explicit "go all the way home" (bottom-nav Port, this screen's
-        // own back arrow, Save/Skip on the name screen) — end the chat
-        // session and the premium view; both start fresh next time.
         state.accessView = "std";
         returnToChat = false;
         chatSessionOpen = false;
@@ -1059,40 +1034,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const detailEl = e.target.closest("[data-detail]");
-    if (detailEl) { openDetail(detailEl.dataset.detail); }
+    if (detailEl) openDetail(detailEl.dataset.detail);
 
     const sdEl = e.target.closest("[data-sd]");
-    if (sdEl) { openSubDetail(sdEl.dataset.sd); }
+    if (sdEl) openSubDetail(sdEl.dataset.sd);
 
     const modalEl = e.target.closest("[data-modal]");
-    if (modalEl) { openModal(modalEl.dataset.modal); }
+    if (modalEl) openModal(modalEl.dataset.modal);
 
     const accessEl = e.target.closest("[data-access]");
     if (accessEl) {
       state.accessView = accessEl.dataset.access;
       updateAssistantUI();
-      // Partner feedback: fewer taps. Tapping "Trade Union" jumps the
-      // seafarer straight to the premium level — the assistant greets them
-      // there and explains card activation. No intermediate "explore
-      // premium" banner step on the home screen anymore.
-      if (accessEl.dataset.access === "vip") {
-        openDetail("wellness");
-      }
+      if (accessEl.dataset.access === "vip") openDetail("wellness");
     }
 
     const portEl = e.target.closest("[data-port]");
-    if (portEl) {
-      state.portId = portEl.dataset.port;
-      updateAssistantUI();
-      closeModal("portModal");
-    }
+    if (portEl) { state.portId = portEl.dataset.port; updateAssistantUI(); closeModal("portModal"); }
 
     const ctxEl = e.target.closest("[data-context]");
-    if (ctxEl) {
-      state.context = ctxEl.dataset.context;
-      updateAssistantUI();
-      closeModal("contextModal");
-    }
+    if (ctxEl) { state.context = ctxEl.dataset.context; updateAssistantUI(); closeModal("contextModal"); }
 
     const assistantEl = e.target.closest("[data-assistant]");
     if (assistantEl) {
@@ -1125,13 +1086,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === document.getElementById("portModal")) closeModal("portModal");
     if (e.target === document.getElementById("contextModal")) closeModal("contextModal");
 
-    if (e.target.id === "editNameRow" || e.target.closest("#editNameRow")) {
-      goToScreen("name");
-    }
-
-    if (e.target.id === "unionRow" || e.target.closest("#unionRow")) {
-      openModal("unionModal");
-    }
+    if (e.target.id === "editNameRow" || e.target.closest("#editNameRow")) goToScreen("name");
+    if (e.target.id === "unionRow" || e.target.closest("#unionRow")) openModal("unionModal");
 
     if (e.target.id === "unionSimActiveBtn") {
       state.unionActive = true;
@@ -1152,13 +1108,8 @@ document.addEventListener("DOMContentLoaded", () => {
       openModal("unionDeniedModal");
     }
 
-    if (e.target.id === "unionCloseBtn") {
-      closeModal("unionModal");
-    }
-
-    if (e.target.id === "unionDeniedCloseBtn") {
-      closeModal("unionDeniedModal");
-    }
+    if (e.target.id === "unionCloseBtn") closeModal("unionModal");
+    if (e.target.id === "unionDeniedCloseBtn") closeModal("unionDeniedModal");
 
     if (e.target.id === "resetAppRow" || e.target.closest("#resetAppRow")) {
       localStorage.removeItem("mwapp_state");
@@ -1166,9 +1117,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (e.target.id === "installBtn") {
-      if (isIOS()) {
-        openModal("iosInstallModal");
-      } else if (deferredInstallPrompt) {
+      if (isIOS()) openModal("iosInstallModal");
+      else if (deferredInstallPrompt) {
         deferredInstallPrompt.prompt();
         deferredInstallPrompt.userChoice.finally(() => {
           deferredInstallPrompt = null;
@@ -1187,20 +1137,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const originalText = btn.textContent;
       btn.textContent = t("settings.detectLocating");
       btn.disabled = true;
-      requestLocation((ok) => {
+      requestLocation(() => {
         dismissLocationBanner();
-        if (!ok) { /* silently ignored — manual port selection remains available in Settings */ }
         btn.textContent = originalText;
         btn.disabled = false;
       });
     }
 
-    if (e.target.id === "locationCloseBtn") {
-      dismissLocationBanner();
-    }
+    if (e.target.id === "locationCloseBtn") dismissLocationBanner();
 
     if (e.target.id === "detectLocationRow" || e.target.closest("#detectLocationRow")) {
-      const row = document.getElementById("detectLocationRow");
       const valEl = document.getElementById("detectLocationVal");
       if (valEl) valEl.textContent = t("settings.detectLocating");
       requestLocation((ok) => {
@@ -1218,15 +1164,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === document.getElementById("unionDeniedModal")) closeModal("unionDeniedModal");
 
     if (e.target.id === "chatSend") sendChatMessage();
-
     if (e.target.id === "assistantChatSend") sendAssistantChatMessage();
+
     if (e.target.id === "escContinueBtn") {
-      const t = document.getElementById("escalationToggle");
-      if (t) t.remove();
+      const toggle = document.getElementById("escalationToggle");
+      if (toggle) toggle.remove();
     }
     if (e.target.id === "escCoordinatorBtn") {
-      const t = document.getElementById("escalationToggle");
-      if (t) t.remove();
+      const toggle = document.getElementById("escalationToggle");
+      if (toggle) toggle.remove();
       goToScreen("volunteer");
     }
   });
@@ -1234,12 +1180,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("chatInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") sendChatMessage();
   });
-
   document.getElementById("assistantChatInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") sendAssistantChatMessage();
   });
 
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  }
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 });

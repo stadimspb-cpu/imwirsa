@@ -49,21 +49,16 @@ const I18N = {
       skip: "Skip",
     },
     home: {
-      whatDoYouNeed: "What do you need?",
       tapToChat: "Tap to chat →",
       heroGreeting: "Welcome to the Port of {port}. Choose a category below for local help, or just ask me.",
       emergencyContacts: "Emergency contacts",
       categories: {
         centre: "Seafarers'<br>Centre",
         transport: "Transport",
-        connect: "SIM &<br>Wi-Fi",
         shops: "Shops &<br>Food",
-        medical: "Medical",
-        safety: "Safety",
-      },
-      premium: {
-        title: "Premium Welfare Services",
-        sub: "For active Trade Union or partner club card holders only",
+        citylife: "City Life",
+        spiritual: "Spiritual<br>Care",
+        ask: "Ask the<br>assistant",
       },
       install: {
         title: "Add MWApp to your Home Screen",
@@ -76,17 +71,27 @@ const I18N = {
         sub: "Used once, on this device, to detect the nearest port. Never sent to our servers or stored.",
         enable: "Enable",
       },
-      greetingMorning: "Good morning",
-      greetingAfternoon: "Good afternoon",
-      greetingEvening: "Good evening",
-      welcomeToPort: "Welcome to {port}. Tap a category below for local help.",
-      tradeUnionSupportName: "Trade Union Support",
-      tradeUnionActiveText: "Welcome back{name}! Your Trade Union card is active this month — explore Premium Welfare Services below.",
-      tradeUnionInactiveText: "Discover Premium Welfare Services — legal help, extended medical, wellness zone and more. Available to Trade Union card holders.",
     },
-    chat: {
-      inputPlaceholder: "Type a message…",
+    // Shared labels used inside Level-3 content blocks.
+    common: {
+      awaitingData: "Awaiting port data",
+      hours: "Hours",
+      contacts: "Contacts",
+      gettingThere: "Getting there",
+      schedule: "Schedule",
+      next: "NEXT",
+      openInMaps: "Map",
+      openMapsBtn: "Open in Maps",
+      goodToKnow: "Good to know",
+      lastUpdated: "Last updated: {date} · source: Port Welfare Manager",
+      qrRefresh: "Refreshes in {s}s",
     },
+    status: {
+      openUntil: "Open until {time}",
+      closedOpensAt: "Closed · opens at {time}",
+      closedForToday: "Closed for today",
+    },
+    chat: { inputPlaceholder: "Type a message…" },
     coordinator: {
       title: "💬 IMWIRSA Welfare Coordinator",
       statusAnonymous: "Anonymous · Available 24/7 ·",
@@ -109,7 +114,6 @@ const I18N = {
       membership: "Membership",
       yourMwaId: "Your MWA-ID",
       unionCard: "Union / Club Card",
-      unionNotActivated: "Not activated ›",
       unionActive: "Active this month ✓",
       unionNeedsReconfirm: "Needs reconfirmation ›",
       unionNotConfirmed: "Not confirmed yet ›",
@@ -130,14 +134,7 @@ const I18N = {
       versionLabel: "MWApp v0.1 (prototype)",
       website: "imwirsa.org",
     },
-    nav: {
-      port: "Port",
-      ship: "Ship",
-      coordinator: "Coordinator",
-      settings: "Settings",
-      language: "Language",
-      assistant: "Assistant",
-    },
+    nav: { port: "Port", ship: "Ship", settings: "Settings" },
     modals: {
       lang: { title: "Choose your language" },
       assistant: { title: "Choose your assistant" },
@@ -204,26 +201,21 @@ const I18N = {
       sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Welfare Coordinator right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
       grace: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Welfare Coordinator now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
     },
-    escalationToggle: {
-      continueBtn: "Continue",
-      coordinatorBtn: "Coordinator",
-    },
+    escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Coordinator" },
     categoryPrompts: {
       centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
-      transport: "Need help getting around — shuttle times, taxis, buses? Just ask, I'm right here.",
-      connect: "Questions about SIM cards, Wi-Fi, or getting cash? I can walk you through it.",
-      shops: "Looking for food, supplies, or a pharmacy nearby? Let me know what you need.",
-      medical: "If you're unwell or need medical advice, tell me what's going on and I'll help you find the right care.",
-      safety: "Any safety concerns in the port area? I'm listening — let me know.",
+      transport: "Need help getting around — shuttle times, taxis, buses, or leaving the port? Just ask, I'm right here.",
+      shops: "Looking for food, supplies, a SIM card or a pharmacy nearby? Let me know what you need.",
+      citylife: "Thinking of going into the city? I can tell you what's nearby and what's worth knowing before you go.",
+      spiritual: "If you'd like to speak with a chaplain, find a quiet place, or simply have someone to talk to — I can help you find who's here.",
       emergency: "If this is urgent, use the contacts below right away. I'm also here if you want to talk it through.",
     },
     askMe: {
       centre: "Not sure where to start? Ask me →",
       transport: "Can't find your ride? Ask me →",
-      connect: "Need help getting online? Ask me →",
       shops: "Looking for something specific? Ask me →",
-      medical: "Unsure what to do? Ask me →",
-      safety: "Something doesn't feel right? Ask me →",
+      citylife: "Not sure where to go? Ask me →",
+      spiritual: "Would you rather just talk? Ask me →",
       emergency: "Need help right now? Ask me →",
       wellness: "Have a question about this? Ask me →",
       default: "Not sure? Ask me →",
@@ -238,11 +230,6 @@ const I18N = {
       "I can help with that. Is there anything else on your mind?",
       "Sure thing. Feel free to ask me anything else about the port or the app.",
     ],
-    quickActions: {
-      returnToShip: "Return to my ship",
-      coordinator: "Coordinator",
-      needTransportToShip: "I need transport to ship",
-    },
     ship: {
       title: "My Ship",
       introText: "Before you go ashore, mark exactly where your ship is docked. If you're not sure how to get back — especially at night, or if the port has several gates — MWApp will guide you to this exact spot, not just \"the port\".",
@@ -256,27 +243,21 @@ const I18N = {
     },
   },
   // ---------------------------------------------------------------
-  // RUSSIAN — TODO: replace with real translations.
-  // Leave keys empty ({}) until ready; the app will show English
-  // for this language until this object is filled in.
+  // RUSSIAN / TURKISH / FILIPINO — TODO: replace with real translations.
+  // Leave keys empty ({}) until ready; the app shows English until filled.
   // ---------------------------------------------------------------
   ru: {},
-  // ---------------------------------------------------------------
-  // TURKISH — TODO: replace with real translations.
-  // ---------------------------------------------------------------
   tr: {},
-  // ---------------------------------------------------------------
-  // FILIPINO — TODO: replace with real translations.
-  // ---------------------------------------------------------------
   fil: {},
 };
+
 // ---- lookup helpers ---------------------------------------------------
 function getPath(obj, path) {
   return path.split(".").reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
 }
-// t("home.whatDoYouNeed") reads the current language (state.lang), and
-// falls back to English for any language object that's empty or missing
-// that specific key — so partially-translated languages never break.
+// t("home.tapToChat") reads the current language (state.lang), and falls back
+// to English for any language object that's empty or missing that specific
+// key — so partially-translated languages never break.
 function t(path, vars) {
   const lang = (typeof state !== "undefined" && state.lang) ? state.lang : "en";
   let node = getPath(I18N[lang], path);
@@ -288,30 +269,14 @@ function t(path, vars) {
   }
   return node;
 }
-// Returns an assistant persona merged with its translated name/tag/greet
-// for the current (or given) language. Visual fields — icon, gradient,
-// photo — never change with language, so those stay on ASSISTANTS in
-// app.js; only the text fields are looked up here.
 function getAssistant(id, lang) {
   const base = ASSISTANTS[id];
   if (!base) return null;
   const useLang = lang || (typeof state !== "undefined" ? state.lang : "en") || "en";
   const langNode = (I18N[useLang] && I18N[useLang].assistants && I18N[useLang].assistants[id]) || {};
   const enNode = I18N.en.assistants[id];
-  return {
-    ...base,
-    name: langNode.name || enNode.name,
-    tag: langNode.tag || enNode.tag,
-    greet: langNode.greet || enNode.greet,
-  };
+  return { ...base, name: langNode.name || enNode.name, tag: langNode.tag || enNode.tag, greet: langNode.greet || enNode.greet };
 }
-// Picks a photo for an assistant based on which screen is asking.
-// ASSISTANTS[id].photos is an array — today it usually holds just one
-// image, so every screen shows the same photo (safe default). Partners
-// can add more angles later (e.g. photos: ["alex.png", "alex-2.png",
-// "alex-3.png"]); once an array has more than one entry, each screen
-// context deterministically gets a different pose — same character,
-// different angle each time — instead of one static headshot everywhere.
 const PHOTO_SCREEN_ORDER = [
   "onboardGrid", "introHero", "nameScreen", "homeBubble",
   "chatHeader", "chatHero", "detailHeader", "settings",
@@ -325,9 +290,6 @@ function getAssistantPhoto(id, screenKey) {
   return base.photos[pos];
 }
 // ---- static "chrome" text ---------------------------------------------
-// Walks every element carrying a data-i18n* attribute and fills it from
-// the dictionary. Call once on load, and again whenever the language
-// changes, to refresh every static label/button/placeholder in one pass.
 function applyStaticI18n() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const val = t(el.getAttribute("data-i18n"));
