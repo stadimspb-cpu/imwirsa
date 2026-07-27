@@ -74,11 +74,7 @@ a { color: inherit; text-decoration: none; }
 }
 .screen.active { opacity: 1; pointer-events: auto; }
 
-/* ── SCREEN: LIGHTHOUSE INTRO — real photo background, code-drawn text/UI ──
-   The night port scene is a photo (assets/scenes/lighthouse-port.jpg); the
-   emblem is a transparent PNG (assets/scenes/emblem.png). Everything else
-   (headline, body copy, button) stays real HTML so it's translatable and
-   clickable, unlike text baked into an image. */
+/* ── SCREEN: LIGHTHOUSE INTRO ────────────────────────────────────── */
 .screen-lighthouse { overflow: hidden; background: #0a1424; }
 .lh-bg {
   position: absolute; inset: 0;
@@ -88,11 +84,6 @@ a { color: inherit; text-decoration: none; }
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(6,11,24,0) 0%, rgba(6,11,24,0) 55%, rgba(8,14,28,0.08) 75%, rgba(6,10,20,0.16) 100%);
 }
-
-/* Twinkling stars — an independent layer on top of the (static) photo sky,
-   so the sky reads as alive rather than a frozen picture. Positions are
-   randomized once and baked into the HTML (see index.html); this file only
-   defines how a single star looks/animates. */
 .lh-stars { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
 .lh-star {
   position: absolute; border-radius: 50%; background: white;
@@ -104,14 +95,9 @@ a { color: inherit; text-decoration: none; }
   50% { opacity: 1; transform: scale(1.15); }
 }
 
-/* Subtle "living" beam overlay — angled to match this photo's own baked-in
-   beam (74° from vertical). Position (left/bottom) is set at runtime by
-   positionBeamAndEmblem() in app.js, which reads the ACTUAL rendered size
-   of .lh-bg and replicates the browser's own background-size:cover math —
-   this is what makes it land correctly regardless of the visitor's actual
-   phone screen ratio, instead of guessing fixed percentages (which broke
-   on real devices twice before). The values below are just a sane
-   fallback in case JS hasn't run yet. */
+/* Beam origin (left/bottom) is set at runtime by positionBeamAndEmblem()
+   in app.js, which replicates the browser's own background-size:cover math
+   against the ACTUAL rendered size of .lh-bg. Values below are a fallback. */
 .lh-beam-live {
   position: absolute; bottom: var(--beam-bottom, 51.5%); left: var(--beam-left, 15.6%);
   width: 3px; height: 55vh; max-height: 430px;
@@ -221,9 +207,7 @@ a { color: inherit; text-decoration: none; }
             drop-shadow(0 0 75px color-mix(in srgb, var(--accent, #29C5FF) 80%, transparent));
   }
 }
-.assistant-card.selected .assistant-name {
-  animation: nameSelectedGlow 1.8s ease-in-out infinite;
-}
+.assistant-card.selected .assistant-name { animation: nameSelectedGlow 1.8s ease-in-out infinite; }
 @keyframes nameSelectedGlow {
   0%, 100% { text-shadow: 0 0 6px color-mix(in srgb, var(--accent, #29C5FF) 70%, transparent); opacity: 1; }
   50% { text-shadow: 0 0 18px color-mix(in srgb, var(--accent, #29C5FF) 100%, transparent), 0 0 30px color-mix(in srgb, var(--accent, #29C5FF) 60%, transparent); opacity: 0.82; }
@@ -294,7 +278,6 @@ a { color: inherit; text-decoration: none; }
   position: absolute; inset: 0;
   background-size: cover; background-position: center top; background-repeat: no-repeat;
 }
-
 .intro-progress {
   position: relative; z-index: 3; display: flex; gap: 6px; justify-content: center;
   padding: 18px 24px 0;
@@ -311,20 +294,14 @@ a { color: inherit; text-decoration: none; }
 }
 .intro-photo img { height: 100%; width: auto; max-width: none; object-fit: contain; display: block; }
 
-.intro-content {
-  position: relative; z-index: 3;
-  padding: 26px 22px 0 60%;
-  min-height: 30%;
-}
+.intro-content { position: relative; z-index: 3; padding: 26px 22px 0 60%; min-height: 30%; }
 .intro-headline {
   font-size: 25px; font-weight: 800; line-height: 1.32; color: #10233F;
   text-shadow: 0 1px 12px rgba(255,255,255,0.4);
 }
 .intro-name { color: #2E7DF0; }
 .intro-divider { width: 40px; height: 3px; background: #2E7DF0; border-radius: 2px; margin: 14px 0 16px; }
-.intro-msg {
-  font-size: 13.5px; line-height: 1.7; color: #1B2C42; max-width: 300px;
-}
+.intro-msg { font-size: 13.5px; line-height: 1.7; color: #1B2C42; max-width: 300px; }
 
 .intro-bottom {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
@@ -354,14 +331,8 @@ a { color: inherit; text-decoration: none; }
 }
 .name-photo img {
   height: 100%; width: auto; object-fit: contain; display: block;
-  /* Slight warm color-grade so the neutrally-lit studio photo sits better
-     in this amber-lit cabin scene — a code-side mitigation, not a perfect
-     fix (see conversation with Andrey: true match needs a reshoot in this
-     light, but this narrows the gap for a low-stakes background screen). */
   filter: sepia(18%) saturate(112%) brightness(0.97) hue-rotate(-6deg);
 }
-
-/* ab-avatar (chat header), sca-avatar (settings) keep their circular badge look. */
 .ab-avatar img, .sca-avatar img {
   width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;
 }
@@ -384,23 +355,14 @@ a { color: inherit; text-decoration: none; }
 /* ── HOME / PORT CARD ─────────────────────────────────────────────── */
 .screen-home { background: var(--slate); }
 
-/* ── HOME TOP ZONE — full-bleed neutral backdrop behind header + hero ──
-   Deliberately generic (sea / sky, generic port silhouette) rather than
-   a specific named city — same reasoning as any per-port photo pass
-   later: this one works for any port until real per-port photography
-   exists. Lives in assets/scenes/ alongside the other atmosphere photos
-   (lighthouse-port.jpg, deck-day.jpg, cabin-evening.jpg).
-   background-color is a fallback shown briefly while the photo loads,
-   or if the file is ever missing.
-   ::before is a scrim: darker at top (behind the brand/port text) and
-   fading down into --slate at the bottom, where the white category
-   cards begin — so text stays readable over any photo without touching
-   the cards themselves. */
+/* Full-bleed neutral backdrop behind header + hero. Deliberately generic
+   (sea / sky, generic port silhouette) rather than a specific named city,
+   until real per-port photography exists. */
 .home-topzone {
   position: relative;
   flex-shrink: 0;
   background-image: url("../assets/scenes/home-neutral.jpg");
-  background-color: #123A5E; /* shows briefly while the photo loads, and if it's ever missing */
+  background-color: #123A5E;
   background-size: cover;
   background-position: center;
 }
@@ -417,17 +379,11 @@ a { color: inherit; text-decoration: none; }
 }
 .home-topzone > * { position: relative; z-index: 1; }
 
-.home-header {
-  padding: 18px 20px 22px; color: white; flex-shrink: 0;
-}
+.home-header { padding: 18px 20px 22px; color: white; flex-shrink: 0; }
 .home-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; position: relative; padding-top: 6px; }
 .hh-brand {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-  padding-bottom: 6px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); padding-bottom: 6px;
   border-bottom: 1px solid rgba(255,255,255,0.3);
   flex: 0 0 38%; min-width: 0;
   text-shadow: 0 1px 4px rgba(0,0,0,0.5);
@@ -466,8 +422,6 @@ a { color: inherit; text-decoration: none; }
 .assistant-bubble.premium .ab-name { color: rgba(255,255,255,0.85); }
 .assistant-bubble.premium .ab-cta { color: white; }
 .ab-avatar { width: 38px; height: 38px; border-radius: 50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:white; }
-.ab-avatar-lg { width: 52px; height: 52px; font-size: 20px; }
-.ab-avatar-header { width: 32px; height: 32px; font-size: 13px; }
 .ab-body { flex: 1; min-width: 0; }
 .ab-text { font-size: 12.8px; color: var(--dark); line-height: 1.5; }
 .ab-name { font-size: 10.5px; font-weight: 700; color: var(--teal); margin-bottom: 4px; }
@@ -478,19 +432,26 @@ a { color: inherit; text-decoration: none; }
 .ab-cta:active { opacity: 0.7; }
 
 .home-content { padding: 4px 16px 20px; flex: 1; }
-.section-label-spaced { margin-top: 6px; }
+
+/* Six tiles, 3 across × 2 down. min-height keeps single-line labels
+   ("Transport", "City Life") the same box size as the two-line ones,
+   so the grid reads as a block rather than a ragged set. */
 .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
-.category-grid-compact { gap: 8px; }
-.category-grid-compact .cat-tile { padding: 12px 6px; }
-.category-grid-compact .cat-icon { font-size: 21px; margin-bottom: 6px; }
-.category-grid-compact .cat-label { font-size: 10px; }
 .cat-tile {
-  background: white; border-radius: 16px; padding: 16px 8px; text-align: center;
+  background: white; border-radius: 16px; padding: 14px 6px; text-align: center;
   border: 1px solid var(--border); transition: all .15s;
+  min-height: 92px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
 }
 .cat-tile:active { transform: scale(0.95); background: var(--slate); }
-.cat-icon { font-size: 26px; margin-bottom: 8px; }
+.cat-icon { font-size: 25px; line-height: 1; }
 .cat-label { font-size: 11px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+
+/* The "Ask the assistant" tile is not a category — it's the fallback for
+   everything the grid doesn't cover, so it's tinted to read as different
+   in kind rather than as a seventh place to look for port information. */
+.cat-tile-ask { background: linear-gradient(150deg, #0D6E8A, #0A5A72); border-color: var(--teal2); }
+.cat-tile-ask .cat-label { color: white; }
 
 .quick-row { display: flex; gap: 10px; margin-bottom: 18px; }
 .quick-btn {
@@ -502,16 +463,6 @@ a { color: inherit; text-decoration: none; }
 .quick-btn .qt { font-size: 12px; font-weight: 700; color: var(--navy); text-align:left; line-height:1.3; }
 .quick-btn.urgent { background: var(--coral); border-color: var(--coral); }
 .quick-btn.urgent .qt { color: white; }
-.premium-banner {
-  width: calc(100% - 32px); margin-left: 16px; margin-right: 16px; display: flex; align-items: center; gap: 12px;
-  background: linear-gradient(135deg, #B8860B, #8a6408); border-radius: 16px; padding: 14px 16px;
-  margin-bottom: 14px; text-align: left;
-}
-.premium-banner .pb-icon { font-size: 22px; }
-.premium-banner .pb-body { flex: 1; }
-.premium-banner .pb-title { font-size: 13px; font-weight: 800; color: white; }
-.premium-banner .pb-sub { font-size: 10.5px; color: rgba(255,255,255,0.85); margin-top: 1px; }
-.premium-banner .pb-arrow { color: white; font-size: 18px; }
 
 .install-banner {
   display: flex; align-items: center; gap: 10px; background: white;
@@ -534,18 +485,12 @@ a { color: inherit; text-decoration: none; }
 .ios-step-text { font-size: 13px; color: var(--dark); line-height: 1.5; }
 .ios-icon { font-size: 13px; }
 
-/* ── CATEGORY DETAIL SHEET ────────────────────────────────────────── */
+/* ── CATEGORY DETAIL (Level 2) ────────────────────────────────────── */
 .screen-detail { background: var(--slate); }
 .detail-header {
   background: var(--navy); color: white; padding: 16px 16px 18px; display: flex; align-items: center; gap: 12px; flex-shrink:0;
   position: sticky; top: 0; z-index: 15;
 }
-/* Level-2 category screens only (Seafarers' Centre, Transport, etc.) get a
-   small photo of the current assistant in the header — moved here out of
-   the message bubble per partner feedback, so the bubble stays text-only
-   and the assistant's face is always visible without a tiny circular crop.
-   Level-3 (subdetail — hours, phone numbers) intentionally has no photo:
-   it's pure reference info, no conversation is implied there. */
 .detail-header.dh-with-photo { position: relative; overflow: hidden; }
 .dh-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 86px; z-index: 1; }
 .dh-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block; }
@@ -561,21 +506,48 @@ a { color: inherit; text-decoration: none; }
   display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: rgba(255,255,255,0.6);
   margin-bottom: 6px; font-weight: 600;
 }
-.detail-crumb .crumb-level { background: rgba(255,255,255,0.15); padding: 2px 9px; border-radius: 10px; font-size: 10px; font-weight: 700; }
 .detail-list { padding: 14px 16px; flex: 1; }
+
+/* ── HERO STATUS STRIP ────────────────────────────────────────────
+   Sits directly above the assistant bubble, and ONLY on categories that
+   declare statusFrom in PORTS (today: Seafarers' Centre). Not repeated
+   per category: a seafarer browsing Transport does not need the centre's
+   opening hours in that moment, and it would only steal screen space.
+   Text is computed live in computeStatus() from the hours table, so it
+   can't silently go stale the way a stored "Open until 20:00" string would. */
+.hero-status {
+  display: flex; align-items: center; gap: 8px;
+  border-radius: 12px; padding: 9px 14px; margin-bottom: 10px;
+  font-size: 12.5px; font-weight: 800;
+}
+.hero-status .hs-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.hero-status.is-open { background: #dcfce7; color: #15803d; }
+.hero-status.is-open .hs-dot { background: #15803d; box-shadow: 0 0 0 3px rgba(21,128,61,0.18); }
+.hero-status.is-closed { background: #fee2e2; color: #b91c1c; }
+.hero-status.is-closed .hs-dot { background: #b91c1c; box-shadow: 0 0 0 3px rgba(185,28,28,0.15); }
+
 .d-row {
   background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px;
   display: flex; align-items: center; gap: 12px; border: 1px solid var(--border);
 }
 .d-row.clickable { cursor: pointer; transition: transform .1s; }
 .d-row.clickable:active { transform: scale(0.98); background: var(--slate); }
+
+/* Rows whose third level a port curator hasn't filled in yet. Deliberately
+   NOT the 🔒 lock used for Trade Union gating — a lock tells the seafarer
+   "you lack access" and sends them off to ask about cards, when the real
+   situation is simply that the data hasn't arrived from the port yet. */
+.d-row.pending { background: #f8fafc; border-style: dashed; opacity: 0.72; cursor: default; }
+.d-row.pending .d-icon { filter: grayscale(1); opacity: 0.75; }
+.d-row.pending .d-title { color: var(--gray); }
+.d-tag.awaiting { background: #e2e8f0; color: #64748b; }
+
 .d-icon { font-size: 22px; width: 36px; text-align: center; flex-shrink:0; }
 .d-body { flex: 1; min-width: 0; }
 .d-title { font-size: 13.5px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
 .d-sub { font-size: 11.5px; color: var(--gray); line-height: 1.4; }
 .d-tag { display:inline-block; margin-top:4px; font-size:9.5px; font-weight:700; padding:2px 8px; border-radius:10px; background:#dcfce7; color:#15803d; }
 .d-tag.closed { background:#fee2e2; color:#b91c1c; }
-.d-tap-hint { font-size: 9.5px; color: #94a3b8; margin-top: 3px; }
 .d-action { width: 36px; height: 36px; border-radius: 50%; background: var(--slate); display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
 
 /* ── LEVEL 3 — SUB-DETAIL SCREEN ──────────────────────────────────── */
@@ -586,6 +558,30 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 .sd-card-title { font-size: 12.5px; font-weight: 800; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+/* Services groups (Hospitality / Recreation / Connectivity / …) — chips
+   rather than another tappable list, because these are facts about what
+   exists at the centre, not further navigation. */
+.svc-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.svc-chip {
+  font-size: 11.5px; font-weight: 600; color: var(--navy);
+  background: var(--slate); border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 12px;
+}
+
+.map-btn {
+  width: 100%; background: var(--teal); color: white; font-weight: 700; font-size: 13.5px;
+  padding: 13px; border-radius: 12px;
+}
+.map-btn:active { transform: scale(0.98); }
+
+/* Provenance line — shown wherever a subdetail carries `updated`, so a
+   seafarer can judge how fresh curator-supplied data is instead of
+   assuming the app is authoritative. */
+.sd-updated {
+  font-size: 10.5px; color: var(--gray); text-align: center;
+  padding: 4px 8px 12px; line-height: 1.5;
+}
 
 .hours-table { width: 100%; font-size: 13px; border-collapse: collapse; }
 .hours-table td { padding: 7px 4px; border-bottom: 1px solid var(--slate); color: var(--dark); }
@@ -631,7 +627,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 6px 16px rgba(184,134,11,0.35);
 }
 
-/* ── VOLUNTEER CHAT ────────────────────────────────────────────────── */
+/* ── COORDINATOR CHAT ─────────────────────────────────────────────── */
 .screen-volunteer { background: var(--slate); }
 .chat-header {
   background: var(--coral); color: white; padding: 16px 16px 18px; flex-shrink: 0;
@@ -639,13 +635,8 @@ a { color: inherit; text-decoration: none; }
 }
 .chat-header .detail-title { display:flex; align-items:center; gap:8px; }
 .chat-header-sub { font-size: 11.5px; color: rgba(255,255,255,0.85); margin-top: 2px; margin-left: 46px; }
-/* ── HOME HERO — full-bleed assistant portrait + greeting (partner ref rис.1) ──
-   Dark navy backdrop matches the app's existing onboarding/lighthouse color
-   (--navy-deep) so a persona photo shot/generated on a similar dark
-   background blends in rather than sitting in a visibly separate "box".
-   If a photo still shows its own light background, ask for it to be
-   re-generated on a dark navy (#0B1E3D) or neutral graphite backdrop —
-   CSS can't repaint what's already baked into the image file. */
+
+/* ── HOME HERO — full-bleed assistant portrait + greeting ─────────── */
 .home-hero {
   display: flex; align-items: stretch; width: 100%;
   background: transparent; border: none; text-align: left;
@@ -662,13 +653,10 @@ a { color: inherit; text-decoration: none; }
 .home-hero-cta { font-size: 13px; font-weight: 800; color: var(--ice); text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
 .home-hero:active { opacity: 0.92; }
 
-/* ── ASSISTANT CHAT HEADER — full-bleed photo (partner-requested redesign,
-   ref screenshot: Omar on gradient, name + role over the photo). Separate
-   class from the shared .chat-header (used by the Coordinator chat), so
-   this doesn't affect that screen. */
+/* ── ASSISTANT CHAT HEADER — full-bleed photo ─────────────────────── */
 .ac-header {
   position: relative; flex-shrink: 0; height: 190px; overflow: hidden;
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal2) 100%); /* shows briefly while the photo loads */
+  background: linear-gradient(135deg, var(--navy) 0%, var(--teal2) 100%);
 }
 .ac-header-photo { position: absolute; inset: 0; }
 .ac-header-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; }
@@ -725,12 +713,7 @@ a { color: inherit; text-decoration: none; }
 .settings-current-assistant { display:flex; align-items:center; gap:12px; background:white; border-radius:14px; padding:16px; margin-bottom:16px; border:1px solid var(--border); }
 .sca-avatar { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:white; }
 
-/* ── SHIP SCREEN — mark exit point, navigate back ─────────────────────
-   Deliberately simple: one GPS point, saved locally on-device only, used
-   to open the phone's own maps app with that point as the destination.
-   No live AIS tracking, no server, no cost — see conversation with Andrey
-   about why this is the right scope for the safety problem it solves
-   (seafarer disoriented among several port gates, esp. at night). */
+/* ── SHIP SCREEN ──────────────────────────────────────────────────── */
 .screen-ship { background: var(--slate); }
 .ship-body { flex: 1; padding: 32px 26px; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .ship-icon { font-size: 44px; margin-bottom: 14px; }
@@ -740,6 +723,7 @@ a { color: inherit; text-decoration: none; }
 .ship-error { font-size: 12.5px; color: var(--coral2); background: #fee2e2; border-radius: 12px; padding: 12px 14px; margin-top: 4px; max-width: 320px; }
 .ship-note { font-size: 11px; color: var(--gray); margin-top: 22px; max-width: 280px; }
 #shipNoPoint, #shipHasPoint { width: 100%; max-width: 300px; display: flex; flex-direction: column; align-items: center; }
+
 /* ── BOTTOM NAV ────────────────────────────────────────────────────── */
 .bottom-nav {
   display: none; background: white; border-top: 1px solid var(--border);
@@ -752,16 +736,11 @@ a { color: inherit; text-decoration: none; }
 .nav-item.active .ni { opacity: 1; }
 .nav-item.active .nt { color: var(--teal); opacity: 1; }
 
-/* Transparent variant — toggled by JS (goToScreen) only while the Home
-   screen is active, since bottom-nav is shared across every screen and
-   must stay solid/opaque everywhere else (settings, chat, etc). */
 .bottom-nav.on-photo { background: transparent; border-top-color: transparent; }
 .bottom-nav.on-photo .nav-item .ni { opacity: 0.8; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.55)); }
 .bottom-nav.on-photo .nav-item .nt { color: rgba(255,255,255,0.85); text-shadow: 0 1px 3px rgba(0,0,0,0.55); }
 .bottom-nav.on-photo .nav-item.active .ni { opacity: 1; }
 .bottom-nav.on-photo .nav-item.active .nt { color: white; }
-
-/* (language/assistant quick access now integrated into bottom-nav, see above) */
 
 /* ── MODAL (quick switchers) ──────────────────────────────────────── */
 .modal-overlay {
