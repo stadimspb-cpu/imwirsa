@@ -6,10 +6,10 @@
 // translated per language. Use getAssistant(id) (defined in i18n.js) to get an
 // assistant merged with its translated text fields.
 const ASSISTANTS = {
-  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"],   onboardScale: 1.08 },
-  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"],   onboardScale: 0.85 },
-  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"], onboardScale: 1.16 },
-  grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/grace.png",  photos: ["assets/avatars/grace.png"],  onboardScale: 0.96 },
+  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"] },
+  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"] },
+  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"] },
+  grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/grace.png",  photos: ["assets/avatars/grace.png"] },
 };
 
 const LANGUAGES = [
@@ -812,15 +812,31 @@ function shipMarkLocation() {
   const btn = document.getElementById("shipMarkBtn");
   if (!("geolocation" in navigator)) { errorEl.classList.remove("hidden"); return; }
   if (btn) btn.disabled = true;
+
+  const done = (pos) => {
+    state.shipPoint = { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: Date.now() };
+    saveState();
+    if (btn) btn.disabled = false;
+    renderShipScreen();
+  };
+  const fail = () => {
+    if (btn) btn.disabled = false;
+    errorEl.classList.remove("hidden");
+  };
+
+  // A precise GPS fix is what we want — the whole point is finding one gate
+  // among several. But alongside a steel hull, or inside a terminal, that fix
+  // can take far longer than the timeout, and iOS then reports a plain error
+  // rather than falling back on its own. So: try for accuracy first, and if it
+  // doesn't arrive, take the coarse network fix rather than giving the seafarer
+  // nothing. A rough point still beats no point when you're looking for the ship.
   navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      state.shipPoint = { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: Date.now() };
-      saveState();
-      if (btn) btn.disabled = false;
-      renderShipScreen();
-    },
-    () => { if (btn) btn.disabled = false; errorEl.classList.remove("hidden"); },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    done,
+    () => navigator.geolocation.getCurrentPosition(
+      done, fail,
+      { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 }
+    ),
+    { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
   );
 }
 
@@ -1001,7 +1017,6 @@ function goToScreen(name) {
   if (name === "home") { maybeShowInstallBanner(); maybeShowLocationBanner(); }
 }
 
-let lastDetailKey = null;
 let qrCountdownTimer = null;
 
 function setDetailHeaderPhoto(a) {
@@ -1015,7 +1030,6 @@ function setDetailHeaderPhoto(a) {
 function openDetail(key) {
   const data = currentCategories()[key];
   if (!data) return;
-  lastDetailKey = key;
   const port = currentPort();
   const valid = isUnionValid();
   const locked = !!data.gated && !valid;
@@ -1050,7 +1064,7 @@ function openDetail(key) {
         <button class="ab-cta" data-go="assistantchat">${t("askMe.wellness") || t("askMe.default")}</button>
       </div>`;
   } else {
-    const msg = t(`categoryPrompts.${key}`) || "How can I help you here?";
+    const msg = t(`categoryPrompts.${key}`) || t("categoryPrompts.fallback");
     bubbleHtml = `
       <div class="assistant-bubble" style="margin:0 0 14px;">
         <div class="ab-name">${a.name}</div>
@@ -1267,7 +1281,6 @@ function isComplexTopic(text) {
 
 let assistantReplyIndex = 0;
 let chatSessionOpen = false;
-let returnToChat = false;
 
 function setChatHeaderPhoto(a) {
   const el = document.getElementById("chatAssistantPhoto");
@@ -1405,16 +1418,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
-      const isBackBtn = goEl.classList.contains("back-btn");
-      const currentScreenEl = document.querySelector(".screen.active");
-      const currentScreen = currentScreenEl ? currentScreenEl.dataset.screen : null;
-      let target = goEl.dataset.go;
+      const target = goEl.dataset.go;
 
-      if (target === "home" && isBackBtn && returnToChat && currentScreen !== "assistantchat") {
-        target = "assistantchat";
-      } else if (target === "home") {
+      // Going home is the one explicit "start fresh" action: it ends the
+      // assistant-chat session and drops back to the Standard view.
+      if (target === "home") {
         state.accessView = "std";
-        returnToChat = false;
         chatSessionOpen = false;
       }
       goToScreen(target);

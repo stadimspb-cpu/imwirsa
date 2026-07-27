@@ -31,7 +31,6 @@ const I18N = {
     onboard: {
       title: "Choose your assistant",
       sub: "We're here to support you every step of the way.",
-      chooseAssistant: "Choose your assistant",
       chooseLanguage: "Choose your language",
       continueBtn: "Continue",
     },
@@ -209,6 +208,7 @@ const I18N = {
       citylife: "Thinking of going into the city? I can tell you what's nearby and what's worth knowing before you go.",
       spiritual: "If you'd like to speak with a chaplain, find a quiet place, or simply have someone to talk to — I can help you find who's here.",
       emergency: "If this is urgent, use the contacts below right away. I'm also here if you want to talk it through.",
+      fallback: "How can I help you here?",
     },
     askMe: {
       centre: "Not sure where to start? Ask me →",
