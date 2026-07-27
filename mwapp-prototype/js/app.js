@@ -114,10 +114,10 @@ const SUBDETAILS = {
   },
   legal_help: {
     type: "hours_contacts", gated: true,
-    title: "Legal Assistance",
+    title: "Legal Consultation (Paid)",
+    note: "Free basic information and union/ITF contacts are always available to every seafarer under Emergency Contacts — this is specifically a paid, in-depth consultation with a maritime lawyer for Trade Union members.",
     contacts: [
-      { icon: "⚖️", title: "ITF Inspector — Baltic region", sub: "Free legal advice for union members", action: "📞" },
-      { icon: "💬", title: "WhatsApp consultation", sub: "Response within 24h", action: "💬" },
+      { icon: "💬", title: "WhatsApp consultation with a maritime lawyer", sub: "Paid service, covered by Trade Union membership · response within 24h", action: "💬" },
     ],
     directions: [
       { icon: "🏛", title: "In person at the Seafarers' Centre", sub: "By appointment only", action: "🧭" },
@@ -213,6 +213,7 @@ const PORTS = {
           { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
           { icon: "🏛", title: "Seafarers' Centre", sub: "+372 5555 1234", action: "📞" },
           { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
+          { icon: "⚖️", title: "ITF Inspector — Baltic region", sub: "Free basic advice on wages, contracts & seafarers' rights", action: "📞" },
         ],
       },
       wellness: {
@@ -220,7 +221,7 @@ const PORTS = {
         rows: [
           { icon: "🔳", title: "Your Premium QR Code", sub: "Show this to partner staff to verify your status", action: "›", sd: "premium_qr" },
           { icon: "🌊", title: "Wellness Recovery Zone", sub: "Massage, counselling and quiet space near the centre", action: "›", sd: "wellness_zone_tallinn" },
-          { icon: "⚖️", title: "Legal Assistance", sub: "ITF inspector, contract & wage disputes", action: "›", sd: "legal_help" },
+          { icon: "⚖️", title: "Legal Consultation (Paid)", sub: "In-depth consultation with a maritime lawyer, covered by Trade Union membership", action: "›", sd: "legal_help" },
           { icon: "🩺", title: "Medical — Extended Access", sub: "Priority booking, covered consultation fee", action: "›", sd: "medical_extended" },
           { icon: "🧠", title: "Psychological Support", sub: "Confidential counselling, 24/7 chat", action: "›", sd: "psych_support" },
           { icon: "🏷", title: "Port Discounts & Privileges", sub: "Shops, café, transport near the terminal", action: "›", sd: "port_discounts" },
@@ -760,6 +761,7 @@ function openSubDetail(sdKey) {
         sd.directions.map((c) => `<div class="contact-row"><div class="c-icon">${c.icon}</div><div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>${c.action ? `<div class="c-action">${c.action}</div>` : ""}</div>`).join("") +
         `</div>`;
     }
+    if (sd.note) inner += `<div class="sd-card"><div class="sd-card-title">ℹ️ Good to know</div><div class="sd-note">${sd.note}</div></div>`;
     bodyHtml = wrapGate(inner, locked, sd);
   } else if (sd.type === "schedule") {
     let inner = `<div class="sd-card"><div class="sd-card-title">${sd.from}</div>` +
