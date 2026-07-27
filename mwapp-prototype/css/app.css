@@ -458,22 +458,24 @@ a { color: inherit; text-decoration: none; }
 
 .assistant-bubble {
   margin: 16px 16px 18px; background: white; border-radius: 18px; padding: 16px 18px;
-  display: flex; gap: 12px; align-items: center; box-shadow: 0 10px 30px rgba(27,58,107,0.14);
-  position: relative; z-index: 2; transition: background .2s, transform .12s;
-  width: calc(100% - 32px); border: none; cursor: pointer; text-align: left; font-family: inherit;
+  box-shadow: 0 10px 30px rgba(27,58,107,0.14);
+  position: relative; z-index: 2; width: calc(100% - 32px);
 }
-.assistant-bubble-cta:active { transform: scale(0.98); }
 .assistant-bubble.premium { background: linear-gradient(135deg, var(--gold), #d4a017); }
 .assistant-bubble.premium .ab-text { color: white; }
 .assistant-bubble.premium .ab-name { color: rgba(255,255,255,0.85); }
-.assistant-bubble.premium .ab-cta { color: rgba(255,255,255,0.85); }
+.assistant-bubble.premium .ab-cta { color: white; }
 .ab-avatar { width: 38px; height: 38px; border-radius: 50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:white; }
 .ab-avatar-lg { width: 52px; height: 52px; font-size: 20px; }
 .ab-avatar-header { width: 32px; height: 32px; font-size: 13px; }
 .ab-body { flex: 1; min-width: 0; }
 .ab-text { font-size: 12.8px; color: var(--dark); line-height: 1.5; }
-.ab-name { font-size: 10.5px; font-weight: 700; color: var(--teal); margin-bottom: 2px; }
-.ab-cta { font-size: 11px; font-weight: 700; color: var(--teal); margin-top: 5px; }
+.ab-name { font-size: 10.5px; font-weight: 700; color: var(--teal); margin-bottom: 4px; }
+.ab-cta {
+  display: block; font-size: 12.5px; font-weight: 800; color: var(--teal); margin-top: 10px;
+  background: none; border: none; padding: 0; font-family: inherit; cursor: pointer; text-align: left;
+}
+.ab-cta:active { opacity: 0.7; }
 
 .home-content { padding: 4px 16px 20px; flex: 1; }
 .section-label-spaced { margin-top: 6px; }
@@ -538,6 +540,20 @@ a { color: inherit; text-decoration: none; }
   background: var(--navy); color: white; padding: 16px 16px 18px; display: flex; align-items: center; gap: 12px; flex-shrink:0;
   position: sticky; top: 0; z-index: 15;
 }
+/* Level-2 category screens only (Seafarers' Centre, Transport, etc.) get a
+   small photo of the current assistant in the header — moved here out of
+   the message bubble per partner feedback, so the bubble stays text-only
+   and the assistant's face is always visible without a tiny circular crop.
+   Level-3 (subdetail — hours, phone numbers) intentionally has no photo:
+   it's pure reference info, no conversation is implied there. */
+.detail-header.dh-with-photo { position: relative; overflow: hidden; }
+.dh-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 86px; z-index: 1; }
+.dh-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block; }
+.dh-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy) 52%, rgba(27,58,107,0.35) 74%, rgba(27,58,107,0) 100%);
+}
+.dh-with-photo .detail-crumb, .dh-with-photo > div:not(.dh-photo):not(.dh-scrim) { position: relative; z-index: 2; }
 .back-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.24); display:flex; align-items:center; justify-content:center; font-size:19px; font-weight: 700; transition: background .15s; }
 .back-btn:active { background: rgba(255,255,255,0.36); }
 .detail-title { font-size: 17px; font-weight: 800; }
