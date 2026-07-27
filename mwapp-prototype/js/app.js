@@ -80,6 +80,149 @@ const SUBDETAILS = {
     ],
   },
 
+  // ── TALLINN · TRANSPORT ────────────────────────────────────────────
+  // "Leaving the Port" is the single most-asked question ashore and also the
+  // riskiest to state as fact — a wrong gate or document rule can strand a
+  // seafarer at the checkpoint. So it carries `updated` (provenance line) and
+  // its callout points at the ship's agent as the authority, not the app.
+  tallinn_transport_leaving: {
+    title: "Leaving the Port",
+    callout: { tone: "ok", text: "Yes — shore leave is normally permitted at Old City Harbour. Always confirm with your Master or ship's agent before you go: rules can change per berth and per vessel." },
+    sections: [
+      { icon: "🚪", title: "Exit gate", rows: [
+        { icon: "1️⃣", title: "Gate 1 — main checkpoint", sub: "Pedestrian exit, open 24/7" },
+        { icon: "🅳", title: "Gate D — shuttle pickup", sub: "Vehicles only · no pedestrian exit" },
+      ]},
+      { icon: "🪪", title: "Take with you", rows: [
+        { icon: "📘", title: "Seafarer's Identity Document", sub: "Or passport with a valid visa where required" },
+        { icon: "🎫", title: "Port pass", sub: "Issued on board · show at the Gate 1 checkpoint" },
+        { icon: "📄", title: "Shore pass / crew list copy", sub: "Ask your agent whether your vessel requires one" },
+      ]},
+      { icon: "🚶", title: "On foot", rows: [
+        { icon: "⚠️", title: "Stay on marked walkways", sub: "Do not cross terminal or container areas on foot" },
+        { icon: "🦺", title: "High-visibility vest", sub: "Required inside the operational port area" },
+      ]},
+    ],
+    note: "If the checkpoint turns you back, call the Seafarers' Centre — they deal with the port authority daily and can usually sort it out faster than anyone on board.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_transport_taxi: {
+    title: "Taxi",
+    sections: [
+      { icon: "📱", title: "Apps", rows: [
+        { icon: "🟢", title: "Bolt", sub: "Estonian app · card payment in-app · most common here", action: "›" },
+        { icon: "⚫", title: "Uber", sub: "Available in Tallinn · similar pricing", action: "›" },
+      ]},
+      { icon: "🚕", title: "Street taxi", rows: [
+        { icon: "🏷", title: "Price list must be on the rear window", sub: "By Estonian law · if there is none, take a different car" },
+        { icon: "🧾", title: "Always ask for a receipt", sub: "Required if you later dispute the fare" },
+      ]},
+      { icon: "📍", title: "Pickup point", rows: [
+        { icon: "🚖", title: "Terminal D forecourt", sub: "Right of the main entrance", action: "🧭" },
+      ]},
+    ],
+    note: "Typical fare to the city centre is around €5–8 by app. If a driver at the terminal offers a fixed price well above that without a meter, walk away — it's the most common way seafarers get overcharged here.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_transport_public: {
+    title: "Public Transport",
+    sections: [
+      { icon: "🚏", title: "Nearest stop", rows: [
+        { icon: "🚶", title: "Linnahall stop — 300 m from Gate 1", sub: "About a 4-minute walk" },
+      ]},
+      { icon: "🚎", title: "Routes", rows: [
+        { icon: "2️⃣", title: "Bus 2", sub: "Port → Viru keskus (city centre) · every 10–15 min" },
+        { icon: "🚋", title: "Tram 1 / 2", sub: "From Linnahall towards the Old Town" },
+      ]},
+      { icon: "🎫", title: "Tickets", rows: [
+        { icon: "💳", title: "Contactless bank card", sub: "Tap on the validator when boarding · simplest option" },
+        { icon: "🏪", title: "Paper ticket from R-Kiosk", sub: "Buy before boarding · cheaper than from the driver" },
+      ]},
+    ],
+    note: "Journey to the city centre is about 10 minutes. Last buses run until roughly 23:00 — after that, use an app taxi.",
+    updated: "24 July 2026",
+  },
+
+  // ── TALLINN · SHOPS & FOOD ─────────────────────────────────────────
+  tallinn_shops_supermarkets: {
+    title: "Supermarkets",
+    sections: [
+      { icon: "🛒", title: "Nearest stores", rows: [
+        { icon: "🛍", title: "Rimi", sub: "600 m from the gate · 08:00–22:00 daily · free Wi-Fi", action: "🧭" },
+        { icon: "🛍", title: "Selver", sub: "Inside Viru keskus · 09:00–21:00 · larger selection", action: "🧭" },
+      ]},
+      { icon: "🌙", title: "Late & 24/7", rows: [
+        { icon: "🕛", title: "Circle K at the port exit", sub: "Open 24/7 · basics, snacks, coffee, SIM top-ups", action: "🧭" },
+      ]},
+      { icon: "🏬", title: "Shopping centres", rows: [
+        { icon: "🏢", title: "Viru keskus", sub: "2 km · supermarket, clothing, electronics, food court", action: "🧭" },
+      ]},
+    ],
+    note: "Rimi is the closest and the usual choice for a quick run before sailing. Bring a bag — carrier bags are charged separately in Estonia.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_shops_food: {
+    title: "Food & Drinks",
+    sections: [
+      { icon: "⚓", title: "Seafarer-friendly", rows: [
+        { icon: "☕", title: "Seafarers' Centre café", sub: "Hot meal about €6 · coffee free · open until 19:00", action: "🧭" },
+      ]},
+      { icon: "🍔", title: "Fast food", rows: [
+        { icon: "🍟", title: "Chains at Viru keskus food court", sub: "€6–10 for a meal · open until 21:00", action: "🧭" },
+      ]},
+      { icon: "🍽", title: "Local restaurants", rows: [
+        { icon: "🥘", title: "Old Town, Vene & Viru streets", sub: "Estonian and international · €12–20 main course", action: "🧭" },
+        { icon: "🐟", title: "Balti jaama turg market hall", sub: "Cheap, good, popular with locals · 09:00–19:00", action: "🧭" },
+      ]},
+    ],
+    note: "Prices in the Old Town rise sharply on the main tourist streets. One street back is usually a third cheaper for the same meal.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_shops_sim: {
+    title: "Electronics & SIM Cards",
+    sections: [
+      { icon: "📡", title: "Mobile operators", rows: [
+        { icon: "🟦", title: "Tele2 · Elisa · Telia", sub: "Prepaid SIM about €5 for 3 GB · sold at R-Kiosk by the port exit", action: "🧭" },
+        { icon: "🪪", title: "ID may be requested", sub: "Bring your seafarer's document when buying a SIM" },
+      ]},
+      { icon: "📶", title: "Free Wi-Fi", rows: [
+        { icon: "🏛", title: "Seafarers' Centre", sub: "Free for all visiting seafarers · no password needed at the desk" },
+        { icon: "⚓", title: "Port Wi-Fi", sub: "Network: TallinnPort · Password: seafarer2026" },
+      ]},
+      { icon: "🔌", title: "Electronics", rows: [
+        { icon: "🔋", title: "Chargers & adapters", sub: "Euronics / Photopoint at Viru keskus · Estonia uses type C/F, 230 V", action: "🧭" },
+      ]},
+      { icon: "💱", title: "Money", rows: [
+        { icon: "🏧", title: "SEB Bank ATM", sub: "400 m from the gate · EUR · card withdrawal", action: "🧭" },
+      ]},
+    ],
+    note: "An Estonian prepaid SIM works across the whole EU at no extra cost, so it is worth buying here even if your next port is elsewhere in Europe.",
+    updated: "24 July 2026",
+  },
+
+  tallinn_shops_pharmacies: {
+    title: "Pharmacies",
+    sections: [
+      { icon: "💊", title: "Nearest", rows: [
+        { icon: "🏥", title: "Apotheka — Sadama 15", sub: "500 m · Mon–Fri 09:00–20:00 · closed at weekends", action: "🧭" },
+        { icon: "🏥", title: "Benu — Viru keskus", sub: "2 km · daily 09:00–21:00", action: "🧭" },
+      ]},
+      { icon: "🌙", title: "24/7", rows: [
+        { icon: "🕛", title: "Tõnismäe Apotheka", sub: "Open 24 hours · about 3 km from the port", action: "🧭" },
+      ]},
+      { icon: "📋", title: "Medicines", rows: [
+        { icon: "🧾", title: "Prescription medicines", sub: "An EU prescription is accepted · from outside the EU, a doctor's visit is usually needed first" },
+        { icon: "💊", title: "Over the counter", sub: "Painkillers, cold remedies, seasickness tablets, bandages" },
+      ]},
+    ],
+    note: "Pharmacists in Tallinn speak English and Russian and can advise on minor complaints without a doctor. For anything serious, see Emergency Contacts.",
+    updated: "24 July 2026",
+  },
+
   // ── OTHER PORTS — real data we already hold, kept under the new shape ──
   hamburg_centre_about: {
     title: "About the Centre",
@@ -230,8 +373,24 @@ const PORTS = {
           { icon: "📍", title: "Location & Route", sub: "Address, map, how to get there on foot", action: "›", sd: "tallinn_centre_location" },
         ],
       },
-      transport: transportSkeleton("tallinn_centre_shuttle"),
-      shops: shopsSkeleton(),
+      transport: {
+        title: "Transport",
+        rows: [
+          { icon: "🚪", title: "Leaving the Port", sub: "Exit rules, required documents, gate information", action: "›", sd: "tallinn_transport_leaving" },
+          { icon: "🚐", title: "Port Shuttle", sub: "Timetable, pickup point, how to recognise it", action: "›", sd: "tallinn_centre_shuttle" },
+          { icon: "🚕", title: "Taxi", sub: "Trusted apps, estimated fare, safety tips", action: "›", sd: "tallinn_transport_taxi" },
+          { icon: "🚎", title: "Public Transport", sub: "Nearest stop, routes, tickets, journey to the city", action: "›", sd: "tallinn_transport_public" },
+        ],
+      },
+      shops: {
+        title: "Shops & Food",
+        rows: [
+          { icon: "🛒", title: "Supermarkets", sub: "Nearest stores, shopping centres, 24/7 shops", action: "›", sd: "tallinn_shops_supermarkets" },
+          { icon: "🍽", title: "Food & Drinks", sub: "Seafarer-friendly places, fast food, local restaurants", action: "›", sd: "tallinn_shops_food" },
+          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers, ATM", action: "›", sd: "tallinn_shops_sim" },
+          { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "tallinn_shops_pharmacies" },
+        ],
+      },
       citylife: citylifeSkeleton(),
       spiritual: spiritualSkeleton(),
       emergency: {
@@ -744,6 +903,25 @@ function openSubDetail(sdKey) {
     </div>`).join("");
 
   let inner = "";
+
+  // A callout answers the one blunt question the seafarer actually opened the
+  // screen with ("can I even leave the port?") before any list of details.
+  if (sd.callout) {
+    inner += `<div class="sd-callout ${sd.callout.tone === "warn" ? "warn" : "ok"}">
+      <div class="sc-icon">${sd.callout.tone === "warn" ? "⚠️" : "✅"}</div>
+      <div class="sc-text">${sd.callout.text}</div>
+    </div>`;
+  }
+
+  // Generic titled card with plain info rows — used wherever the content is
+  // "things to know", not contacts to call or a schedule to read.
+  if (sd.sections) {
+    inner += sd.sections.map((sec) => `
+      <div class="sd-card">
+        <div class="sd-card-title">${sec.icon} ${sec.title}</div>
+        ${contactRows(sec.rows)}
+      </div>`).join("");
+  }
 
   if (sd.hours) {
     const todayIdx = todayHoursIndex();
