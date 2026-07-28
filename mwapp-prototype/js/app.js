@@ -893,6 +893,7 @@ function clearAllLocalData() {
     localStorage.removeItem("mwapp_state");
     localStorage.removeItem("mwapp_install_dismissed");
     localStorage.removeItem("mwapp_geo_dismissed");
+    localStorage.removeItem("mwapp_launch_counted");   // чтобы обещание «удаляется всё» было буквально верным
   } catch (e) {}
   location.reload();
 }
