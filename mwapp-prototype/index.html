@@ -9,6 +9,42 @@
 <link rel="apple-touch-icon" href="assets/icons/icon-192b.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="css/app.css?v=7">
+
+<!-- ============================================================
+     УЧЁТ УСТАНОВОК
+     Приложение не лежит в магазине, поэтому счётчика загрузок не
+     существует. Вместо него отмечаем запуск с домашнего экрана
+     отдельным адресом: браузерные заходы идут на обычный адрес,
+     запуски установленного приложения — на адрес с ?launch=homescreen.
+     Счётчик видит их как разные страницы, и мы получаем нужное число,
+     ничего не зная о самом моряке.
+     Работает и на iOS, где событие установки браузером не выдаётся
+     вовсе, — потому и опираемся на режим отображения, а не на событие.
+     ============================================================ -->
+<script>
+(function () {
+  try {
+    var standalone = window.matchMedia('(display-mode: standalone)').matches
+                  || window.navigator.standalone === true;
+    if (!standalone) return;
+    var first = false;
+    try {
+      if (!localStorage.getItem('mwapp_launch_counted')) {
+        localStorage.setItem('mwapp_launch_counted', '1');
+        first = true;                      // первый запуск на этом устройстве
+      }
+    } catch (e) {}
+    history.replaceState(null, '',
+      location.pathname + '?launch=homescreen' + (first ? '&first=1' : '') + location.hash);
+  } catch (e) {}
+})();
+</script>
+
+<!-- Счётчик Cloudflare: без cookie, без localStorage, без отслеживания по IP.
+     ЗАМЕНИТЬ ВАШ_ТОКЕН на токен из панели Cloudflare -> Web Analytics.
+     Пока токен не подставлен, строка просто ничего не делает. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "ВАШ_ТОКЕН"}'></script>
 </head>
 <body>
 
@@ -435,6 +471,6 @@
 
 <script src="js/qr.js?v=1"></script>
 <script src="js/i18n.js?v=4"></script>
-<script src="js/app.js?v=7"></script>
+<script src="js/app.js?v=8"></script>
 </body>
 </html>
