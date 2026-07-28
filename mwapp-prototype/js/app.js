@@ -885,6 +885,18 @@ const state = {
   shipPoint: null,
 };
 
+// Удаляет всё, что приложение хранит на устройстве, и возвращает его
+// в состояние первого запуска. Когда появится бэкенд, отсюда же пойдёт
+// запрос на удаление серверных данных.
+function clearAllLocalData() {
+  try {
+    localStorage.removeItem("mwapp_state");
+    localStorage.removeItem("mwapp_install_dismissed");
+    localStorage.removeItem("mwapp_geo_dismissed");
+  } catch (e) {}
+  location.reload();
+}
+
 function ensureMwaId() {
   if (state.mwaId) return;
   const n = Math.floor(1000000 + Math.random() * 8999999);
@@ -1184,12 +1196,14 @@ function openSubDetail(sdKey) {
   }
 
   if (sd.type === "qr_code") {
-    const qrData = encodeURIComponent(state.mwaId || "MWA-DEMO");
-    const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${qrData}`;
+    // Код рисуется на самом устройстве (js/qr.js). Раньше это делал сторонний
+    // сервис, то есть MWA-ID моряка уходил на чужой сервер, а без интернета
+    // экран оставался пустым. Теперь ни того, ни другого.
+    const svg = qrSvg(state.mwaId || "MWA-DEMO", 180);
     inner += `<div class="sd-card qr-card">
       <div class="sd-card-title" style="justify-content:center;">🔳 ${sd.title}</div>
       <div class="qr-id">${state.mwaId || ""}</div>
-      <div class="qr-image-wrap"><img src="${qrImgUrl}" alt="QR code" class="qr-image"></div>
+      <div class="qr-image-wrap">${svg}</div>
       <div class="qr-countdown" id="qrCountdown"></div>
     </div>`;
   }
@@ -1506,6 +1520,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (e.target.id === "unionCloseBtn") closeModal("unionModal");
     if (e.target.id === "unionDeniedCloseBtn") closeModal("unionDeniedModal");
+
+    if (e.target.id === "clearDataRow" || e.target.closest("#clearDataRow")) {
+      openModal("clearDataModal");
+    }
+    if (e.target.id === "clearDataCancelBtn") closeModal("clearDataModal");
+    if (e.target === document.getElementById("clearDataModal")) closeModal("clearDataModal");
+
+    if (e.target.id === "clearDataConfirmBtn") {
+      // Всё, что приложение о моряке знает, лежит только здесь — сервера нет.
+      // Поэтому удаление действительно окончательное, о чём и предупреждает модалка.
+      clearAllLocalData();
+    }
 
     if (e.target.id === "resetAppRow" || e.target.closest("#resetAppRow")) {
       localStorage.removeItem("mwapp_state");

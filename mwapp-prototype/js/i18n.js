@@ -152,6 +152,12 @@ const I18N = {
         whatsapp: "💬 WhatsApp +372 5561 3815",
         close: "Close",
       },
+      clearData: {
+        title: "Delete everything stored on this device?",
+        text: "This removes your name, your MWA-ID, your card status and your ship's marked position. Everything is stored only on this phone, so once deleted it cannot be recovered.",
+        confirm: "Delete everything",
+        cancel: "Cancel",
+      },
       port: { title: "Test port (dev preview)" },
       context: {
         title: "Where is the seafarer right now?",
