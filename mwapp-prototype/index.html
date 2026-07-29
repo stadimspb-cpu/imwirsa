@@ -242,6 +242,7 @@
           <div class="ac-header-name" id="chatAssistantName">Assistant</div>
           <div class="ac-header-role" data-i18n="settings.subtitleRole">Your Maritime Welfare Assistant</div>
         </div>
+        <button class="ac-back-btn" id="chatNewBtn" style="left:auto; right:16px;" title="New conversation">🔄</button>
       </div>
       <div class="chat-body" id="assistantChatBody"></div>
       <div class="chat-input-row">
@@ -450,6 +451,18 @@
         </p>
         <button class="btn-primary-full" id="clearDataConfirmBtn" style="background:var(--coral);" data-i18n="modals.clearData.confirm">Delete everything</button>
         <button class="btn-skip" id="clearDataCancelBtn" data-i18n="modals.clearData.cancel">Cancel</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="newChatModal">
+      <div class="modal-sheet" style="text-align:center;">
+        <div style="font-size:40px; margin-bottom:12px;">🔄</div>
+        <div class="modal-title" data-i18n="modals.newChat.title">Start a new conversation?</div>
+        <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:20px;" data-i18n="modals.newChat.text">
+          This clears everything you and the assistant have said so far. Your conversation is otherwise kept exactly as it is — even if you close the app — so only do this when you're ready for a clean start.
+        </p>
+        <button class="btn-primary-full" id="newChatConfirmBtn" style="background:var(--coral);" data-i18n="modals.newChat.confirm">Start new conversation</button>
+        <button class="btn-skip" id="newChatCancelBtn" data-i18n="modals.newChat.cancel">Cancel</button>
       </div>
     </div>
 
