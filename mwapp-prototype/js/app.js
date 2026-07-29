@@ -1007,6 +1007,16 @@ function updateAssistantUI() {
 }
 
 function goToScreen(name) {
+  // Capture where we're coming FROM, before we switch screens — but only
+  // when heading into the chat, and only if we're not already there (so
+  // re-entering the chat via its own re-render calls doesn't overwrite the
+  // real origin with "assistantchat" itself).
+  const currentActive = document.querySelector(".screen.active");
+  const currentName = currentActive ? currentActive.dataset.screen : null;
+  if (name === "assistantchat" && currentName && currentName !== "assistantchat") {
+    chatReturnTarget = currentName;
+  }
+
   document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
   const target = document.querySelector(`.screen[data-screen="${name}"]`);
   if (target) target.classList.add("active");
@@ -1297,6 +1307,14 @@ function isComplexTopic(text) {
 let assistantReplyIndex = 0;
 let chatSessionOpen = false;
 
+// Remembers which screen the seafarer was on right before opening the
+// assistant chat (home / detail / subdetail / volunteer / ship), so the
+// chat's own back arrow returns them exactly there instead of always
+// dropping back to Home. Content on that screen is untouched — openDetail/
+// openSubDetail only re-render on demand, so it's still showing whatever
+// was last opened (e.g. the taxi subdetail the seafarer came from).
+let chatReturnTarget = "home";
+
 function setChatHeaderPhoto(a) {
   const el = document.getElementById("chatAssistantPhoto");
   if (!el) return;
@@ -1434,6 +1452,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
       const target = goEl.dataset.go;
+
+      // The chat header's own back arrow: return to wherever the seafarer
+      // was before opening the chat (Level-2, Level-3, Home…), and leave
+      // the conversation exactly as it is — this is a "step back to keep
+      // browsing", not "end the chat".
+      if (target === "__chatBack") {
+        goToScreen(chatReturnTarget || "home");
+        return;
+      }
 
       // Going home is the one explicit "start fresh" action: it ends the
       // assistant-chat session and drops back to the Standard view.
