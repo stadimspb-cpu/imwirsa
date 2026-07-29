@@ -883,6 +883,13 @@ const state = {
   context: "at_port",
   accessView: "std",
   shipPoint: null,
+  // Assistant chat (Alex/Omar/Sophia/Grace персонажи) — persisted like the
+  // rest of state so the conversation survives a full app close/reopen.
+  // Cleared ONLY when the seafarer explicitly taps "New conversation" —
+  // never as a side effect of ordinary navigation.
+  chatMessages: [],       // [{ who: "me" | "them", text }]
+  chatStarted: false,
+  assistantReplyIndex: 0,
 };
 
 // Удаляет всё, что приложение хранит на устройстве, и возвращает его
@@ -1304,9 +1311,6 @@ function isComplexTopic(text) {
   return COMPLEX_TOPIC_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
-let assistantReplyIndex = 0;
-let chatSessionOpen = false;
-
 // Remembers which screen the seafarer was on right before opening the
 // assistant chat (home / detail / subdetail / volunteer / ship), so the
 // chat's own back arrow returns them exactly there instead of always
@@ -1321,16 +1325,44 @@ function setChatHeaderPhoto(a) {
   el.innerHTML = `<img src="${getAssistantPhoto(a.id, "chatHero")}" alt="${a.name}" loading="lazy">`;
 }
 
+// Rebuilds the chat body from state.chatMessages every time — this is what
+// makes reopening the chat work identically whether the seafarer just came
+// back from Level-2/3 a moment ago, or fully closed and reopened MWApp.
+function renderAssistantChatMessages() {
+  const body = document.getElementById("assistantChatBody");
+  if (!body) return;
+  body.innerHTML = state.chatMessages.map((m) =>
+    `<div class="chat-msg ${m.who === "me" ? "me" : "them"}">${escapeHtml(m.text)}</div>`
+  ).join("");
+  body.scrollTop = body.scrollHeight;
+}
+
 function openAssistantChat() {
   const a = getAssistant(state.assistant) || getAssistant("alex");
   setChatHeaderPhoto(a);
   document.getElementById("chatAssistantName").textContent = a.name;
-  if (chatSessionOpen) return;
-  chatSessionOpen = true;
-  const body = document.getElementById("assistantChatBody");
-  body.innerHTML = `<div class="chat-msg them">${escapeHtml(a.greet)}</div>`;
   const input = document.getElementById("assistantChatInput");
   if (input) input.value = "";
+
+  if (!state.chatStarted) {
+    state.chatMessages = [{ who: "them", text: a.greet }];
+    state.chatStarted = true;
+    saveState();
+  }
+  renderAssistantChatMessages();
+}
+
+// Explicit, seafarer-initiated reset — the only thing that clears the
+// conversation. Triggered from the "New conversation" button in the chat
+// header, after a confirmation modal (see newChatModal).
+function startNewAssistantChat() {
+  state.chatMessages = [];
+  state.chatStarted = false;
+  state.assistantReplyIndex = 0;
+  saveState();
+  const toggle = document.getElementById("escalationToggle");
+  if (toggle) toggle.remove();
+  openAssistantChat();
 }
 
 function sendAssistantChatMessage() {
@@ -1341,6 +1373,8 @@ function sendAssistantChatMessage() {
   const existingToggle = document.getElementById("escalationToggle");
   if (existingToggle) existingToggle.remove();
 
+  state.chatMessages.push({ who: "me", text });
+  saveState();
   body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
   input.value = "";
   body.scrollTop = body.scrollHeight;
@@ -1349,6 +1383,8 @@ function sendAssistantChatMessage() {
   setTimeout(() => {
     if (isComplexTopic(text)) {
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
@@ -1357,8 +1393,10 @@ function sendAssistantChatMessage() {
         </div>`);
     } else {
       const replies = t("demoReplies");
-      const reply = replies[assistantReplyIndex % replies.length];
-      assistantReplyIndex++;
+      const reply = replies[state.assistantReplyIndex % replies.length];
+      state.assistantReplyIndex++;
+      state.chatMessages.push({ who: "them", text: reply });
+      saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(reply)}</div>`);
     }
     body.scrollTop = body.scrollHeight;
@@ -1462,11 +1500,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Going home is the one explicit "start fresh" action: it ends the
-      // assistant-chat session and drops back to the Standard view.
+      // Going home resets the access view (Standard/Premium toggle) back to
+      // Standard — but no longer ends the assistant-chat session. Ending the
+      // conversation is now a deliberate action (the "New conversation"
+      // button in the chat header), not a side effect of ordinary browsing.
       if (target === "home") {
         state.accessView = "std";
-        chatSessionOpen = false;
       }
       goToScreen(target);
     }
@@ -1559,6 +1598,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // Всё, что приложение о моряке знает, лежит только здесь — сервера нет.
       // Поэтому удаление действительно окончательное, о чём и предупреждает модалка.
       clearAllLocalData();
+    }
+
+    if (e.target.id === "chatNewBtn" || e.target.closest("#chatNewBtn")) {
+      openModal("newChatModal");
+    }
+    if (e.target.id === "newChatCancelBtn") closeModal("newChatModal");
+    if (e.target === document.getElementById("newChatModal")) closeModal("newChatModal");
+    if (e.target.id === "newChatConfirmBtn") {
+      closeModal("newChatModal");
+      startNewAssistantChat();
     }
 
     if (e.target.id === "resetAppRow" || e.target.closest("#resetAppRow")) {

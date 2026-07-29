@@ -177,6 +177,12 @@ const I18N = {
         sub: "Contacts and booking unlock once your active Trade Union card is confirmed.",
         confirm: "Confirm card",
       },
+      newChat: {
+        title: "Start a new conversation?",
+        text: "This clears everything you and the assistant have said so far. Your conversation is otherwise kept exactly as it is — even if you close the app — so only do this when you're ready for a clean start.",
+        confirm: "Start new conversation",
+        cancel: "Cancel",
+      },
     },
     assistants: {
       alex: {
@@ -407,6 +413,12 @@ const I18N = {
         sub: "Контакты и бронирование откроются после подтверждения активной карты профсоюза.",
         confirm: "Подтвердить карту",
       },
+      newChat: {
+        title: "Начать новый диалог?",
+        text: "Это удалит всё, что вы и ассистент уже написали друг другу. В остальных случаях диалог сохраняется полностью — даже если вы закроете приложение — поэтому делайте это только тогда, когда действительно готовы начать с чистого листа.",
+        confirm: "Начать новый диалог",
+        cancel: "Отмена",
+      },
     },
     assistants: {
       alex: {
@@ -633,6 +645,12 @@ const I18N = {
         sub: "Aktif Sendika kartın onaylandığında iletişim ve rezervasyon açılır.",
         confirm: "Kartı onayla",
       },
+      newChat: {
+        title: "Yeni bir sohbet başlatılsın mı?",
+        text: "Bu, sen ve asistanın şimdiye kadar söylediği her şeyi siler. Aksi takdirde konuşman uygulamayı kapatsan bile olduğu gibi saklanır — bu yüzden bunu yalnızca temiz bir başlangıca hazır olduğunda yap.",
+        confirm: "Yeni sohbet başlat",
+        cancel: "İptal",
+      },
     },
     assistants: {
       alex: {
@@ -858,6 +876,12 @@ const I18N = {
         msg: "Available sa mga may hawak ng Trade Union card",
         sub: "Mabubuksan ang mga contact at booking kapag nakumpirma na ang aktibo mong Trade Union card.",
         confirm: "Kumpirmahin ang card",
+      },
+      newChat: {
+        title: "Magsimula ng bagong usapan?",
+        text: "Buburahin nito ang lahat ng nasabi mo at ng assistant sa ngayon. Kung hindi, mananatiling buo ang usapan mo — kahit isara mo ang app — kaya gawin ito lamang kapag handa ka na para sa panibagong simula.",
+        confirm: "Magsimula ng bagong usapan",
+        cancel: "Kanselahin",
       },
     },
     assistants: {
