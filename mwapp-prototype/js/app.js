@@ -1275,6 +1275,16 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+// .chat-body / #assistantChatBody never scroll themselves — they're plain
+// flex children (flex:1, no overflow set). The actual scrolling element is
+// the ancestor .screen (overflow-y:auto). Scrolling the chat-body element
+// directly was a silent no-op, which is why new messages kept piling up
+// out of view instead of auto-scrolling into sight.
+function scrollChatToBottom(bodyEl) {
+  const screen = bodyEl.closest(".screen");
+  if (screen) screen.scrollTop = screen.scrollHeight;
+}
+
 let chatReplyIndex = 0;
 
 function sendChatMessage() {
@@ -1284,13 +1294,14 @@ function sendChatMessage() {
   const body = document.getElementById("chatBody");
   body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
   input.value = "";
-  body.scrollTop = body.scrollHeight;
+  input.style.height = "auto";
+  scrollChatToBottom(body);
   setTimeout(() => {
     const replies = t("coordinator.demoReplies");
     const reply = replies[chatReplyIndex % replies.length];
     chatReplyIndex++;
     body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(reply)}</div>`);
-    body.scrollTop = body.scrollHeight;
+    scrollChatToBottom(body);
   }, 900);
 }
 
@@ -1333,7 +1344,7 @@ function renderAssistantChatMessages() {
   body.innerHTML = state.chatMessages.map((m) =>
     `<div class="chat-msg ${m.who === "me" ? "me" : "them"}">${escapeHtml(m.text)}</div>`
   ).join("");
-  body.scrollTop = body.scrollHeight;
+  scrollChatToBottom(body);
 }
 
 function openAssistantChat() {
@@ -1376,7 +1387,8 @@ function sendAssistantChatMessage() {
   saveState();
   body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
   input.value = "";
-  body.scrollTop = body.scrollHeight;
+  input.style.height = "auto";
+  scrollChatToBottom(body);
 
   const a = getAssistant(state.assistant) || getAssistant("alex");
   setTimeout(() => {
@@ -1398,7 +1410,7 @@ function sendAssistantChatMessage() {
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(reply)}</div>`);
     }
-    body.scrollTop = body.scrollHeight;
+    scrollChatToBottom(body);
   }, 900);
 }
 
@@ -1675,12 +1687,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  function autoGrowChatInput(el) {
+    el.style.height = "auto";
+    el.style.height = Math.min(el.scrollHeight, 120) + "px";
+  }
+
   document.getElementById("chatInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendChatMessage();
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
   });
+  document.getElementById("chatInput").addEventListener("input", (e) => autoGrowChatInput(e.target));
   document.getElementById("assistantChatInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendAssistantChatMessage();
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendAssistantChatMessage(); }
   });
+  document.getElementById("assistantChatInput").addEventListener("input", (e) => autoGrowChatInput(e.target));
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 });
