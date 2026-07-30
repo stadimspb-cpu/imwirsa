@@ -974,8 +974,8 @@ function updateAssistantUI() {
   const namePhoto = getAssistantPhoto(a.id, "nameScreen");
   document.getElementById("nameAvatar").innerHTML = `<img src="${namePhoto}" alt="${a.name}" loading="lazy">`;
 
-  setAvatarPhoto("settingsAvatar", a, "settings");
-  document.getElementById("settingsName").textContent = a.name;
+  setDetailHeaderPhoto(a, "settingsHeaderPhoto");
+  setDetailHeaderPhoto(a, "shipHeaderPhoto");
 
   const port = currentPort();
   document.getElementById("homePortName").textContent = `${port.meta.flag} ${port.meta.name}`;
@@ -1048,8 +1048,8 @@ function goToScreen(name) {
 
 let qrCountdownTimer = null;
 
-function setDetailHeaderPhoto(a) {
-  const el = document.getElementById("detailHeaderPhoto");
+function setDetailHeaderPhoto(a, elId = "detailHeaderPhoto") {
+  const el = document.getElementById(elId);
   if (!el) return;
   const photo = getAssistantPhoto(a.id, "detailHeader");
   el.innerHTML = `<img src="${photo}" alt="${a.name}" loading="lazy">`;
