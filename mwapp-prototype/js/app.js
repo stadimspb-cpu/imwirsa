@@ -1035,7 +1035,6 @@ function goToScreen(name) {
   } else {
     bottomNav.style.display = "none";
   }
-  bottomNav.classList.toggle("on-photo", name === "home");
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
   if (name === "volunteer") {

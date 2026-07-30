@@ -188,22 +188,22 @@ const I18N = {
       alex: {
         name: "Alex",
         tag: "I'll help you find information and guidance.",
-        greet: "Hello! My name is Alex. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
+        greet: "Ask away — I'm here to help.",
       },
       omar: {
         name: "Omar",
         tag: "I'll make sure you feel supported and informed.",
-        greet: "Hello, my friend. My name is Omar. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language any time in Settings. How may I help you today?",
+        greet: "Go ahead, my friend — I'm listening.",
       },
       sophia: {
         name: "Sophia",
         tag: "I'll guide you with care and answer your questions.",
-        greet: "Hello! My name is Sophia. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
+        greet: "Ask me anything — I'm here for you.",
       },
       grace: {
         name: "Grace",
         tag: "I'll support you every step of your journey.",
-        greet: "Hello! My name is Grace. I'll be your Maritime Welfare Assistant during this voyage. You can change your assistant or language at any time in Settings. How may I help you today?",
+        greet: "I'm here — ask me anything, anytime.",
       },
     },
     escalation: {
@@ -424,22 +424,22 @@ const I18N = {
       alex: {
         name: "Алекс",
         tag: "Я помогу вам найти информацию и подскажу, что делать.",
-        greet: "Здравствуйте! Меня зовут Алекс. Я буду вашим ассистентом по благосостоянию моряков в этом рейсе. Вы можете сменить ассистента или язык в любое время в настройках. Чем я могу вам помочь сегодня?",
+        greet: "Спрашивайте — я здесь, чтобы помочь.",
       },
       omar: {
         name: "Омар",
         tag: "Я позабочусь о том, чтобы вы чувствовали поддержку и были в курсе всего.",
-        greet: "Здравствуйте, друг мой. Меня зовут Омар. Я буду вашим ассистентом по благосостоянию моряков в этом рейсе. Вы можете сменить ассистента или язык в любое время в настройках. Чем я могу вам помочь сегодня?",
+        greet: "Слушаю вас, друг мой — спрашивайте.",
       },
       sophia: {
         name: "София",
         tag: "Я буду заботливо направлять вас и отвечать на ваши вопросы.",
-        greet: "Здравствуйте! Меня зовут София. Я буду вашим ассистентом по благосостоянию моряков в этом рейсе. Вы можете сменить ассистента или язык в любое время в настройках. Чем я могу вам помочь сегодня?",
+        greet: "Спрашивайте что угодно — я рядом.",
       },
       grace: {
         name: "Грейс",
         tag: "Я буду поддерживать вас на каждом этапе вашего пути.",
-        greet: "Здравствуйте! Меня зовут Грейс. Я буду вашим ассистентом по благосостоянию моряков в этом рейсе. Вы можете сменить ассистента или язык в любое время в настройках. Чем я могу вам помочь сегодня?",
+        greet: "Я здесь — спрашивайте, что угодно.",
       },
     },
     escalation: {
@@ -656,22 +656,22 @@ const I18N = {
       alex: {
         name: "Alex",
         tag: "Bilgi bulmana ve yol göstermene yardımcı olacağım.",
-        greet: "Merhaba! Benim adım Alex. Bu yolculuk boyunca senin Denizci Refah Asistanın olacağım. Asistanını veya dilini istediğin zaman Ayarlar'dan değiştirebilirsin. Bugün sana nasıl yardımcı olabilirim?",
+        greet: "Sor bakalım — yardım etmek için buradayım.",
       },
       omar: {
         name: "Omar",
         tag: "Desteklendiğini ve bilgilendirildiğini hissetmeni sağlayacağım.",
-        greet: "Merhaba dostum. Benim adım Omar. Bu yolculuk boyunca senin Denizci Refah Asistanın olacağım. Asistanını veya dilini istediğin zaman Ayarlar'dan değiştirebilirsin. Bugün sana nasıl yardımcı olabilirim?",
+        greet: "Dinliyorum dostum — sor bakalım.",
       },
       sophia: {
         name: "Sophia",
         tag: "Seni özenle yönlendirecek ve sorularını yanıtlayacağım.",
-        greet: "Merhaba! Benim adım Sophia. Bu yolculuk boyunca senin Denizci Refah Asistanın olacağım. Asistanını veya dilini istediğin zaman Ayarlar'dan değiştirebilirsin. Bugün sana nasıl yardımcı olabilirim?",
+        greet: "Ne istersen sor — buradayım.",
       },
       grace: {
         name: "Grace",
         tag: "Yolculuğunun her adımında sana destek olacağım.",
-        greet: "Merhaba! Benim adım Grace. Bu yolculuk boyunca senin Denizci Refah Asistanın olacağım. Asistanını veya dilini istediğin zaman Ayarlar'dan değiştirebilirsin. Bugün sana nasıl yardımcı olabilirim?",
+        greet: "Buradayım — istediğin zaman sorabilirsin.",
       },
     },
     escalation: {
@@ -888,22 +888,22 @@ const I18N = {
       alex: {
         name: "Alex",
         tag: "Tutulungan kitang makahanap ng impormasyon at gabay.",
-        greet: "Kamusta! Ako si Alex. Ako ang iyong Maritime Welfare Assistant sa paglalayag na ito. Puwede mong palitan ang assistant o wika anumang oras sa Settings. Paano kita matutulungan ngayon?",
+        greet: "Magtanong ka — narito ako para tumulong.",
       },
       omar: {
         name: "Omar",
         tag: "Titiyakin kong makaramdam ka ng suporta at ikaw ay laging may kaalaman.",
-        greet: "Kamusta, kaibigan. Ako si Omar. Ako ang iyong Maritime Welfare Assistant sa paglalayag na ito. Puwede mong palitan ang assistant o wika anumang oras sa Settings. Paano kita matutulungan ngayon?",
+        greet: "Nakikinig ako, kaibigan — magtanong ka.",
       },
       sophia: {
         name: "Sophia",
         tag: "Gagabayan kita nang may pag-aalaga at sasagutin ang iyong mga tanong.",
-        greet: "Kamusta! Ako si Sophia. Ako ang iyong Maritime Welfare Assistant sa paglalayag na ito. Puwede mong palitan ang assistant o wika anumang oras sa Settings. Paano kita matutulungan ngayon?",
+        greet: "Magtanong ka ng kahit ano — narito ako.",
       },
       grace: {
         name: "Grace",
         tag: "Susuportahan kita sa bawat hakbang ng iyong paglalakbay.",
-        greet: "Kamusta! Ako si Grace. Ako ang iyong Maritime Welfare Assistant sa paglalayag na ito. Puwede mong palitan ang assistant o wika anumang oras sa Settings. Paano kita matutulungan ngayon?",
+        greet: "Narito ako — magtanong ka anumang oras.",
       },
     },
     escalation: {
