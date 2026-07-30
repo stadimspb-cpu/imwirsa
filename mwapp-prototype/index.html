@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="assets/icons/icon-192b.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=11">
+<link rel="stylesheet" href="css/app.css?v=12">
 
 <!-- ============================================================
      УЧЁТ УСТАНОВОК
@@ -255,10 +255,14 @@
 
     <!-- SCREEN 5c — SHIP (mark exit point + navigate back) -->
     <section class="screen screen-ship" data-screen="ship">
-      <div class="detail-header">
+      <div class="detail-header dh-assistant">
         <div style="display:flex; align-items:center; gap:12px;">
           <button class="back-btn" data-go="home">←</button>
           <div class="detail-title" data-i18n="ship.title">My Ship</div>
+        </div>
+        <div class="dh-assistant-row">
+          <div class="dh-assistant-avatar" id="shipAssistantAvatar"></div>
+          <div class="dh-assistant-name" id="shipAssistantName"></div>
         </div>
       </div>
       <div class="ship-body">
@@ -329,15 +333,15 @@
 
     <!-- SCREEN 8 — SETTINGS -->
     <section class="screen screen-settings" data-screen="settings">
-      <div class="settings-header"><div class="detail-title" data-i18n="settings.title">Settings</div></div>
-      <div class="settings-list">
-        <div class="settings-current-assistant">
+      <div class="settings-header">
+        <div class="detail-title" data-i18n="settings.title">Settings</div>
+        <div class="dh-assistant-row">
           <div class="sca-avatar" id="settingsAvatar"></div>
-          <div>
-            <div style="font-weight:800; font-size:14.5px;" id="settingsName"></div>
-            <div style="font-size:11.5px; color:var(--gray);" data-i18n="settings.subtitleRole">Your Maritime Welfare Assistant</div>
-          </div>
+          <div class="dh-assistant-name" id="settingsName"></div>
         </div>
+      </div>
+      <div class="settings-list">
+        <button class="settings-help-cta" data-go="assistantchat">💬 <span data-i18n="settings.helpCta">Having trouble? Ask me</span></button>
         <div class="settings-group-label" data-i18n="settings.preferences">Preferences</div>
         <button class="settings-row" data-modal="assistantModal"><div class="si">👤</div><div class="st" data-i18n="settings.changeAssistant">Change assistant</div><div class="sv">›</div></button>
         <button class="settings-row" data-modal="langModal"><div class="si">🌍</div><div class="st" data-i18n="settings.language">Language</div><div class="sv" id="settingsLangVal">›</div></button>
@@ -483,7 +487,7 @@
 </div>
 
 <script src="js/qr.js?v=1"></script>
-<script src="js/i18n.js?v=6"></script>
-<script src="js/app.js?v=11"></script>
+<script src="js/i18n.js?v=7"></script>
+<script src="js/app.js?v=12"></script>
 </body>
 </html>
