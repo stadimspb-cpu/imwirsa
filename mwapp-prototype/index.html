@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="assets/icons/icon-192b.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=12">
+<link rel="stylesheet" href="css/app.css?v=13">
 
 <!-- ============================================================
      УЧЁТ УСТАНОВОК
@@ -255,14 +255,12 @@
 
     <!-- SCREEN 5c — SHIP (mark exit point + navigate back) -->
     <section class="screen screen-ship" data-screen="ship">
-      <div class="detail-header dh-assistant">
+      <div class="detail-header dh-with-photo">
+        <div class="dh-photo" id="shipHeaderPhoto"></div>
+        <div class="dh-scrim"></div>
         <div style="display:flex; align-items:center; gap:12px;">
           <button class="back-btn" data-go="home">←</button>
           <div class="detail-title" data-i18n="ship.title">My Ship</div>
-        </div>
-        <div class="dh-assistant-row">
-          <div class="dh-assistant-avatar" id="shipAssistantAvatar"></div>
-          <div class="dh-assistant-name" id="shipAssistantName"></div>
         </div>
       </div>
       <div class="ship-body">
@@ -333,12 +331,10 @@
 
     <!-- SCREEN 8 — SETTINGS -->
     <section class="screen screen-settings" data-screen="settings">
-      <div class="settings-header">
+      <div class="settings-header dh-with-photo">
+        <div class="dh-photo" id="settingsHeaderPhoto"></div>
+        <div class="dh-scrim"></div>
         <div class="detail-title" data-i18n="settings.title">Settings</div>
-        <div class="dh-assistant-row">
-          <div class="sca-avatar" id="settingsAvatar"></div>
-          <div class="dh-assistant-name" id="settingsName"></div>
-        </div>
       </div>
       <div class="settings-list">
         <button class="settings-help-cta" data-go="assistantchat">💬 <span data-i18n="settings.helpCta">Having trouble? Ask me</span></button>
@@ -488,6 +484,6 @@
 
 <script src="js/qr.js?v=1"></script>
 <script src="js/i18n.js?v=7"></script>
-<script src="js/app.js?v=12"></script>
+<script src="js/app.js?v=13"></script>
 </body>
 </html>
