@@ -697,7 +697,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ── ASSISTANT CHAT HEADER — full-bleed photo ─────────────────────── */
 .ac-header {
-  position: relative; flex-shrink: 0; height: 190px; overflow: hidden;
+  position: sticky; top: 0; z-index: 15; flex-shrink: 0; height: 190px; overflow: hidden;
   background: linear-gradient(135deg, var(--navy) 0%, var(--teal2) 100%);
 }
 .ac-header-photo { position: absolute; inset: 0; }
