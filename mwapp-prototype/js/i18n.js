@@ -96,6 +96,9 @@ const I18N = {
       statusAnonymous: "Anonymous · Available 24/7 ·",
       connecting: "Connecting you with a Coordinator…",
       firstMessage: "Hello, this is Kadri, your IMWIRSA Welfare Coordinator. I'm here to listen — how are you doing today?",
+      askReason: "Of course — before I connect you, could you tell me briefly what this is about? That way I can make sure you reach the right place.",
+      pointToSpiritual: "It sounds like you'd just like someone to talk to — that's exactly what Spiritual Care is here for. You'll find caring people ready to talk, no topic too small.",
+      openSpiritualBtn: "Open Spiritual Care →",
       demoReplies: [
         "Thank you for sharing that. I'm listening — take your time.",
         "That sounds difficult. You're not alone in this, and I'm here with you right now.",
@@ -333,6 +336,9 @@ const I18N = {
       statusAnonymous: "Анонимно · Доступно 24/7 ·",
       connecting: "Соединяем вас с координатором…",
       firstMessage: "Здравствуйте, это Кадри, ваш координатор по благосостоянию IMWIRSA. Я здесь, чтобы выслушать вас — как вы себя чувствуете сегодня?",
+      askReason: "Конечно — прежде чем соединить вас, расскажите коротко, в чём дело? Так я смогу быть уверен, что направляю вас в нужное место.",
+      pointToSpiritual: "Похоже, вам просто хочется с кем-то поговорить — как раз для этого есть раздел «Духовная поддержка». Там есть неравнодушные люди, готовые выслушать, тема неважна.",
+      openSpiritualBtn: "Открыть Духовную поддержку →",
       demoReplies: [
         "Спасибо, что рассказали об этом. Я слушаю — не торопитесь.",
         "Похоже, это непросто. Вы не одиноки, и я сейчас рядом с вами.",
@@ -566,6 +572,9 @@ const I18N = {
       statusAnonymous: "Anonim · 7/24 Erişilebilir ·",
       connecting: "Bir koordinatörle bağlanıyorsun…",
       firstMessage: "Merhaba, ben Kadri, IMWIRSA Refah Koordinatörün. Seni dinlemek için buradayım — bugün nasılsın?",
+      askReason: "Tabii — seni bağlamadan önce, kısaca konunun ne olduğunu söyler misin? Böylece seni doğru yere yönlendirdiğimden emin olabilirim.",
+      pointToSpiritual: "Görünüşe göre sadece biriyle konuşmak istiyorsun — Manevi Destek tam da bunun için burada. Konuşmaya hazır, önemseyen insanlar bulacaksın, konu ne olursa olsun.",
+      openSpiritualBtn: "Manevi Desteği Aç →",
       demoReplies: [
         "Bunu paylaştığın için teşekkür ederim. Dinliyorum — acele etmene gerek yok.",
         "Bu zor görünüyor. Bunda yalnız değilsin, şu anda yanındayım.",
@@ -799,6 +808,9 @@ const I18N = {
       statusAnonymous: "Anonymous · Available 24/7 ·",
       connecting: "Ikinokonekta ka sa isang Coordinator…",
       firstMessage: "Kamusta, ako si Kadri, ang iyong IMWIRSA Welfare Coordinator. Narito ako para makinig — kumusta ka ngayon?",
+      askReason: "Sige — bago kita ikonekta, maaari mo bang sabihin nang maikli kung ano ang tungkol dito? Sa ganoon, matitiyak kong maidudulog kita sa tamang lugar.",
+      pointToSpiritual: "Mukhang gusto mo lang na may makausap — para dito talaga ang Espirituwal na Alaga. Doon ay may mga taong handang makinig, anuman ang paksa.",
+      openSpiritualBtn: "Buksan ang Espirituwal na Alaga →",
       demoReplies: [
         "Salamat sa pagbabahagi niyan. Nakikinig ako — huwag kang magmadali.",
         "Mukhang mahirap iyan. Hindi ka nag-iisa dito, at narito ako kasama mo ngayon.",

@@ -1321,6 +1321,24 @@ function isComplexTopic(text) {
   return COMPLEX_TOPIC_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
+// Same prototype-level caveat as above — this is a keyword heuristic, not
+// real intent classification. Used ONLY for the one reply right after the
+// assistant asks "why do you want the coordinator" (see
+// awaitingCoordinatorReason below), to tell genuine idle/lonely small talk
+// apart from an actual reason to reach a human.
+const IDLE_CHAT_KEYWORDS = [
+  "just want to talk", "just wanted to chat", "how are you", "how's it going",
+  "nothing much", "bored", "weather", "small talk", "just chatting", "just saying hi",
+  "просто поговорить", "просто пообщаться", "как дела", "скучно", "погода", "ни о чём", "ни о чем", "просто так", "поболтать",
+  "sadece konuşmak", "sadece sohbet", "nasılsın", "sıkıldım", "hava durumu", "boş konuşma",
+  "gusto ko lang makipag-usap", "kamusta ka", "nainip ako", "panahon", "walang tema",
+];
+
+function isIdleChatTopic(text) {
+  const lower = text.toLowerCase();
+  return IDLE_CHAT_KEYWORDS.some((kw) => lower.includes(kw));
+}
+
 // Remembers which screen the seafarer was on right before opening the
 // assistant chat (home / detail / subdetail / volunteer / ship), so the
 // chat's own back arrow returns them exactly there instead of always
@@ -1328,6 +1346,13 @@ function isComplexTopic(text) {
 // openSubDetail only re-render on demand, so it's still showing whatever
 // was last opened (e.g. the taxi subdetail the seafarer came from).
 let chatReturnTarget = "home";
+
+// Set for exactly one round-trip when the seafarer taps "Talk to IMWIRSA
+// Welfare Coordinator" in Settings: true until openAssistantChat() asks
+// why, then stays true through that ONE reply so sendAssistantChatMessage
+// knows to branch it specially (idle chat → Spiritual Care, anything else
+// → offer the coordinator) before falling back to ordinary chat behaviour.
+let awaitingCoordinatorReason = false;
 
 function setChatHeaderPhoto(a) {
   const el = document.getElementById("chatAssistantPhoto");
@@ -1357,8 +1382,11 @@ function openAssistantChat() {
   if (!state.chatStarted) {
     state.chatMessages = [{ who: "them", text: a.greet }];
     state.chatStarted = true;
-    saveState();
   }
+  if (awaitingCoordinatorReason) {
+    state.chatMessages.push({ who: "them", text: t("coordinator.askReason") });
+  }
+  saveState();
   renderAssistantChatMessages();
 }
 
@@ -1369,6 +1397,7 @@ function startNewAssistantChat() {
   state.chatMessages = [];
   state.chatStarted = false;
   state.assistantReplyIndex = 0;
+  awaitingCoordinatorReason = false;
   saveState();
   const toggle = document.getElementById("escalationToggle");
   if (toggle) toggle.remove();
@@ -1383,6 +1412,12 @@ function sendAssistantChatMessage() {
   const existingToggle = document.getElementById("escalationToggle");
   if (existingToggle) existingToggle.remove();
 
+  // Only the ONE reply right after the coordinator-reason question gets the
+  // special three-way handling below; every other message in the chat uses
+  // the normal two-way isComplexTopic() check, unchanged.
+  const isCoordinatorReasonReply = awaitingCoordinatorReason;
+  awaitingCoordinatorReason = false;
+
   state.chatMessages.push({ who: "me", text });
   saveState();
   body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
@@ -1392,7 +1427,23 @@ function sendAssistantChatMessage() {
 
   const a = getAssistant(state.assistant) || getAssistant("alex");
   setTimeout(() => {
-    if (isComplexTopic(text)) {
+    if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
+      // Explicitly asked for the coordinator, but the reason reads as idle/
+      // lonely small talk rather than a real issue — point to Spiritual
+      // Care's "just want to talk" option instead of paging a human.
+      const msg = t("coordinator.pointToSpiritual");
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-detail="spiritual">${t("coordinator.openSpiritualBtn")}</button>
+        </div>`);
+    } else if (isComplexTopic(text) || isCoordinatorReasonReply) {
+      // Genuine reason — either the usual keyword check flagged it, or the
+      // seafarer explicitly came here via "Talk to Coordinator" and this
+      // reply wasn't idle chat, so default to offering the same escalation
+      // toggle used everywhere else rather than a generic demo reply.
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
@@ -1501,6 +1552,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
       const target = goEl.dataset.go;
+
+      // "Talk to IMWIRSA Welfare Coordinator" in Settings no longer jumps
+      // straight to the human coordinator chat. It goes through the
+      // assistant first, which asks why — genuine/urgent reasons still
+      // reach the coordinator (via the same escalation toggle used
+      // everywhere else), but idle small talk gets pointed to Spiritual
+      // Care instead of quietly becoming a second, unofficial "chat with
+      // AI for company" channel that bypasses the human coordinator's time.
+      if (target === "__coordinatorViaAssistant") {
+        awaitingCoordinatorReason = true;
+        goToScreen("assistantchat");
+        return;
+      }
 
       // The chat header's own back arrow: return to wherever the seafarer
       // was before opening the chat (Level-2, Level-3, Home…), and leave
