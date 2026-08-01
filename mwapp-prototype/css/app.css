@@ -118,14 +118,14 @@ a { color: inherit; text-decoration: none; }
   text-align: left; padding: 0 32px 18px;
 }
 .lh-sub {
-  align-self: center; text-align: center;
+  align-self: center; text-align: center; margin-top: auto;
   color: rgba(255,255,255,0.85); font-size: 12.5px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
   margin-bottom: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.6);
   opacity: 0; animation: lhFadeIn 1s ease 0.95s forwards;
 }
 .lh-emblem {
-  align-self: center; margin-top: auto;
-  width: 150px; height: 150px; margin-bottom: 16px;
+  position: absolute; top: 54%; left: 50%; transform: translate(-50%, -50%);
+  width: 150px; height: 150px; z-index: 4;
   opacity: 0; animation: lhFadeIn 1.2s ease 0.7s forwards, emblemGlow 2.6s ease-in-out 1.9s infinite;
 }
 .lh-emblem img { width: 100%; height: 100%; object-fit: contain; display: block; }
