@@ -1371,6 +1371,17 @@ function setChatHeaderPhoto(a) {
   el.innerHTML = `<img src="${getAssistantPhoto(a.id, "chatHero")}" alt="${a.name}" loading="lazy">`;
 }
 
+// Collapses the big full-bleed photo header down to a slim bar once the
+// seafarer has actually sent a message — before that, the greeting alone
+// doesn't count as "the conversation is under way" (see backlog item:
+// compact chat header after the exchange starts).
+function updateChatHeaderCompact() {
+  const header = document.getElementById("assistantChatHeader");
+  if (!header) return;
+  const started = state.chatMessages.some((m) => m.who === "me");
+  header.classList.toggle("compact", started);
+}
+
 // Rebuilds the chat body from state.chatMessages every time — this is what
 // makes reopening the chat work identically whether the seafarer just came
 // back from Level-2/3 a moment ago, or fully closed and reopened MWApp.
@@ -1399,6 +1410,7 @@ function openAssistantChat() {
   }
   saveState();
   renderAssistantChatMessages();
+  updateChatHeaderCompact();
 }
 
 // Explicit, seafarer-initiated reset — the only thing that clears the
@@ -1434,6 +1446,7 @@ function sendAssistantChatMessage() {
   body.insertAdjacentHTML("beforeend", `<div class="chat-msg me">${escapeHtml(text)}</div>`);
   input.value = "";
   input.style.height = "auto";
+  updateChatHeaderCompact();
   scrollChatToBottom(body);
 
   const a = getAssistant(state.assistant) || getAssistant("alex");
