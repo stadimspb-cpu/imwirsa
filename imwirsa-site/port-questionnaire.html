@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Port Card Questionnaire — IMWIRSA</title>
+<meta name="description" content="The questionnaire your Port Welfare Manager completes to publish your centre's profile in MWApp.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .pq-page {
+    --navy-deep: #0B1E3D; --navy: #1B3A6B; --teal: #0D6E8A; --teal2: #0A5A72;
+    --gold: #B8860B; --coral: #C94028; --paper: #FBF9F4; --paper2: #F3EFE6;
+    --ink: #1C2530; --ink-soft: #5B6472; --line: #DCD6C7;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    font-size: 15px; line-height: 1.6;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  .pq-page h1, .pq-page h2, .pq-page .stamp-num { font-family: 'Fraunces', Georgia, serif; }
+
+  .pq-page header {
+    background: var(--navy-deep);
+    background-image: radial-gradient(circle at 85% -10%, rgba(184,134,11,0.16), transparent 55%),
+      radial-gradient(circle at 10% 120%, rgba(13,110,138,0.22), transparent 50%);
+    color: white; padding: 44px 24px 60px; position: relative;
+  }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin: 0 0 10px; }
+  .pq-page header h1 { font-size: clamp(26px, 5vw, 36px); font-weight: 600; margin: 0 0 6px; }
+  .pq-page header .sub { font-size: 14px; color: rgba(255,255,255,0.7); margin: 0 0 16px; }
+  .pq-page header p { color: rgba(255,255,255,0.82); max-width: 600px; margin: 0; font-size: 14.5px; }
+  .header-seal { position: absolute; top: 40px; right: 32px; width: 58px; height: 58px; border: 1.5px solid rgba(184,134,11,0.55); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gold); opacity: 0.85; }
+
+  .wrap { max-width: 740px; margin: -30px auto 80px; padding: 0 20px; }
+  .sheet { background: white; border-radius: 4px; box-shadow: 0 20px 50px -25px rgba(11,30,61,0.35); border: 1px solid var(--line); }
+
+  /* ── INSTRUCTIONS BLOCK ─────────────────────────────────── */
+  .instructions { padding: 26px 28px; border-bottom: 2px solid var(--paper2); }
+  .instructions h3 { font-size: 16px; margin: 0 0 10px; color: var(--navy-deep); }
+  .instructions p { font-size: 13.8px; color: var(--ink-soft); margin: 0 0 12px; }
+  .instructions p strong { color: var(--ink); }
+  .rule-list { margin: 10px 0 0; padding-left: 20px; font-size: 13.8px; color: var(--ink-soft); }
+  .rule-list li { margin-bottom: 8px; }
+  .rule-list li strong { color: var(--ink); }
+  .rule-third { background: var(--paper2); border-left: 3px solid var(--gold); padding: 10px 14px; border-radius: 0 6px 6px 0; margin-top: 10px; font-size: 13.5px; color: var(--ink); }
+
+  section.entry { padding: 30px 28px; border-bottom: 1px solid var(--paper2); }
+  section.entry:last-of-type { border-bottom: none; }
+  .entry-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+  .stamp-num { font-size: 13px; font-weight: 700; color: var(--gold); flex-shrink: 0; border: 1px solid var(--gold); border-radius: 3px; padding: 3px 9px; letter-spacing: 0.5px; }
+  .entry-head h2 { font-size: 19px; font-weight: 600; margin: 0; color: var(--navy-deep); }
+  .req-badge { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; color: white; background: var(--coral); padding: 3px 8px; border-radius: 10px; }
+  .entry-sub { font-size: 13px; color: var(--ink-soft); margin: 8px 0 18px; }
+  .sub-block { margin: 22px 0 6px; padding-top: 18px; border-top: 1px dashed var(--line); }
+  .sub-block:first-child { margin-top: 4px; padding-top: 0; border-top: none; }
+  .sub-block h3 { font-size: 15px; margin: 0 0 4px; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+  .sub-note { font-size: 12.8px; color: var(--ink-soft); margin: 0 0 14px; }
+  .critical-note { background: #FBEEEA; border-left: 3px solid var(--coral); padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 13px; color: var(--ink); margin-bottom: 16px; }
+
+  .draft-banner { display: none; margin: 20px 28px 0; padding: 14px 16px; background: rgba(13,110,138,0.08); border: 1.5px solid var(--teal); border-radius: 8px; }
+  .draft-banner.show { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
+  .draft-banner .draft-text { flex: 1; font-size: 13px; color: var(--ink); line-height: 1.5; }
+  .draft-banner .draft-text strong { color: var(--navy-deep); }
+  .draft-banner button { flex-shrink: 0; background: none; border: 1.5px solid var(--teal); color: var(--teal); font-family: inherit; font-weight: 600; font-size: 12px; padding: 7px 12px; border-radius: 7px; cursor: pointer; white-space: nowrap; }
+
+  .field { margin-bottom: 15px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .field .hint { font-weight: 400; color: var(--ink-soft); font-size: 12px; }
+  .field input[type=text], .field input[type=email], .field input[type=tel], .field input[type=date],
+  .field textarea, .field select {
+    width: 100%; font-family: inherit; font-size: 14.5px; color: var(--ink);
+    background: var(--paper); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 13px; outline: none;
+  }
+  .field textarea { resize: vertical; min-height: 60px; }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--teal); background: white; box-shadow: 0 0 0 3px rgba(13,110,138,0.12); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .row2, .row3 { grid-template-columns: 1fr; } }
+
+  .hours-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+  .hours-table td { padding: 4px 0; vertical-align: middle; }
+  .hours-table td.day { font-size: 13px; font-weight: 600; color: var(--ink); width: 120px; }
+  .hours-table input { width: 100%; }
+
+  .check-grid { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 4px; }
+  .check-pill { display: flex; align-items: center; gap: 7px; font-size: 12.8px; background: var(--paper); border: 1.5px solid var(--line); border-radius: 20px; padding: 6px 12px 6px 9px; cursor: pointer; color: var(--ink); }
+  .check-pill input { accent-color: var(--teal); }
+  .check-pill:has(input:checked) { border-color: var(--teal); background: rgba(13,110,138,0.07); color: var(--teal2); font-weight: 600; }
+  .check-group-label { font-size: 12px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.4px; margin: 14px 0 6px; }
+  .check-group-label:first-of-type { margin-top: 0; }
+
+  .date-field { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+  .date-field label { margin: 0; white-space: nowrap; }
+  .date-field input { max-width: 170px; }
+
+  .spiritual-block { border: 1.5px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 16px; position: relative; background: var(--paper); }
+  .spiritual-block .remove-block { position: absolute; top: 10px; right: 10px; font-size: 12px; color: var(--coral); background: none; border: none; cursor: pointer; font-weight: 600; }
+  .add-block-btn { background: none; border: 1.5px dashed var(--teal); color: var(--teal); font-family: inherit; font-weight: 600; font-size: 13px; padding: 10px 16px; border-radius: 8px; cursor: pointer; width: 100%; }
+
+  .repeat-item { border-top: 1px dashed var(--line); padding-top: 12px; margin-top: 12px; }
+  .repeat-item:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .repeat-item-num { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+
+  .file-drop { border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; text-align: center; background: var(--paper); font-size: 12.8px; color: var(--ink-soft); }
+  .file-drop input { display: block; margin: 8px auto 0; font-size: 13px; }
+
+  .submit-block { padding: 30px 28px 34px; background: var(--paper2); border-radius: 0 0 4px 4px; }
+  .honey { position: absolute; left: -9999px; }
+  .pq-page button[type=submit] { width: 100%; background: var(--teal); color: white; font-family: inherit; font-size: 15.5px; font-weight: 700; padding: 15px; border: none; border-radius: 10px; cursor: pointer; transition: background .15s ease; }
+  .pq-page button[type=submit]:hover { background: var(--teal2); }
+  .pq-page button[type=submit]:disabled { opacity: 0.6; cursor: default; }
+  .submit-note { text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 12px; }
+
+  .result-msg { display: none; padding: 26px 28px; text-align: center; }
+  .result-msg.show { display: block; }
+  .result-msg .icon { font-size: 34px; margin-bottom: 10px; }
+  .result-msg h3 { font-size: 20px; margin: 0 0 8px; color: var(--navy-deep); }
+  .result-msg p { color: var(--ink-soft); font-size: 14px; margin: 0 0 18px; }
+  .result-msg.error h3 { color: var(--coral); }
+  .result-msg button.retry { background: none; border: 1.5px solid var(--teal); color: var(--teal); font-family: inherit; font-weight: 600; font-size: 13.5px; padding: 9px 18px; border-radius: 8px; cursor: pointer; }
+
+  footer { text-align: center; font-size: 12px; color: var(--ink-soft); padding: 0 20px 40px; }
+  footer a { color: var(--teal); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo-icon.png" alt="IMWIRSA" class="nav-logo-mark">
+      <div class="nav-logo-text">
+        <div class="org-fullname">International Maritime Welfare<br>Innovation Research and<br>Support Association</div>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="no-dropdown">Home</a></li>
+      <li>
+        <a href="about.html">About <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="about.html#about-imwirsa">About IMWIRSA</a></li>
+          <li><a href="about.html#our-story">Our Story</a></li>
+          <li><a href="about.html#mission-vision">Mission &amp; Vision</a></li>
+          <li><a href="about.html#white-paper">White Paper (online version)</a></li>
+          <li><a href="about.html#roadmap">Roadmap 2026–2035</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="mwapp.html" class="app-link"><img src="assets/mwapp-nav-icon.png" alt="" class="app-link-icon"> MWApp <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="mwapp.html#overview">MWApp Overview</a></li>
+          <li><a href="mwapp.html#why-mwapp">Why MWApp?</a></li>
+          <li><a href="mwapp.html#port-cards">Port Cards</a></li>
+          <li><a href="mwapp.html#ai-assistants">AI Assistants</a></li>
+          <li><a href="mwapp.html#pwm-bot">Port Welfare Manager (Telegram Bot)</a></li>
+          <li><a href="mwapp.html#future">Future Development</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="projects.html">Projects <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="projects.html#pilot-network">Pilot Network</a></li>
+          <li><a href="projects.html#wellness-zones">Wellness Recovery Zones</a></li>
+          <li><a href="projects.html#port-database">Port Database</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="review.html">Review <span class="caret">&#9662;</span></a>
+        <ul class="dropdown">
+          <li><a href="review.html">All issues</a></li>
+          <li><a href="review-001-abandonment.html">Issue 001 &mdash; Crew abandonment</a></li>
+          <li><a href="review-how-we-work.html">How we work</a></li>
+        </ul>
+      </li>
+<li>
+        <a href="research.html">Research <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="research.html#overview">Research Overview</a></li>
+          <li><a href="research.html#commentary-series">IMWIRSA Scientific Commentary Series</a></li>
+          <li><a href="research.html#foundational-collection">Foundational Collection</a></li>
+          <li><a href="research.html#white-paper-full">White Paper (full version)</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="partners.html">Partners <span class="caret">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="partners.html#become-partner">Become a Partner</a></li>
+          <li><a href="partners.html#pwm-role">Port Welfare Manager</a></li>
+          <li><a href="partners.html#toolkit">Partner Toolkit</a></li>
+        </ul>
+      </li>
+      <li><a href="contact.html" class="no-dropdown">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="partners.html#become-partner" class="nav-cta">Join Our Network</a>
+      <button class="nav-burger" id="navBurger" aria-label="Toggle menu"><span></span></button>
+    </div>
+  </div>
+</nav>
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> <span>/</span> <a href="partners.html">Partners</a> <span>/</span> <span>Port Card Questionnaire</span></div>
+    <h1>Port Card Questionnaire</h1>
+    <p>For Port Welfare Managers at partner centres — this is what becomes your centre's profile inside MWApp.</p>
+  </div>
+</section>
+
+<div class="pq-page">
+<header>
+  <div class="header-seal">⚓</div>
+  <div class="eyebrow">IMWIRSA · MWApp</div>
+  <h1>Анкета по порту</h1>
+  <p class="sub">Для координатора на месте (Port Welfare Manager)</p>
+  <p>То, что вы здесь напишете, попадёт прямо в приложение, которое моряк открывает, сойдя с судна в вашем порту.</p>
+</header>
+
+<div class="wrap">
+  <div class="sheet">
+
+    <div class="instructions">
+      <h3>Прежде чем начать — прочитайте эту страницу</h3>
+      <p>Спасибо, что согласились это заполнить. Всё из этой анкеты моряк увидит у себя на телефоне.</p>
+      <p><strong>Сколько времени займёт.</strong> Около 45–60 минут на обязательную часть. Заполнять за один раз не обязательно.</p>
+      <p><strong>На каком языке отвечать.</strong> Пишите по-русски, мы переведём. Но есть одно исключение, и оно важное: названия и адреса дайте так, как они написаны на месте — на вывеске, на табличке, в местных документах. Моряк из Манилы или Стамбула показывает телефон таксисту, и тот должен прочитать адрес, а не транслитерацию. Если можете дать оба варианта — идеально.</p>
+      <p><strong>Три правила, и третье самое главное.</strong></p>
+      <ol class="rule-list">
+        <li><strong>Пишите только то, что знаете как факт на сегодня.</strong> Не то, что написано в старом буклете, и не то, что было раньше.</li>
+        <li><strong>Пишите конкретно.</strong> «Рядом с воротами» не помогает никому. «600 м от ворот №1, за заправкой налево» доводит уставшего человека до места в темноте.</li>
+        <li><strong>«Не знаю» — правильный ответ.</strong> Напишите его и идите дальше. Мы покажем этот раздел как «данные уточняются», а не покажем неверное. Неправильный номер автобуса или неправильные ворота могут оставить моряка на улице или заставить опоздать на судно. Пустое поле такого не делает никогда.</li>
+      </ol>
+      <div class="rule-third">Пожалуйста, не угадывайте.</div>
+      <p style="margin-top:14px;">Разделы, помеченные <span class="req-badge">ОБЯЗАТЕЛЬНО</span>, — это минимум, чтобы порт можно было включить. Если у вас есть только час, заполните их. Остальное можно дослать позже.</p>
+      <p>В конце каждого раздела есть поле для даты. В приложении она показывается как «Последнее обновление», чтобы моряк понимал, насколько информация свежая.</p>
+    </div>
+
+    <div class="draft-banner" id="draftBanner">
+      <div class="draft-text" id="draftBannerText"></div>
+      <button type="button" id="clearDraftBtn">Очистить и начать заново</button>
+    </div>
+
+    <form id="portForm">
+      <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="_subject" id="emailSubject" value="Анкета по порту — MWApp">
+      <input type="hidden" name="_captcha" value="true">
+      <input type="hidden" name="_template" value="table">
+
+      <!-- ЧАСТЬ 1 — О ВАС -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 1</span><h2>О вас</h2><span class="req-badge">ОБЯЗАТЕЛЬНО</span></div>
+        <div class="entry-sub">В приложении не показывается, кроме отдельно оговорённого пункта.</div>
+
+        <div class="row2">
+          <div class="field"><label>Фамилия, имя *</label><input type="text" name="Фамилия имя" required></div>
+          <div class="field"><label>Организация *</label><input type="text" name="Организация" required></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Ваша должность</label><input type="text" name="Должность"></div>
+          <div class="field"><label>Электронная почта *</label><input type="email" name="Email" required></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Телефон / WhatsApp</label><input type="tel" name="Телефон WhatsApp"></div>
+          <div class="field"><label>Языки, на которых говорите</label><input type="text" name="Языки заполняющего"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>В какие часы удобнее связаться</label><input type="text" name="Удобные часы связи"></div>
+          <div class="field"><label>Telegram <span class="hint">(для бота обновлений, позже)</span></label><input type="text" name="Telegram"></div>
+        </div>
+        <div class="field">
+          <label>Можно ли показывать ваше имя в приложении как контактное лицо порта? <span class="hint">Если да, моряк видит «ваше имя — координатор порта». Если нет — только организацию.</span></label>
+          <select name="Показывать имя в приложении">
+            <option value="">— выберите —</option>
+            <option>Да</option>
+            <option>Нет</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- ЧАСТЬ 2 — САМ ПОРТ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 2</span><h2>Сам порт</h2><span class="req-badge">ОБЯЗАТЕЛЬНО</span></div>
+
+        <div class="row2">
+          <div class="field"><label>Официальное название порта (на местном языке) *</label><input type="text" name="Название порта местное" id="portNameInput" required></div>
+          <div class="field"><label>То же на английском</label><input type="text" name="Название порта английское"></div>
+        </div>
+        <div class="field"><label>Город, страна *</label><input type="text" name="Город страна" required></div>
+        <div class="field"><label>Терминалы, куда обычно приходят суда</label><input type="text" name="Терминалы"></div>
+        <div class="row2">
+          <div class="field"><label>Через какие ворота моряк может выйти пешком?</label><input type="text" name="Пешеходные ворота"></div>
+          <div class="field"><label>Какие ворота только для транспорта?</label><input type="text" name="Транспортные ворота"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Ворота, закрытые ночью или в выходные</label><input type="text" name="Закрытые ворота"></div>
+          <div class="field"><label>Часовой пояс</label><input type="text" name="Часовой пояс" placeholder="Напр. UTC+3"></div>
+        </div>
+        <div class="field">
+          <label>Координаты главных пешеходных ворот <span class="hint">Google Maps → нажать и удержать на воротах → скопировать цифры</span></label>
+          <input type="text" name="Координаты ворот" placeholder="Широта, долгота">
+        </div>
+      </section>
+
+      <!-- ЧАСТЬ 3 — ЦЕНТР МОРЯКОВ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 3</span><h2>Центр моряков</h2></div>
+
+        <div class="sub-block">
+          <h3>3.1 О центре <span class="req-badge">ОБЯЗАТЕЛЬНО</span></h3>
+          <div class="field"><label>Официальное название центра / клуба / миссии</label><input type="text" name="Название центра"></div>
+          <div class="field"><label>Полный адрес</label><input type="text" name="Адрес центра"></div>
+          <div class="row2">
+            <div class="field"><label>Расстояние от главных ворот (км)</label><input type="text" name="Расстояние центра"></div>
+            <div class="field"><label>Основной телефон <span class="hint">межд. формат</span></label><input type="tel" name="Телефон центра основной" placeholder="+7 812 555 1234"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Второй телефон / WhatsApp</label><input type="tel" name="Телефон центра второй"></div>
+            <div class="field"><label>Электронная почта центра</label><input type="email" name="Email центра"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Сайт</label><input type="text" name="Сайт центра"></div>
+            <div class="field"><label>Кто руководит центром</label><input type="text" name="Руководитель центра"></div>
+          </div>
+          <div class="field"><label>На каких языках говорят сотрудники</label><input type="text" name="Языки сотрудников центра"></div>
+          <div class="field">
+            <label>Часы работы <span class="hint">заполните все дни, если закрыто — так и напишите</span></label>
+            <table class="hours-table">
+              <tr><td class="day">Понедельник</td><td><input type="text" name="Часы Пн"></td></tr>
+              <tr><td class="day">Вторник</td><td><input type="text" name="Часы Вт"></td></tr>
+              <tr><td class="day">Среда</td><td><input type="text" name="Часы Ср"></td></tr>
+              <tr><td class="day">Четверг</td><td><input type="text" name="Часы Чт"></td></tr>
+              <tr><td class="day">Пятница</td><td><input type="text" name="Часы Пт"></td></tr>
+              <tr><td class="day">Суббота</td><td><input type="text" name="Часы Сб"></td></tr>
+              <tr><td class="day">Воскресенье</td><td><input type="text" name="Часы Вс"></td></tr>
+            </table>
+          </div>
+          <div class="field"><label>В какие дни в году центр закрыт (праздники)?</label><input type="text" name="Праздничные закрытия"></div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 3.1"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>3.2 Услуги центра</h3>
+          <div class="sub-note">Отметьте только то, что действительно есть. Сомневаетесь — оставьте пустым.</div>
+
+          <div class="check-group-label">Отдых и питание</div>
+          <div class="check-grid">
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Чай и кофе">Чай и кофе</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Закуски">Закуски</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Горячее питание">Горячее питание</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Комната с телевизором">Комната с ТВ</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Терраса">Терраса</label>
+          </div>
+          <div class="check-group-label">Досуг</div>
+          <div class="check-grid">
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Зона отдыха">Зона отдыха</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Игровая комната">Игровая комната</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Бильярд">Бильярд</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Настольный теннис">Настольный теннис</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Библиотека">Библиотека</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Обмен книгами">Обмен книгами</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Спортивные объекты">Спортивные объекты</label>
+          </div>
+          <div class="check-group-label">Связь</div>
+          <div class="check-grid">
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Бесплатный Wi-Fi">Бесплатный Wi-Fi</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Компьютеры для моряков">Компьютеры для моряков</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="SIM-карты на месте">SIM-карты на месте</label>
+          </div>
+          <div class="check-group-label">Помощь</div>
+          <div class="check-grid">
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Магазин">Магазин</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Волонтёры, посещающие суда">Волонтёры, посещающие суда</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Мероприятия и экскурсии">Мероприятия и экскурсии</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Обмен валюты">Обмен валюты</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Денежные переводы">Денежные переводы</label>
+          </div>
+          <div class="check-group-label">Духовная поддержка</div>
+          <div class="check-grid">
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Молитвенная комната">Молитвенная комната</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Часовня">Часовня</label>
+            <label class="check-pill"><input type="checkbox" name="Услуги центра" value="Капеллан">Капеллан</label>
+          </div>
+          <div class="field" style="margin-top:14px;"><label>Что ещё стоит упомянуть</label><textarea name="Прочие услуги центра"></textarea></div>
+          <div class="field"><label>Примерная стоимость горячего обеда (с валютой)</label><input type="text" name="Стоимость обеда"></div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 3.2"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>3.3 Служебный автобус (шаттл)</h3>
+          <div class="row2">
+            <div class="field"><label>Есть ли шаттл?</label><select name="Шаттл есть"><option value="">— выберите —</option><option>Да</option><option>Нет</option></select></div>
+            <div class="field"><label>Бесплатный? Если нет — сколько стоит?</label><input type="text" name="Шаттл цена"></div>
+          </div>
+          <div class="field"><label>Откуда именно забирает (ворота, ориентир)</label><input type="text" name="Шаттл откуда"></div>
+          <div class="field"><label>Время отправления — перечислите все рейсы</label><textarea name="Шаттл расписание туда"></textarea></div>
+          <div class="field"><label>Время отправления обратно от центра</label><textarea name="Шаттл расписание обратно"></textarea></div>
+          <div class="row2">
+            <div class="field"><label>Ходит ли в выходные?</label><input type="text" name="Шаттл выходные"></div>
+            <div class="field"><label>Нужно ли заказывать заранее и как?</label><input type="text" name="Шаттл заказ"></div>
+          </div>
+          <div class="field"><label>Как узнать этот автобус? <span class="hint">цвет, размер, надписи, табличка за стеклом</span></label><input type="text" name="Шаттл опознавание"></div>
+          <div class="sub-note">Фотография шаттла очень пригодится — приложите к анкете в конце.</div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 3.3"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>3.4 Дорога до центра пешком</h3>
+          <div class="row2">
+            <div class="field"><label>Можно ли туда безопасно и законно дойти пешком?</label><select name="Пешком до центра можно"><option value="">— выберите —</option><option>Да</option><option>Нет</option></select></div>
+            <div class="field"><label>Сколько минут идти</label><input type="text" name="Пешком до центра минут"></div>
+          </div>
+          <div class="field"><label>Опишите дорогу так, как объяснили бы незнакомому человеку ночью</label><textarea name="Пешком до центра маршрут"></textarea></div>
+          <div class="field"><label>Чего по пути лучше избегать?</label><input type="text" name="Пешком до центра избегать"></div>
+          <div class="field"><label>Координаты центра</label><input type="text" name="Координаты центра"></div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 3.4"></div>
+        </div>
+      </section>
+
+      <!-- ЧАСТЬ 4 — ТРАНСПОРТ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 4</span><h2>Транспорт</h2></div>
+
+        <div class="sub-block">
+          <h3>4.1 Выход из порта <span class="req-badge">ОБЯЗАТЕЛЬНО</span></h3>
+          <div class="critical-note">Это самый важный раздел анкеты и тот, где ошибка обходится дороже всего. Если в чём-то не уверены — напишите «не уверен», мы оставим поле пустым, а не станем рисковать.</div>
+          <div class="field"><label>Разрешено ли в этом порту увольнение на берег?</label><input type="text" name="Увольнение разрешено"></div>
+          <div class="field"><label>Через какие ворота выходить пешком?</label><input type="text" name="Ворота выхода"></div>
+          <div class="field"><label>Какие документы нужно иметь при себе?</label><input type="text" name="Документы для выхода"></div>
+          <div class="field"><label>Нужен ли пропуск? Кто его выдаёт?</label><input type="text" name="Пропуск"></div>
+          <div class="field"><label>Есть ли ограничения для отдельных гражданств или типов виз?</label><textarea name="Ограничения по гражданству"></textarea></div>
+          <div class="field"><label>Обязателен ли жилет или другое снаряжение на территории порта?</label><input type="text" name="Снаряжение обязательное"></div>
+          <div class="field"><label>Есть ли места внутри порта, где ходить пешком нельзя?</label><input type="text" name="Запретные зоны порта"></div>
+          <div class="field"><label>Кому звонить, если на КПП развернули обратно?</label><input type="tel" name="Телефон КПП"></div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 4.1"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>4.2 Такси</h3>
+          <div class="field"><label>Какие приложения такси здесь работают</label><input type="text" name="Такси приложения"></div>
+          <div class="row2">
+            <div class="field"><label>Телефон надёжной службы такси</label><input type="tel" name="Такси телефон"></div>
+            <div class="field"><label>Примерная цена до центра города, с валютой</label><input type="text" name="Такси цена"></div>
+          </div>
+          <div class="field"><label>Где находится место посадки в такси</label><input type="text" name="Такси посадка"></div>
+          <div class="field"><label>На что морякам обратить внимание с такси именно здесь</label><textarea name="Такси особенности"></textarea></div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 4.2"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>4.3 Общественный транспорт</h3>
+          <div class="row2">
+            <div class="field"><label>Ближайшая остановка и сколько до неё идти</label><input type="text" name="Остановка"></div>
+            <div class="field"><label>Номера маршрутов до центра города</label><input type="text" name="Номера маршрутов"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Сколько ехать</label><input type="text" name="Время в пути"></div>
+            <div class="field"><label>Стоимость проезда и где купить билет</label><input type="text" name="Стоимость проезда"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Можно ли платить картой прикосновением?</label><select name="Оплата картой транспорт"><option value="">— выберите —</option><option>Да</option><option>Нет</option><option>Не уверен(а)</option></select></div>
+            <div class="field"><label>Во сколько последний рейс ночью</label><input type="text" name="Последний рейс"></div>
+          </div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 4.3"></div>
+        </div>
+      </section>
+
+      <!-- ЧАСТЬ 5 — МАГАЗИНЫ, ЕДА, SIM, АПТЕКИ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 5</span><h2>Магазины, еда, SIM-карты, аптеки</h2></div>
+
+        <div class="sub-block">
+          <h3>5.1 Продуктовые магазины <span class="req-badge">ОБЯЗАТЕЛЬНО</span></h3>
+          <div class="sub-note">По каждому: название, расстояние от ворот, часы работы.</div>
+          <div class="repeat-item"><div class="repeat-item-num">1</div><input type="text" name="Магазин 1"></div>
+          <div class="repeat-item"><div class="repeat-item-num">2</div><input type="text" name="Магазин 2"></div>
+          <div class="repeat-item"><div class="repeat-item-num">3</div><input type="text" name="Магазин 3"></div>
+          <div class="field" style="margin-top:14px;"><label>Есть ли что-то круглосуточное?</label><input type="text" name="Магазин круглосуточный"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>5.2 Еда</h3>
+          <div class="field"><label>Самый дешёвый нормальный обед рядом с портом — где и почём?</label><input type="text" name="Дешёвый обед"></div>
+          <div class="field"><label>Место, которое морякам особенно нравится</label><input type="text" name="Любимое место еда"></div>
+          <div class="field"><label>Есть ли где-то скидка морякам?</label><input type="text" name="Скидка морякам еда"></div>
+          <div class="field"><label>Халяль, вегетарианское, другие особенности питания — где?</label><input type="text" name="Особое питание"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>5.3 SIM-карты и интернет</h3>
+          <div class="field"><label>Какие операторы связи здесь работают</label><input type="text" name="Операторы связи"></div>
+          <div class="row2">
+            <div class="field"><label>Где купить предоплаченную SIM рядом с портом</label><input type="text" name="SIM где купить"></div>
+            <div class="field"><label>Примерная цена и объём трафика</label><input type="text" name="SIM цена"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Нужен ли документ при покупке?</label><input type="text" name="SIM документ"></div>
+            <div class="field"><label>Ближайший банкомат и какую валюту выдаёт</label><input type="text" name="Банкомат"></div>
+          </div>
+          <div class="field"><label>Бесплатный Wi-Fi на территории порта — сеть и пароль</label><input type="text" name="Wi-Fi порт"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>5.4 Аптеки <span class="req-badge">ОБЯЗАТЕЛЬНО</span></h3>
+          <div class="field"><label>Ближайшая аптека: название, адрес, расстояние, часы</label><input type="text" name="Аптека ближайшая"></div>
+          <div class="row2">
+            <div class="field"><label>Есть ли круглосуточная аптека в городе?</label><input type="text" name="Аптека круглосуточная"></div>
+            <div class="field"><label>Принимают ли иностранный рецепт?</label><input type="text" name="Аптека рецепт"></div>
+          </div>
+          <div class="field"><label>Говорят ли фармацевты по-английски или на других языках?</label><input type="text" name="Аптека языки"></div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 5.4"></div>
+        </div>
+      </section>
+
+      <!-- ЧАСТЬ 6 — ГОРОД -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 6</span><h2>Город</h2></div>
+        <div class="entry-sub">Только то, что действительно рядом и стоит короткого увольнения. Мы не делаем путеводитель.</div>
+
+        <div class="sub-block">
+          <h3>6.1 Где подышать</h3>
+          <div class="field"><label>Ближайший парк или зелёная зона, расстояние</label><input type="text" name="Парк"></div>
+          <div class="field"><label>Набережная или променад</label><input type="text" name="Набережная"></div>
+          <div class="field"><label>Тихое место, где можно посидеть</label><input type="text" name="Тихое место"></div>
+          <div class="field"><label>Смотровая площадка, ради которой стоит дойти</label><input type="text" name="Смотровая площадка"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>6.2 Что посмотреть — не более пяти мест</h3>
+          <div class="sub-note">Если у моряка три часа, куда бы вы его отправили? С расстоянием от порта.</div>
+          <div class="repeat-item"><div class="repeat-item-num">1</div><input type="text" name="Что посмотреть 1"></div>
+          <div class="repeat-item"><div class="repeat-item-num">2</div><input type="text" name="Что посмотреть 2"></div>
+          <div class="repeat-item"><div class="repeat-item-num">3</div><input type="text" name="Что посмотреть 3"></div>
+          <div class="repeat-item"><div class="repeat-item-num">4</div><input type="text" name="Что посмотреть 4"></div>
+          <div class="repeat-item"><div class="repeat-item-num">5</div><input type="text" name="Что посмотреть 5"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>6.3 Где бесплатно посидеть, зарядить телефон и позвонить домой</h3>
+          <div class="sub-note">Это важнее достопримечательностей. Тёплое место со связью и розеткой, где никто не торопит что-нибудь заказать.</div>
+          <div class="repeat-item"><div class="repeat-item-num">1</div><input type="text" name="Где посидеть 1"></div>
+          <div class="repeat-item"><div class="repeat-item-num">2</div><input type="text" name="Где посидеть 2"></div>
+          <div class="repeat-item"><div class="repeat-item-num">3</div><input type="text" name="Где посидеть 3"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3>6.4 Безопасность в городе <span class="req-badge">ОБЯЗАТЕЛЬНО</span></h3>
+          <div class="field"><label>Безопасно ли ходить в районе порта? Днём / после темноты</label><textarea name="Безопасность район"></textarea></div>
+          <div class="field"><label>Есть ли район, которого лучше избегать?</label><input type="text" name="Район избегать"></div>
+          <div class="field"><label>Как здесь чаще всего обманывают моряков</label><textarea name="Способы обмана"></textarea></div>
+          <div class="field"><label>Правила насчёт алкоголя в общественных местах</label><input type="text" name="Правила алкоголь"></div>
+          <div class="field"><label>Что важно знать именно ночью</label><textarea name="Ночные особенности"></textarea></div>
+          <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 6.4"></div>
+        </div>
+      </section>
+
+      <!-- ЧАСТЬ 7 — ДУХОВНАЯ ПОДДЕРЖКА -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 7</span><h2>Духовная поддержка</h2></div>
+        <div class="entry-sub">По каждой миссии, капелланству, храму, мечети или другой общине, которая действительно работает с моряками.</div>
+
+        <div id="spiritualContainer"></div>
+        <button type="button" class="add-block-btn" id="addSpiritualBtn">+ Добавить ещё одну организацию</button>
+
+        <div class="field" style="margin-top:20px;"><label>Есть ли молитвенная или тихая комната в порту либо в центре моряков?</label><input type="text" name="Молитвенная комната общая"></div>
+        <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 7"></div>
+      </section>
+
+      <!-- ЧАСТЬ 8 — ЭКСТРЕННЫЕ КОНТАКТЫ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 8</span><h2>Экстренные контакты</h2><span class="req-badge">ОБЯЗАТЕЛЬНО</span></div>
+        <div class="critical-note">Пожалуйста, проверьте каждый номер лично. Этот раздел моряк открывает, когда всё пошло плохо.</div>
+
+        <div class="field"><label>Единый номер экстренных служб</label><input type="tel" name="Экстренный номер"></div>
+        <div class="field"><label>Ближайшая больница с приёмным отделением: название, адрес, расстояние</label><input type="text" name="Больница"></div>
+        <div class="field"><label>Клиника, где говорят по-английски</label><input type="text" name="Клиника англоязычная"></div>
+        <div class="row2">
+          <div class="field"><label>Дежурный телефон администрации порта</label><input type="tel" name="Телефон администрации порта"></div>
+          <div class="field"><label>Инспектор ITF по региону: имя и телефон</label><input type="text" name="Инспектор ITF"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Контакт местного профсоюза моряков</label><input type="text" name="Профсоюз контакт"></div>
+          <div class="field"><label>Ваш телефон в нерабочее время, если готовы дать</label><input type="tel" name="Телефон нерабочее время"></div>
+        </div>
+        <div class="date-field"><label>Дата проверки:</label><input type="date" name="Дата проверки 8"></div>
+      </section>
+
+      <!-- ЧАСТЬ 9 — ПРОФСОЮЗНЫЕ И ПАРТНЁРСКИЕ УСЛУГИ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 9</span><h2>Профсоюзные и партнёрские услуги</h2></div>
+        <div class="entry-sub">Только если такое в вашем порту есть. Если нет — пропустите.</div>
+
+        <div class="field"><label>Магазины, кафе или такси со скидкой владельцам профсоюзной карты</label><textarea name="Скидки по карте"></textarea></div>
+        <div class="field"><label>Медицинские услуги с приоритетом для членов профсоюза</label><input type="text" name="Медуслуги приоритет"></div>
+        <div class="field"><label>Юридическая помощь морякам</label><input type="text" name="Юридическая помощь"></div>
+        <div class="field"><label>Массаж, физиотерапия или психологическая помощь рядом с центром</label><input type="text" name="Массаж психология"></div>
+        <div class="field"><label>Что ещё доступно владельцам карты, но не всем</label><textarea name="Прочие льготы карты"></textarea></div>
+      </section>
+
+      <!-- ЧАСТЬ 10 — О ЧЁМ МЫ НЕ СПРОСИЛИ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Часть 10</span><h2>О чём мы не спросили</h2></div>
+        <div class="entry-sub">Вы знаете свой порт, а мы нет. Если есть что-то, что моряку здесь действительно стоит знать, и это никуда выше не поместилось — напишите тут. Часто это самый полезный ответ во всей анкете.</div>
+        <div class="field"><textarea name="Дополнительно" style="min-height:110px;"></textarea></div>
+      </section>
+
+      <!-- ФОТОГРАФИИ -->
+      <section class="entry">
+        <div class="entry-head"><span class="stamp-num">Фото</span><h2>Фотографии</h2></div>
+        <div class="entry-sub">Особенно пригодятся: шаттл, пешеходные ворота, вход в центр. Моряк, который видел фотографию двери, эту дверь находит.</div>
+        <div class="file-drop">
+          Прикрепите фотографии (можно несколько)
+          <input type="file" name="attachment" multiple accept="image/*,.pdf">
+        </div>
+      </section>
+
+      <div class="submit-block">
+        <button type="submit" id="submitBtn">Отправить анкету в IMWIRSA</button>
+        <div class="submit-note">Уйдёт напрямую на info@imwirsa.org. Мы пришлём вам ссылку проверить, прежде чем это увидит хоть один моряк.</div>
+      </div>
+
+      <div class="result-msg" id="successMsg">
+        <div class="icon">⚓</div>
+        <h3>Анкета отправлена</h3>
+        <p>Спасибо. Мы соберём ваш порт в приложении и пришлём ссылку, чтобы вы проверили сами, прежде чем это увидит хоть один моряк. Без вашего подтверждения ничего не публикуется.</p>
+      </div>
+      <div class="result-msg error" id="errorMsg">
+        <div class="icon">⚠️</div>
+        <h3>Не получилось отправить</h3>
+        <p>Проверьте подключение к интернету и попробуйте снова, либо напишите напрямую на info@imwirsa.org</p>
+        <button type="button" class="retry" id="retryBtn">Попробовать снова</button>
+      </div>
+    </form>
+  </div>
+
+  <footer>
+    IMWIRSA — International Maritime Welfare Innovation Research and Support Association · <a href="https://imwirsa.org">imwirsa.org</a><br>
+    Как поддерживать в актуальном состоянии: позже это будет через Telegram-бот. Пока — просто напишите нам, как только что-то изменится, особенно часы работы, расписание шаттла и всё, что касается ворот.
+  </footer>
+</div>
+
+<script>
+  const form = document.getElementById('portForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const successMsg = document.getElementById('successMsg');
+  const errorMsg = document.getElementById('errorMsg');
+  const portNameInput = document.getElementById('portNameInput');
+  const emailSubject = document.getElementById('emailSubject');
+
+  portNameInput.addEventListener('input', () => {
+    const name = portNameInput.value.trim();
+    emailSubject.value = name ? `Анкета по порту — ${name}` : 'Анкета по порту — MWApp';
+  });
+
+  // ── Repeatable "Spiritual Care" organization blocks ───────────────────
+  let spiritualCount = 0;
+  const spiritualContainer = document.getElementById('spiritualContainer');
+
+  function addSpiritualBlock() {
+    spiritualCount++;
+    const n = spiritualCount;
+    const div = document.createElement('div');
+    div.className = 'spiritual-block';
+    div.innerHTML = `
+      ${n > 1 ? '<button type="button" class="remove-block">Удалить</button>' : ''}
+      <div class="repeat-item-num">Организация ${n}</div>
+      <div class="field"><label>Название организации или места</label><input type="text" name="Духовная орг ${n} название"></div>
+      <div class="row2">
+        <div class="field"><label>Конфессия</label><input type="text" name="Духовная орг ${n} конфессия"></div>
+        <div class="field"><label>Адрес, расстояние от порта</label><input type="text" name="Духовная орг ${n} адрес"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Контактное лицо и телефон</label><input type="text" name="Духовная орг ${n} контакт"></div>
+        <div class="field"><label>Языки</label><input type="text" name="Духовная орг ${n} языки"></div>
+      </div>
+      <div class="field"><label>Что предлагают <span class="hint">посещение судов, разговор, молитва, практическая помощь</span></label><input type="text" name="Духовная орг ${n} предложение"></div>
+      <div class="field"><label>Часы и дни</label><input type="text" name="Духовная орг ${n} часы"></div>
+    `;
+    spiritualContainer.appendChild(div);
+    const removeBtn = div.querySelector('.remove-block');
+    if (removeBtn) removeBtn.addEventListener('click', () => div.remove());
+  }
+  document.getElementById('addSpiritualBtn').addEventListener('click', addSpiritualBlock);
+  addSpiritualBlock(); // start with one
+
+  // ── Автосохранение черновика (localStorage) ──────────────────────────
+  // Данные хранятся только в этом браузере на этом устройстве. Файлы
+  // (фото/PDF) сохранить и восстановить нельзя — это ограничение браузера,
+  // не наше: input[type=file] нельзя заполнить программно из соображений
+  // безопасности. Всё остальное восстанавливается.
+  const DRAFT_KEY = 'imwirsa_port_draft_v1';
+  const draftBanner = document.getElementById('draftBanner');
+  const draftBannerText = document.getElementById('draftBannerText');
+  const clearDraftBtn = document.getElementById('clearDraftBtn');
+
+  function collectDraft() {
+    const fields = {};
+    form.querySelectorAll('[name]').forEach((el) => {
+      const name = el.name;
+      if (!name || name === '_honey' || name === '_captcha' || name === '_template' || el.type === 'file') return;
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        if (!el.checked) return;
+        if (!fields[name]) fields[name] = [];
+        fields[name].push(el.value);
+      } else {
+        fields[name] = el.value;
+      }
+    });
+    return { savedAt: Date.now(), spiritualCount, fields };
+  }
+
+  let saveTimer = null;
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(collectDraft())); } catch (e) { /* хранилище недоступно — не критично */ }
+    }, 400);
+  }
+  form.addEventListener('input', scheduleSave);
+  form.addEventListener('change', scheduleSave);
+
+  function applyDraft(draft) {
+    while (spiritualCount < (draft.spiritualCount || 1)) addSpiritualBlock();
+    const fields = draft.fields || {};
+    Object.keys(fields).forEach((name) => {
+      const value = fields[name];
+      const safeName = name.replace(/"/g, '\\"');
+      const els = form.querySelectorAll(`[name="${safeName}"]`);
+      if (!els.length) return;
+      if (els[0].type === 'checkbox' || els[0].type === 'radio') {
+        const values = Array.isArray(value) ? value : [value];
+        els.forEach((el) => { el.checked = values.includes(el.value); });
+      } else {
+        els[0].value = value;
+      }
+    });
+    emailSubject.value = portNameInput.value.trim()
+      ? `Анкета по порту — ${portNameInput.value.trim()}`
+      : 'Анкета по порту — MWApp';
+  }
+
+  function tryRestoreDraft() {
+    let raw;
+    try { raw = localStorage.getItem(DRAFT_KEY); } catch (e) { return; }
+    if (!raw) return;
+    let draft;
+    try { draft = JSON.parse(raw); } catch (e) { return; }
+    if (!draft || !draft.fields || !Object.keys(draft.fields).length) return;
+
+    applyDraft(draft);
+
+    const d = new Date(draft.savedAt);
+    const dateStr = d.toLocaleDateString('ru-RU');
+    const timeStr = d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    draftBannerText.innerHTML = `<strong>Восстановлен черновик</strong> от ${dateStr}, ${timeStr}. Фото и файлы нужно прикрепить заново — браузер не может восстановить их автоматически.`;
+    draftBanner.classList.add('show');
+  }
+
+  clearDraftBtn.addEventListener('click', () => {
+    if (!confirm('Очистить черновик и начать анкету заново? Всё введённое в форме будет стёрто.')) return;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    form.reset();
+    while (spiritualContainer.children.length > 1) spiritualContainer.lastElementChild.remove();
+    spiritualCount = 1;
+    draftBanner.classList.remove('show');
+  });
+
+  tryRestoreDraft();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка…';
+    errorMsg.classList.remove('show');
+
+    try {
+      const data = new FormData(form);
+      const res = await fetch('https://formsubmit.co/ajax/info@imwirsa.org', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data,
+      });
+      let payload = null;
+      try { payload = await res.json(); } catch (e) { /* тело не JSON — считаем неуспехом ниже */ }
+      const delivered = res.ok && payload && (payload.success === true || payload.success === 'true');
+      if (!delivered) {
+        const reason = payload && payload.message ? payload.message : 'Request failed';
+        throw new Error(reason);
+      }
+
+      document.querySelectorAll('.instructions, section.entry, .submit-block').forEach((el) => el.style.display = 'none');
+      draftBanner.classList.remove('show');
+      try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+      successMsg.classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error('Ошибка отправки анкеты:', err.message || err);
+      errorMsg.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Отправить анкету в IMWIRSA';
+    }
+  });
+
+  document.getElementById('retryBtn').addEventListener('click', () => errorMsg.classList.remove('show'));
+</script>
+
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="assets/logo-icon.png" alt="IMWIRSA" class="footer-logo-icon">
+        <div class="brand-name">IMWIRSA</div>
+        <div class="brand-sub">International Maritime Welfare Innovation Research and Support Association</div>
+        <p>An independent international initiative dedicated to advancing evidence-based seafarer welfare through research, digital innovation and collaboration.</p>
+        <p style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.4);">📍 Tallinn, Estonia (HQ)</p>
+      </div>
+      <div class="footer-col">
+        <h4>Organisation</h4>
+        <ul>
+          <li><a href="about.html#about-imwirsa">About IMWIRSA</a></li>
+          <li><a href="about.html#our-story">Our Story</a></li>
+          <li><a href="about.html#roadmap">Roadmap 2026–2035</a></li>
+          <li><a href="research.html">Research</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>MWApp</h4>
+        <ul>
+          <li><a href="mwapp.html#overview">Discover MWApp</a></li>
+          <li><a href="mwapp.html#port-cards">Port Cards</a></li>
+          <li><a href="mwapp.html#ai-assistants">AI Assistants</a></li>
+          <li><a href="mwapp.html#pwm-bot">Port Welfare Manager</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="partners.html#become-partner">Join Our Network</a></li>
+          <li><a href="partners.html#toolkit">Partner Toolkit</a></li>
+          <li><a href="projects.html#pilot-network">Pilot Network</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 IMWIRSA. All rights reserved. · <a href="privacy.html">Privacy Policy</a> · <a href="#">Terms</a></p>
+      <div class="footer-langs">
+        <button class="footer-lang">EN</button>
+        <button class="footer-lang">RU</button>
+        <button class="footer-lang">TR</button>
+        <button class="footer-lang">FIL</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body></html>
