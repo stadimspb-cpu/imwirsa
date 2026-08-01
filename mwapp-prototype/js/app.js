@@ -1011,7 +1011,10 @@ function updateAssistantUI() {
 
   document.getElementById("btnAccessStd").classList.toggle("active", state.accessView !== "vip");
   document.getElementById("btnAccessVip").classList.toggle("active", state.accessView === "vip");
-  document.getElementById("btnAccessVip").classList.toggle("vip", state.accessView === "vip");
+  // Gold = "your card is valid this month" — independent of which view the
+  // seafarer is currently browsing. Standard/Premium selection (.active,
+  // above) and card status (.vip, below) are two different questions.
+  document.getElementById("btnAccessVip").classList.toggle("vip", isUnionValid());
 
   const portSel = document.getElementById("settingsPortVal");
   if (portSel) portSel.textContent = `${port.meta.flag} ${port.meta.name} ›`;
