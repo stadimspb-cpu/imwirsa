@@ -486,10 +486,11 @@ const SUBDETAILS = {
   port_discounts: {
     gated: true,
     title: "Port Discounts & Privileges",
+    note: "When paying at any of these partners, show your Premium QR code from the app at checkout to receive the discount included in the partner program.",
     contacts: [
-      { icon: "🛍", title: "Rimi Supermarket", sub: "5% off with union card", action: "🧭" },
-      { icon: "☕", title: "Seafarers' Centre café", sub: "Free coffee, discounted meals", action: "🧭" },
-      { icon: "🚕", title: "Partner taxi service", sub: "Fixed reduced rate to city centre", action: "🧭" },
+      { icon: "🛍", title: "Rimi Supermarket", sub: "Sadama tn 21, Tallinn", action: "🧭" },
+      { icon: "☕", title: "Seafarers' Centre café", sub: "Sadama tn 25, Tallinn", action: "🧭" },
+      { icon: "🚕", title: "Partner taxi service", sub: "Pickup point at the centre — ask staff", action: "🧭" },
     ],
   },
 };
