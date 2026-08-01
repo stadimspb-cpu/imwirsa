@@ -770,13 +770,6 @@ a { color: inherit; text-decoration: none; }
   background: white; border-top: 1px solid var(--border); flex-shrink:0;
   position: sticky; bottom: 0; z-index: 15;
 }
-/* Both .screen-assistant-chat and .screen-volunteer show the bottom-nav
-   overlay (see goToScreen in app.js) — without this, the sticky input row
-   would end up pinned exactly where the translucent nav sits and get
-   partly covered by it. */
-.screen-assistant-chat .chat-input-row, .screen-volunteer .chat-input-row {
-  bottom: calc(var(--navbar-h) + var(--safe-bottom));
-}
 .chat-input {
   flex: 1; border: 1.5px solid var(--border); border-radius: 20px; padding: 11px 16px;
   font-size: 13.5px; font-family: inherit; outline: none; resize: none;
@@ -853,16 +846,14 @@ a { color: inherit; text-decoration: none; }
 .screen-home, .screen-settings, .screen-detail, .screen-subdetail, .screen-ship {
   padding-bottom: calc(var(--navbar-h) + var(--safe-bottom));
 }
-/* The two chat screens use a sticky input row instead (see .chat-input-row
-   below) — but position:sticky can only hold its bottom offset if there's
-   actual scrollable room past its natural position to hold it in. Without
-   this padding, once the conversation fills the screen, the input row (and
-   the last message above it) has nowhere left to "slide up" to and ends up
-   flush against the real bottom of the scroll area — exactly where the
-   overlay sits — only becoming visible again once a further message pushes
-   the scroll range out. This padding gives the sticky offset room to work. */
+/* The two chat screens (assistant chat, volunteer) have their own sticky
+   header/input-row at top:0 / bottom:0 of the screen's own scroll box —
+   simplest correct fix is to make that box itself stop above the overlay,
+   so those sticky elements naturally land in the right place with no
+   extra offsets or padding needed (this matches how it behaved before the
+   nav became an overlay, when app-shell was simply shorter to begin with). */
 .screen-assistant-chat, .screen-volunteer {
-  padding-bottom: calc(var(--navbar-h) + var(--safe-bottom));
+  bottom: calc(var(--navbar-h) + var(--safe-bottom));
 }
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 1px; border-radius: 12px; }
 .nav-item .ni { font-size: 25px; opacity: 0.82; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
