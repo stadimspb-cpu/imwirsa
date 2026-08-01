@@ -441,6 +441,10 @@ a { color: inherit; text-decoration: none; }
 }
 .access-toggle .toggle-btn.active { background: white; color: var(--navy); }
 .access-toggle .toggle-btn.active.vip { background: linear-gradient(135deg, var(--gold), #d4a017); color: white; }
+/* Card valid, but Standard is still the selected/browsed view — a subtle
+   gold tint on the Trade Union button says "your card is active" at a
+   glance without making it look like the currently-selected tab. */
+.access-toggle .toggle-btn.vip:not(.active) { color: var(--gold); background: rgba(184,134,11,0.18); }
 
 .assistant-bubble {
   background: white; border-radius: 18px; padding: 16px 18px;
