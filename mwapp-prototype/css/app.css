@@ -129,7 +129,7 @@ a { color: inherit; text-decoration: none; }
 }
 .lh-emblem {
   position: relative;
-  width: 96px; height: 96px; z-index: 4;
+  width: 192px; height: 192px; z-index: 4;
   opacity: 0; animation: lhFadeIn 1.2s ease 0.7s forwards, emblemGlow 2.6s ease-in-out 1.9s infinite;
 }
 .lh-emblem img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -144,10 +144,10 @@ a { color: inherit; text-decoration: none; }
    overlap with the real beam element (which originates near the tower and
    won't reliably reach this position across different screen sizes). */
 .lh-emblem-flare {
-  position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
-  width: 78%; height: 38px; pointer-events: none;
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  width: 78%; height: 70px; pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(255,246,214,0.9) 0%, rgba(255,220,130,0.4) 45%, transparent 75%);
-  filter: blur(3px);
+  filter: blur(4px);
   mix-blend-mode: screen;
   opacity: 0;
   animation: emblemFlareTouch 4.5s ease-in-out infinite;
