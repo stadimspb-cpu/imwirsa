@@ -117,21 +117,44 @@ a { color: inherit; text-decoration: none; }
   display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
   text-align: left; padding: 0 32px 18px;
 }
+.lh-emblem-wrap {
+  align-self: center; margin-top: auto;
+  display: flex; justify-content: center;
+}
 .lh-sub {
-  align-self: center; text-align: center; margin-top: auto;
+  align-self: center; text-align: center;
   color: rgba(255,255,255,0.85); font-size: 12.5px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
-  margin-bottom: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  margin-top: 10px; margin-bottom: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.6);
   opacity: 0; animation: lhFadeIn 1s ease 0.95s forwards;
 }
 .lh-emblem {
-  position: absolute; top: 54%; left: 50%; transform: translate(-50%, -50%);
-  width: 150px; height: 150px; z-index: 4;
+  position: relative;
+  width: 96px; height: 96px; z-index: 4;
   opacity: 0; animation: lhFadeIn 1.2s ease 0.7s forwards, emblemGlow 2.6s ease-in-out 1.9s infinite;
 }
 .lh-emblem img { width: 100%; height: 100%; object-fit: contain; display: block; }
 @keyframes emblemGlow {
   0%, 100% { filter: drop-shadow(0 0 14px rgba(217,174,71,0.5)); }
   50% { filter: drop-shadow(0 0 34px rgba(255,220,130,0.95)) drop-shadow(0 0 60px rgba(255,200,90,0.5)); }
+}
+/* Decorative "beam touch" flare on the top edge of the emblem, synced to the
+   same 4.5s cycle as .lh-beam-live's sway (see beamLiveSway) so its bright
+   moments line up with the beam's sweep — gives the impression the beam is
+   grazing the logo and lighting it up, without depending on literal pixel
+   overlap with the real beam element (which originates near the tower and
+   won't reliably reach this position across different screen sizes). */
+.lh-emblem-flare {
+  position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+  width: 78%; height: 38px; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(255,246,214,0.9) 0%, rgba(255,220,130,0.4) 45%, transparent 75%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: emblemFlareTouch 4.5s ease-in-out infinite;
+}
+@keyframes emblemFlareTouch {
+  0%, 38%, 62%, 100% { opacity: 0; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 0.95; transform: translateX(-50%) translateY(-5px); }
 }
 .lh-headline {
   font-size: 30px; font-weight: 800; color: white; margin-bottom: 20px; max-width: 260px;
