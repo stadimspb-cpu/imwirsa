@@ -849,10 +849,19 @@ a { color: inherit; text-decoration: none; }
 }
 /* Screens shown behind the nav overlay need bottom padding so their last
    row of content scrolls fully clear of the translucent bar instead of
-   disappearing behind it. The two chat screens (assistant chat, volunteer)
-   are handled separately below — their sticky input row already sits
-   above the overlay, so they don't need this padding too. */
+   disappearing behind it. */
 .screen-home, .screen-settings, .screen-detail, .screen-subdetail, .screen-ship {
+  padding-bottom: calc(var(--navbar-h) + var(--safe-bottom));
+}
+/* The two chat screens use a sticky input row instead (see .chat-input-row
+   below) — but position:sticky can only hold its bottom offset if there's
+   actual scrollable room past its natural position to hold it in. Without
+   this padding, once the conversation fills the screen, the input row (and
+   the last message above it) has nowhere left to "slide up" to and ends up
+   flush against the real bottom of the scroll area — exactly where the
+   overlay sits — only becoming visible again once a further message pushes
+   the scroll range out. This padding gives the sticky offset room to work. */
+.screen-assistant-chat, .screen-volunteer {
   padding-bottom: calc(var(--navbar-h) + var(--safe-bottom));
 }
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 1px; border-radius: 12px; }
