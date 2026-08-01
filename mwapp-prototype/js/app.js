@@ -432,13 +432,17 @@ const SUBDETAILS = {
     title: "Your Premium QR Code",
     note: "Show this code to partner staff for verification — supermarkets, cafés and transport partners near the centre. Demo mode: this is a static illustrative code. Live rotating verification, tied to your real MWA-ID and checked against IMWIRSA's server, will connect once the backend is ready.",
   },
+  // Pattern for future ports: duplicate this object as wellness_zone_{portId}
+  // once a real cabin is confirmed there (e.g. wellness_zone_hamburg). Until
+  // then, that port's "wellness" row in its own Level-2 skeleton stays a
+  // single PENDING row — see e.g. Hamburg below — so nothing here needs to
+  // change per-port; only new real entries get added.
   wellness_zone_tallinn: {
     gated: true,
     title: "Wellness Recovery Zone — Tallinn",
+    note: "A private 2×3m cabin next to the centre — not a consultation, a self-guided reset. A massage chair (neck/shoulder, lower back, full-body, deep tissue, with heat and air compression), VR headset with relaxation scenes, and aromatherapy, used at your own pace for a short session between watches.",
     contacts: [
       { icon: "🧑‍💼", title: "Kadri Saar — Wellness Coordinator", sub: "Book a session via WhatsApp", action: "💬" },
-      { icon: "💆", title: "Massage & physiotherapy", sub: "Partner specialist on-site, by appointment", action: "🧭" },
-      { icon: "🧠", title: "Confidential counselling", sub: "Private booking through MWApp, discreet", action: "🧭" },
     ],
     directions: [
       { icon: "📍", title: "Next to the Seafarers' Centre", sub: "Sadama 25, Tallinn", action: "🧭" },
@@ -467,14 +471,17 @@ const SUBDETAILS = {
       { icon: "🚑", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" },
     ],
   },
+  // No licensed psychologist has actually been confirmed for any port yet —
+  // per Andrey, this requires a real local, licensed specialist (possibly
+  // via union support), unlike the Wellness Cabin above which is
+  // equipment-based and doesn't need one. Left as a real PENDING state
+  // rather than placeholder contact details, so nothing false is ever shown
+  // for something this sensitive. Replace with real contacts port-by-port
+  // once actually secured — do not reuse the old fabricated demo contacts.
   psych_support: {
     gated: true,
     title: "Psychological Support",
-    contacts: [
-      { icon: "🧠", title: "Licensed counsellor", sub: "+372 5555 9911 · English, Russian", action: "📞" },
-      { icon: "💬", title: "Confidential chat", sub: "Available 24/7 via this app", action: "💬" },
-      { icon: "🧘", title: "Quiet room at the centre", sub: "Open now · no booking needed", action: "🧭" },
-    ],
+    note: "A licensed, locally based psychologist — not the Wellness Cabin. We're confirming a qualified specialist for this port; contact details will appear here once verified.",
   },
   port_discounts: {
     gated: true,
@@ -611,10 +618,10 @@ const PORTS = {
         title: "Premium Welfare Services", gated: true,
         rows: [
           { icon: "🔳", title: "Your Premium QR Code", sub: "Show this to partner staff to verify your status", action: "›", sd: "premium_qr" },
-          { icon: "🌊", title: "Wellness Recovery Zone", sub: "Massage, counselling and quiet space near the centre", action: "›", sd: "wellness_zone_tallinn" },
+          { icon: "🌊", title: "Wellness Recovery Zone", sub: "Massage chair, VR & aromatherapy — a private self-guided reset", action: "›", sd: "wellness_zone_tallinn" },
           { icon: "⚖️", title: "Legal Consultation (Paid)", sub: "In-depth consultation with a maritime lawyer, covered by Trade Union membership", action: "›", sd: "legal_help" },
           { icon: "🩺", title: "Medical — Extended Access", sub: "Priority booking, covered consultation fee", action: "›", sd: "medical_extended" },
-          { icon: "🧠", title: "Psychological Support", sub: "Confidential counselling, 24/7 chat", action: "›", sd: "psych_support" },
+          { icon: "🧠", title: "Psychological Support", sub: "Licensed local psychologist — being confirmed for this port", action: "›", sd: "psych_support" },
           { icon: "🏷", title: "Port Discounts & Privileges", sub: "Shops, café, transport near the terminal", action: "›", sd: "port_discounts" },
         ],
       },
