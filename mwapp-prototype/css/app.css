@@ -440,11 +440,10 @@ a { color: inherit; text-decoration: none; }
   color: rgba(255,255,255,0.75); display: flex; align-items: center; justify-content: center; gap: 5px; transition: all .15s;
 }
 .access-toggle .toggle-btn.active { background: white; color: var(--navy); }
-.access-toggle .toggle-btn.active.vip { background: linear-gradient(135deg, var(--gold), #d4a017); color: white; }
-/* Card valid, but Standard is still the selected/browsed view — a subtle
-   gold tint on the Trade Union button says "your card is active" at a
-   glance without making it look like the currently-selected tab. */
-.access-toggle .toggle-btn.vip:not(.active) { color: var(--gold); background: rgba(184,134,11,0.18); }
+/* Card valid → full gold background, white text — same as before, but now
+   shown whenever the card is valid, not only while Trade Union happens to
+   be the selected view. .vip alone (no .active needed) drives this. */
+.access-toggle .toggle-btn.vip { background: linear-gradient(135deg, var(--gold), #d4a017); color: white; }
 
 .assistant-bubble {
   background: white; border-radius: 18px; padding: 16px 18px;
