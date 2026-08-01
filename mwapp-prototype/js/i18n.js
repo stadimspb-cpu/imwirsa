@@ -276,7 +276,7 @@ const I18N = {
       continueBtn: "Продолжить",
     },
     intro: {
-      hello: "Здравствуйте!",
+      hello: "Привет!",
       imText: "Меня зовут",
       role: "ваш ассистент MWA.",
       changeLink: "Сменить ассистента или язык",
