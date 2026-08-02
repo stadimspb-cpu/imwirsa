@@ -898,6 +898,7 @@ const state = {
   chatMessages: [],       // [{ who: "me" | "them", text }]
   chatStarted: false,
   assistantReplyIndex: 0,
+  surveyAnswers: [],      // [{ context, portId, q1, q2, q3, free, at }] — local + best-effort emailed, see submitSurvey()
 };
 
 // Удаляет всё, что приложение хранит на устройстве, и возвращает его
@@ -1280,6 +1281,131 @@ function wrapGate(innerHtml, locked, sd) {
 function openModal(id) { document.getElementById(id).classList.add("open"); }
 function closeModal(id) { document.getElementById(id).classList.remove("open"); }
 
+// ---- SURVEY (Settings "How are things going?" + Ship-return prompt) -----
+// Two contexts share one modal: "settings" (general pulse-check, reachable
+// any time) and "ship" (tied to the port visit just ending). Same UI shell,
+// different questions — see i18n survey.settings / survey.ship.
+//
+// Responses are stored locally like the rest of state (state.surveyAnswers,
+// wiped by "Clear my data" same as everything else) AND, best-effort, sent
+// to IMWIRSA over the same FormSubmit channel already used by the port
+// questionnaire — MWApp v0.1 has no real backend yet, so without this the
+// data would never leave the seafarer's own phone and couldn't feed the
+// Research Observatory / Maritime Welfare Review at all. If the send fails
+// (no connection, etc.) the local copy still exists; nothing blocks on it.
+let surveyContext = "settings"; // "settings" | "ship"
+let surveyAnswers = { q1: null, q2: null, q3: null, free: "" };
+
+function surveyQuestions() {
+  return surveyContext === "ship" ? t("survey.ship") : t("survey.settings");
+}
+
+function renderSurveyScale(containerId, onPick) {
+  const el = document.getElementById(containerId);
+  const options = t("survey.scaleOptions");
+  el.innerHTML = options.map((emoji, i) =>
+    `<button type="button" class="survey-scale-btn" data-val="${i + 1}">${emoji}</button>`
+  ).join("");
+  el.querySelectorAll(".survey-scale-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      el.querySelectorAll(".survey-scale-btn").forEach((b) => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      onPick(Number(btn.dataset.val));
+    });
+  });
+}
+
+function renderSurveyYesNo(containerId, onPick) {
+  const el = document.getElementById(containerId);
+  const options = t("survey.yesNoOptions");
+  el.innerHTML = options.map((label) =>
+    `<button type="button" class="survey-yesno-btn" data-val="${escapeHtml(label)}">${escapeHtml(label)}</button>`
+  ).join("");
+  el.querySelectorAll(".survey-yesno-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      el.querySelectorAll(".survey-yesno-btn").forEach((b) => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      onPick(btn.dataset.val);
+    });
+  });
+}
+
+function openSurvey(context) {
+  surveyContext = context;
+  surveyAnswers = { q1: null, q2: null, q3: null, free: "" };
+  const q = surveyQuestions();
+
+  document.getElementById("surveyFormState").classList.remove("hidden");
+  document.getElementById("surveyThanksState").classList.add("hidden");
+
+  document.getElementById("surveyTitle").textContent = q.title;
+  document.getElementById("surveyIntro").textContent = q.intro;
+  document.getElementById("surveyQ1Label").textContent = q.q1;
+  document.getElementById("surveyQ2Label").textContent = q.q2;
+  document.getElementById("surveySubmitBtn").textContent = t("survey.submitBtn");
+  document.getElementById("surveySkipBtn").textContent = t("survey.skipBtn");
+
+  renderSurveyScale("surveyQ1Scale", (v) => { surveyAnswers.q1 = v; });
+  renderSurveyYesNo("surveyQ2Choices", (v) => { surveyAnswers.q2 = v; });
+
+  const q3Wrap = document.getElementById("surveyQ3Wrap");
+  const freeLabel = document.getElementById("surveyFreeLabel");
+  const freeText = document.getElementById("surveyFreeText");
+  freeText.value = "";
+
+  if (surveyContext === "settings") {
+    q3Wrap.classList.remove("hidden");
+    document.getElementById("surveyQ3Label").textContent = q.q3;
+    renderSurveyYesNo("surveyQ3Choices", (v) => { surveyAnswers.q3 = v; });
+    freeLabel.textContent = q.q4Label;
+    freeText.placeholder = q.q4Placeholder;
+  } else {
+    q3Wrap.classList.add("hidden");
+    freeLabel.textContent = q.q3Label;
+    freeText.placeholder = q.q3Placeholder;
+  }
+
+  openModal("surveyModal");
+}
+
+function submitSurvey() {
+  surveyAnswers.free = document.getElementById("surveyFreeText").value.trim();
+
+  if (!Array.isArray(state.surveyAnswers)) state.surveyAnswers = [];
+  state.surveyAnswers.push({
+    context: surveyContext,
+    portId: state.portId,
+    mwaId: state.mwaId,
+    lang: state.lang,
+    at: new Date().toISOString(),
+    ...surveyAnswers,
+  });
+  saveState();
+
+  // Best-effort delivery — same channel as the port questionnaire. Never
+  // blocks the thank-you screen on network success; this is a pulse-check,
+  // not a form the seafarer is depending on a confirmation for.
+  try {
+    const body = new FormData();
+    body.append("_subject", `MWApp survey (${surveyContext}) — ${state.portId || "unknown port"}`);
+    body.append("context", surveyContext);
+    body.append("port", state.portId || "");
+    body.append("q1_scale", surveyAnswers.q1 ?? "");
+    body.append("q2", surveyAnswers.q2 ?? "");
+    if (surveyContext === "settings") body.append("q3", surveyAnswers.q3 ?? "");
+    body.append("free_text", surveyAnswers.free || "");
+    body.append("mwa_id", state.mwaId || "");
+    body.append("lang", state.lang || "");
+    fetch("https://formsubmit.co/ajax/info@imwirsa.org", { method: "POST", headers: { Accept: "application/json" }, body }).catch(() => {});
+  } catch (e) { /* offline or blocked — local copy above is enough for now */ }
+
+  document.getElementById("surveyFormState").classList.add("hidden");
+  document.getElementById("surveyThanksState").classList.remove("hidden");
+  document.getElementById("surveyThanksTitle").textContent = t("survey.thanksTitle");
+  document.getElementById("surveyThanksText").textContent = t("survey.thanksText");
+  document.getElementById("surveyDoneBtn").textContent = t("survey.doneBtn");
+}
+
 function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str;
@@ -1600,6 +1726,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "shipMarkBtn" || e.target.closest("#shipMarkBtn")) shipMarkLocation();
     if (e.target.id === "shipNavigateBtn" || e.target.closest("#shipNavigateBtn")) shipNavigateBack();
     if (e.target.id === "shipRemarkBtn" || e.target.closest("#shipRemarkBtn")) shipClearPoint();
+    if (e.target.id === "shipSurveyBtn" || e.target.closest("#shipSurveyBtn")) openSurvey("ship");
+    if (e.target.id === "settingsSurveyBtn" || e.target.closest("#settingsSurveyBtn")) openSurvey("settings");
+    if (e.target.id === "surveySubmitBtn") submitSurvey();
+    if (e.target.id === "surveySkipBtn" || e.target.id === "surveyDoneBtn") closeModal("surveyModal");
+    if (e.target === document.getElementById("surveyModal")) closeModal("surveyModal");
 
     const mapEl = e.target.closest("[data-map]");
     if (mapEl) {
