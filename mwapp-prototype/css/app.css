@@ -875,6 +875,31 @@ a { color: inherit; text-decoration: none; }
 .modal-overlay.open .modal-sheet { transform: translateY(0); }
 .modal-title { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 14px; text-align: center; }
 
+/* ── SURVEY MODAL (Settings "How are things going?" + Ship-return prompt) ── */
+.survey-intro { font-size: 12px; color: var(--gray); text-align: center; margin: -8px 0 18px; }
+.survey-q { margin-bottom: 18px; }
+.survey-q-label { font-size: 13.5px; font-weight: 700; color: var(--dark); margin-bottom: 10px; line-height: 1.4; }
+.survey-scale { display: flex; justify-content: space-between; gap: 6px; }
+.survey-scale-btn {
+  flex: 1; font-size: 24px; padding: 10px 0; border-radius: 12px; border: 1.5px solid var(--border);
+  background: var(--slate); cursor: pointer; transition: all .15s;
+}
+.survey-scale-btn.selected { border-color: var(--teal); background: rgba(13,110,138,0.1); transform: scale(1.08); }
+.survey-yesno { display: flex; gap: 8px; }
+.survey-yesno-btn {
+  flex: 1; font-size: 13px; font-weight: 700; padding: 10px 6px; border-radius: 10px; border: 1.5px solid var(--border);
+  background: var(--slate); color: var(--dark); cursor: pointer; transition: all .15s;
+}
+.survey-yesno-btn.selected { border-color: var(--teal); background: var(--teal); color: white; }
+.survey-textarea {
+  width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 12px;
+  font-family: inherit; font-size: 13.5px; resize: none; box-sizing: border-box;
+}
+.survey-secondary-btn {
+  width: 100%; background: transparent; color: var(--gray); font-size: 13.5px; font-weight: 700;
+  padding: 12px; text-align: center; margin-top: 4px;
+}
+
 /* ── UTIL ──────────────────────────────────────────────────────────── */
 .hidden { display: none !important; }
 ::-webkit-scrollbar { width: 0; height: 0; }
