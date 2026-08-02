@@ -1319,9 +1319,30 @@ function sendChatMessage() {
 // ---- ASSISTANT CHAT (demo) --------------------------------------------
 // Prototype-level only: keyword matching stands in for the real AI classification
 // described in the scope of work (section 5).
+//
+// RED-LINE topics (self-harm, suicide, immediate danger) are handled
+// SEPARATELY from ordinary "complex" topics below, and checked first.
+// A genuine safety emergency must never be routed through the same soft
+// "continue chatting or talk to the coordinator?" toggle as a lifestyle
+// question — it needs local emergency services / Emergency Contacts
+// surfaced immediately, not an optional escalation a tired or distressed
+// person might decline. This does not replace real crisis-detection (see
+// isComplexTopic's own prototype caveat) — same limitation applies here,
+// even more so given the stakes.
+const RED_LINE_KEYWORDS = [
+  "suicide", "kill myself", "want to die", "hurt myself", "harm myself", "end my life",
+  "самоубийств", "покончить с собой", "убью себя", "не хочу жить", "причинить себе вред",
+  "intihar", "kendimi öldür", "yaşamak istemiyorum", "kendime zarar",
+  "magpakamatay", "papatayin ko ang sarili ko", "ayoko na mabuhay",
+];
+function isRedLineTopic(text) {
+  const lower = text.toLowerCase();
+  return RED_LINE_KEYWORDS.some((kw) => lower.includes(kw));
+}
+
 const COMPLEX_TOPIC_KEYWORDS = [
   "sad", "lonely", "alone", "can't sleep", "cant sleep", "no one listens", "nobody listens",
-  "depressed", "hopeless", "hurt myself", "suicide", "kill myself", "want to die",
+  "depressed", "hopeless",
   "captain", "master", "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
   "bar", "alcohol", "drink", "girl", "girlfriend", "women", "woman", "dating", "meet someone",
   "bad news from home", "family problem", "divorce",
@@ -1451,7 +1472,20 @@ function sendAssistantChatMessage() {
 
   const a = getAssistant(state.assistant) || getAssistant("alex");
   setTimeout(() => {
-    if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
+    if (isRedLineTopic(text)) {
+      // Safety takes priority over everything else, including whether this
+      // reply was meant to answer "why do you want the coordinator" — a
+      // red-line message is a red-line message regardless of context.
+      const msg = t("redline.message") || t(`escalation.${a.id}`) || t("escalation.alex");
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-detail="emergency">${t("redline.emergencyBtn") || t("settings.talkToCoordinator")}</button>
+          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("redline.talkToPersonBtn") || t("escalationToggle.coordinatorBtn")}</button>
+        </div>`);
+    } else if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
       // Explicitly asked for the coordinator, but the reason reads as idle/
       // lonely small talk rather than a real issue — point to Spiritual
       // Care's "just want to talk" option instead of paging a human.
