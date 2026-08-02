@@ -261,7 +261,7 @@ const I18N = {
       remarkBtn: "Mark a new location",
       errorText: "Couldn't get your location. Please check that location access is allowed for this browser, then try again.",
       privacyNote: "Saved only on this device. Never sent to our servers.",
-      surveyPrompt: "📝 How was this port for you?",
+      surveyPrompt: "How was this port for you?",
     },
     survey: {
       submitBtn: "Send",
@@ -534,7 +534,7 @@ const I18N = {
       remarkBtn: "Отметить новое место",
       errorText: "Не удалось определить местоположение. Проверьте, разрешён ли доступ к геолокации для этого браузера, и попробуйте снова.",
       privacyNote: "Сохраняется только на этом устройстве. Никогда не отправляется на наши серверы.",
-      surveyPrompt: "📝 Как прошло время в этом порту?",
+      surveyPrompt: "Как прошло время в этом порту?",
     },
     survey: {
       submitBtn: "Отправить",
@@ -803,7 +803,7 @@ const I18N = {
       remarkBtn: "Yeni bir konum işaretle",
       errorText: "Konumun alınamadı. Lütfen bu tarayıcı için konum erişimine izin verildiğinden emin ol ve tekrar dene.",
       privacyNote: "Yalnızca bu cihazda saklanır. Sunucularımıza asla gönderilmez.",
-      surveyPrompt: "📝 Bu limanda vaktin nasıl geçti?",
+      surveyPrompt: "Bu limanda vaktin nasıl geçti?",
     },
     survey: {
       submitBtn: "Gönder",
@@ -1072,7 +1072,7 @@ const I18N = {
       remarkBtn: "Markahan ang bagong lokasyon",
       errorText: "Hindi nakuha ang iyong lokasyon. Pakisuri kung pinapayagan ang location access para sa browser na ito, pagkatapos ay subukan ulit.",
       privacyNote: "Naka-save lamang sa device na ito. Hindi ito ipinapadala sa aming mga server.",
-      surveyPrompt: "📝 Kumusta ang oras mo sa daungan na ito?",
+      surveyPrompt: "Kumusta ang oras mo sa daungan na ito?",
     },
     survey: {
       submitBtn: "Ipadala",
