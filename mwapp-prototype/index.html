@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="assets/icons/icon-192b.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=optional" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=22">
+<link rel="stylesheet" href="css/app.css?v=23">
 
 <!-- ============================================================
      УЧЁТ УСТАНОВОК
@@ -279,6 +279,7 @@
           <div class="ship-marked-time" id="shipMarkedTime"></div>
           <button class="btn-primary-full" id="shipNavigateBtn" data-i18n="ship.navigateBtn">🧭 Navigate back to my ship</button>
           <button class="btn-skip" id="shipRemarkBtn" data-i18n="ship.remarkBtn">Mark a new location</button>
+          <button class="btn-skip" id="shipSurveyBtn" data-i18n="ship.surveyPrompt">📝 How was this port for you?</button>
         </div>
 
         <div class="ship-error hidden" id="shipError" data-i18n="ship.errorText">Couldn't get your location. Please check that location access is allowed for this browser, then try again.</div>
@@ -346,6 +347,7 @@
         <button class="settings-row" data-modal="langModal"><div class="si">🌍</div><div class="st" data-i18n="settings.language">Language</div><div class="sv" id="settingsLangVal">›</div></button>
         <button class="settings-row" id="editNameRow"><div class="si">✏️</div><div class="st" data-i18n="settings.myName">My name</div><div class="sv">›</div></button>
         <button class="settings-row" id="settingsTalkToCoordinatorBtn" data-go="__coordinatorViaAssistant"><div class="si">💬</div><div class="st" data-i18n="settings.talkToCoordinator">Talk to IMWIRSA Welfare Coordinator</div><div class="sv">›</div></button>
+        <button class="settings-row" id="settingsSurveyBtn"><div class="si">📝</div><div class="st" data-i18n="survey.settingsRowLabel">How are things going?</div><div class="sv">›</div></button>
         <div class="settings-group-label" data-i18n="settings.membership">Membership</div>
         <button class="settings-row"><div class="si">🆔</div><div class="st" data-i18n="settings.yourMwaId">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button>
         <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st" data-i18n="settings.unionCard">Union / Club Card</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
@@ -482,11 +484,50 @@
       </div>
     </div>
 
+    <div class="modal-overlay" id="surveyModal">
+      <div class="modal-sheet" id="surveyModalSheet">
+        <div id="surveyFormState">
+          <div class="modal-title" id="surveyTitle"></div>
+          <p class="survey-intro" id="surveyIntro"></p>
+
+          <div class="survey-q">
+            <div class="survey-q-label" id="surveyQ1Label"></div>
+            <div class="survey-scale" id="surveyQ1Scale"></div>
+          </div>
+
+          <div class="survey-q">
+            <div class="survey-q-label" id="surveyQ2Label"></div>
+            <div class="survey-yesno" id="surveyQ2Choices"></div>
+          </div>
+
+          <div class="survey-q" id="surveyQ3Wrap">
+            <div class="survey-q-label" id="surveyQ3Label"></div>
+            <div class="survey-yesno" id="surveyQ3Choices"></div>
+          </div>
+
+          <div class="survey-q">
+            <label class="survey-q-label" id="surveyFreeLabel"></label>
+            <textarea class="survey-textarea" id="surveyFreeText" rows="2"></textarea>
+          </div>
+
+          <button class="btn-primary-full" id="surveySubmitBtn"></button>
+          <button class="survey-secondary-btn" id="surveySkipBtn"></button>
+        </div>
+
+        <div id="surveyThanksState" class="hidden" style="text-align:center;">
+          <div style="font-size:40px; margin-bottom:12px;">🙏</div>
+          <div class="modal-title" id="surveyThanksTitle"></div>
+          <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:20px;" id="surveyThanksText"></p>
+          <button class="btn-primary-full" id="surveyDoneBtn"></button>
+        </div>
+      </div>
+    </div>
+
 </div>
 </div>
 
 <script src="js/qr.js?v=1"></script>
-<script src="js/i18n.js?v=9"></script>
-<script src="js/app.js?v=19"></script>
+<script src="js/i18n.js?v=10"></script>
+<script src="js/app.js?v=20"></script>
 </body>
 </html>
