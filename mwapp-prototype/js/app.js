@@ -28,6 +28,28 @@ const TBD = "Details coming soon from the port curator";
 // A subdetail only needs the fields it actually uses; missing blocks are skipped.
 const SUBDETAILS = {
 
+  // ── UNIVERSAL — same content on every port, not port-specific data ──
+  currency_exchange_safety: {
+    title: "Currency Exchange",
+    callout: { tone: "warn", text: "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port." },
+    sections: [
+      { icon: "✅", title: "Where to exchange safely", rows: [
+        { icon: "🏦", title: "A bank or licensed exchange office", sub: "Look under this port's Shops & Food card for ones checked by your coordinator" },
+        { icon: "🏧", title: "An ATM", sub: "Usually the safest option where available — official bank rate, no one to negotiate with" },
+      ]},
+      { icon: "🚩", title: "Red flags — walk away", rows: [
+        { icon: "🗣", title: "A stranger offers you a better rate", sub: "On the street, at the gate, or \"just around the corner\" — always a scam" },
+        { icon: "🚗", title: "Being asked to go somewhere private", sub: "A car, a back room, an alley — a legitimate exchange never needs this" },
+        { icon: "🧾", title: "No receipt offered", sub: "A real exchange always gives you a printed receipt with the rate used" },
+      ]},
+      { icon: "🛡", title: "Before you hand over money", rows: [
+        { icon: "🔢", title: "Know the rough official rate first", sub: "Check on your phone before you go — so you can spot a bad deal immediately" },
+        { icon: "🧮", title: "Count what you receive, before you walk away", sub: "In front of the person who gave it to you, not after" },
+      ]},
+    ],
+    note: "This page is the same in every port — the specific exchange offices your coordinator has checked are listed under this port's own Shops & Food card.",
+  },
+
   // ── TALLINN · SEAFARERS' CENTRE ────────────────────────────────────
   tallinn_centre_about: {
     title: "About the Centre",
@@ -523,6 +545,7 @@ function shopsSkeleton() {
       PENDING("🍽", "Food & Drinks", "Fast food, local restaurants, seafarer-friendly places"),
       PENDING("📱", "Electronics & SIM Cards", "Mobile operators, SIM cards, chargers & adapters"),
       PENDING("💊", "Pharmacies", "Nearest and 24/7 pharmacies, prescription & OTC medicines"),
+      { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this before you do", action: "›", sd: "currency_exchange_safety" },
     ],
   };
 }
@@ -581,6 +604,7 @@ const PORTS = {
           { icon: "🍽", title: "Food & Drinks", sub: "Seafarer-friendly places, fast food, local restaurants", action: "›", sd: "tallinn_shops_food" },
           { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers, ATM", action: "›", sd: "tallinn_shops_sim" },
           { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "tallinn_shops_pharmacies" },
+          { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this before you do", action: "›", sd: "currency_exchange_safety" },
         ],
       },
       citylife: {
