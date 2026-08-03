@@ -869,15 +869,70 @@ function maybeShowLocationBanner() {
   banner.classList.remove("hidden");
 }
 
-// ---- Trade Union card validity (reconfirmed every calendar month) ----
+// ---- Trade Union Premium activation (code-based, 30-day expiry) ----
+// Demo model: the union issues ONE code per month to itself (not a
+// per-seafarer code), sent to approved members by SMS. Entering it activates
+// Premium for exactly 30 days from today; after that it turns off on its
+// own — no reconfirmation step, no separate "deactivate" action needed.
+// This is a deliberate, simpler first version — see project notes on the
+// tradeoff (a shared monthly code can be forwarded to someone the union
+// didn't approve) and the planned upgrade to one-time personal codes once
+// real usage volume justifies the backend work that requires.
 function todayISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
-function monthKeyOf(isoDate) { return isoDate ? isoDate.slice(0, 7) : null; }
+function addDaysISO(isoDate, days) {
+  const d = new Date(isoDate + "T00:00:00");
+  d.setDate(d.getDate() + days);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 function isUnionValid() {
-  if (!state.unionActive || !state.unionLastConfirmed) return false;
-  return monthKeyOf(state.unionLastConfirmed) === monthKeyOf(todayISO());
+  if (!state.unionActive || !state.unionExpiresAt) return false;
+  return todayISO() <= state.unionExpiresAt;
+}
+function formatDateHuman(isoDate) {
+  if (!isoDate) return "";
+  const d = new Date(isoDate + "T00:00:00");
+  return d.toLocaleDateString(state.lang === "ru" ? "ru-RU" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
+}
+
+// Demo union codes — one shared code per union per month, exactly as agreed
+// with the three unions currently piloting this (Estonian Seafarers' Union,
+// RPSM, Serbian Seafarers' Union). Real codes will be generated and rotated
+// by IMWIRSA, not hardcoded like this demo.
+const UNION_CODES = {
+  "ESTUNION-2608": { en: "Estonian Seafarers' Union", ru: "Профсоюз моряков Эстонии" },
+  "RPSM-2608": { en: "RPSM (Russian Union of Seafarers)", ru: "РПСМ" },
+  "SERBIA-2608": { en: "Serbian Seafarers' Union", ru: "Профсоюз моряков Сербии" },
+};
+
+function activateUnionCode() {
+  const input = document.getElementById("unionCodeInput");
+  const errorEl = document.getElementById("unionCodeError");
+  const code = (input.value || "").trim().toUpperCase();
+  const match = UNION_CODES[code];
+
+  if (!match) {
+    errorEl.classList.remove("hidden");
+    input.focus();
+    return;
+  }
+
+  errorEl.classList.add("hidden");
+  const activatedAt = todayISO();
+  state.unionActive = true;
+  state.unionCode = code;
+  state.unionName = match[state.lang === "ru" ? "ru" : "en"];
+  state.unionActivatedAt = activatedAt;
+  state.unionExpiresAt = addDaysISO(activatedAt, 30);
+  saveState();
+
+  input.value = "";
+  closeModal("unionModal");
+  state.accessView = "vip";
+  updateAssistantUI();
+  openDetail("wellness");
 }
 
 const state = {
@@ -886,7 +941,10 @@ const state = {
   name: "",
   mwaId: null,
   unionActive: false,
-  unionLastConfirmed: null,
+  unionCode: null,
+  unionName: null,
+  unionActivatedAt: null,
+  unionExpiresAt: null,
   portId: "tallinn",
   context: "at_port",
   accessView: "std",
@@ -1002,8 +1060,7 @@ function updateAssistantUI() {
 
   const unionVal = document.getElementById("unionStatusVal");
   if (unionVal) {
-    if (isUnionValid()) unionVal.textContent = t("settings.unionActive");
-    else if (state.unionLastConfirmed) unionVal.textContent = t("settings.unionNeedsReconfirm");
+    if (isUnionValid()) unionVal.textContent = `${t("settings.unionActiveUntil")} ${formatDateHuman(state.unionExpiresAt)}`;
     else unionVal.textContent = t("settings.unionNotConfirmed");
   }
 
@@ -1830,22 +1887,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "editNameRow" || e.target.closest("#editNameRow")) goToScreen("name");
     if (e.target.id === "unionRow" || e.target.closest("#unionRow")) openModal("unionModal");
 
-    if (e.target.id === "unionSimActiveBtn") {
-      state.unionActive = true;
-      state.unionLastConfirmed = todayISO();
-      closeModal("unionModal");
-      state.accessView = "vip";
-      updateAssistantUI();
-      openDetail("wellness");
-    }
+    if (e.target.id === "unionActivateBtn") activateUnionCode();
 
-    if (e.target.id === "unionSimInactiveBtn") {
-      state.unionActive = false;
-      state.unionLastConfirmed = todayISO();
+    if (e.target.id === "unionNoCodeBtn") {
       closeModal("unionModal");
-      state.accessView = "std";
-      updateAssistantUI();
-      goToScreen("home");
       openModal("unionDeniedModal");
     }
 
