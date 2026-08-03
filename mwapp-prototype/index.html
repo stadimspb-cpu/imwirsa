@@ -405,15 +405,17 @@
     <div class="modal-overlay" id="unionModal">
       <div class="modal-sheet" style="text-align:center;">
         <div style="font-size:40px; margin-bottom:12px;">🪪</div>
-        <div class="modal-title" data-i18n="modals.union.title">Check your card status</div>
+        <div class="modal-title" data-i18n="modals.union.title">Activate Premium</div>
         <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:6px;" data-i18n="modals.union.text1">
-          This confirms your Trade Union or partner club card is active. Confirmation is required once a month — first on setup, then again on the 1st of every following month.
+          Enter the code your union sent you by SMS. It stays active for 30 days from today, then Premium turns off automatically.
         </p>
-        <p style="font-size:11.5px; color:var(--gray); line-height:1.5; margin-bottom:20px; font-style:italic;" data-i18n="modals.union.text2">
-          Demo mode: real-time verification with your union is coming soon. For now, simulate a result below.
+        <p style="font-size:11.5px; color:var(--gray); line-height:1.5; margin-bottom:18px; font-style:italic;" data-i18n="modals.union.text2">
+          Demo mode — try ESTUNION-2608, RPSM-2608, or SERBIA-2608.
         </p>
-        <button class="btn-primary-full" id="unionSimActiveBtn" data-i18n="modals.union.simActive">Simulate: card is Active</button>
-        <button class="btn-skip" id="unionSimInactiveBtn" style="margin-top:8px;" data-i18n="modals.union.simInactive">Simulate: card is Not active</button>
+        <input type="text" id="unionCodeInput" class="survey-textarea" style="text-align:center; text-transform:uppercase; letter-spacing:1px; font-weight:700;" data-i18n-placeholder="modals.union.codePlaceholder" placeholder="Enter your code">
+        <div id="unionCodeError" class="hidden" style="color:var(--coral); font-size:12px; margin:8px 0 0;" data-i18n="modals.union.invalidCode">That code isn't recognised. Check it and try again.</div>
+        <button class="btn-primary-full" id="unionActivateBtn" style="margin-top:14px;" data-i18n="modals.union.activateBtn">Activate</button>
+        <button class="survey-secondary-btn" id="unionNoCodeBtn" data-i18n="modals.union.noCodeLink">Don't have a code yet?</button>
         <button class="btn-skip" id="unionCloseBtn" data-i18n="modals.union.cancel">Cancel</button>
       </div>
     </div>
@@ -534,7 +536,7 @@
 </div>
 
 <script src="js/qr.js?v=1"></script>
-<script src="js/i18n.js?v=11"></script>
-<script src="js/app.js?v=20"></script>
+<script src="js/i18n.js?v=12"></script>
+<script src="js/app.js?v=21"></script>
 </body>
 </html>
