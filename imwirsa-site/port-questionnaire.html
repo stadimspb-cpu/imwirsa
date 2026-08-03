@@ -428,6 +428,7 @@
             <div class="field"><label><span data-lang-content="en">Approximate fare to the city centre, with currency</span><span data-lang-content="ru" style="display:none">Примерная цена до центра города, с валютой</span></label><input type="text" name="Такси цена"></div>
           </div>
           <div class="field"><label><span data-lang-content="en">Where to catch a taxi</span><span data-lang-content="ru" style="display:none">Где находится место посадки в такси</span></label><input type="text" name="Такси посадка"></div>
+          <div class="field"><label><span data-lang-content="en">How to recognise an illegal private driver at the gate (vs a licensed taxi)</span><span data-lang-content="ru" style="display:none">Как распознать нелегального частника у ворот (в отличие от лицензированного такси)</span> <span class="hint"><span data-lang-content="en">no markings, waits right at the gate rather than a marked stand, no meter, quotes a price before you get in</span><span data-lang-content="ru" style="display:none">без опознавательных знаков, ждёт прямо у ворот, а не на стоянке, нет счётчика, называет цену ещё до посадки</span></span></label><textarea name="Такси нелегальные признаки"></textarea></div>
           <div class="field"><label><span data-lang-content="en">What seafarers should watch out for with taxis here</span><span data-lang-content="ru" style="display:none">На что морякам обратить внимание с такси именно здесь</span></label><textarea name="Такси особенности"></textarea></div>
           <div class="date-field"><label><span data-lang-content="en">Date checked:</span><span data-lang-content="ru" style="display:none">Дата проверки:</span></label><input type="date" name="Дата проверки 4.2"></div>
         </div>
@@ -447,6 +448,17 @@
             <div class="field"><label><span data-lang-content="en">What time the last service runs at night</span><span data-lang-content="ru" style="display:none">Во сколько последний рейс ночью</span></label><input type="text" name="Последний рейс"></div>
           </div>
           <div class="date-field"><label><span data-lang-content="en">Date checked:</span><span data-lang-content="ru" style="display:none">Дата проверки:</span></label><input type="date" name="Дата проверки 4.3"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3><span data-lang-content="en">4.4 Transport inside the port itself</span><span data-lang-content="ru" style="display:none">4.4 Транспорт на территории самого порта</span></h3>
+          <div class="sub-note"><span data-lang-content="en">Large ports often have many berths, spread far apart, with their own internal shuttle from the berth to the gate — separate from any shuttle to the seafarers' centre in Part 3.</span><span data-lang-content="ru" style="display:none">В больших портах часто много причалов, разбросанных далеко друг от друга, со своим внутренним транспортом от причала до ворот — это отдельная вещь от шаттла до центра моряков из Части 3.</span></div>
+          <div class="field"><label><span data-lang-content="en">Is there transport within the port, from the berth to the gate?</span><span data-lang-content="ru" style="display:none">Есть ли транспорт внутри порта, от причала до ворот?</span></label><select name="Внутрипортовый транспорт есть"><option value=""><span data-lang-content="en">— select —</span><span data-lang-content="ru" style="display:none">— выберите —</span></option><option><span data-lang-content="en">Yes</span><span data-lang-content="ru" style="display:none">Да</span></option><option><span data-lang-content="en">No</span><span data-lang-content="ru" style="display:none">Нет</span></option></select></div>
+          <div class="field"><label><span data-lang-content="en">Free or paid?</span><span data-lang-content="ru" style="display:none">Бесплатный или платный?</span></label><input type="text" name="Внутрипортовый транспорт стоимость"></div>
+          <div class="field"><label><span data-lang-content="en">Stops — list them in order</span><span data-lang-content="ru" style="display:none">Остановки — перечислите по порядку</span></label><textarea name="Внутрипортовый транспорт остановки"></textarea></div>
+          <div class="field"><label><span data-lang-content="en">Schedule / how often it runs</span><span data-lang-content="ru" style="display:none">Расписание / как часто ходит</span></label><textarea name="Внутрипортовый транспорт расписание"></textarea></div>
+          <div class="field"><label><span data-lang-content="en">How to recognise it (colour, markings, sign)</span><span data-lang-content="ru" style="display:none">Как его узнать (цвет, надписи, табличка)</span></label><input type="text" name="Внутрипортовый транспорт вид"></div>
+          <div class="date-field"><label><span data-lang-content="en">Date checked:</span><span data-lang-content="ru" style="display:none">Дата проверки:</span></label><input type="date" name="Дата проверки 4.4"></div>
         </div>
       </section>
 
@@ -494,6 +506,45 @@
           </div>
           <div class="field"><label><span data-lang-content="en">Do pharmacists speak English or other languages?</span><span data-lang-content="ru" style="display:none">Говорят ли фармацевты по-английски или на других языках?</span></label><input type="text" name="Аптека языки"></div>
           <div class="date-field"><label><span data-lang-content="en">Date checked:</span><span data-lang-content="ru" style="display:none">Дата проверки:</span></label><input type="date" name="Дата проверки 5.4"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3><span data-lang-content="en">5.5 Shopping malls &amp; supermarkets</span><span data-lang-content="ru" style="display:none">5.5 Торговые центры и супермаркеты</span></h3>
+          <div class="sub-note"><span data-lang-content="en">The biggest ones seafarers ask for, so they can buy everything in one trip. Since ports sit in different parts of the city, the route to each can be completely different.</span><span data-lang-content="ru" style="display:none">Самые крупные, о которых обычно спрашивают моряки, чтобы купить всё за одну поездку. Порты бывают в разных частях города, поэтому дорога к каждому ТЦ может быть совсем разной.</span></div>
+          <div class="row2">
+            <div class="field"><label><span data-lang-content="en">Name</span><span data-lang-content="ru" style="display:none">Название</span></label><input type="text" name="ТЦ 1 название"></div>
+            <div class="field"><label><span data-lang-content="en">Address, distance from the port</span><span data-lang-content="ru" style="display:none">Адрес, расстояние от порта</span></label><input type="text" name="ТЦ 1 адрес"></div>
+          </div>
+          <div class="field"><label><span data-lang-content="en">How to get there from the port</span><span data-lang-content="ru" style="display:none">Как добраться туда из порта</span></label><input type="text" name="ТЦ 1 маршрут"></div>
+          <div class="field"><label><span data-lang-content="en">What's inside (supermarket, food court, currency exchange, etc.)</span><span data-lang-content="ru" style="display:none">Что внутри (супермаркет, фудкорт, обмен валют и т.п.)</span></label><textarea name="ТЦ 1 услуги"></textarea></div>
+          <div class="row2">
+            <div class="field"><label><span data-lang-content="en">Name</span><span data-lang-content="ru" style="display:none">Название</span></label><input type="text" name="ТЦ 2 название"></div>
+            <div class="field"><label><span data-lang-content="en">Address, distance from the port</span><span data-lang-content="ru" style="display:none">Адрес, расстояние от порта</span></label><input type="text" name="ТЦ 2 адрес"></div>
+          </div>
+          <div class="field"><label><span data-lang-content="en">How to get there from the port</span><span data-lang-content="ru" style="display:none">Как добраться туда из порта</span></label><input type="text" name="ТЦ 2 маршрут"></div>
+          <div class="field"><label><span data-lang-content="en">What's inside (supermarket, food court, currency exchange, etc.)</span><span data-lang-content="ru" style="display:none">Что внутри (супермаркет, фудкорт, обмен валют и т.п.)</span></label><textarea name="ТЦ 2 услуги"></textarea></div>
+        </div>
+
+        <div class="sub-block">
+          <h3><span data-lang-content="en">5.6 Currency exchange</span><span data-lang-content="ru" style="display:none">5.6 Обмен валют</span></h3>
+          <div class="sub-note"><span data-lang-content="en">List every trustworthy exchange point you know of. Attach a photo of each entrance at the end of this form, labelled with the name below.</span><span data-lang-content="ru" style="display:none">Перечислите все известные вам надёжные пункты обмена. Фото входа для каждого приложите в конце анкеты, подписав, к какому пункту оно относится.</span></div>
+          <div class="repeat-item"><div class="repeat-item-num">1</div><input type="text" name="Обмен валют 1"></div>
+          <div class="repeat-item"><div class="repeat-item-num">2</div><input type="text" name="Обмен валют 2"></div>
+          <div class="repeat-item"><div class="repeat-item-num">3</div><input type="text" name="Обмен валют 3"></div>
+          <div class="field" style="margin-top:14px;"><label><span data-lang-content="en">How to get to each one from the port</span><span data-lang-content="ru" style="display:none">Как добраться до каждого из них от порта</span></label><textarea name="Обмен валют маршруты"></textarea></div>
+        </div>
+
+        <div class="sub-block">
+          <h3><span data-lang-content="en">5.7 Souvenir shops</span><span data-lang-content="ru" style="display:none">5.7 Сувенирные магазины</span></h3>
+          <div class="sub-note"><span data-lang-content="en">Separate from shopping malls above — small local shops for gifts to bring home.</span><span data-lang-content="ru" style="display:none">Отдельно от торговых центров выше — небольшие местные магазины за подарками домой.</span></div>
+          <div class="repeat-item"><div class="repeat-item-num">1</div><input type="text" name="Сувениры 1"></div>
+          <div class="repeat-item"><div class="repeat-item-num">2</div><input type="text" name="Сувениры 2"></div>
+        </div>
+
+        <div class="sub-block">
+          <h3><span data-lang-content="en">5.8 Seafarer specialty shops</span><span data-lang-content="ru" style="display:none">5.8 Специальные магазины для моряков</span></h3>
+          <div class="sub-note"><span data-lang-content="en">Work uniforms, safety/protective gear, marine cosmetics — shops that specifically cater to crew.</span><span data-lang-content="ru" style="display:none">Спецформа, защитное снаряжение, морская косметика — магазины, ориентированные именно на моряков.</span></div>
+          <div class="field"><label><span data-lang-content="en">Name, address, distance from the port</span><span data-lang-content="ru" style="display:none">Название, адрес, расстояние от порта</span></label><input type="text" name="Спецмагазин моряков"></div>
         </div>
       </section>
 
