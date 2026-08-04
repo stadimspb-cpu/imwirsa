@@ -49,7 +49,7 @@ const I18N = {
     },
     home: {
       tapToChat: "Tap to chat →",
-      heroGreeting: "Welcome to the Port of {port}. Choose a category below for local help, or just ask me.",
+      heroGreeting: "Welcome to {port}. Choose a category below for local help, or just ask me.",
       emergencyContacts: "Emergency contacts",
       categories: {
         centre: "Seafarers'<br>Centre",
@@ -328,7 +328,7 @@ const I18N = {
     },
     home: {
       tapToChat: "Нажмите, чтобы начать чат →",
-      heroGreeting: "Добро пожаловать в порт {port}. Выберите категорию ниже, чтобы получить помощь на месте, или просто спросите меня.",
+      heroGreeting: "Добро пожаловать в {port}. Выберите категорию ниже, чтобы получить помощь на месте, или просто спросите меня.",
       emergencyContacts: "Экстренные контакты",
       categories: {
         centre: "Центр<br>моряков",

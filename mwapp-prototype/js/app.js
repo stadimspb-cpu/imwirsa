@@ -51,7 +51,7 @@ const SUBDETAILS = {
   },
 
   // ── TALLINN · SEAFARERS' CENTRE ────────────────────────────────────
-  tallinn_centre_about: {
+  vanasadam_centre_about: {
     title: "About the Centre",
     hours: [
       ["Monday", "08:00 – 20:00"], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
@@ -66,7 +66,7 @@ const SUBDETAILS = {
     note: "This page holds only the core details. Anything else about the centre — ask your assistant.",
   },
 
-  tallinn_centre_services: {
+  vanasadam_centre_services: {
     title: "Services",
     groups: [
       { label: "Hospitality", icon: "☕", items: ["Coffee & tea", "Snacks", "TV lounge", "Outdoor terrace"] },
@@ -77,7 +77,7 @@ const SUBDETAILS = {
     ],
   },
 
-  tallinn_centre_shuttle: {
+  vanasadam_centre_shuttle: {
     title: "Free Shuttle Bus",
     from: "Departs from Gate D",
     times: ["09:00", "12:00", "14:30", "17:00", "19:00"],
@@ -90,7 +90,7 @@ const SUBDETAILS = {
     note: "Return fare after 20:00 — " + TBD.toLowerCase() + ".",
   },
 
-  tallinn_centre_location: {
+  vanasadam_centre_location: {
     title: "Location & Route",
     contacts: [
       { icon: "📍", title: "Sadama 25, Tallinn 10111", sub: "0.8 km from the passenger terminal", action: "" },
@@ -107,7 +107,7 @@ const SUBDETAILS = {
   // riskiest to state as fact — a wrong gate or document rule can strand a
   // seafarer at the checkpoint. So it carries `updated` (provenance line) and
   // its callout points at the ship's agent as the authority, not the app.
-  tallinn_transport_leaving: {
+  vanasadam_transport_leaving: {
     title: "Leaving the Port",
     callout: { tone: "ok", text: "Yes — shore leave is normally permitted at Old City Harbour. Always confirm with your Master or ship's agent before you go: rules can change per berth and per vessel." },
     sections: [
@@ -129,7 +129,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_transport_taxi: {
+  vanasadam_transport_taxi: {
     title: "Taxi",
     sections: [
       { icon: "📱", title: "Apps", rows: [
@@ -148,7 +148,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_transport_public: {
+  vanasadam_transport_public: {
     title: "Public Transport",
     sections: [
       { icon: "🚏", title: "Nearest stop", rows: [
@@ -168,7 +168,7 @@ const SUBDETAILS = {
   },
 
   // ── TALLINN · SHOPS & FOOD ─────────────────────────────────────────
-  tallinn_shops_supermarkets: {
+  vanasadam_shops_supermarkets: {
     title: "Supermarkets",
     sections: [
       { icon: "🛒", title: "Nearest stores", rows: [
@@ -186,7 +186,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_shops_food: {
+  vanasadam_shops_food: {
     title: "Food & Drinks",
     sections: [
       { icon: "⚓", title: "Seafarer-friendly", rows: [
@@ -204,7 +204,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_shops_sim: {
+  vanasadam_shops_sim: {
     title: "Electronics & SIM Cards",
     sections: [
       { icon: "📡", title: "Mobile operators", rows: [
@@ -226,7 +226,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_shops_pharmacies: {
+  vanasadam_shops_pharmacies: {
     title: "Pharmacies",
     sections: [
       { icon: "💊", title: "Nearest", rows: [
@@ -250,7 +250,7 @@ const SUBDETAILS = {
   // Both were deliberately dropped: a route implies the app has worked out
   // that the seafarer will be back before the ship sails, which we cannot
   // promise, and live events need a backend and someone to keep them fresh.
-  tallinn_city_parks: {
+  vanasadam_city_parks: {
     title: "Parks & Waterfronts",
     sections: [
       { icon: "🌊", title: "Waterfront", rows: [
@@ -269,7 +269,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_city_culture: {
+  vanasadam_city_culture: {
     title: "Culture & Must-See",
     sections: [
       { icon: "⭐", title: "Top 5", rows: [
@@ -284,7 +284,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_city_free: {
+  vanasadam_city_free: {
     title: "Free Time & Relax",
     sections: [
       { icon: "🆓", title: "Free to visit", rows: [
@@ -302,7 +302,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_city_safety: {
+  vanasadam_city_safety: {
     title: "Safety",
     // The one genuine danger of a city card is a seafarer losing track of time.
     // Rather than build timed routes (rejected — the app cannot promise you'll
@@ -336,7 +336,7 @@ const SUBDETAILS = {
   // The neutral "no particular faith" row is kept first on the level-2
   // list, because a seafarer who simply wants a human conversation should
   // not have to pick a denomination before he can ask for one.
-  tallinn_spiritual_stella: {
+  vanasadam_spiritual_stella: {
     title: "Stella Maris",
     sections: [
       { icon: "🤝", title: "What they offer", rows: [
@@ -355,7 +355,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_spiritual_mts: {
+  vanasadam_spiritual_mts: {
     title: "The Mission to Seafarers",
     sections: [
       { icon: "🤝", title: "What they offer", rows: [
@@ -374,7 +374,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_spiritual_muslim: {
+  vanasadam_spiritual_muslim: {
     title: "Muslim Support",
     sections: [
       { icon: "🕌", title: "Where", rows: [
@@ -392,7 +392,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_spiritual_other: {
+  vanasadam_spiritual_other: {
     title: "Other Faith Communities",
     sections: [
       { icon: "☦️", title: "Orthodox", rows: [
@@ -410,7 +410,7 @@ const SUBDETAILS = {
     updated: "24 July 2026",
   },
 
-  tallinn_spiritual_prayer: {
+  vanasadam_spiritual_prayer: {
     title: "Places for Prayer",
     sections: [
       { icon: "🏛", title: "In the port", rows: [
@@ -459,7 +459,7 @@ const SUBDETAILS = {
   // then, that port's "wellness" row in its own Level-2 skeleton stays a
   // single PENDING row — see e.g. Hamburg below — so nothing here needs to
   // change per-port; only new real entries get added.
-  wellness_zone_tallinn: {
+  wellness_zone_vanasadam: {
     gated: true,
     title: "Wellness Recovery Zone — Tallinn",
     note: "A private 2×3m cabin next to the centre — not a consultation, a self-guided reset. A massage chair (neck/shoulder, lower back, full-body, deep tissue, with heat and air compression), VR headset with relaxation scenes, and aromatherapy, used at your own pace for a short session between watches.",
@@ -574,46 +574,64 @@ function spiritualSkeleton() {
 }
 
 // ---- PORTS --------------------------------------------------------------
+// Data unit is the TERMINAL, not the city — a city can have several
+// physically distinct terminals (Tallinn: Vanasadam + Muuga Harbour;
+// Saint Petersburg would be 6+; Hamburg is effectively its own small
+// country). City is kept on every terminal's meta as a mandatory
+// "umbrella" field for recognisability, never as the lookup key itself.
+// Key format: "{city-slug}-{terminal-slug}", stable even for ports that
+// currently have only one known terminal, so a future split never
+// requires renaming an existing key — only adding a new one.
+//
+// "Vanasadam, Tallinn" — the combined terminal+city label the seafarer
+// sees everywhere a location is named. Falls back to just the city once a
+// port has only one terminal and that terminal has no name of its own
+// distinct from the city (nothing to disambiguate yet).
+function portDisplayName(port) {
+  const { terminal, city } = port.meta;
+  return terminal && terminal !== city ? `${terminal}, ${city}` : city;
+}
+
 const PORTS = {
-  tallinn: {
-    meta: { flag: "🇪🇪", name: "Tallinn", sub: "Estonia · Old City Harbour", tz: "UTC+3", lat: 59.4451, lng: 24.7654 },
+  "tallinn-vanasadam": {
+    meta: { flag: "🇪🇪", terminal: "Vanasadam", city: "Tallinn", country: "Estonia", tz: "UTC+3", lat: 59.4451, lng: 24.7654 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
-        statusFrom: "tallinn_centre_about",
+        statusFrom: "vanasadam_centre_about",
         rows: [
-          { icon: "ℹ️", title: "About the Centre", sub: "Opening hours, phone, coordinator, website", action: "›", sd: "tallinn_centre_about" },
-          { icon: "🎱", title: "Services", sub: "Hospitality, recreation, connectivity, welfare", action: "›", sd: "tallinn_centre_services" },
-          { icon: "🚐", title: "Free Shuttle Bus", sub: "Timetable, pickup point, how to recognise it", action: "›", sd: "tallinn_centre_shuttle" },
-          { icon: "📍", title: "Location & Route", sub: "Address, map, how to get there on foot", action: "›", sd: "tallinn_centre_location" },
+          { icon: "ℹ️", title: "About the Centre", sub: "Opening hours, phone, coordinator, website", action: "›", sd: "vanasadam_centre_about" },
+          { icon: "🎱", title: "Services", sub: "Hospitality, recreation, connectivity, welfare", action: "›", sd: "vanasadam_centre_services" },
+          { icon: "🚐", title: "Free Shuttle Bus", sub: "Timetable, pickup point, how to recognise it", action: "›", sd: "vanasadam_centre_shuttle" },
+          { icon: "📍", title: "Location & Route", sub: "Address, map, how to get there on foot", action: "›", sd: "vanasadam_centre_location" },
         ],
       },
       transport: {
         title: "Transport",
         rows: [
-          { icon: "🚪", title: "Leaving the Port", sub: "Exit rules, required documents, gate information", action: "›", sd: "tallinn_transport_leaving" },
-          { icon: "🚐", title: "Port Shuttle", sub: "Timetable, pickup point, how to recognise it", action: "›", sd: "tallinn_centre_shuttle" },
-          { icon: "🚕", title: "Taxi", sub: "Trusted apps, estimated fare, safety tips", action: "›", sd: "tallinn_transport_taxi" },
-          { icon: "🚎", title: "Public Transport", sub: "Nearest stop, routes, tickets, journey to the city", action: "›", sd: "tallinn_transport_public" },
+          { icon: "🚪", title: "Leaving the Port", sub: "Exit rules, required documents, gate information", action: "›", sd: "vanasadam_transport_leaving" },
+          { icon: "🚐", title: "Port Shuttle", sub: "Timetable, pickup point, how to recognise it", action: "›", sd: "vanasadam_centre_shuttle" },
+          { icon: "🚕", title: "Taxi", sub: "Trusted apps, estimated fare, safety tips", action: "›", sd: "vanasadam_transport_taxi" },
+          { icon: "🚎", title: "Public Transport", sub: "Nearest stop, routes, tickets, journey to the city", action: "›", sd: "vanasadam_transport_public" },
         ],
       },
       shops: {
         title: "Shops & Food",
         rows: [
-          { icon: "🛒", title: "Supermarkets", sub: "Nearest stores, shopping centres, 24/7 shops", action: "›", sd: "tallinn_shops_supermarkets" },
-          { icon: "🍽", title: "Food & Drinks", sub: "Seafarer-friendly places, fast food, local restaurants", action: "›", sd: "tallinn_shops_food" },
-          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers, ATM", action: "›", sd: "tallinn_shops_sim" },
-          { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "tallinn_shops_pharmacies" },
+          { icon: "🛒", title: "Supermarkets", sub: "Nearest stores, shopping centres, 24/7 shops", action: "›", sd: "vanasadam_shops_supermarkets" },
+          { icon: "🍽", title: "Food & Drinks", sub: "Seafarer-friendly places, fast food, local restaurants", action: "›", sd: "vanasadam_shops_food" },
+          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers, ATM", action: "›", sd: "vanasadam_shops_sim" },
+          { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "vanasadam_shops_pharmacies" },
           { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this before you do", action: "›", sd: "currency_exchange_safety" },
         ],
       },
       citylife: {
         title: "City Life",
         rows: [
-          { icon: "🌳", title: "Parks & Waterfronts", sub: "Promenade, parks, quiet green space, viewpoints", action: "›", sd: "tallinn_city_parks" },
-          { icon: "🏛", title: "Culture & Must-See", sub: "Top 5 city places, museums, historic centre", action: "›", sd: "tallinn_city_culture" },
-          { icon: "🧘", title: "Free Time & Relax", sub: "Free places, viewpoints, somewhere to sit and call home", action: "›", sd: "tallinn_city_free" },
-          { icon: "🛡", title: "Safety", sub: "What to know before going into the city", action: "›", sd: "tallinn_city_safety" },
+          { icon: "🌳", title: "Parks & Waterfronts", sub: "Promenade, parks, quiet green space, viewpoints", action: "›", sd: "vanasadam_city_parks" },
+          { icon: "🏛", title: "Culture & Must-See", sub: "Top 5 city places, museums, historic centre", action: "›", sd: "vanasadam_city_culture" },
+          { icon: "🧘", title: "Free Time & Relax", sub: "Free places, viewpoints, somewhere to sit and call home", action: "›", sd: "vanasadam_city_free" },
+          { icon: "🛡", title: "Safety", sub: "What to know before going into the city", action: "›", sd: "vanasadam_city_safety" },
         ],
       },
       spiritual: {
@@ -622,11 +640,11 @@ const PORTS = {
           // Neutral option first, deliberately: someone who simply wants to talk
           // should not have to choose a denomination in order to ask.
           { icon: "💬", title: "No particular faith — I'd just like to talk", sub: "Speak with your assistant, who can bring in the IMWIRSA Coordinator", action: "›", go: "assistantchat" },
-          { icon: "⚓", title: "Stella Maris", sub: "Catholic chaplaincy · ship visits, practical help", action: "›", sd: "tallinn_spiritual_stella" },
-          { icon: "✝️", title: "The Mission to Seafarers", sub: "Anglican chaplaincy · open to any faith or none", action: "›", sd: "tallinn_spiritual_mts" },
-          { icon: "🕌", title: "Muslim Support", sub: "Islamic Centre · prayer hall, conversation, halal food", action: "›", sd: "tallinn_spiritual_muslim" },
-          { icon: "⛪", title: "Other Faith Communities", sub: "Orthodox, Lutheran, Catholic parishes in the city", action: "›", sd: "tallinn_spiritual_other" },
-          { icon: "🙏", title: "Places for Prayer", sub: "Prayer room and quiet room at the centre, places in the city", action: "›", sd: "tallinn_spiritual_prayer" },
+          { icon: "⚓", title: "Stella Maris", sub: "Catholic chaplaincy · ship visits, practical help", action: "›", sd: "vanasadam_spiritual_stella" },
+          { icon: "✝️", title: "The Mission to Seafarers", sub: "Anglican chaplaincy · open to any faith or none", action: "›", sd: "vanasadam_spiritual_mts" },
+          { icon: "🕌", title: "Muslim Support", sub: "Islamic Centre · prayer hall, conversation, halal food", action: "›", sd: "vanasadam_spiritual_muslim" },
+          { icon: "⛪", title: "Other Faith Communities", sub: "Orthodox, Lutheran, Catholic parishes in the city", action: "›", sd: "vanasadam_spiritual_other" },
+          { icon: "🙏", title: "Places for Prayer", sub: "Prayer room and quiet room at the centre, places in the city", action: "›", sd: "vanasadam_spiritual_prayer" },
         ],
       },
       emergency: {
@@ -643,7 +661,7 @@ const PORTS = {
         title: "Premium Welfare Services", gated: true,
         rows: [
           { icon: "🔳", title: "Your Premium QR Code", sub: "Show this to partner staff to verify your status", action: "›", sd: "premium_qr" },
-          { icon: "🌊", title: "Wellness Recovery Zone", sub: "Massage chair, VR & aromatherapy — a private self-guided reset", action: "›", sd: "wellness_zone_tallinn" },
+          { icon: "🌊", title: "Wellness Recovery Zone", sub: "Massage chair, VR & aromatherapy — a private self-guided reset", action: "›", sd: "wellness_zone_vanasadam" },
           { icon: "⚖️", title: "Legal Consultation (Paid)", sub: "In-depth consultation with a maritime lawyer, covered by Trade Union membership", action: "›", sd: "legal_help" },
           { icon: "🩺", title: "Medical — Extended Access", sub: "Priority booking, covered consultation fee", action: "›", sd: "medical_extended" },
           { icon: "🧠", title: "Psychological Support", sub: "Licensed local psychologist — being confirmed for this port", action: "›", sd: "psych_support" },
@@ -653,8 +671,41 @@ const PORTS = {
     },
   },
 
-  constanta: {
-    meta: { flag: "🇷🇴", name: "Constanța", sub: "Romania · Port of Constanța", tz: "UTC+2", lat: 44.1730, lng: 28.6520 },
+  // Second Tallinn terminal — cargo/Ro-Ro harbour ~17 km east of Vanasadam,
+  // on the far side of AT_PORT_RADIUS_KM so geolocation correctly tells the
+  // two apart. Content is fully pending: this terminal is not yet visited
+  // by IMWIRSA volunteers (see Vanasadam field-verification note in the
+  // handoff memo) — do not fill in real detail here until that pass happens.
+  // Coordinates: Muuga Harbour, Wikipedia, 59°29′30″N 24°57′30″E.
+  "tallinn-muuga": {
+    meta: { flag: "🇪🇪", terminal: "Muuga Harbour", city: "Tallinn", country: "Estonia", tz: "UTC+3", lat: 59.4917, lng: 24.9583 },
+    categories: {
+      centre: {
+        title: "Seafarers' Centre",
+        rows: [
+          PENDING("ℹ️", "About the Centre", "Opening hours, phone, coordinator, website"),
+          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
+          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
+          PENDING("📍", "Location & Route", "Address, map, how to get there"),
+        ],
+      },
+      transport: transportSkeleton(null),
+      shops: shopsSkeleton(),
+      citylife: citylifeSkeleton(),
+      spiritual: spiritualSkeleton(),
+      emergency: {
+        title: "Emergency Contacts",
+        rows: [
+          { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
+          { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
+        ],
+      },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
+    },
+  },
+
+  "constanta-main": {
+    meta: { flag: "🇷🇴", terminal: "Constanța", city: "Constanța", country: "Romania", tz: "UTC+2", lat: 44.1730, lng: 28.6520 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
@@ -681,8 +732,8 @@ const PORTS = {
     },
   },
 
-  hamburg: {
-    meta: { flag: "🇩🇪", name: "Hamburg", sub: "Germany · Port of Hamburg", tz: "UTC+2", lat: 53.5335, lng: 9.9481 },
+  "hamburg-main": {
+    meta: { flag: "🇩🇪", terminal: "Hamburg", city: "Hamburg", country: "Germany", tz: "UTC+2", lat: 53.5335, lng: 9.9481 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
@@ -710,8 +761,8 @@ const PORTS = {
     },
   },
 
-  istanbul: {
-    meta: { flag: "🇹🇷", name: "Istanbul", sub: "Türkiye · Haydarpaşa Port", tz: "UTC+3", lat: 41.0011, lng: 29.0192 },
+  "istanbul-haydarpasa": {
+    meta: { flag: "🇹🇷", terminal: "Haydarpaşa", city: "Istanbul", country: "Türkiye", tz: "UTC+3", lat: 41.0011, lng: 29.0192 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
@@ -739,7 +790,7 @@ const PORTS = {
   },
 };
 
-function currentPort() { return PORTS[state.portId] || PORTS.tallinn; }
+function currentPort() { return PORTS[state.portId] || PORTS["tallinn-vanasadam"]; }
 function currentCategories() { return currentPort().categories; }
 
 // ---- Opening-hours status ------------------------------------------------
@@ -969,7 +1020,7 @@ const state = {
   unionName: null,
   unionActivatedAt: null,
   unionExpiresAt: null,
-  portId: "tallinn",
+  portId: "tallinn-vanasadam",
   context: "at_port",
   accessView: "std",
   shipPoint: null,
@@ -1004,11 +1055,26 @@ function ensureMwaId() {
 }
 
 function saveState() { try { localStorage.setItem("mwapp_state", JSON.stringify(state)); } catch (e) {} }
+
+// City-only port IDs used before the city→terminal migration (Aug 2026).
+// A seafarer's phone may still have one of these saved from before the
+// update; map it forward once rather than silently dropping them back to
+// the default terminal.
+const LEGACY_PORT_ID_MAP = {
+  tallinn: "tallinn-vanasadam",
+  constanta: "constanta-main",
+  hamburg: "hamburg-main",
+  istanbul: "istanbul-haydarpasa",
+};
+
 function loadState() {
   try {
     const raw = localStorage.getItem("mwapp_state");
     if (raw) Object.assign(state, JSON.parse(raw));
   } catch (e) {}
+  if (state.portId && LEGACY_PORT_ID_MAP[state.portId]) {
+    state.portId = LEGACY_PORT_ID_MAP[state.portId];
+  }
 }
 
 function gradientStyle(grad) { return `background: linear-gradient(135deg, ${grad[0]}, ${grad[1]});`; }
@@ -1069,15 +1135,15 @@ function updateAssistantUI() {
   setDetailHeaderPhoto(a, "shipHeaderPhoto");
 
   const port = currentPort();
-  document.getElementById("homePortName").textContent = `${port.meta.flag} ${port.meta.name}`;
-  document.getElementById("homePortSub").textContent = port.meta.sub;
+  document.getElementById("homePortName").textContent = `${port.meta.flag} ${portDisplayName(port)}`;
+  document.getElementById("homePortSub").textContent = port.meta.country;
   const tzEl = document.getElementById("homeTz");
   if (tzEl) tzEl.textContent = `⏱ ${port.meta.tz}`;
 
   const heroImg = document.getElementById("homeHeroImg");
   if (heroImg) heroImg.src = getAssistantPhoto(a.id, "homeBubble");
   const heroBubble = document.getElementById("homeHeroBubble");
-  if (heroBubble) heroBubble.textContent = t("home.heroGreeting", { port: port.meta.name });
+  if (heroBubble) heroBubble.textContent = t("home.heroGreeting", { port: portDisplayName(port) });
 
   document.getElementById("settingsLangVal").textContent =
     (LANGUAGES.find((l) => l.code === state.lang) || {}).flag || "›";
@@ -1099,7 +1165,7 @@ function updateAssistantUI() {
   document.getElementById("btnAccessVip").classList.toggle("vip", isUnionValid());
 
   const portSel = document.getElementById("settingsPortVal");
-  if (portSel) portSel.textContent = `${port.meta.flag} ${port.meta.name} ›`;
+  if (portSel) portSel.textContent = `${port.meta.flag} ${portDisplayName(port)} ›`;
   const ctxVal = document.getElementById("settingsContextVal");
   if (ctxVal) ctxVal.textContent = state.context === "in_city" ? t("settings.contextInCity") : t("settings.contextAtPort");
 
@@ -1132,7 +1198,7 @@ function goToScreen(name) {
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
   if (name === "volunteer") {
     const ctxEl = document.getElementById("chatPortContext");
-    if (ctxEl) ctxEl.textContent = currentPort().meta.name;
+    if (ctxEl) ctxEl.textContent = portDisplayName(currentPort());
   }
   if (name === "assistantchat") openAssistantChat();
   if (name === "ship") renderShipScreen();
@@ -1156,7 +1222,7 @@ function openDetail(key) {
   const valid = isUnionValid();
   const locked = !!data.gated && !valid;
 
-  document.getElementById("detailCrumbPort").textContent = port.meta.name;
+  document.getElementById("detailCrumbPort").textContent = port.meta.terminal;
   document.getElementById("detailTitle").textContent = data.title + (locked ? " 🔒" : "");
 
   const a = getAssistant(state.assistant) || getAssistant("alex");
@@ -1237,7 +1303,7 @@ function openSubDetail(sdKey) {
   const port = currentPort();
   const locked = !!sd.gated && !isUnionValid();
 
-  document.getElementById("subdetailCrumbPort").textContent = port.meta.name;
+  document.getElementById("subdetailCrumbPort").textContent = port.meta.terminal;
   document.getElementById("subdetailTitle").textContent = sd.title;
 
   const contactRows = (list) => list.map((c) => `
