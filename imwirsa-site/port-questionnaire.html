@@ -951,6 +951,30 @@
     });
   });
 
+  // Submits to the IMWIRSA form proxy (Cloudflare Worker → Resend) instead
+  // of FormSubmit.co, which was intermittently dropping submissions without
+  // any visible error (Aug 2026). See imwirsa-form-proxy.js for the Worker
+  // itself. If you move the Worker to a different address, update the URL
+  // below to match.
+  const FORM_PROXY_URL = 'https://api.imwirsa.org/submit';
+
+  function collectSubmission() {
+    const fields = {};
+    form.querySelectorAll('[name]').forEach((el) => {
+      const name = el.name;
+      if (!name || name === '_captcha' || name === '_template' || el.type === 'file') return;
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        if (name === '_honey') { fields[name] = el.checked ? el.value : ''; return; }
+        if (!el.checked) return;
+        if (!fields[name]) fields[name] = [];
+        fields[name].push(el.value);
+      } else {
+        fields[name] = el.value;
+      }
+    });
+    return fields;
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     submitBtn.disabled = true;
@@ -958,15 +982,19 @@
     errorMsg.classList.remove('show');
 
     try {
-      const data = new FormData(form);
-      const res = await fetch('https://formsubmit.co/ajax/info@imwirsa.org', {
+      const fields = collectSubmission();
+      const res = await fetch(FORM_PROXY_URL, {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: data,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formName: 'port-questionnaire',
+          subject: emailSubject.value || 'Анкета по порту — MWApp',
+          fields,
+        }),
       });
       let payload = null;
       try { payload = await res.json(); } catch (e) { /* тело не JSON — считаем неуспехом ниже */ }
-      const delivered = res.ok && payload && (payload.success === true || payload.success === 'true');
+      const delivered = res.ok && payload && payload.success === true;
       if (!delivered) {
         const reason = payload && payload.message ? payload.message : 'Request failed';
         throw new Error(reason);
