@@ -105,13 +105,13 @@
           <h4 style="color:var(--navy); font-size:16px; margin-bottom:6px;">✅ Message sent</h4>
           <p style="color:var(--gray); font-size:13.5px; margin:0;">Thanks for reaching out — we'll get back to you within 24 hours.</p>
         </div>
+        <div id="formErrorBanner" style="display:none; background:var(--slate); border:1px solid var(--border); border-left:4px solid #C94028; border-radius:4px 14px 14px 4px; padding:22px 26px; margin-bottom:20px;">
+          <h4 style="color:#C94028; font-size:16px; margin-bottom:6px;">Couldn't send</h4>
+          <p style="color:var(--gray); font-size:13.5px; margin:0;">Please try again in a minute, or email us directly at <a href="mailto:info@imwirsa.org">info@imwirsa.org</a>.</p>
+        </div>
         <h3 class="block-title" id="formTitle" style="margin-top:0;">Send us a message</h3>
-        <form id="contactForm" action="https://formsubmit.co/info@imwirsa.org" method="POST">
-          <input type="hidden" name="_subject" value="New message from imwirsa.org contact form">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_next" value="https://imwirsa.org/contact.html?sent=true">
-          <input type="hidden" name="_captcha" value="true">
-          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <form id="contactForm">
+          <input type="text" id="honeyField" style="display:none" tabindex="-1" autocomplete="off">
           <div class="form-group">
             <label for="name">Full name</label>
             <input id="name" name="name" type="text" placeholder="Your name" required>
@@ -135,7 +135,7 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="5" placeholder="How can we help?" required></textarea>
           </div>
-          <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Send message →</button>
+          <button type="submit" class="btn-primary" id="contactSubmitBtn" style="border:none; cursor:pointer;">Send message →</button>
         </form>
       </div>
       <div class="fade-up">
@@ -166,11 +166,57 @@
 </section>
 
 <script>
-  if (new URLSearchParams(window.location.search).get('sent') === 'true') {
-    document.getElementById('formSentBanner').style.display = 'block';
-    document.getElementById('formTitle').style.display = 'none';
-    document.getElementById('contactForm').style.display = 'none';
-  }
+  // Submits to the IMWIRSA form proxy (Cloudflare Worker → Resend) instead
+  // of FormSubmit.co, which was intermittently dropping messages without
+  // any visible error (Aug 2026). See imwirsa-form-proxy.js for the Worker
+  // itself. If you move the Worker to a different address, update the URL
+  // below to match.
+  const FORM_PROXY_URL = "https://api.imwirsa.org/submit";
+
+  const contactForm = document.getElementById("contactForm");
+  const submitBtn = document.getElementById("contactSubmitBtn");
+  const sentBanner = document.getElementById("formSentBanner");
+  const errorBanner = document.getElementById("formErrorBanner");
+  const formTitle = document.getElementById("formTitle");
+  const honeyField = document.getElementById("honeyField");
+
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending…";
+    errorBanner.style.display = "none";
+
+    const fields = {
+      "Full name": document.getElementById("name").value,
+      "Email address": document.getElementById("email").value,
+      "I am a": document.getElementById("role").value,
+      "Message": document.getElementById("message").value,
+      "_honey": honeyField.value,
+    };
+
+    try {
+      const res = await fetch(FORM_PROXY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formName: "contact-en",
+          subject: `New message from imwirsa.org — ${fields["Full name"] || "no name given"}`,
+          fields,
+        }),
+      });
+      const payload = await res.json().catch(() => null);
+      if (!res.ok || !payload || payload.success !== true) throw new Error("delivery failed");
+
+      formTitle.style.display = "none";
+      contactForm.style.display = "none";
+      sentBanner.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      errorBanner.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send message →";
+    }
+  });
 </script>
 
 <footer>
