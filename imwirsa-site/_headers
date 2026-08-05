@@ -1,0 +1,12 @@
+# Forces browsers and Cloudflare's edge to always re-check for a fresh copy
+# instead of silently serving a stale cached page. Without this, a deployed
+# fix (like the port-questionnaire.html update on 5 Aug 2026) can keep being
+# served in its old form for a while after going live — which is exactly
+# what happened with the Muuga Sadam submission going out through the old
+# FormSubmit path even though the fixed file was already deployed.
+#
+# Same pattern already in use for app.imwirsa.org (MWApp) — this extends it
+# to the main site.
+
+/*
+  Cache-Control: no-cache, must-revalidate
