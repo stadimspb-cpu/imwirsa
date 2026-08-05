@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /port-questionnaire.html
+
+Sitemap: https://imwirsa.org/sitemap.xml
