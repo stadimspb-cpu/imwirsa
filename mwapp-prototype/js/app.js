@@ -54,53 +54,56 @@ const SUBDETAILS = {
   vanasadam_centre_about: {
     title: "About the Centre",
     hours: [
-      ["Monday", "08:00 – 20:00"], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
-      ["Thursday", "08:00 – 20:00"], ["Friday", "08:00 – 20:00"], ["Saturday", "09:00 – 17:00"], ["Sunday", "10:00 – 15:00"],
+      ["Monday", "14:00 – 21:00"], ["Tuesday", "14:00 – 21:00"], ["Wednesday", "14:00 – 21:00"],
+      ["Thursday", "14:00 – 21:00"], ["Friday", "14:00 – 21:00"], ["Saturday", "14:00 – 21:00"], ["Sunday", "Closed — or by request"],
     ],
     contacts: [
-      { icon: "📞", title: "+372 5555 1234", sub: "Main line · English, Russian spoken", action: "📞" },
-      { icon: "🧑‍💼", title: "Marta Kask", sub: "Centre Coordinator", action: "💬" },
-      { icon: "🌐", title: "seafarerscentre.ee", sub: "Centre website", action: "›" },
-      { icon: "✉️", title: "info@seafarerscentre.ee", sub: "Email", action: "✉️" },
+      { icon: "📞", title: "+372 631 8234", sub: "Main line", action: "📞" },
+      { icon: "📞", title: "+372 56 462 825", sub: "Chaplain's direct line · also WhatsApp", action: "📞" },
+      { icon: "🧑‍💼", title: "Revo Jaager — Chaplain", sub: "English, Estonian, Russian, German", action: "💬" },
+      { icon: "🌐", title: "meremeestemisjon.ee", sub: "Centre website", action: "›" },
+      { icon: "✉️", title: "muuga@meremeestemisjon.ee", sub: "Email", action: "✉️" },
     ],
-    note: "This page holds only the core details. Anything else about the centre — ask your assistant.",
+    note: "The physical Seafarers' Centre (Estonian Seamen's Mission) is at Muuga, 17 km from here — too far to walk. But Vanasadam sits right in central Tallinn, so the whole city is about 5 minutes on foot instead. Closed 25 Dec, 1 Jan, and Easter Sunday.",
   },
 
   vanasadam_centre_services: {
     title: "Services",
     groups: [
-      { label: "Hospitality", icon: "☕", items: ["Coffee & tea", "Snacks", "TV lounge", "Outdoor terrace"] },
-      { label: "Recreation", icon: "🎱", items: ["Rest & relaxation area", "Games room", "Billiards", "Table tennis", "Library", "Book exchange"] },
-      { label: "Connectivity", icon: "📶", items: ["Free Wi-Fi", "SIM cards"] },
-      { label: "Welfare services", icon: "🤝", items: ["Welfare shop", "Volunteers", "Events & excursions", "Currency exchange"] },
-      { label: "Spiritual care", icon: "🕊", items: ["Prayer room"] },
+      { label: "Hospitality", icon: "☕", items: ["Coffee & tea", "Snacks"] },
+      { label: "Recreation", icon: "🎱", items: ["TV lounge", "Terrace", "Rest & relaxation area", "Games room", "Billiards", "Table tennis", "Library", "Book exchange", "Sports facilities"] },
+      { label: "Connectivity", icon: "📶", items: ["Free Wi-Fi", "Computers for seafarers", "SIM cards on site"] },
+      { label: "Welfare services", icon: "🤝", items: ["Small shop", "Volunteers who visit ships", "Events & excursions", "Help carrying purchases from the city", "Transfer to shopping centres on request"] },
+      { label: "Spiritual care", icon: "🕊", items: ["Prayer room", "Chapel", "Chaplain"] },
     ],
+    note: "No hot lunch is cooked — snacks and coffee are free or €1–3. This describes the Muuga centre itself; from Vanasadam it's the city on foot, not this centre.",
   },
 
   vanasadam_centre_shuttle: {
     title: "Free Shuttle Bus",
-    from: "Departs from Gate D",
-    times: ["09:00", "12:00", "14:30", "17:00", "19:00"],
-    nextIndex: 2,
+    from: "Straight from your gangway, or from the Terminal A / Terminal D checkpoint",
     directions: [
-      { icon: "📍", title: "Pickup point", sub: "Gate D, next to the checkpoint barrier", action: "🧭" },
-      { icon: "🚐", title: "How to recognise it", sub: "White minibus, blue IMWIRSA anchor decal on both doors", action: "" },
-      { icon: "🔄", title: "Return schedule", sub: "Leaves the centre 20 minutes after each arrival", action: "" },
+      { icon: "📞", title: "Book 2–3 hours ahead", sub: "WhatsApp or call the chaplain: +372 56 462 825", action: "📞" },
+      { icon: "🚐", title: "How to recognise it", sub: "White minibus (VW Transporter / Mercedes Vito), Estonian Seamen's Mission logo or a \"Seamen's Club\" sign on the windscreen", action: "" },
+      { icon: "📅", title: "No fixed timetable from Vanasadam", sub: "Runs on call · return time agreed with the driver on the spot", action: "" },
+      { icon: "🗓", title: "Weekends", sub: "By prior arrangement", action: "" },
     ],
-    note: "Return fare after 20:00 — " + TBD.toLowerCase() + ".",
+    note: "For cargo or repair vessels berthed at Vanasadam specifically — this isn't a scheduled run like some ports, so book ahead rather than just waiting at a stop.",
   },
 
   vanasadam_centre_location: {
     title: "Location & Route",
     contacts: [
-      { icon: "📍", title: "Sadama 25, Tallinn 10111", sub: "0.8 km from the passenger terminal", action: "" },
+      { icon: "📍", title: "Altmetsa tee 1, Muuga, 74115 Harju maakond", sub: "The Seamen's Mission building — 17 km away, not walkable from here", action: "" },
     ],
-    maps: { lat: 59.4468, lng: 24.7621, label: "Tallinn Seafarers' Centre" },
+    maps: { lat: 59.4912, lng: 24.9398, label: "Estonian Seamen's Mission (Muuga)" },
     directions: [
-      { icon: "🚐", title: "Shuttle from Gate D", sub: "Every 2 hours · free", action: "›" },
-      { icon: "🚶", title: "On foot: 12 minutes", sub: "Sadama tn → turn at the lighthouse", action: "🧭" },
+      { icon: "🚐", title: "Book the shuttle ahead", sub: "See Free Shuttle Bus above — the only realistic way to reach the centre building from Vanasadam", action: "›" },
+      { icon: "🚶", title: "Into the city instead: 5 minutes", sub: "From Terminal A or D, follow the lit pavement along Sadama or Kai street towards Nautica mall / the Old Town — fully paved and safe", action: "🧭" },
     ],
+    note: "At night, avoid unlit construction areas around the port and unmarked vehicle exits from the ferry lanes.",
   },
+
 
   // ── TALLINN · TRANSPORT ────────────────────────────────────────────
   // "Leaving the Port" is the single most-asked question ashore and also the
@@ -109,141 +112,141 @@ const SUBDETAILS = {
   // its callout points at the ship's agent as the authority, not the app.
   vanasadam_transport_leaving: {
     title: "Leaving the Port",
-    callout: { tone: "ok", text: "Yes — shore leave is normally permitted at Old City Harbour. Always confirm with your Master or ship's agent before you go: rules can change per berth and per vessel." },
+    callout: { tone: "ok", text: "Yes — shore leave is normally permitted at Vanasadam. Always confirm with your Master or ship's agent before you go: rules can change per berth and per vessel." },
     sections: [
       { icon: "🚪", title: "Exit gate", rows: [
-        { icon: "1️⃣", title: "Gate 1 — main checkpoint", sub: "Pedestrian exit, open 24/7" },
-        { icon: "🅳", title: "Gate D — shuttle pickup", sub: "Vehicles only · no pedestrian exit" },
+        { icon: "🅰️", title: "Terminal A — foot passenger exit", sub: "Pedestrian" },
+        { icon: "🅳", title: "Terminal D — foot passenger exit", sub: "Pedestrian" },
+        { icon: "🚛", title: "Cargo Gate 1 (Uus-Sadama st.) / Gate 2 (Logi st.)", sub: "Vehicles only" },
       ]},
       { icon: "🪪", title: "Take with you", rows: [
-        { icon: "📘", title: "Seafarer's Identity Document", sub: "Or passport with a valid visa where required" },
-        { icon: "🎫", title: "Port pass", sub: "Issued on board · show at the Gate 1 checkpoint" },
-        { icon: "📄", title: "Shore pass / crew list copy", sub: "Ask your agent whether your vessel requires one" },
+        { icon: "📘", title: "Seaman's Book", sub: "Or equivalent seafarer's identity document" },
+        { icon: "📄", title: "Crew List", sub: "Signed by the Master" },
+      ]},
+      { icon: "🛃", title: "If you're not from the EU / Schengen area", rows: [
+        { icon: "🛂", title: "Border check applies at the checkpoint", sub: "No Schengen visa? You'll need a Shore Leave Pass, arranged by your ship's agent in advance" },
       ]},
       { icon: "🚶", title: "On foot", rows: [
-        { icon: "⚠️", title: "Stay on marked walkways", sub: "Do not cross terminal or container areas on foot" },
-        { icon: "🦺", title: "High-visibility vest", sub: "Required inside the operational port area" },
+        { icon: "✅", title: "No special gear needed inside Terminals A / D", sub: "The passenger terminal areas are fine on foot as you are" },
+        { icon: "🦺", title: "Hi-vis vest + safety shoes required in cargo/ISPS zones", sub: "If you're moving through the working cargo or repair berths" },
+        { icon: "⚠️", title: "Stay on marked walkways", sub: "Loading/unloading berths, ferry marshalling areas and technical roads are off-limits — follow the green/yellow marked paths only" },
       ]},
     ],
-    note: "If the checkpoint turns you back, call the Seafarers' Centre — they deal with the port authority daily and can usually sort it out faster than anyone on board.",
-    updated: "24 July 2026",
+    note: "If the checkpoint turns you back, call your ship's agent, or the Seamen's Mission chaplain on duty: +372 56 462 825 (especially if a shuttle was already booked). Pedestrian zones normally run about 06:00–22:30/23:00; overnight, access goes through the security duty checkpoint.",
+    updated: "5 August 2026",
   },
 
   vanasadam_transport_taxi: {
     title: "Taxi",
     sections: [
       { icon: "📱", title: "Apps", rows: [
-        { icon: "🟢", title: "Bolt", sub: "Estonian app · card payment in-app · most common here", action: "›" },
-        { icon: "⚫", title: "Uber", sub: "Available in Tallinn · similar pricing", action: "›" },
+        { icon: "🟢", title: "Bolt", sub: "Most common here · card payment in-app", action: "›" },
+        { icon: "⚫", title: "Uber", sub: "Also available in Tallinn", action: "›" },
+        { icon: "🔵", title: "Forus", sub: "Local Estonian app", action: "›" },
       ]},
-      { icon: "🚕", title: "Street taxi", rows: [
-        { icon: "🏷", title: "Price list must be on the rear window", sub: "By Estonian law · if there is none, take a different car" },
-        { icon: "🧾", title: "Always ask for a receipt", sub: "Required if you later dispute the fare" },
+      { icon: "☎️", title: "By phone", rows: [
+        { icon: "📞", title: "Forus Taxi", sub: "+372 612 0000", action: "📞" },
+        { icon: "📞", title: "Tallink Takso", sub: "+372 640 8900", action: "📞" },
       ]},
       { icon: "📍", title: "Pickup point", rows: [
-        { icon: "🚖", title: "Terminal D forecourt", sub: "Right of the main entrance", action: "🧭" },
+        { icon: "🚖", title: "Official taxi ranks", sub: "Right at the Terminal A and Terminal D exits", action: "🧭" },
       ]},
     ],
-    note: "Typical fare to the city centre is around €5–8 by app. If a driver at the terminal offers a fixed price well above that without a meter, walk away — it's the most common way seafarers get overcharged here.",
-    updated: "24 July 2026",
+    note: "Typical fare into town is €5–8 through an app. Unofficial drivers sometimes wait right at the pedestrian exit offering \"fast taxi\" at inflated prices — a genuine taxi always has a roof sign, a price list on the right rear window and a running meter. Without those, walk on: at the terminal \"first line\" without an app, fares of €20–30 for a 2 km ride are not unheard of. Order through Bolt.",
+    updated: "5 August 2026",
   },
 
   vanasadam_transport_public: {
     title: "Public Transport",
     sections: [
       { icon: "🚏", title: "Nearest stop", rows: [
-        { icon: "🚶", title: "Linnahall stop — 300 m from Gate 1", sub: "About a 4-minute walk" },
+        { icon: "🅰️", title: "Reisisadam A", sub: "50 m from the Terminal A exit" },
+        { icon: "🅳", title: "Reisisadam D", sub: "70 m from the Terminal D exit" },
       ]},
       { icon: "🚎", title: "Routes", rows: [
-        { icon: "2️⃣", title: "Bus 2", sub: "Port → Viru keskus (city centre) · every 10–15 min" },
-        { icon: "🚋", title: "Tram 1 / 2", sub: "From Linnahall towards the Old Town" },
+        { icon: "2️⃣", title: "Bus 2", sub: "From Terminals A / D to the centre / Viru Keskus" },
+        { icon: "🚋", title: "Trams 2 & 5", sub: "From the Linnahall or Kanuti stop, 5–7 min walk from Terminal A" },
       ]},
       { icon: "🎫", title: "Tickets", rows: [
-        { icon: "💳", title: "Contactless bank card", sub: "Tap on the validator when boarding · simplest option" },
-        { icon: "🏪", title: "Paper ticket from R-Kiosk", sub: "Buy before boarding · cheaper than from the driver" },
+        { icon: "💳", title: "Contactless bank card", sub: "Tap the validator when boarding — simplest option" },
+        { icon: "🚌", title: "From the driver", sub: "Card only, no cash" },
       ]},
     ],
-    note: "Journey to the city centre is about 10 minutes. Last buses run until roughly 23:00 — after that, use an app taxi.",
-    updated: "24 July 2026",
+    note: "About 5–8 minutes to the city centre, €2.00 for an hourly ticket. Last services run roughly 23:30–00:00 — after that, use an app taxi. No shuttle exists inside the port itself: the passenger terminals are compact enough to walk, and for the more distant repair-vessel berths, your agent or the Seamen's Mission shuttle arranges the transfer.",
+    updated: "5 August 2026",
   },
+
 
   // ── TALLINN · SHOPS & FOOD ─────────────────────────────────────────
   vanasadam_shops_supermarkets: {
     title: "Supermarkets",
     sections: [
       { icon: "🛒", title: "Nearest stores", rows: [
-        { icon: "🛍", title: "Rimi", sub: "600 m from the gate · 08:00–22:00 daily · free Wi-Fi", action: "🧭" },
-        { icon: "🛍", title: "Selver", sub: "Inside Viru keskus · 09:00–21:00 · larger selection", action: "🧭" },
+        { icon: "🛍", title: "Rimi Hyper — Nautica mall", sub: "350 m from Terminal D / 750 m from Terminal A · 08:00–22:00", action: "🧭" },
+        { icon: "🛍", title: "Prisma Express — Rotermanni", sub: "~700 m from the gate · 07:00–23:00", action: "🧭" },
+        { icon: "🛍", title: "Grossi Toidukaubad — Ahtri st.", sub: "~600 m from Terminal D · 08:00–21:00 · budget option", action: "🧭" },
       ]},
-      { icon: "🌙", title: "Late & 24/7", rows: [
-        { icon: "🕛", title: "Circle K at the port exit", sub: "Open 24/7 · basics, snacks, coffee, SIM top-ups", action: "🧭" },
-      ]},
-      { icon: "🏬", title: "Shopping centres", rows: [
-        { icon: "🏢", title: "Viru keskus", sub: "2 km · supermarket, clothing, electronics, food court", action: "🧭" },
+      { icon: "🌙", title: "24-hour", rows: [
+        { icon: "🕛", title: "Prisma Sikupilli hypermarket", sub: "Not walkable — about a 7-minute / €5 taxi ride", action: "🧭" },
       ]},
     ],
-    note: "Rimi is the closest and the usual choice for a quick run before sailing. Bring a bag — carrier bags are charged separately in Estonia.",
-    updated: "24 July 2026",
+    note: "Rimi in Nautica is the closest and the usual choice for a quick run before sailing. Bring a bag — carrier bags are charged separately in Estonia.",
+    updated: "5 August 2026",
   },
 
   vanasadam_shops_food: {
     title: "Food & Drinks",
     sections: [
-      { icon: "⚓", title: "Seafarer-friendly", rows: [
-        { icon: "☕", title: "Seafarers' Centre café", sub: "Hot meal about €6 · coffee free · open until 19:00", action: "🧭" },
+      { icon: "🍔", title: "Quick & cheap", rows: [
+        { icon: "🍟", title: "Nautica mall food court", sub: "Hesburger, Subway, Buffet — combo meal €6–9", action: "🧭" },
       ]},
-      { icon: "🍔", title: "Fast food", rows: [
-        { icon: "🍟", title: "Chains at Viru keskus food court", sub: "€6–10 for a meal · open until 21:00", action: "🧭" },
+      { icon: "🍽", title: "Local favourite", rows: [
+        { icon: "🥘", title: "Koch Aidad — Lootsi 10", sub: "400 m from the gate · hearty Estonian/European food in a historic barn building", action: "🧭" },
       ]},
-      { icon: "🍽", title: "Local restaurants", rows: [
-        { icon: "🥘", title: "Old Town, Vene & Viru streets", sub: "Estonian and international · €12–20 main course", action: "🧭" },
-        { icon: "🐟", title: "Balti jaama turg market hall", sub: "Cheap, good, popular with locals · 09:00–19:00", action: "🧭" },
+      { icon: "🌍", title: "Other diets", rows: [
+        { icon: "🍛", title: "Armduu, or Indian/Asian places in Rotermann Quarter", sub: "~600 m from the port", action: "🧭" },
       ]},
     ],
-    note: "Prices in the Old Town rise sharply on the main tourist streets. One street back is usually a third cheaper for the same meal.",
-    updated: "24 July 2026",
+    updated: "5 August 2026",
   },
 
   vanasadam_shops_sim: {
     title: "Electronics & SIM Cards",
     sections: [
       { icon: "📡", title: "Mobile operators", rows: [
-        { icon: "🟦", title: "Tele2 · Elisa · Telia", sub: "Prepaid SIM about €5 for 3 GB · sold at R-Kiosk by the port exit", action: "🧭" },
-        { icon: "🪪", title: "ID may be requested", sub: "Bring your seafarer's document when buying a SIM" },
+        { icon: "🟦", title: "Telia · Elisa · Tele2", sub: "Starter packs: Super, Rasmus, Smart", action: "" },
+        { icon: "🏪", title: "Buy at any R-Kiosk", sub: "Inside Terminals A and D, also on the street in front of Nautica mall", action: "🧭" },
+        { icon: "💶", title: "€3–5", sub: "Includes 5–10 GB, valid 7–30 days", action: "" },
+        { icon: "🪪", title: "No passport needed", sub: "Prepaid starter packs are sold without ID" },
       ]},
       { icon: "📶", title: "Free Wi-Fi", rows: [
-        { icon: "🏛", title: "Seafarers' Centre", sub: "Free for all visiting seafarers · no password needed at the desk" },
-        { icon: "⚓", title: "Port Wi-Fi", sub: "Network: TallinnPort · Password: seafarer2026" },
-      ]},
-      { icon: "🔌", title: "Electronics", rows: [
-        { icon: "🔋", title: "Chargers & adapters", sub: "Euronics / Photopoint at Viru keskus · Estonia uses type C/F, 230 V", action: "🧭" },
+        { icon: "⚓", title: "\"Tallinn Airport/Port Free Wi-Fi\" or \"Nautica Free Wi-Fi\"", sub: "No password — one click to connect" },
       ]},
       { icon: "💱", title: "Money", rows: [
-        { icon: "🏧", title: "SEB Bank ATM", sub: "400 m from the gate · EUR · card withdrawal", action: "🧭" },
+        { icon: "🏧", title: "Swedbank / SEB ATMs", sub: "In Nautica mall and inside the Terminal D building", action: "🧭" },
       ]},
     ],
-    note: "An Estonian prepaid SIM works across the whole EU at no extra cost, so it is worth buying here even if your next port is elsewhere in Europe.",
-    updated: "24 July 2026",
+    note: "An Estonian prepaid SIM works across the whole EU at no extra cost, so it's worth buying here even if your next port is elsewhere in Europe.",
+    updated: "5 August 2026",
   },
 
   vanasadam_shops_pharmacies: {
     title: "Pharmacies",
     sections: [
       { icon: "💊", title: "Nearest", rows: [
-        { icon: "🏥", title: "Apotheka — Sadama 15", sub: "500 m · Mon–Fri 09:00–20:00 · closed at weekends", action: "🧭" },
-        { icon: "🏥", title: "Benu — Viru keskus", sub: "2 km · daily 09:00–21:00", action: "🧭" },
+        { icon: "🏥", title: "Apotheka — Nautica mall (Ahtri 9)", sub: "350 m from Terminal D · 09:00–20:00", action: "🧭" },
       ]},
-      { icon: "🌙", title: "24/7", rows: [
-        { icon: "🕛", title: "Tõnismäe Apotheka", sub: "Open 24 hours · about 3 km from the port", action: "🧭" },
+      { icon: "🌙", title: "24-hour", rows: [
+        { icon: "🕛", title: "Tõnismäe Apotheka", sub: "Central Tallinn, a few km away — the nearest confirmed 24h pharmacy", action: "🧭" },
       ]},
       { icon: "📋", title: "Medicines", rows: [
-        { icon: "🧾", title: "Prescription medicines", sub: "An EU prescription is accepted · from outside the EU, a doctor's visit is usually needed first" },
-        { icon: "💊", title: "Over the counter", sub: "Painkillers, cold remedies, seasickness tablets, bandages" },
+        { icon: "🧾", title: "Prescriptions from outside the EU are usually not accepted", sub: "Most basic medicines — painkillers, cold and stomach remedies — are sold over the counter without one" },
       ]},
     ],
-    note: "Pharmacists in Tallinn speak English and Russian and can advise on minor complaints without a doctor. For anything serious, see Emergency Contacts.",
-    updated: "24 July 2026",
+    note: "Pharmacists here speak English and Russian freely and can advise on minor complaints without a doctor. For anything serious, see Emergency Contacts.",
+    updated: "5 August 2026",
   },
+
 
   // ── TALLINN · CITY LIFE ────────────────────────────────────────────
   // Static places only — no timed walking routes and no live event feed.
@@ -254,81 +257,71 @@ const SUBDETAILS = {
     title: "Parks & Waterfronts",
     sections: [
       { icon: "🌊", title: "Waterfront", rows: [
-        { icon: "🚶", title: "Kultuurikilomeeter promenade", sub: "Starts right outside the port · flat seaside walk, benches along the way", action: "🧭" },
-        { icon: "🌅", title: "Patarei seafront", sub: "Open view over the bay · quiet in the evening", action: "🧭" },
+        { icon: "🚶", title: "Reidi tee promenade", sub: "Starts right at the Terminal D exit · 2 km along the sea", action: "🧭" },
       ]},
       { icon: "🌳", title: "Green space", rows: [
-        { icon: "🌲", title: "Kadriorg park", sub: "3 km · large wooded park, ponds, benches · free, always open", action: "🧭" },
-        { icon: "🪑", title: "Tornide väljak", sub: "1.5 km · lawn under the old town wall · popular quiet spot", action: "🧭" },
+        { icon: "🌲", title: "Kadriorg Park", sub: "~1.8 km · a large palace park", action: "🧭" },
       ]},
-      { icon: "👁", title: "Viewpoints", rows: [
-        { icon: "🏰", title: "Kohtuotsa platform, Toompea", sub: "Free · the classic view over the rooftops and the port", action: "🧭" },
+      { icon: "🤫", title: "Quiet corner", rows: [
+        { icon: "🪑", title: "Rotermann Quarter courtyards", sub: "~600 m from the gate", action: "🧭" },
+      ]},
+      { icon: "👁", title: "Viewpoint", rows: [
+        { icon: "🏰", title: "Kohtuotsa viewing platform, Old Town", sub: "1.5 km · a striking view over the whole port and the bay", action: "🧭" },
       ]},
     ],
-    note: "If you only have an hour and want air rather than sightseeing, the promenade outside the port is the simplest choice — you never lose sight of the harbour.",
-    updated: "24 July 2026",
+    note: "If you only have an hour and want air rather than sightseeing, the Reidi tee promenade right at Terminal D is the simplest choice.",
+    updated: "5 August 2026",
   },
 
   vanasadam_city_culture: {
     title: "Culture & Must-See",
     sections: [
       { icon: "⭐", title: "Top 5", rows: [
-        { icon: "1️⃣", title: "Old Town & Town Hall Square", sub: "UNESCO medieval centre · 2 km · free to walk", action: "🧭" },
-        { icon: "2️⃣", title: "Toompea hill & viewing platforms", sub: "Upper town, cathedral, panorama over the port", action: "🧭" },
-        { icon: "3️⃣", title: "Alexander Nevsky Cathedral", sub: "Orthodox cathedral on Toompea · free entry, modest dress", action: "🧭" },
-        { icon: "4️⃣", title: "Seaplane Harbour (Lennusadam)", sub: "Maritime museum in a seaplane hangar · submarine, icebreaker · 1.5 km", action: "🧭" },
-        { icon: "5️⃣", title: "Kadriorg Palace & park", sub: "Baroque palace and art museum · 3 km", action: "🧭" },
+        { icon: "1️⃣", title: "Rotermann Quarter", sub: "600 m / 5 min walk · modern industrial district, cafés, architecture, shops", action: "🧭" },
+        { icon: "2️⃣", title: "Old Town (Vanalinn)", sub: "1 km / 12 min walk to the Viru gates · UNESCO World Heritage", action: "🧭" },
+        { icon: "3️⃣", title: "Reidi tee promenade", sub: "Right at the Terminal D exit · sea view, benches, a place to rest", action: "🧭" },
+        { icon: "4️⃣", title: "Toompea viewing platforms", sub: "1.8 km / 20 min walk", action: "🧭" },
+        { icon: "5️⃣", title: "Lennusadam Seaplane Harbour", sub: "1.8 km west of the port · maritime museum with a real submarine", action: "🧭" },
       ]},
     ],
-    note: "Seaplane Harbour is the one most seafarers come back talking about — it is close to the port, indoors, and makes sense whatever the weather.",
-    updated: "24 July 2026",
+    updated: "5 August 2026",
   },
 
   vanasadam_city_free: {
     title: "Free Time & Relax",
     sections: [
-      { icon: "🆓", title: "Free to visit", rows: [
-        { icon: "🏰", title: "Old Town streets & city wall", sub: "Walking the medieval centre costs nothing" },
-        { icon: "⛪", title: "Churches and the cathedral", sub: "Free entry · donations optional" },
-        { icon: "👁", title: "Kohtuotsa & Patkuli platforms", sub: "Free viewpoints over the city and the harbour", action: "🧭" },
-      ]},
-      { icon: "📞", title: "Somewhere to call home", rows: [
-        { icon: "🏛", title: "Seafarers' Centre lounge", sub: "Free Wi-Fi, power sockets, quiet corner · no obligation to buy anything", action: "🧭" },
-        { icon: "📚", title: "Tallinn Central Library", sub: "Free Wi-Fi, warm, seats, sockets · no purchase needed · 2 km", action: "🧭" },
-        { icon: "🏬", title: "Viru keskus seating areas", sub: "Free Wi-Fi, open until 21:00", action: "🧭" },
+      { icon: "🆓", title: "Somewhere to sit", rows: [
+        { icon: "🏬", title: "Nautica mall, ground floor lounge", sub: "Free Wi-Fi, comfortable seating, benches with USB charging", action: "🧭" },
+        { icon: "🚪", title: "Terminal D / Terminal A waiting halls", sub: "Open lounges with chairs, power sockets, fast Wi-Fi", action: "🧭" },
+        { icon: "🍽", title: "Viru Keskus food court", sub: "Plenty of seating, sockets at the tables, no obligation to buy anything", action: "🧭" },
       ]},
     ],
-    note: "If you just need a warm place with signal to speak to your family, the centre's lounge is the safest bet — nobody there will hurry you along.",
-    updated: "24 July 2026",
+    updated: "5 August 2026",
   },
 
   vanasadam_city_safety: {
     title: "Safety",
-    // The one genuine danger of a city card is a seafarer losing track of time.
-    // Rather than build timed routes (rejected — the app cannot promise you'll
-    // make it back), the callout points at the Ship screen, which already
-    // solves the "which gate was it?" problem.
     callout: { tone: "warn", text: "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen. Finding the right gate again after dark is the single most common problem ashore." },
     sections: [
       { icon: "🟢", title: "General risk", rows: [
-        { icon: "🛡", title: "Low risk — normal precautions", sub: "Tallinn is a safe city · ordinary big-city care is enough" },
+        { icon: "🛡", title: "Very safe, day and night", sub: "Tallinn is one of the safest capitals in the EU" },
       ]},
       { icon: "🌙", title: "At night", rows: [
-        { icon: "🧑‍🤝‍🧑", title: "Go ashore with colleagues", sub: "Safer than walking into town alone, especially late" },
-        { icon: "🚕", title: "Use an app taxi after dark", sub: "Bolt or Uber · avoid unmarked cars offering rides at the terminal" },
-        { icon: "🍺", title: "Alcohol", sub: "Bars close late · drinking in public streets and parks is prohibited" },
+        { icon: "🍺", title: "Basic caution around Suur-Karja", sub: "The Old Town's bar street — nothing dangerous, just the usual nightlife area" },
+        { icon: "🚫", title: "No drinking in the street or in parks", sub: "It's against the law here — bars, restaurants and their terraces are fine" },
+        { icon: "🕙", title: "Shops stop selling alcohol at 22:00", sub: "Resumes at 10:00 · only bars sell alcohol overnight" },
       ]},
       { icon: "⚠️", title: "Watch out for", rows: [
-        { icon: "💸", title: "Fixed-price offers without a meter", sub: "The usual way seafarers get overcharged near the terminal" },
-        { icon: "🎭", title: "People claiming to represent the centre", sub: "Real staff never ask you for money · ignore them, or call the police" },
+        { icon: "💸", title: "Inflated \"street\" taxi fares", sub: "At the terminal exits and around Old Town nightclubs — always use an app instead", action: "" },
       ]},
       { icon: "📞", title: "If something goes wrong", rows: [
-        { icon: "🚨", title: "112", sub: "Police and ambulance · free · 24/7 · English spoken", action: "📞" },
-        { icon: "🏛", title: "Seafarers' Centre", sub: "+372 5555 1234 · they deal with these situations regularly", action: "📞" },
+        { icon: "🚨", title: "112", sub: "Police and ambulance · free · 24/7", action: "📞" },
+        { icon: "🏛", title: "Seamen's Mission chaplain", sub: "+372 56 462 825", action: "📞" },
       ]},
     ],
-    updated: "24 July 2026",
+    updated: "5 August 2026",
   },
+
 
   // ── TALLINN · SPIRITUAL CARE ───────────────────────────────────────
   // Static contacts only. No built-in chat with anyone outside IMWIRSA:
@@ -336,97 +329,441 @@ const SUBDETAILS = {
   // The neutral "no particular faith" row is kept first on the level-2
   // list, because a seafarer who simply wants a human conversation should
   // not have to pick a denomination before he can ask for one.
+  vanasadam_spiritual_mission: {
+    title: "Estonian Seamen's Mission",
+    sections: [
+      { icon: "🤝", title: "What they offer", rows: [
+        { icon: "💬", title: "Ship visits, spiritual and emotional conversation", sub: "Lutheran / ecumenical — open to any Christian denomination, or none" },
+        { icon: "🙏", title: "Prayer, books and literature", sub: "" },
+        { icon: "🚐", title: "Practical help", sub: "Delivering groceries or a SIM card, arranging a transfer" },
+      ]},
+      { icon: "🕐", title: "When", rows: [
+        { icon: "📅", title: "Mon–Sat, 14:00 – 21:00", sub: "Sunday by prior request" },
+      ]},
+    ],
+    contacts: [
+      { icon: "🧑‍💼", title: "Revo Jaager — Chaplain", sub: "English, Estonian, Russian, German", action: "💬" },
+      { icon: "📞", title: "+372 56 462 825", sub: "Also WhatsApp", action: "📞" },
+    ],
+    updated: "5 August 2026",
+  },
+
   vanasadam_spiritual_stella: {
     title: "Stella Maris",
     sections: [
       { icon: "🤝", title: "What they offer", rows: [
-        { icon: "💬", title: "Ship visits and conversation", sub: "Chaplain comes aboard on request · no religious obligation" },
-        { icon: "🙏", title: "Prayer, confession, blessing", sub: "Catholic chaplaincy · other denominations welcome" },
-        { icon: "🚐", title: "Transport and practical help", sub: "Shopping runs, SIM cards, help contacting family" },
+        { icon: "💬", title: "Ship visits on request, Mass and services", sub: "Catholic chaplaincy — including support for Filipino crews" },
+        { icon: "🙏", title: "Spiritual guidance", sub: "" },
       ]},
       { icon: "🕐", title: "When", rows: [
-        { icon: "📅", title: "Mon–Sat, 10:00 – 18:00", sub: "Ship visits by arrangement, including outside these hours" },
+        { icon: "📅", title: "Daily, 08:00 – 19:00", sub: "At Sts Peter and Paul Cathedral, Old Town" },
       ]},
     ],
     contacts: [
-      { icon: "🧑‍💼", title: "Fr. Mihkel Laar — port chaplain", sub: "English, Estonian, Russian", action: "💬" },
-      { icon: "📞", title: "+372 5555 2210", sub: "Also WhatsApp", action: "📞" },
+      { icon: "📞", title: "+372 644 6367", sub: "Stella Maris Estonia chaplaincy / parish line", action: "📞" },
     ],
-    updated: "24 July 2026",
-  },
-
-  vanasadam_spiritual_mts: {
-    title: "The Mission to Seafarers",
-    sections: [
-      { icon: "🤝", title: "What they offer", rows: [
-        { icon: "💬", title: "Ship visits and a listening ear", sub: "Anglican chaplaincy · open to seafarers of any faith or none" },
-        { icon: "📶", title: "Help getting online", sub: "Wi-Fi access and SIM cards for calling home" },
-        { icon: "⚖️", title: "Support in difficulty", sub: "Abandonment, unpaid wages, bereavement · they know who to call" },
-      ]},
-      { icon: "🕐", title: "When", rows: [
-        { icon: "📅", title: "Mon–Fri, 09:00 – 17:00", sub: "Emergency ship visits outside hours by phone" },
-      ]},
-    ],
-    contacts: [
-      { icon: "📞", title: "+372 5555 2244", sub: "English spoken", action: "📞" },
-      { icon: "🌐", title: "missiontoseafarers.org", sub: "Global network · chaplains in most major ports", action: "›" },
-    ],
-    updated: "24 July 2026",
+    updated: "5 August 2026",
   },
 
   vanasadam_spiritual_muslim: {
     title: "Muslim Support",
     sections: [
       { icon: "🕌", title: "Where", rows: [
-        { icon: "📍", title: "Tallinn Islamic Centre", sub: "Keevise 9 · prayer hall, washing facilities · 4 km from the port", action: "🧭" },
-        { icon: "🕐", title: "Open for the five daily prayers", sub: "Friday prayer around midday · arrive a little early" },
+        { icon: "📍", title: "Tallinn Islamic Cultural Centre — Keevise 9", sub: "~4 km from Vanasadam", action: "🧭" },
+        { icon: "🕐", title: "Open for the five daily prayers", sub: "Friday (Jumu'ah) prayer around midday" },
       ]},
       { icon: "🤝", title: "Help available", rows: [
-        { icon: "💬", title: "Conversation in Arabic, Turkish, Russian", sub: "Ask at the centre · volunteers are usually present" },
-        { icon: "🍽", title: "Halal food", sub: "Several shops and cafés in the city · ask the centre for the nearest" },
+        { icon: "💬", title: "Conversation in Arabic, English, Russian, Estonian", sub: "Ask at the centre" },
+        { icon: "🍽", title: "Halal food guidance", sub: "The centre can point you to the nearest options" },
       ]},
     ],
     contacts: [
-      { icon: "📞", title: "+372 5555 2277", sub: "Islamic Centre, general enquiries", action: "📞" },
+      { icon: "📞", title: "+372 614 3086", sub: "Islamic Centre reception", action: "📞" },
     ],
-    updated: "24 July 2026",
+    updated: "5 August 2026",
   },
 
-  vanasadam_spiritual_other: {
-    title: "Other Faith Communities",
+  vanasadam_spiritual_orthodox: {
+    title: "Orthodox",
     sections: [
-      { icon: "☦️", title: "Orthodox", rows: [
-        { icon: "⛪", title: "Alexander Nevsky Cathedral, Toompea", sub: "Daily services · Church Slavonic and Estonian", action: "🧭" },
-        { icon: "⛪", title: "St Nicholas Church, Old Town", sub: "Russian Orthodox parish · 2 km", action: "🧭" },
+      { icon: "⛪", title: "Where", rows: [
+        { icon: "📍", title: "St Nicholas Cathedral — Vene st. 24", sub: "~1.1 km from Vanasadam", action: "🧭" },
       ]},
-      { icon: "✝️", title: "Protestant & Catholic", rows: [
-        { icon: "⛪", title: "St Peter and St Paul, Old Town", sub: "Roman Catholic · Sunday Mass in several languages", action: "🧭" },
-        { icon: "⛪", title: "Charles's Church", sub: "Estonian Evangelical Lutheran · 2.5 km", action: "🧭" },
+      { icon: "🤝", title: "What they offer", rows: [
+        { icon: "🙏", title: "Prayer — St Nicholas is the patron of seafarers", sub: "" },
+        { icon: "⚓", title: "Ship blessing on request", sub: "" },
+        { icon: "💬", title: "Conversation with a priest", sub: "Russian, Estonian" },
       ]},
-      { icon: "🕊", title: "Not listed here?", rows: [
-        { icon: "💬", title: "Ask the Seafarers' Centre", sub: "They keep contacts for communities not shown in the app", action: "📞" },
+      { icon: "🕐", title: "When", rows: [
+        { icon: "📅", title: "Daily, 09:00 – 18:00", sub: "" },
       ]},
     ],
-    updated: "24 July 2026",
+    contacts: [
+      { icon: "📞", title: "+372 644 3484", sub: "Duty priest, Tallinn", action: "📞" },
+    ],
+    updated: "5 August 2026",
   },
 
   vanasadam_spiritual_prayer: {
     title: "Places for Prayer",
     sections: [
-      { icon: "🏛", title: "In the port", rows: [
-        { icon: "🕊", title: "Prayer room, Seafarers' Centre", sub: "Multi-faith · open during centre hours · no booking, no questions asked", action: "🧭" },
-        { icon: "🤫", title: "Quiet room, Seafarers' Centre", sub: "For being alone for a while · not religious in itself", action: "🧭" },
+      { icon: "🕊", title: "Nearest formal prayer room", rows: [
+        { icon: "⚓", title: "Ecumenical chapel, Estonian Seamen's Mission", sub: "At the centre in Muuga, 17 km away — not walkable from here, open to any faith", action: "🧭" },
       ]},
-      { icon: "🏙", title: "In the city", rows: [
-        { icon: "⛪", title: "Old Town churches", sub: "Most open to visitors during the day · sitting quietly is normal", action: "🧭" },
-        { icon: "🕌", title: "Tallinn Islamic Centre", sub: "Prayer hall and washing facilities · Keevise 9", action: "🧭" },
+      { icon: "🏙", title: "Closer, in the city", rows: [
+        { icon: "⛪", title: "Old Town churches", sub: "Mostly open to visitors during the day — sitting quietly is completely normal", action: "🧭" },
+        { icon: "🕌", title: "Tallinn Islamic Cultural Centre", sub: "Keevise 9, ~4 km — prayer hall and washing facilities", action: "🧭" },
       ]},
     ],
-    note: "The prayer room and the quiet room at the centre are the closest options to the ship, and neither requires you to explain yourself to anyone.",
-    updated: "24 July 2026",
+    note: "The formal prayer room is at the centre building in Muuga, not here — but Vanasadam sits right in the Old Town, so a quiet church is a short walk away either way.",
+    updated: "5 August 2026",
   },
 
-  // ── OTHER PORTS — real data we already hold, kept under the new shape ──
+
+  // ── MUUGA HARBOUR · SEAFARERS' CENTRE ──────────────────────────────
+  // Unlike Vanasadam, the real centre building is physically here — this is
+  // "home base" for the Estonian Seamen's Mission, not a distant referral.
+  muuga_centre_about: {
+    title: "About the Centre",
+    hours: [
+      ["Monday", "14:00 – 21:00"], ["Tuesday", "14:00 – 21:00"], ["Wednesday", "14:00 – 21:00"],
+      ["Thursday", "14:00 – 21:00"], ["Friday", "14:00 – 21:00"], ["Saturday", "14:00 – 21:00"], ["Sunday", "Closed — or by prior request"],
+    ],
+    contacts: [
+      { icon: "📞", title: "+372 631 8234", sub: "Main line", action: "📞" },
+      { icon: "📞", title: "+372 56 462 825", sub: "Chaplain's direct line · also WhatsApp", action: "📞" },
+      { icon: "🧑‍💼", title: "Revo Jaager — Chaplain", sub: "English, Russian, Estonian, German", action: "💬" },
+      { icon: "🌐", title: "meremeestemisjon.ee", sub: "Centre website", action: "›" },
+      { icon: "✉️", title: "muuga@meremeestemisjon.ee", sub: "Email", action: "✉️" },
+    ],
+    note: "Closed 25 Dec, 1 Jan, and Easter Sunday.",
+  },
+
+  muuga_centre_services: {
+    title: "Services",
+    groups: [
+      { label: "Spiritual care", icon: "🕊", items: ["Chaplain on site"] },
+      { label: "Welfare services", icon: "🤝", items: ["Free transfer to the shops in Maardu when you visit the centre"] },
+    ],
+    note: "No full meal is cooked — tea and coffee are free, snacks €1–3.",
+  },
+
+  muuga_centre_shuttle: {
+    title: "Free Shuttle Bus",
+    from: "Straight from your ship inside the port, or from Gate 1",
+    directions: [
+      { icon: "🕑", title: "Runs on call, 14:00 – 20:30", sub: "Call or WhatsApp the chaplain: +372 56 462 825", action: "📞" },
+      { icon: "🚐", title: "How to recognise it", sub: "White minibus (VW Transporter / Mercedes Vito), Estonian Seamen's Mission logo", action: "" },
+      { icon: "🔄", title: "Return", sub: "Agreed with the driver on the spot", action: "" },
+      { icon: "🗓", title: "Weekends", sub: "By prior arrangement", action: "" },
+    ],
+    note: "Free — donations welcome, not expected.",
+  },
+
+  muuga_centre_location: {
+    title: "Location & Route",
+    contacts: [
+      { icon: "📍", title: "Altmetsa tee 1, Muuga, 74115 Harju maakond", sub: "~1.8 km from Gate 1", action: "" },
+    ],
+    maps: { lat: 59.4912, lng: 24.9398, label: "Estonian Seamen's Mission (Muuga)" },
+    directions: [
+      { icon: "🚶", title: "On foot: about 20 minutes (1.8 km)", sub: "From Gate 1, follow the pavement along Nuudi tee to the junction with Altmetsa tee, then turn right", action: "🧭" },
+      { icon: "🚐", title: "Or book the shuttle", sub: "See Free Shuttle Bus above", action: "›" },
+    ],
+    note: "At night the road is poorly lit with heavy truck traffic — wear a hi-vis vest and a reflector, and consider the shuttle instead of walking after dark.",
+  },
+
+  // ── MUUGA HARBOUR · TRANSPORT ───────────────────────────────────────
+  muuga_transport_leaving: {
+    title: "Leaving the Port",
+    callout: { tone: "ok", text: "Yes — shore leave is normally permitted at Muuga. Always confirm with your Master or ship's agent before you go: rules can change per berth and per vessel." },
+    sections: [
+      { icon: "🚪", title: "Exit gate", rows: [
+        { icon: "1️⃣", title: "Gate 1 / Peavärav — Nuudi tee", sub: "Pedestrian exit" },
+        { icon: "🚛", title: "East Gate (Idavärav) and terminal-specific checkpoints", sub: "Vehicles / cargo only" },
+      ]},
+      { icon: "🪪", title: "Take with you", rows: [
+        { icon: "📘", title: "Seaman's Book", sub: "Or equivalent seafarer's identity document" },
+        { icon: "📄", title: "Crew List", sub: "Required" },
+        { icon: "🎫", title: "Port Pass", sub: "For visitors — not needed by the seafarer, but your ship's agent may need to arrange one for others", action: "" },
+      ]},
+      { icon: "🛃", title: "If you're not from the EU / Schengen area", rows: [
+        { icon: "🛂", title: "You'll need a Shore Leave Pass", sub: "Arranged by your ship's agent before you head to the checkpoint" },
+      ]},
+      { icon: "🚶", title: "On foot", rows: [
+        { icon: "🦺", title: "Hi-vis vest and safety shoes are compulsory", sub: "Anywhere on foot in the Muuga port area, not just the working berths" },
+        { icon: "⚠️", title: "Container and terminal yards are strictly off-limits on foot", sub: "Getting from your ship to the gate should be by your agent's vehicle or the centre's shuttle" },
+      ]},
+    ],
+    note: "Gate phone: your ship's agent, or the Seamen's Mission on duty at +372 56 462 825.",
+    updated: "5 August 2026",
+  },
+
+  muuga_transport_taxi: {
+    title: "Taxi",
+    sections: [
+      { icon: "📱", title: "Apps", rows: [
+        { icon: "🟢", title: "Bolt", sub: "Set pickup to \"Muuga Sadam Peavärav / Gate 1\"", action: "›" },
+        { icon: "⚫", title: "Uber", sub: "Also available", action: "›" },
+      ]},
+      { icon: "☎️", title: "By phone", rows: [
+        { icon: "📞", title: "Forus Taxi", sub: "+372 612 0000", action: "📞" },
+      ]},
+      { icon: "📍", title: "Pickup point", rows: [
+        { icon: "🚖", title: "The car park in front of Gate 1", sub: "Taxis don't enter the secured zone without a special pass", action: "🧭" },
+      ]},
+    ],
+    note: "€18–25 into central Tallinn; €5–7 to the nearby town of Maardu. Street pickups are rare out here simply because of the distance — always order through an app rather than expecting to flag one down, and never try to call a taxi right to the ship's side, security won't let it through.",
+    updated: "5 August 2026",
+  },
+
+  muuga_transport_public: {
+    title: "Public Transport",
+    sections: [
+      { icon: "🚏", title: "Nearest stop", rows: [
+        { icon: "🚶", title: "Muuga sadam stop", sub: "150 m from Gate 1", action: "🧭" },
+      ]},
+      { icon: "🚎", title: "Routes", rows: [
+        { icon: "3️⃣", title: "Bus 34", sub: "To central Tallinn, Viru Keskus stop" },
+        { icon: "🚌", title: "Suburban bus 103", sub: "" },
+      ]},
+      { icon: "🎫", title: "Tickets", rows: [
+        { icon: "💳", title: "Contactless bank card at the validator, or pay the driver", sub: "€2.00" },
+      ]},
+    ],
+    note: "About 35–45 minutes to central Tallinn. Last bus 34 runs around 23:00. No in-port shuttle for getting from the ship to the gate itself — that's arranged by your agent or the Seamen's Mission, free of charge, by request.",
+    updated: "5 August 2026",
+  },
+
+  // ── MUUGA HARBOUR · SHOPS & FOOD ────────────────────────────────────
+  muuga_shops_supermarkets: {
+    title: "Supermarkets",
+    sections: [
+      { icon: "🛒", title: "Nearest stores", rows: [
+        { icon: "🛍", title: "Maxima X — Altmetsa tee 35", sub: "~3.2 km from Gate 1 · 08:00–22:00", action: "🧭" },
+        { icon: "🛍", title: "Grossi Toidukaubad — Maardu", sub: "~5 km · 08:00–21:00 · budget option", action: "🧭" },
+        { icon: "🛍", title: "Prisma / Selver — Maardu", sub: "~5.5 km · 08:00–22:00", action: "🧭" },
+      ]},
+      { icon: "🌙", title: "24-hour", rows: [
+        { icon: "⛽", title: "Circle K petrol station, Maardu tee", sub: "24/7 · hot dogs, coffee, basics — no full 24h supermarket in the Muuga/Maardu area", action: "🧭" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_shops_food: {
+    title: "Food & Drinks",
+    sections: [
+      { icon: "🍔", title: "Quick & cheap", rows: [
+        { icon: "☕", title: "Seamen's Centre canteen", sub: "Snacks and pastries", action: "" },
+        { icon: "🥘", title: "Bistros in Maardu", sub: "Reached by the mission's shuttle · combo meal €6–8", action: "" },
+      ]},
+      { icon: "🍽", title: "Local favourite", rows: [
+        { icon: "🍴", title: "Cafés and small restaurants in Maardu", sub: "Where the shuttle usually takes seafarers", action: "" },
+      ]},
+      { icon: "🌍", title: "Other diets", rows: [
+        { icon: "🥗", title: "Halal and vegetarian sections at Selver / Prisma, Maardu", sub: "" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_shops_sim: {
+    title: "Electronics & SIM Cards",
+    sections: [
+      { icon: "📡", title: "Mobile operators", rows: [
+        { icon: "🟦", title: "Telia · Elisa · Tele2", sub: "Starter packs: Super, Smart", action: "" },
+        { icon: "⚓", title: "Right at the Seamen's Centre", sub: "Ask the chaplain — or buy at Maxima X / R-Kiosk in Maardu", action: "" },
+        { icon: "💶", title: "€3–5", sub: "5–10 GB included", action: "" },
+        { icon: "🪪", title: "No document needed", sub: "" },
+      ]},
+      { icon: "📶", title: "Free Wi-Fi", rows: [
+        { icon: "🏛", title: "Seamen's Centre building and terminal office buildings", sub: "" },
+      ]},
+      { icon: "💱", title: "Money", rows: [
+        { icon: "🏧", title: "SEB / Swedbank ATMs, Maardu Keskus", sub: "~5 km · or at the Circle K petrol station", action: "🧭" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_shops_pharmacies: {
+    title: "Pharmacies",
+    sections: [
+      { icon: "💊", title: "Nearest", rows: [
+        { icon: "🏥", title: "Südameapteek — Maardu Keskus", sub: "~5 km from Gate 1 · 09:00–20:00", action: "🧭" },
+      ]},
+      { icon: "🌙", title: "24-hour", rows: [
+        { icon: "🕛", title: "None nearby", sub: "The nearest confirmed 24h pharmacy is Tõnismäe Südameapteek in central Tallinn, ~18 km away", action: "" },
+      ]},
+      { icon: "📋", title: "Medicines", rows: [
+        { icon: "🧾", title: "EU prescriptions accepted", sub: "Non-EU prescriptions generally aren't — basic medicines are sold freely without one" },
+      ]},
+    ],
+    note: "Staff speak Russian and Estonian freely, with basic English.",
+    updated: "5 August 2026",
+  },
+
+  // ── MUUGA HARBOUR · CITY LIFE ───────────────────────────────────────
+  muuga_city_parks: {
+    title: "Parks & Waterfronts",
+    sections: [
+      { icon: "🌳", title: "Green space", rows: [
+        { icon: "🌲", title: "Maardu Park", sub: "~4.5 km from the gate", action: "🧭" },
+        { icon: "🌿", title: "Garden around the Seamen's Centre itself", sub: "The simplest option — right where the shuttle drops you", action: "🧭" },
+      ]},
+      { icon: "🌊", title: "Waterfront", rows: [
+        { icon: "🚶", title: "Maardu järv (lake) promenade", sub: "~7 km from the gate", action: "🧭" },
+      ]},
+      { icon: "👁", title: "Viewpoint", rows: [
+        { icon: "🚗", title: "Uustalu / Rannamõisa bluff", sub: "Needs a car to reach — not a walk-up option from here", action: "" },
+      ]},
+    ],
+    note: "Realistically, the centre's own garden is the easy choice if you just want air without a long trip.",
+    updated: "5 August 2026",
+  },
+
+  muuga_city_culture: {
+    title: "Culture & Must-See",
+    sections: [
+      { icon: "⭐", title: "What's realistic from here", rows: [
+        { icon: "1️⃣", title: "Seamen's Centre itself", sub: "1.8 km from the gate — pool table, Wi-Fi, a place to unwind", action: "🧭" },
+        { icon: "2️⃣", title: "Maardu town", sub: "5 km — small and pleasant, a park, an Orthodox church, squares", action: "🧭" },
+        { icon: "3️⃣", title: "Lasnamäe Centrum mall, Tallinn", sub: "12 km — for shopping", action: "🧭" },
+        { icon: "4️⃣", title: "Tallinn Old Town", sub: "18 km — only worth it with a taxi/bus and at least 4–5 hours to spare", action: "🧭" },
+      ]},
+    ],
+    note: "Muuga is genuinely a working port, well outside the city — the Old Town is a real excursion from here, not a quick walk like at Vanasadam. Plan your time accordingly.",
+    updated: "5 August 2026",
+  },
+
+  muuga_city_free: {
+    title: "Free Time & Relax",
+    sections: [
+      { icon: "🆓", title: "Somewhere to sit", rows: [
+        { icon: "⚓", title: "Muuga Seamen's Centre", sub: "By far the best option — sockets, sofas, free Wi-Fi, hot tea, and it's safe", action: "🧭" },
+      ]},
+    ],
+    note: "Out here, the centre isn't just one option among several — it's genuinely the place to be. Everything else involves a real trip.",
+    updated: "5 August 2026",
+  },
+
+  muuga_city_safety: {
+    title: "Safety",
+    callout: { tone: "warn", text: "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen. Getting back to the right berth after dark, across a working industrial port, is a real risk here — take it seriously." },
+    sections: [
+      { icon: "🟡", title: "General risk", rows: [
+        { icon: "🛡", title: "Safe but inconvenient by day", sub: "Industrial zone, missing pavements in places" },
+        { icon: "🌑", title: "Walking not recommended after dark", sub: "Unlit highway sections, heavy truck traffic" },
+      ]},
+      { icon: "⚠️", title: "Watch out for", rows: [
+        { icon: "🏚", title: "Abandoned warehouse areas along Nuudi tee at night", sub: "Avoid" },
+        { icon: "💸", title: "Informal drivers asking €50+ for a ride into Tallinn", sub: "The real Bolt fare is €18–25 — order through the app" },
+      ]},
+      { icon: "🦺", title: "Rules here specifically", rows: [
+        { icon: "🚫", title: "Hi-vis vest required after dark, port-wide", sub: "Enforced by port police and security — not optional" },
+        { icon: "🍺", title: "No drinking in the street, car parks, or the industrial zone", sub: "" },
+        { icon: "🕙", title: "Shop alcohol sales stop at 22:00", sub: "" },
+      ]},
+      { icon: "📞", title: "If something goes wrong", rows: [
+        { icon: "🚨", title: "112", sub: "Police and ambulance · free · 24/7", action: "📞" },
+        { icon: "🏛", title: "Seamen's Mission chaplain", sub: "+372 56 462 825", action: "📞" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
+
+  // ── MUUGA HARBOUR · SPIRITUAL CARE ──────────────────────────────────
+  // Unlike Vanasadam, the Estonian Seamen's Mission chapel is physically
+  // on site here — this is the "home" entry, not a referral 17 km away.
+  muuga_spiritual_mission: {
+    title: "Estonian Seamen's Mission",
+    sections: [
+      { icon: "🤝", title: "What they offer", rows: [
+        { icon: "💬", title: "Ship visits, spiritual and emotional conversation", sub: "Lutheran / ecumenical — open to any Christian denomination, or none" },
+        { icon: "🙏", title: "Prayer, books and literature", sub: "" },
+        { icon: "🚐", title: "Practical help", sub: "Groceries, a SIM card, transfer to Maardu" },
+      ]},
+      { icon: "🕐", title: "When", rows: [
+        { icon: "📅", title: "Mon–Sat, 14:00 – 21:00", sub: "Sunday by prior request" },
+      ]},
+    ],
+    contacts: [
+      { icon: "🧑‍💼", title: "Revo Jaager — Chaplain", sub: "English, Russian, Estonian, German", action: "💬" },
+      { icon: "📞", title: "+372 56 462 825", sub: "Also WhatsApp", action: "📞" },
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_spiritual_stella: {
+    title: "Stella Maris",
+    sections: [
+      { icon: "🤝", title: "What they offer", rows: [
+        { icon: "💬", title: "Ship visits on request, Mass and services", sub: "Catholic chaplaincy — including support for Filipino crews" },
+      ]},
+      { icon: "🕐", title: "When", rows: [
+        { icon: "📅", title: "Daily, 08:00 – 19:00", sub: "At Sts Peter and Paul Cathedral, Tallinn Old Town — ~18 km from Muuga" },
+      ]},
+    ],
+    contacts: [
+      { icon: "📞", title: "+372 644 6367", sub: "Stella Maris Estonia chaplaincy / parish line", action: "📞" },
+    ],
+    note: "This one's a real trip out from Muuga — for anything less than a scheduled visit, the chaplain at the centre here can usually pass a message along.",
+    updated: "5 August 2026",
+  },
+
+  muuga_spiritual_muslim: {
+    title: "Muslim Support",
+    sections: [
+      { icon: "🕌", title: "Where", rows: [
+        { icon: "📍", title: "Tallinn Islamic Cultural Centre — Keevise 9", sub: "~14 km from Muuga", action: "🧭" },
+        { icon: "🕐", title: "Open for the five daily prayers", sub: "Friday (Jumu'ah) prayer around midday" },
+      ]},
+      { icon: "🤝", title: "Help available", rows: [
+        { icon: "💬", title: "Conversation in Arabic, English, Russian, Estonian", sub: "Ask at the centre" },
+      ]},
+    ],
+    contacts: [
+      { icon: "📞", title: "+372 614 3086", sub: "Islamic Centre reception", action: "📞" },
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_spiritual_orthodox: {
+    title: "Orthodox",
+    sections: [
+      { icon: "⛪", title: "Where", rows: [
+        { icon: "📍", title: "St Nicholas Church, Maardu — Otsa tee 1", sub: "~5 km from Muuga — the closer option than central Tallinn", action: "🧭" },
+      ]},
+      { icon: "🤝", title: "What they offer", rows: [
+        { icon: "🙏", title: "Prayer — St Nicholas is the patron of seafarers", sub: "" },
+        { icon: "⚓", title: "Ship blessing on request", sub: "" },
+      ]},
+      { icon: "🕐", title: "When", rows: [
+        { icon: "📅", title: "Daily, 09:00 – 18:00", sub: "" },
+      ]},
+    ],
+    contacts: [
+      { icon: "📞", title: "+372 606 0842", sub: "Duty priest, Maardu", action: "📞" },
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_spiritual_prayer: {
+    title: "Places for Prayer",
+    sections: [
+      { icon: "🕊", title: "At the centre — the easy choice", rows: [
+        { icon: "⚓", title: "Ecumenical chapel, Estonian Seamen's Mission", sub: "Altmetsa tee 1, ~1.8 km from Gate 1 — open to any faith", action: "🧭" },
+      ]},
+      { icon: "🏙", title: "Further away", rows: [
+        { icon: "🕌", title: "Tallinn Islamic Cultural Centre", sub: "Keevise 9, ~14 km", action: "🧭" },
+      ]},
+    ],
+    note: "Unlike Vanasadam, the prayer room is genuinely close here — it's part of the same building as the centre itself.",
+    updated: "5 August 2026",
+  },
+
+
   hamburg_centre_about: {
     title: "About the Centre",
     hours: [
@@ -464,7 +801,7 @@ const SUBDETAILS = {
     title: "Wellness Recovery Zone — Tallinn",
     note: "A private 2×3m cabin next to the centre — not a consultation, a self-guided reset. A massage chair (neck/shoulder, lower back, full-body, deep tissue, with heat and air compression), VR headset with relaxation scenes, and aromatherapy, used at your own pace for a short session between watches.",
     contacts: [
-      { icon: "🧑‍💼", title: "Kadri Saar — Wellness Coordinator", sub: "Book a session via WhatsApp", action: "💬" },
+      { icon: "🧑‍💼", title: "Kadri Saar — Your Wellness Host", sub: "Book a session via WhatsApp", action: "💬" },
     ],
     directions: [
       { icon: "📍", title: "Next to the Seafarers' Centre", sub: "Sadama 25, Tallinn", action: "🧭" },
@@ -640,21 +977,24 @@ const PORTS = {
           // Neutral option first, deliberately: someone who simply wants to talk
           // should not have to choose a denomination in order to ask.
           { icon: "💬", title: "No particular faith — I'd just like to talk", sub: "Speak with your assistant, who can bring in the IMWIRSA Coordinator", action: "›", go: "assistantchat" },
-          { icon: "⚓", title: "Stella Maris", sub: "Catholic chaplaincy · ship visits, practical help", action: "›", sd: "vanasadam_spiritual_stella" },
-          { icon: "✝️", title: "The Mission to Seafarers", sub: "Anglican chaplaincy · open to any faith or none", action: "›", sd: "vanasadam_spiritual_mts" },
+          { icon: "⚓", title: "Estonian Seamen's Mission", sub: "Lutheran / ecumenical chaplaincy · ship visits, practical help", action: "›", sd: "vanasadam_spiritual_mission" },
+          { icon: "✝️", title: "Stella Maris", sub: "Catholic chaplaincy · ship visits, Mass, guidance", action: "›", sd: "vanasadam_spiritual_stella" },
+          { icon: "☦️", title: "Orthodox", sub: "St Nicholas Cathedral · prayer, ship blessing on request", action: "›", sd: "vanasadam_spiritual_orthodox" },
           { icon: "🕌", title: "Muslim Support", sub: "Islamic Centre · prayer hall, conversation, halal food", action: "›", sd: "vanasadam_spiritual_muslim" },
-          { icon: "⛪", title: "Other Faith Communities", sub: "Orthodox, Lutheran, Catholic parishes in the city", action: "›", sd: "vanasadam_spiritual_other" },
-          { icon: "🙏", title: "Places for Prayer", sub: "Prayer room and quiet room at the centre, places in the city", action: "›", sd: "vanasadam_spiritual_prayer" },
+          { icon: "🙏", title: "Places for Prayer", sub: "Nearest prayer room and quiet churches in the Old Town", action: "›", sd: "vanasadam_spiritual_prayer" },
         ],
       },
       emergency: {
         title: "Emergency Contacts",
         rows: [
           { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
-          { icon: "🩺", title: "Tallinn Medical Clinic", sub: "1.2 km · paid service · English spoken", action: "🧭" },
-          { icon: "🏛", title: "Seafarers' Centre", sub: "+372 5555 1234", action: "📞" },
+          { icon: "🩺", title: "Ida-Tallinna Keskhaigla (East Tallinn Central Hospital)", sub: "Ravi 18 · ~2.5 km · ER open 24/7", action: "🧭" },
+          { icon: "🇬🇧", title: "Confido Medical Centre / Qvalitas", sub: "English- and Russian-speaking private clinics, paid service", action: "🧭" },
+          { icon: "🏛", title: "Seamen's Mission chaplain", sub: "+372 56 462 825 · also +372 631 8234", action: "📞" },
           { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
-          { icon: "⚖️", title: "ITF Inspector — Baltic region", sub: "Free basic advice on wages, contracts & seafarers' rights", action: "📞" },
+          { icon: "⚖️", title: "ITF Inspector — Jaanus Kuiv", sub: "+372 50 63 908 · free basic advice on wages, contracts & seafarers' rights", action: "📞" },
+          { icon: "🤝", title: "EMSA — Estonian Seafarers' Independent Union", sub: "+372 661 2406 · Mon–Fri 09:00–17:00", action: "📞" },
+          { icon: "📡", title: "Port duty dispatcher", sub: "+372 631 8008 · 24/7", action: "📞" },
         ],
       },
       wellness: {
@@ -671,36 +1011,78 @@ const PORTS = {
     },
   },
 
-  // Second Tallinn terminal — cargo/Ro-Ro harbour ~17 km east of Vanasadam,
-  // on the far side of AT_PORT_RADIUS_KM so geolocation correctly tells the
-  // two apart. Content is fully pending: this terminal is not yet visited
-  // by IMWIRSA volunteers (see Vanasadam field-verification note in the
-  // handoff memo) — do not fill in real detail here until that pass happens.
-  // Coordinates: Muuga Harbour, Wikipedia, 59°29′30″N 24°57′30″E.
+  // Second Tallinn terminal — cargo/Ro-Ro harbour ~17 km east of Vanasadam.
+  // Field-verified by an IMWIRSA volunteer on 5 August 2026 — this is the
+  // terminal where the real Seafarers' Centre building actually stands
+  // (Estonian Seamen's Mission, Altmetsa tee 1), unlike Vanasadam, which has
+  // no centre of its own and instead sits directly in central Tallinn.
+  // Coordinates below are Gate 1 / Peavärav, from the questionnaire —
+  // more precise than the general-harbour estimate used before verification.
   "tallinn-muuga": {
-    meta: { flag: "🇪🇪", terminal: "Muuga Harbour", city: "Tallinn", country: "Estonia", tz: "UTC+3", lat: 59.4917, lng: 24.9583 },
+    meta: { flag: "🇪🇪", terminal: "Muuga Harbour", city: "Tallinn", country: "Estonia", tz: "UTC+3", lat: 59.4925, lng: 24.9540 },
     categories: {
       centre: {
         title: "Seafarers' Centre",
+        statusFrom: "muuga_centre_about",
         rows: [
-          PENDING("ℹ️", "About the Centre", "Opening hours, phone, coordinator, website"),
-          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
-          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
-          PENDING("📍", "Location & Route", "Address, map, how to get there"),
+          { icon: "ℹ️", title: "About the Centre", sub: "Opening hours, phone, chaplain, website", action: "›", sd: "muuga_centre_about" },
+          { icon: "🎱", title: "Services", sub: "Hospitality, recreation, connectivity, welfare", action: "›", sd: "muuga_centre_services" },
+          { icon: "🚐", title: "Free Shuttle Bus", sub: "From the ship or the gate, book ahead", action: "›", sd: "muuga_centre_shuttle" },
+          { icon: "📍", title: "Location & Route", sub: "Address, map, how to get there on foot", action: "›", sd: "muuga_centre_location" },
         ],
       },
-      transport: transportSkeleton(null),
-      shops: shopsSkeleton(),
-      citylife: citylifeSkeleton(),
-      spiritual: spiritualSkeleton(),
+      transport: {
+        title: "Transport",
+        rows: [
+          { icon: "🚪", title: "Leaving the Port", sub: "Exit rules, required documents, gate information", action: "›", sd: "muuga_transport_leaving" },
+          { icon: "🚕", title: "Taxi", sub: "Apps, phone numbers, where to catch one", action: "›", sd: "muuga_transport_taxi" },
+          { icon: "🚎", title: "Public Transport", sub: "Nearest stop, routes, tickets, journey to the city", action: "›", sd: "muuga_transport_public" },
+        ],
+      },
+      shops: {
+        title: "Shops & Food",
+        rows: [
+          { icon: "🛒", title: "Supermarkets", sub: "Nearest stores, shopping centres, 24/7 shops", action: "›", sd: "muuga_shops_supermarkets" },
+          { icon: "🍽", title: "Food & Drinks", sub: "Seafarer-friendly places, local restaurants", action: "›", sd: "muuga_shops_food" },
+          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers, ATM", action: "›", sd: "muuga_shops_sim" },
+          { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "muuga_shops_pharmacies" },
+          { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this before you do", action: "›", sd: "currency_exchange_safety" },
+        ],
+      },
+      citylife: {
+        title: "City Life",
+        rows: [
+          { icon: "🌳", title: "Parks & Waterfronts", sub: "Nearest green space and water — a real trip out here", action: "›", sd: "muuga_city_parks" },
+          { icon: "🏛", title: "Culture & Must-See", sub: "What's realistically reachable from Muuga", action: "›", sd: "muuga_city_culture" },
+          { icon: "🧘", title: "Free Time & Relax", sub: "Somewhere to sit without spending anything", action: "›", sd: "muuga_city_free" },
+          { icon: "🛡", title: "Safety", sub: "What to know before going into the city", action: "›", sd: "muuga_city_safety" },
+        ],
+      },
+      spiritual: {
+        title: "Spiritual Care",
+        rows: [
+          { icon: "💬", title: "No particular faith — I'd just like to talk", sub: "Speak with your assistant, who can bring in the IMWIRSA Coordinator", action: "›", go: "assistantchat" },
+          { icon: "⚓", title: "Estonian Seamen's Mission", sub: "Right here at the centre · Lutheran / ecumenical, open to all", action: "›", sd: "muuga_spiritual_mission" },
+          { icon: "✝️", title: "Stella Maris", sub: "Catholic chaplaincy · ship visits, Mass, guidance", action: "›", sd: "muuga_spiritual_stella" },
+          { icon: "☦️", title: "Orthodox", sub: "St Nicholas Church, Maardu · prayer, ship blessing on request", action: "›", sd: "muuga_spiritual_orthodox" },
+          { icon: "🕌", title: "Muslim Support", sub: "Islamic Centre, Tallinn · prayer hall, halal food", action: "›", sd: "muuga_spiritual_muslim" },
+          { icon: "🙏", title: "Places for Prayer", sub: "The ecumenical chapel is right here at the centre", action: "›", sd: "muuga_spiritual_prayer" },
+        ],
+      },
       emergency: {
         title: "Emergency Contacts",
         rows: [
           { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
+          { icon: "🩺", title: "Ida-Tallinna Keskhaigla (East Tallinn Central Hospital)", sub: "Ravi 18 · ~19 km · ER open 24/7", action: "🧭" },
+          { icon: "🇬🇧", title: "Confido Medical Centre / Qvalitas", sub: "English- and Russian-speaking private clinics, paid service", action: "🧭" },
+          { icon: "🏛", title: "Seamen's Mission chaplain", sub: "+372 56 462 825 · also +372 631 8234", action: "📞" },
           { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
+          { icon: "⚖️", title: "ITF Inspector — Jaanus Kuiv", sub: "+372 50 63 908 · free basic advice on wages, contracts & seafarers' rights", action: "📞" },
+          { icon: "🤝", title: "EMSA — Estonian Seafarers' Independent Union", sub: "+372 661 2406 · Mon–Fri 09:00–17:00", action: "📞" },
+          { icon: "📡", title: "Port duty dispatcher", sub: "+372 631 8008 · 24/7", action: "📞" },
         ],
       },
-      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
+      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation for this terminal") ] },
     },
   },
 
