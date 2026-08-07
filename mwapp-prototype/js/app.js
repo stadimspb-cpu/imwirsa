@@ -945,7 +945,7 @@ const SUBDETAILS = {
   // ── GEORGIA · BATUMI ────────────────────────────────────────────────
   batumi_centre_about: {
     title: "About the Centre",
-    callout: { tone: "warn", text: "Currently CLOSED for renovation, as of 7 August 2026. No reopening date confirmed yet — call ahead before counting on it, but the phone line itself is still active." },
+    callout: { tone: "warn", text: "CLOSED for renovation. No confirmed reopening date — please call ahead to check. The coordinator has been told 1 November 2026 as a schedule target, but this is not confirmed and could change." },
     hours: [
       ["Monday", "10:00 – 22:00"], ["Tuesday", "10:00 – 22:00"], ["Wednesday", "10:00 – 22:00"],
       ["Thursday", "10:00 – 22:00"], ["Friday", "10:00 – 22:00"], ["Saturday", "12:00 – 21:00"], ["Sunday", "12:00 – 21:00"],
@@ -2400,10 +2400,14 @@ function openDetail(key) {
       </div>`;
   } else {
     const msg = t(`categoryPrompts.${key}`) || t("categoryPrompts.fallback");
+    const langNote = state.lang && state.lang !== "en"
+      ? `<div style="font-size:12px; color:var(--gray, #8A93A3); margin-top:6px; line-height:1.4;">${t("common.englishContentNote")}</div>`
+      : "";
     bubbleHtml = `
       <div class="assistant-bubble" style="margin:0 0 14px;">
         <div class="ab-name">${a.name}</div>
         <div class="ab-text">${msg}</div>
+        ${langNote}
         <button class="ab-cta" data-go="assistantchat">${t(`askMe.${key}`) || t("askMe.default")}</button>
       </div>`;
   }

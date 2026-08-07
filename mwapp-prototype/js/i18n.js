@@ -74,6 +74,7 @@ const I18N = {
     // Shared labels used inside Level-3 content blocks.
     common: {
       awaitingData: "Awaiting port data",
+      englishContentNote: "Details below are in English. If anything's unclear, just ask me.",
       hours: "Hours",
       contacts: "Contacts",
       gettingThere: "Getting there",
@@ -352,6 +353,7 @@ const I18N = {
     },
     common: {
       awaitingData: "Ожидание данных порта",
+      englishContentNote: "Подробности ниже — на английском. Если что-то непонятно, просто спросите меня.",
       hours: "Часы работы",
       contacts: "Контакты",
       gettingThere: "Как добраться",
@@ -626,6 +628,7 @@ const I18N = {
     },
     common: {
       awaitingData: "Liman verisi bekleniyor",
+      englishContentNote: "Aşağıdaki detaylar İngilizce. Bir şey anlaşılmazsa, bana sor.",
       hours: "Çalışma saatleri",
       contacts: "İletişim",
       gettingThere: "Nasıl gidilir",
@@ -900,6 +903,7 @@ const I18N = {
     },
     common: {
       awaitingData: "Hinihintay ang datos ng daungan",
+      englishContentNote: "Nasa English ang mga detalye sa baba. Kung may hindi malinaw, tanungin mo lang ako.",
       hours: "Oras ng Operasyon",
       contacts: "Mga Contact",
       gettingThere: "Paano makarating",
