@@ -230,7 +230,7 @@ const I18N = {
     categoryPrompts: {
       centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
       transport: "Need help getting around — shuttle times, taxis, buses, or leaving the port? Just ask, I'm right here.",
-      shops: "Looking for food, supplies, a SIM card or a pharmacy nearby? Let me know what you need.",
+      shops: "Looking for food, supplies, a SIM card, currency exchange or a pharmacy nearby? Let me know what you need.",
       citylife: "Thinking of going into the city? I can tell you what's nearby and what's worth knowing before you go.",
       spiritual: "If you'd like to speak with a chaplain, find a quiet place, or simply have someone to talk to — I can help you find who's here.",
       emergency: "If this is urgent, use the contacts below right away. I'm also here if you want to talk it through.",
@@ -508,7 +508,7 @@ const I18N = {
     categoryPrompts: {
       centre: "Есть вопросы о центре моряков — часы работы, услуги, как добраться? Спросите меня, и я подключу команду центра, если это то, в чём могут помочь только они.",
       transport: "Нужна помощь с передвижением — расписание шаттлов, такси, автобусы или выход из порта? Просто спросите, я рядом.",
-      shops: "Ищете еду, товары, сим-карту или ближайшую аптеку? Дайте знать, что вам нужно.",
+      shops: "Ищете еду, товары, сим-карту, обмен валюты или ближайшую аптеку? Дайте знать, что вам нужно.",
       citylife: "Планируете поехать в город? Я расскажу, что рядом и что стоит знать перед поездкой.",
       spiritual: "Если хотите поговорить с капелланом, найти тихое место или просто с кем-то поговорить — я помогу вам найти нужного человека.",
       emergency: "Если это срочно, сразу используйте контакты ниже. Я тоже здесь, если хотите обсудить ситуацию.",
@@ -782,7 +782,7 @@ const I18N = {
     categoryPrompts: {
       centre: "Denizci merkezi hakkında sorun mu var — açılış saatleri, hizmetler, nasıl gidilir? Bana sor, sadece onların yardımcı olabileceği bir konuysa merkezin kendi ekibini devreye sokarım.",
       transport: "Etrafta dolaşmak için yardıma mı ihtiyacın var — servis saatleri, taksiler, otobüsler ya da limandan çıkış? Sadece sor, buradayım.",
-      shops: "Yiyecek, malzeme, SIM kart veya yakında bir eczane mi arıyorsun? İhtiyacını bana bildir.",
+      shops: "Yiyecek, malzeme, SIM kart, döviz bozdurma veya yakında bir eczane mi arıyorsun? İhtiyacını bana bildir.",
       citylife: "Şehre gitmeyi mi düşünüyorsun? Yakında neler olduğunu ve gitmeden önce bilmen gerekenleri sana anlatabilirim.",
       spiritual: "Bir din görevlisiyle konuşmak, sakin bir yer bulmak ya da sadece konuşacak biri istiyorsan — burada kimin olduğunu bulmana yardımcı olabilirim.",
       emergency: "Bu acilse, aşağıdaki iletişim bilgilerini hemen kullan. Konuşmak istersen ben de buradayım.",
@@ -1056,7 +1056,7 @@ const I18N = {
     categoryPrompts: {
       centre: "May mga tanong ka ba tungkol sa sentro ng mga marino — oras ng operasyon, mga serbisyo, paano makarating? Tanungin mo ako, at kokontakin ko ang sarili nilang team kung isa itong bagay na sila lang ang makakatulong.",
       transport: "Kailangan mo ba ng tulong sa paggalaw — oras ng shuttle, taxi, bus, o pag-alis sa daungan? Tanungin mo lang, nandito ako.",
-      shops: "Naghahanap ka ba ng pagkain, gamit, SIM card o pharmacy na malapit? Sabihin mo lang ang kailangan mo.",
+      shops: "Naghahanap ka ba ng pagkain, gamit, SIM card, palitan ng pera o pharmacy na malapit? Sabihin mo lang ang kailangan mo.",
       citylife: "Balak mo bang pumunta sa lungsod? Masasabi ko sa iyo kung ano ang malapit at kung ano ang mahalagang malaman bago ka umalis.",
       spiritual: "Kung gusto mong makausap ang isang chaplain, maghanap ng tahimik na lugar, o may kausap lang — matutulungan kitang mahanap kung sino ang narito.",
       emergency: "Kung urgent ito, gamitin agad ang mga contact sa ibaba. Narito rin ako kung gusto mong pag-usapan ito.",

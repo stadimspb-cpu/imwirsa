@@ -50,6 +50,58 @@ const SUBDETAILS = {
     note: "This page is the same in every port — the specific exchange offices your coordinator has checked are listed under this port's own Shops & Food card.",
   },
 
+  vanasadam_currency_exchange: {
+    title: "Currency Exchange",
+    callout: { tone: "warn", text: "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port." },
+    sections: [
+      { icon: "✅", title: "Where to exchange safely", rows: [
+        { icon: "🏦", title: "A bank or licensed exchange office", sub: "See the checked addresses below" },
+        { icon: "🏧", title: "An ATM", sub: "Usually the safest option where available — official bank rate, no one to negotiate with" },
+      ]},
+      { icon: "🚩", title: "Red flags — walk away", rows: [
+        { icon: "🗣", title: "A stranger offers you a better rate", sub: "On the street, at the gate, or \"just around the corner\" — always a scam" },
+        { icon: "🚗", title: "Being asked to go somewhere private", sub: "A car, a back room, an alley — a legitimate exchange never needs this" },
+        { icon: "🧾", title: "No receipt offered", sub: "A real exchange always gives you a printed receipt with the rate used" },
+      ]},
+      { icon: "🛡", title: "Before you hand over money", rows: [
+        { icon: "🔢", title: "Know the rough official rate first", sub: "Check on your phone before you go — so you can spot a bad deal immediately" },
+        { icon: "🧮", title: "Count what you receive, before you walk away", sub: "In front of the person who gave it to you, not after" },
+      ]},
+      { icon: "📍", title: "Checked addresses near you", rows: [
+        { icon: "💱", title: "Tavid Currency Exchange — Nautica mall", sub: "Ahtri 9 · 5 min walk from Terminal D", action: "🧭" },
+        { icon: "💱", title: "Tavid Currency Exchange — Viru Keskus", sub: "Viru väljak 4", action: "🧭" },
+        { icon: "🏧", title: "Swedbank / SEB ATMs", sub: "Nautica mall and inside the Terminal D building", action: "🧭" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_currency_exchange: {
+    title: "Currency Exchange",
+    callout: { tone: "warn", text: "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port." },
+    sections: [
+      { icon: "✅", title: "Where to exchange safely", rows: [
+        { icon: "🏦", title: "A bank or licensed exchange office", sub: "See the checked addresses below" },
+        { icon: "🏧", title: "An ATM", sub: "Usually the safest option where available — official bank rate, no one to negotiate with" },
+      ]},
+      { icon: "🚩", title: "Red flags — walk away", rows: [
+        { icon: "🗣", title: "A stranger offers you a better rate", sub: "On the street, at the gate, or \"just around the corner\" — always a scam" },
+        { icon: "🚗", title: "Being asked to go somewhere private", sub: "A car, a back room, an alley — a legitimate exchange never needs this" },
+        { icon: "🧾", title: "No receipt offered", sub: "A real exchange always gives you a printed receipt with the rate used" },
+      ]},
+      { icon: "🛡", title: "Before you hand over money", rows: [
+        { icon: "🔢", title: "Know the rough official rate first", sub: "Check on your phone before you go — so you can spot a bad deal immediately" },
+        { icon: "🧮", title: "Count what you receive, before you walk away", sub: "In front of the person who gave it to you, not after" },
+      ]},
+      { icon: "📍", title: "Checked addresses near you", rows: [
+        { icon: "💱", title: "Tavid Currency Exchange — Lasnamäe Centrum", sub: "Mustakivi tee 13, Tallinn · ~12 km · taxi or bus 34", action: "🧭" },
+        { icon: "🏧", title: "SEB / Swedbank ATMs — Maardu Keskus", sub: "~5 km · or at the Circle K petrol station", action: "🧭" },
+      ]},
+    ],
+    note: "There's no exchange office right at the port — the closest checked ones are in Maardu or central Tallinn, both a real trip from here.",
+    updated: "5 August 2026",
+  },
+
   // ── TALLINN · SEAFARERS' CENTRE ────────────────────────────────────
   vanasadam_centre_about: {
     title: "About the Centre",
@@ -222,9 +274,6 @@ const SUBDETAILS = {
       { icon: "📶", title: "Free Wi-Fi", rows: [
         { icon: "⚓", title: "\"Tallinn Airport/Port Free Wi-Fi\" or \"Nautica Free Wi-Fi\"", sub: "No password — one click to connect" },
       ]},
-      { icon: "💱", title: "Money", rows: [
-        { icon: "🏧", title: "Swedbank / SEB ATMs", sub: "In Nautica mall and inside the Terminal D building", action: "🧭" },
-      ]},
     ],
     note: "An Estonian prepaid SIM works across the whole EU at no extra cost, so it's worth buying here even if your next port is elsewhere in Europe.",
     updated: "5 August 2026",
@@ -247,6 +296,29 @@ const SUBDETAILS = {
     updated: "5 August 2026",
   },
 
+  vanasadam_shops_souvenirs: {
+    title: "Souvenirs",
+    sections: [
+      { icon: "🎁", title: "Where to find them", rows: [
+        { icon: "🏰", title: "Old Town shops — Viru street", sub: "~1 km / 12 min walk · amber, knitwear, Kalev chocolate — the biggest choice", action: "🧭" },
+        { icon: "🛍", title: "Rotermann Quarter shops", sub: "~600 m from the port · designer Estonian gifts and souvenirs", action: "🧭" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
+
+  vanasadam_shops_seafarer: {
+    title: "Seafarer Supplies",
+    sections: [
+      { icon: "⚓", title: "Ship stores / marine supply", rows: [
+        { icon: "🗺", title: "Beckmann Maritime / Navimenu", sub: "Charts, workwear and ship's stores — usually ordered through your agent with delivery on board", action: "" },
+      ]},
+      { icon: "🦺", title: "Personal gear", rows: [
+        { icon: "🥾", title: "Tamrex — Katusepapi 35", sub: "~3 km · about 10 min by taxi · safety shoes, workwear, hi-vis gear for yourself", action: "🧭" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
 
   // ── TALLINN · CITY LIFE ────────────────────────────────────────────
   // Static places only — no timed walking routes and no live event feed.
@@ -305,6 +377,9 @@ const SUBDETAILS = {
     sections: [
       { icon: "🟢", title: "General risk", rows: [
         { icon: "🛡", title: "Very safe, day and night", sub: "Tallinn is one of the safest capitals in the EU" },
+      ]},
+      { icon: "🚫", title: "Bringing anything back to the ship", rows: [
+        { icon: "🍾", title: "Alcohol into the port is strictly forbidden without paperwork", sub: "Any amount, no exceptions — you need a permit signed by your ship's Master before it can come through the gate" },
       ]},
       { icon: "🌙", title: "At night", rows: [
         { icon: "🍺", title: "Basic caution around Suur-Karja", sub: "The Old Town's bar street — nothing dangerous, just the usual nightlife area" },
@@ -580,9 +655,6 @@ const SUBDETAILS = {
       { icon: "📶", title: "Free Wi-Fi", rows: [
         { icon: "🏛", title: "Seamen's Centre building and terminal office buildings", sub: "" },
       ]},
-      { icon: "💱", title: "Money", rows: [
-        { icon: "🏧", title: "SEB / Swedbank ATMs, Maardu Keskus", sub: "~5 km · or at the Circle K petrol station", action: "🧭" },
-      ]},
     ],
     updated: "5 August 2026",
   },
@@ -601,6 +673,27 @@ const SUBDETAILS = {
       ]},
     ],
     note: "Staff speak Russian and Estonian freely, with basic English.",
+    updated: "5 August 2026",
+  },
+
+  muuga_shops_souvenirs: {
+    title: "Souvenirs",
+    sections: [
+      { icon: "🎁", title: "Where to find them", rows: [
+        { icon: "⚓", title: "Small shop at the Seamen's Centre itself", sub: "The simplest option — right where the shuttle drops you", action: "" },
+        { icon: "🛍", title: "Souvenir sections at Lasnamäe Centrum mall / Maardu", sub: "For a bigger selection, further out", action: "" },
+      ]},
+    ],
+    updated: "5 August 2026",
+  },
+
+  muuga_shops_seafarer: {
+    title: "Seafarer Supplies",
+    sections: [
+      { icon: "🦺", title: "Personal gear", rows: [
+        { icon: "🥾", title: "Tamrex — Vana-Narva mnt 1, Maardu", sub: "~3.5 km from Gate 1 · safety shoes, workwear jacket, gloves", action: "🧭" },
+      ]},
+    ],
     updated: "5 August 2026",
   },
 
@@ -655,6 +748,9 @@ const SUBDETAILS = {
       { icon: "🟡", title: "General risk", rows: [
         { icon: "🛡", title: "Safe but inconvenient by day", sub: "Industrial zone, missing pavements in places" },
         { icon: "🌑", title: "Walking not recommended after dark", sub: "Unlit highway sections, heavy truck traffic" },
+      ]},
+      { icon: "🚫", title: "Bringing anything back to the ship", rows: [
+        { icon: "🍾", title: "Alcohol into the port is strictly forbidden without paperwork", sub: "Any amount, no exceptions — you need a permit signed by your ship's Master before it can come through the gate" },
       ]},
       { icon: "⚠️", title: "Watch out for", rows: [
         { icon: "🏚", title: "Abandoned warehouse areas along Nuudi tee at night", sub: "Avoid" },
@@ -799,7 +895,7 @@ const SUBDETAILS = {
   wellness_zone_vanasadam: {
     gated: true,
     title: "Wellness Recovery Zone — Tallinn",
-    note: "A private 2×3m cabin next to the centre — not a consultation, a self-guided reset. A massage chair (neck/shoulder, lower back, full-body, deep tissue, with heat and air compression), VR headset with relaxation scenes, and aromatherapy, used at your own pace for a short session between watches.",
+    note: "Your quiet harbor to rest, recover, and reset. A comfortable space offering massage, soothing scents, and deep relaxation for body and mind — everything you need to recharge your physical and emotional strength between watches.",
     contacts: [
       { icon: "🧑‍💼", title: "Kadri Saar — Your Wellness Host", sub: "Book a session via WhatsApp", action: "💬" },
     ],
@@ -809,7 +905,7 @@ const SUBDETAILS = {
   },
   legal_help: {
     gated: true,
-    title: "Legal Consultation (Paid)",
+    title: "Legal Assistance (Emergency)",
     note: "Free basic information and union/ITF contacts are always available to every seafarer under Emergency Contacts — this is specifically a paid, in-depth consultation with a maritime lawyer for Trade Union members.",
     contacts: [
       { icon: "💬", title: "WhatsApp consultation with a maritime lawyer", sub: "Paid service, covered by Trade Union membership · response within 24h", action: "💬" },
@@ -820,7 +916,7 @@ const SUBDETAILS = {
   },
   medical_extended: {
     gated: true,
-    title: "Medical — Extended Access",
+    title: "Free Medical Consultation",
     hours: [
       ["Monday", "08:00 – 20:00"], ["Tuesday", "08:00 – 20:00"], ["Wednesday", "08:00 – 20:00"],
       ["Thursday", "08:00 – 20:00"], ["Friday", "08:00 – 20:00"], ["Saturday", "09:00 – 15:00"], ["Sunday", "Emergency only"],
@@ -830,21 +926,15 @@ const SUBDETAILS = {
       { icon: "🚑", title: "Emergency services", sub: "112 · Free · 24/7", action: "📞" },
     ],
   },
-  // No licensed psychologist has actually been confirmed for any port yet —
-  // per Andrey, this requires a real local, licensed specialist (possibly
-  // via union support), unlike the Wellness Cabin above which is
-  // equipment-based and doesn't need one. Left as a real PENDING state
-  // rather than placeholder contact details, so nothing false is ever shown
-  // for something this sensitive. Replace with real contacts port-by-port
-  // once actually secured — do not reuse the old fabricated demo contacts.
-  psych_support: {
-    gated: true,
-    title: "Psychological Support",
-    note: "A licensed, locally based psychologist — not the Wellness Cabin. We're confirming a qualified specialist for this port; contact details will appear here once verified.",
-  },
+  // Psychological Support as a Premium service was dropped entirely on
+  // 7 August 2026 — union legal advice: a real, licensed psychologist could
+  // plausibly be found and vetted for one port like Tallinn, but doing this
+  // safely at scale across many ports and jurisdictions carries real
+  // liability risk, and IMWIRSA isn't positioned to carry it. If revisited,
+  // that's a scope decision to make deliberately, not just re-add a row.
   port_discounts: {
     gated: true,
-    title: "Port Discounts & Privileges",
+    title: "City Discounts & Privileges",
     note: "When paying at any of these partners, show your Premium QR code from the app at checkout to receive the discount included in the partner program.",
     contacts: [
       { icon: "🛍", title: "Rimi Supermarket", sub: "Sadama tn 21, Tallinn", action: "🧭" },
@@ -878,11 +968,13 @@ function shopsSkeleton() {
   return {
     title: "Shops & Food",
     rows: [
+      { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this first, before you need it", action: "›", sd: "currency_exchange_safety" },
       PENDING("🛒", "Supermarkets", "Nearest stores, shopping centres, 24/7 shops"),
       PENDING("🍽", "Food & Drinks", "Fast food, local restaurants, seafarer-friendly places"),
       PENDING("📱", "Electronics & SIM Cards", "Mobile operators, SIM cards, chargers & adapters"),
       PENDING("💊", "Pharmacies", "Nearest and 24/7 pharmacies, prescription & OTC medicines"),
-      { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this before you do", action: "›", sd: "currency_exchange_safety" },
+      PENDING("🎁", "Souvenirs", "Where to find something to take home"),
+      PENDING("⚓", "Seafarer Supplies", "Workwear, safety gear, ship's stores"),
     ],
   };
 }
@@ -955,11 +1047,13 @@ const PORTS = {
       shops: {
         title: "Shops & Food",
         rows: [
+          { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this first, before you need it", action: "›", sd: "vanasadam_currency_exchange" },
           { icon: "🛒", title: "Supermarkets", sub: "Nearest stores, shopping centres, 24/7 shops", action: "›", sd: "vanasadam_shops_supermarkets" },
           { icon: "🍽", title: "Food & Drinks", sub: "Seafarer-friendly places, fast food, local restaurants", action: "›", sd: "vanasadam_shops_food" },
-          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers, ATM", action: "›", sd: "vanasadam_shops_sim" },
+          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers", action: "›", sd: "vanasadam_shops_sim" },
           { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "vanasadam_shops_pharmacies" },
-          { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this before you do", action: "›", sd: "currency_exchange_safety" },
+          { icon: "🎁", title: "Souvenirs", sub: "Where to find something to take home", action: "›", sd: "vanasadam_shops_souvenirs" },
+          { icon: "⚓", title: "Seafarer Supplies", sub: "Workwear, safety gear, ship's stores", action: "›", sd: "vanasadam_shops_seafarer" },
         ],
       },
       citylife: {
@@ -1000,12 +1094,11 @@ const PORTS = {
       wellness: {
         title: "Premium Welfare Services", gated: true,
         rows: [
-          { icon: "🔳", title: "Your Premium QR Code", sub: "Show this to partner staff to verify your status", action: "›", sd: "premium_qr" },
-          { icon: "🌊", title: "Wellness Recovery Zone", sub: "Massage chair, VR & aromatherapy — a private self-guided reset", action: "›", sd: "wellness_zone_vanasadam" },
-          { icon: "⚖️", title: "Legal Consultation (Paid)", sub: "In-depth consultation with a maritime lawyer, covered by Trade Union membership", action: "›", sd: "legal_help" },
-          { icon: "🩺", title: "Medical — Extended Access", sub: "Priority booking, covered consultation fee", action: "›", sd: "medical_extended" },
-          { icon: "🧠", title: "Psychological Support", sub: "Licensed local psychologist — being confirmed for this port", action: "›", sd: "psych_support" },
-          { icon: "🏷", title: "Port Discounts & Privileges", sub: "Shops, café, transport near the terminal", action: "›", sd: "port_discounts" },
+          { icon: "🔳", title: "Your Premium QR Code", sub: "Your digital ID for partner discounts, wellness entry, and union benefits.", action: "›", sd: "premium_qr" },
+          { icon: "🏷", title: "City Discounts & Privileges", sub: "Show your QR code at partner venues in town for exclusive member discounts.", action: "›", sd: "port_discounts" },
+          { icon: "🌊", title: "Wellness Recovery Zone", sub: "Private spaces to relax, recharge, and reduce stress during your port call.", action: "›", sd: "wellness_zone_vanasadam" },
+          { icon: "🩺", title: "Free Medical Consultation", sub: "Free English-speaking health guidance and medical advice during your stay.", action: "›", sd: "medical_extended" },
+          { icon: "⚖️", title: "Legal Assistance (Emergency)", sub: "Discounted English legal aid in critical situations with local authorities.", action: "›", sd: "legal_help" },
         ],
       },
     },
@@ -1042,11 +1135,13 @@ const PORTS = {
       shops: {
         title: "Shops & Food",
         rows: [
+          { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this first, before you need it", action: "›", sd: "muuga_currency_exchange" },
           { icon: "🛒", title: "Supermarkets", sub: "Nearest stores, shopping centres, 24/7 shops", action: "›", sd: "muuga_shops_supermarkets" },
           { icon: "🍽", title: "Food & Drinks", sub: "Seafarer-friendly places, local restaurants", action: "›", sd: "muuga_shops_food" },
-          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers, ATM", action: "›", sd: "muuga_shops_sim" },
+          { icon: "📱", title: "Electronics & SIM Cards", sub: "Operators, SIM cards, Wi-Fi, chargers", action: "›", sd: "muuga_shops_sim" },
           { icon: "💊", title: "Pharmacies", sub: "Nearest and 24/7 pharmacies, prescription & OTC medicines", action: "›", sd: "muuga_shops_pharmacies" },
-          { icon: "💱", title: "Currency Exchange", sub: "How to exchange money safely — read this before you do", action: "›", sd: "currency_exchange_safety" },
+          { icon: "🎁", title: "Souvenirs", sub: "Where to find something to take home", action: "›", sd: "muuga_shops_souvenirs" },
+          { icon: "⚓", title: "Seafarer Supplies", sub: "Workwear, safety gear", action: "›", sd: "muuga_shops_seafarer" },
         ],
       },
       citylife: {
