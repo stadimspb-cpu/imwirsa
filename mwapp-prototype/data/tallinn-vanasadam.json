@@ -1,1 +1,1564 @@
-
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "statusFrom": "vanasadam_centre_about",
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "About the Centre",
+          "sub": "Opening hours, phone, coordinator, website",
+          "action": "›",
+          "sd": "vanasadam_centre_about"
+        },
+        {
+          "icon": "🎱",
+          "title": "Services",
+          "sub": "Hospitality, recreation, connectivity, welfare",
+          "action": "›",
+          "sd": "vanasadam_centre_services"
+        },
+        {
+          "icon": "🚐",
+          "title": "Free Shuttle Bus",
+          "sub": "Timetable, pickup point, how to recognise it",
+          "action": "›",
+          "sd": "vanasadam_centre_shuttle"
+        },
+        {
+          "icon": "📍",
+          "title": "Location & Route",
+          "sub": "Address, map, how to get there on foot",
+          "action": "›",
+          "sd": "vanasadam_centre_location"
+        }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        {
+          "icon": "🚪",
+          "title": "Leaving the Port",
+          "sub": "Exit rules, required documents, gate information",
+          "action": "›",
+          "sd": "vanasadam_transport_leaving"
+        },
+        {
+          "icon": "🚐",
+          "title": "Port Shuttle",
+          "sub": "Timetable, pickup point, how to recognise it",
+          "action": "›",
+          "sd": "vanasadam_centre_shuttle"
+        },
+        {
+          "icon": "🚕",
+          "title": "Taxi",
+          "sub": "Trusted apps, estimated fare, safety tips",
+          "action": "›",
+          "sd": "vanasadam_transport_taxi"
+        },
+        {
+          "icon": "🚎",
+          "title": "Public Transport",
+          "sub": "Nearest stop, routes, tickets, journey to the city",
+          "action": "›",
+          "sd": "vanasadam_transport_public"
+        }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        {
+          "icon": "💱",
+          "title": "Currency Exchange",
+          "sub": "How to exchange money safely — read this first, before you need it",
+          "action": "›",
+          "sd": "vanasadam_currency_exchange"
+        },
+        {
+          "icon": "🛒",
+          "title": "Supermarkets",
+          "sub": "Nearest stores, shopping centres, 24/7 shops",
+          "action": "›",
+          "sd": "vanasadam_shops_supermarkets"
+        },
+        {
+          "icon": "🍽",
+          "title": "Food & Drinks",
+          "sub": "Seafarer-friendly places, fast food, local restaurants",
+          "action": "›",
+          "sd": "vanasadam_shops_food"
+        },
+        {
+          "icon": "📱",
+          "title": "Electronics & SIM Cards",
+          "sub": "Operators, SIM cards, Wi-Fi, chargers",
+          "action": "›",
+          "sd": "vanasadam_shops_sim"
+        },
+        {
+          "icon": "💊",
+          "title": "Pharmacies",
+          "sub": "Nearest and 24/7 pharmacies, prescription & OTC medicines",
+          "action": "›",
+          "sd": "vanasadam_shops_pharmacies"
+        },
+        {
+          "icon": "🎁",
+          "title": "Souvenirs",
+          "sub": "Where to find something to take home",
+          "action": "›",
+          "sd": "vanasadam_shops_souvenirs"
+        },
+        {
+          "icon": "⚓",
+          "title": "Seafarer Supplies",
+          "sub": "Workwear, safety gear, ship's stores",
+          "action": "›",
+          "sd": "vanasadam_shops_seafarer"
+        }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        {
+          "icon": "🌳",
+          "title": "Parks & Waterfronts",
+          "sub": "Promenade, parks, quiet green space, viewpoints",
+          "action": "›",
+          "sd": "vanasadam_city_parks"
+        },
+        {
+          "icon": "🏛",
+          "title": "Culture & Must-See",
+          "sub": "Top 5 city places, museums, historic centre",
+          "action": "›",
+          "sd": "vanasadam_city_culture"
+        },
+        {
+          "icon": "🧘",
+          "title": "Free Time & Relax",
+          "sub": "Free places, viewpoints, somewhere to sit and call home",
+          "action": "›",
+          "sd": "vanasadam_city_free"
+        },
+        {
+          "icon": "🛡",
+          "title": "Safety",
+          "sub": "What to know before going into the city",
+          "action": "›",
+          "sd": "vanasadam_city_safety"
+        }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        {
+          "icon": "💬",
+          "title": "No particular faith — I'd just like to talk",
+          "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator",
+          "action": "›",
+          "go": "assistantchat"
+        },
+        {
+          "icon": "⚓",
+          "title": "Estonian Seamen's Mission",
+          "sub": "Lutheran / ecumenical chaplaincy · ship visits, practical help",
+          "action": "›",
+          "sd": "vanasadam_spiritual_mission"
+        },
+        {
+          "icon": "✝️",
+          "title": "Stella Maris",
+          "sub": "Catholic chaplaincy · ship visits, Mass, guidance",
+          "action": "›",
+          "sd": "vanasadam_spiritual_stella"
+        },
+        {
+          "icon": "☦️",
+          "title": "Orthodox",
+          "sub": "St Nicholas Cathedral · prayer, ship blessing on request",
+          "action": "›",
+          "sd": "vanasadam_spiritual_orthodox"
+        },
+        {
+          "icon": "🕌",
+          "title": "Muslim Support",
+          "sub": "Islamic Centre · prayer hall, conversation, halal food",
+          "action": "›",
+          "sd": "vanasadam_spiritual_muslim"
+        },
+        {
+          "icon": "🙏",
+          "title": "Places for Prayer",
+          "sub": "Nearest prayer room and quiet churches in the Old Town",
+          "action": "›",
+          "sd": "vanasadam_spiritual_prayer"
+        }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        {
+          "icon": "🚨",
+          "title": "Police / Ambulance",
+          "sub": "112 · Free, 24/7",
+          "action": "📞"
+        },
+        {
+          "icon": "🩺",
+          "title": "Ida-Tallinna Keskhaigla (East Tallinn Central Hospital)",
+          "sub": "Ravi 18 · ~2.5 km · ER open 24/7",
+          "action": "🧭"
+        },
+        {
+          "icon": "🇬🇧",
+          "title": "Confido Medical Centre / Qvalitas",
+          "sub": "English- and Russian-speaking private clinics, paid service",
+          "action": "🧭"
+        },
+        {
+          "icon": "🏛",
+          "title": "Seamen's Mission chaplain",
+          "sub": "+372 56 462 825 · also +372 631 8234",
+          "action": "📞"
+        },
+        {
+          "icon": "🌐",
+          "title": "ISWAN 24/7 Helpline",
+          "sub": "+44 20 7283 2922 · Multilingual",
+          "action": "📞"
+        },
+        {
+          "icon": "⚖️",
+          "title": "ITF Inspector — Jaanus Kuiv",
+          "sub": "+372 50 63 908 · free basic advice on wages, contracts & seafarers' rights",
+          "action": "📞"
+        },
+        {
+          "icon": "🤝",
+          "title": "EMSA — Estonian Seafarers' Independent Union",
+          "sub": "+372 661 2406 · Mon–Fri 09:00–17:00",
+          "action": "📞"
+        },
+        {
+          "icon": "📡",
+          "title": "Port duty dispatcher",
+          "sub": "+372 631 8008 · 24/7",
+          "action": "📞"
+        }
+      ]
+    },
+    "wellness": {
+      "title": "Premium Welfare Services",
+      "gated": true,
+      "rows": [
+        {
+          "icon": "🔳",
+          "title": "Your Premium QR Code",
+          "sub": "Your digital ID for partner discounts, wellness entry, and union benefits.",
+          "action": "›",
+          "sd": "premium_qr"
+        },
+        {
+          "icon": "🏷",
+          "title": "City Discounts & Privileges",
+          "sub": "Show your QR code at partner venues in town for exclusive member discounts.",
+          "action": "›",
+          "sd": "port_discounts"
+        },
+        {
+          "icon": "🌊",
+          "title": "Wellness Recovery Zone",
+          "sub": "Private spaces to relax, recharge, and reduce stress during your port call.",
+          "action": "›",
+          "sd": "wellness_zone_vanasadam"
+        },
+        {
+          "icon": "🩺",
+          "title": "Free Medical Consultation",
+          "sub": "Free English-speaking health guidance and medical advice during your stay.",
+          "action": "›",
+          "sd": "medical_extended"
+        },
+        {
+          "icon": "⚖️",
+          "title": "Legal Assistance (Emergency)",
+          "sub": "Discounted English legal aid in critical situations with local authorities.",
+          "action": "›",
+          "sd": "legal_help"
+        }
+      ]
+    }
+  },
+  "subdetails": {
+    "vanasadam_centre_about": {
+      "title": "About the Centre",
+      "hours": [
+        [
+          "Monday",
+          "14:00 – 21:00"
+        ],
+        [
+          "Tuesday",
+          "14:00 – 21:00"
+        ],
+        [
+          "Wednesday",
+          "14:00 – 21:00"
+        ],
+        [
+          "Thursday",
+          "14:00 – 21:00"
+        ],
+        [
+          "Friday",
+          "14:00 – 21:00"
+        ],
+        [
+          "Saturday",
+          "14:00 – 21:00"
+        ],
+        [
+          "Sunday",
+          "Closed — or by request"
+        ]
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+372 631 8234",
+          "sub": "Main line",
+          "action": "📞"
+        },
+        {
+          "icon": "📞",
+          "title": "+372 56 462 825",
+          "sub": "Chaplain's direct line · also WhatsApp",
+          "action": "📞"
+        },
+        {
+          "icon": "🧑‍💼",
+          "title": "Revo Jaager — Chaplain",
+          "sub": "English, Estonian, Russian, German",
+          "action": "💬"
+        },
+        {
+          "icon": "🌐",
+          "title": "meremeestemisjon.ee",
+          "sub": "Centre website",
+          "action": "›"
+        },
+        {
+          "icon": "✉️",
+          "title": "muuga@meremeestemisjon.ee",
+          "sub": "Email",
+          "action": "✉️"
+        }
+      ],
+      "note": "The physical Seafarers' Centre (Estonian Seamen's Mission) is at Muuga, 17 km from here — too far to walk. But Vanasadam sits right in central Tallinn, so the whole city is about 5 minutes on foot instead. Closed 25 Dec, 1 Jan, and Easter Sunday."
+    },
+    "vanasadam_centre_services": {
+      "title": "Services",
+      "groups": [
+        {
+          "label": "Hospitality",
+          "icon": "☕",
+          "items": [
+            "Coffee & tea",
+            "Snacks"
+          ]
+        },
+        {
+          "label": "Recreation",
+          "icon": "🎱",
+          "items": [
+            "TV lounge",
+            "Terrace",
+            "Rest & relaxation area",
+            "Games room",
+            "Billiards",
+            "Table tennis",
+            "Library",
+            "Book exchange",
+            "Sports facilities"
+          ]
+        },
+        {
+          "label": "Connectivity",
+          "icon": "📶",
+          "items": [
+            "Free Wi-Fi",
+            "Computers for seafarers",
+            "SIM cards on site"
+          ]
+        },
+        {
+          "label": "Welfare services",
+          "icon": "🤝",
+          "items": [
+            "Small shop",
+            "Volunteers who visit ships",
+            "Events & excursions",
+            "Help carrying purchases from the city",
+            "Transfer to shopping centres on request"
+          ]
+        },
+        {
+          "label": "Spiritual care",
+          "icon": "🕊",
+          "items": [
+            "Prayer room",
+            "Chapel",
+            "Chaplain"
+          ]
+        }
+      ],
+      "note": "No hot lunch is cooked — snacks and coffee are free or €1–3. This describes the Muuga centre itself; from Vanasadam it's the city on foot, not this centre."
+    },
+    "vanasadam_centre_shuttle": {
+      "title": "Free Shuttle Bus",
+      "from": "Straight from your gangway, or from the Terminal A / Terminal D checkpoint",
+      "directions": [
+        {
+          "icon": "📞",
+          "title": "Book 2–3 hours ahead",
+          "sub": "WhatsApp or call the chaplain: +372 56 462 825",
+          "action": "📞"
+        },
+        {
+          "icon": "🚐",
+          "title": "How to recognise it",
+          "sub": "White minibus (VW Transporter / Mercedes Vito), Estonian Seamen's Mission logo or a \"Seamen's Club\" sign on the windscreen",
+          "action": ""
+        },
+        {
+          "icon": "📅",
+          "title": "No fixed timetable from Vanasadam",
+          "sub": "Runs on call · return time agreed with the driver on the spot",
+          "action": ""
+        },
+        {
+          "icon": "🗓",
+          "title": "Weekends",
+          "sub": "By prior arrangement",
+          "action": ""
+        }
+      ],
+      "note": "For cargo or repair vessels berthed at Vanasadam specifically — this isn't a scheduled run like some ports, so book ahead rather than just waiting at a stop."
+    },
+    "vanasadam_centre_location": {
+      "title": "Location & Route",
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Altmetsa tee 1, Muuga, 74115 Harju maakond",
+          "sub": "The Seamen's Mission building — 17 km away, not walkable from here",
+          "action": ""
+        }
+      ],
+      "maps": {
+        "lat": 59.4912,
+        "lng": 24.9398,
+        "label": "Estonian Seamen's Mission (Muuga)"
+      },
+      "directions": [
+        {
+          "icon": "🚐",
+          "title": "Book the shuttle ahead",
+          "sub": "See Free Shuttle Bus above — the only realistic way to reach the centre building from Vanasadam",
+          "action": "›"
+        },
+        {
+          "icon": "🚶",
+          "title": "Into the city instead: 5 minutes",
+          "sub": "From Terminal A or D, follow the lit pavement along Sadama or Kai street towards Nautica mall / the Old Town — fully paved and safe",
+          "action": "🧭"
+        }
+      ],
+      "note": "At night, avoid unlit construction areas around the port and unmarked vehicle exits from the ferry lanes."
+    },
+    "vanasadam_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": {
+        "tone": "ok",
+        "text": "Yes — shore leave is normally permitted at Vanasadam. Always confirm with your Master or ship's agent before you go: rules can change per berth and per vessel."
+      },
+      "sections": [
+        {
+          "icon": "🚪",
+          "title": "Exit gate",
+          "rows": [
+            {
+              "icon": "🅰️",
+              "title": "Terminal A — foot passenger exit",
+              "sub": "Pedestrian"
+            },
+            {
+              "icon": "🅳",
+              "title": "Terminal D — foot passenger exit",
+              "sub": "Pedestrian"
+            },
+            {
+              "icon": "🚛",
+              "title": "Cargo Gate 1 (Uus-Sadama st.) / Gate 2 (Logi st.)",
+              "sub": "Vehicles only"
+            }
+          ]
+        },
+        {
+          "icon": "🪪",
+          "title": "Take with you",
+          "rows": [
+            {
+              "icon": "📘",
+              "title": "Seaman's Book",
+              "sub": "Or equivalent seafarer's identity document"
+            },
+            {
+              "icon": "📄",
+              "title": "Crew List",
+              "sub": "Signed by the Master"
+            }
+          ]
+        },
+        {
+          "icon": "🛃",
+          "title": "If you're not from the EU / Schengen area",
+          "rows": [
+            {
+              "icon": "🛂",
+              "title": "Border check applies at the checkpoint",
+              "sub": "No Schengen visa? You'll need a Shore Leave Pass, arranged by your ship's agent in advance"
+            }
+          ]
+        },
+        {
+          "icon": "🚶",
+          "title": "On foot",
+          "rows": [
+            {
+              "icon": "✅",
+              "title": "No special gear needed inside Terminals A / D",
+              "sub": "The passenger terminal areas are fine on foot as you are"
+            },
+            {
+              "icon": "🦺",
+              "title": "Hi-vis vest + safety shoes required in cargo/ISPS zones",
+              "sub": "If you're moving through the working cargo or repair berths"
+            },
+            {
+              "icon": "⚠️",
+              "title": "Stay on marked walkways",
+              "sub": "Loading/unloading berths, ferry marshalling areas and technical roads are off-limits — follow the green/yellow marked paths only"
+            }
+          ]
+        }
+      ],
+      "note": "If the checkpoint turns you back, call your ship's agent, or the Seamen's Mission chaplain on duty: +372 56 462 825 (especially if a shuttle was already booked). Pedestrian zones normally run about 06:00–22:30/23:00; overnight, access goes through the security duty checkpoint.",
+      "updated": "5 August 2026"
+    },
+    "vanasadam_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        {
+          "icon": "📱",
+          "title": "Apps",
+          "rows": [
+            {
+              "icon": "🟢",
+              "title": "Bolt",
+              "sub": "Most common here · card payment in-app",
+              "action": "›"
+            },
+            {
+              "icon": "⚫",
+              "title": "Uber",
+              "sub": "Also available in Tallinn",
+              "action": "›"
+            },
+            {
+              "icon": "🔵",
+              "title": "Forus",
+              "sub": "Local Estonian app",
+              "action": "›"
+            }
+          ]
+        },
+        {
+          "icon": "☎️",
+          "title": "By phone",
+          "rows": [
+            {
+              "icon": "📞",
+              "title": "Forus Taxi",
+              "sub": "+372 612 0000",
+              "action": "📞"
+            },
+            {
+              "icon": "📞",
+              "title": "Tallink Takso",
+              "sub": "+372 640 8900",
+              "action": "📞"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Pickup point",
+          "rows": [
+            {
+              "icon": "🚖",
+              "title": "Official taxi ranks",
+              "sub": "Right at the Terminal A and Terminal D exits",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "Typical fare into town is €5–8 through an app. Unofficial drivers sometimes wait right at the pedestrian exit offering \"fast taxi\" at inflated prices — a genuine taxi always has a roof sign, a price list on the right rear window and a running meter. Without those, walk on: at the terminal \"first line\" without an app, fares of €20–30 for a 2 km ride are not unheard of. Order through Bolt.",
+      "updated": "5 August 2026"
+    },
+    "vanasadam_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        {
+          "icon": "🚏",
+          "title": "Nearest stop",
+          "rows": [
+            {
+              "icon": "🅰️",
+              "title": "Reisisadam A",
+              "sub": "50 m from the Terminal A exit"
+            },
+            {
+              "icon": "🅳",
+              "title": "Reisisadam D",
+              "sub": "70 m from the Terminal D exit"
+            }
+          ]
+        },
+        {
+          "icon": "🚎",
+          "title": "Routes",
+          "rows": [
+            {
+              "icon": "2️⃣",
+              "title": "Bus 2",
+              "sub": "From Terminals A / D to the centre / Viru Keskus"
+            },
+            {
+              "icon": "🚋",
+              "title": "Trams 2 & 5",
+              "sub": "From the Linnahall or Kanuti stop, 5–7 min walk from Terminal A"
+            }
+          ]
+        },
+        {
+          "icon": "🎫",
+          "title": "Tickets",
+          "rows": [
+            {
+              "icon": "💳",
+              "title": "Contactless bank card",
+              "sub": "Tap the validator when boarding — simplest option"
+            },
+            {
+              "icon": "🚌",
+              "title": "From the driver",
+              "sub": "Card only, no cash"
+            }
+          ]
+        }
+      ],
+      "note": "About 5–8 minutes to the city centre, €2.00 for an hourly ticket. Last services run roughly 23:30–00:00 — after that, use an app taxi. No shuttle exists inside the port itself: the passenger terminals are compact enough to walk, and for the more distant repair-vessel berths, your agent or the Seamen's Mission shuttle arranges the transfer.",
+      "updated": "5 August 2026"
+    },
+    "vanasadam_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": {
+        "tone": "warn",
+        "text": "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port."
+      },
+      "sections": [
+        {
+          "icon": "✅",
+          "title": "Where to exchange safely",
+          "rows": [
+            {
+              "icon": "🏦",
+              "title": "A bank or licensed exchange office",
+              "sub": "See the checked addresses below"
+            },
+            {
+              "icon": "🏧",
+              "title": "An ATM",
+              "sub": "Usually the safest option where available — official bank rate, no one to negotiate with"
+            }
+          ]
+        },
+        {
+          "icon": "🚩",
+          "title": "Red flags — walk away",
+          "rows": [
+            {
+              "icon": "🗣",
+              "title": "A stranger offers you a better rate",
+              "sub": "On the street, at the gate, or \"just around the corner\" — always a scam"
+            },
+            {
+              "icon": "🚗",
+              "title": "Being asked to go somewhere private",
+              "sub": "A car, a back room, an alley — a legitimate exchange never needs this"
+            },
+            {
+              "icon": "🧾",
+              "title": "No receipt offered",
+              "sub": "A real exchange always gives you a printed receipt with the rate used"
+            }
+          ]
+        },
+        {
+          "icon": "🛡",
+          "title": "Before you hand over money",
+          "rows": [
+            {
+              "icon": "🔢",
+              "title": "Know the rough official rate first",
+              "sub": "Check on your phone before you go — so you can spot a bad deal immediately"
+            },
+            {
+              "icon": "🧮",
+              "title": "Count what you receive, before you walk away",
+              "sub": "In front of the person who gave it to you, not after"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Checked addresses near you",
+          "rows": [
+            {
+              "icon": "💱",
+              "title": "Tavid Currency Exchange — Nautica mall",
+              "sub": "Ahtri 9 · 5 min walk from Terminal D",
+              "action": "🧭"
+            },
+            {
+              "icon": "💱",
+              "title": "Tavid Currency Exchange — Viru Keskus",
+              "sub": "Viru väljak 4",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏧",
+              "title": "Swedbank / SEB ATMs",
+              "sub": "Nautica mall and inside the Terminal D building",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        {
+          "icon": "🛒",
+          "title": "Nearest stores",
+          "rows": [
+            {
+              "icon": "🛍",
+              "title": "Rimi Hyper — Nautica mall",
+              "sub": "350 m from Terminal D / 750 m from Terminal A · 08:00–22:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Prisma Express — Rotermanni",
+              "sub": "~700 m from the gate · 07:00–23:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Grossi Toidukaubad — Ahtri st.",
+              "sub": "~600 m from Terminal D · 08:00–21:00 · budget option",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Prisma Sikupilli hypermarket",
+              "sub": "Not walkable — about a 7-minute / €5 taxi ride",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "Rimi in Nautica is the closest and the usual choice for a quick run before sailing. Bring a bag — carrier bags are charged separately in Estonia.",
+      "updated": "5 August 2026"
+    },
+    "vanasadam_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        {
+          "icon": "🍔",
+          "title": "Quick & cheap",
+          "rows": [
+            {
+              "icon": "🍟",
+              "title": "Nautica mall food court",
+              "sub": "Hesburger, Subway, Buffet — combo meal €6–9",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🍽",
+          "title": "Local favourite",
+          "rows": [
+            {
+              "icon": "🥘",
+              "title": "Koch Aidad — Lootsi 10",
+              "sub": "400 m from the gate · hearty Estonian/European food in a historic barn building",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌍",
+          "title": "Other diets",
+          "rows": [
+            {
+              "icon": "🍛",
+              "title": "Armduu, or Indian/Asian places in Rotermann Quarter",
+              "sub": "~600 m from the port",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        {
+          "icon": "📡",
+          "title": "Mobile operators",
+          "rows": [
+            {
+              "icon": "🟦",
+              "title": "Telia · Elisa · Tele2",
+              "sub": "Starter packs: Super, Rasmus, Smart",
+              "action": ""
+            },
+            {
+              "icon": "🏪",
+              "title": "Buy at any R-Kiosk",
+              "sub": "Inside Terminals A and D, also on the street in front of Nautica mall",
+              "action": "🧭"
+            },
+            {
+              "icon": "💶",
+              "title": "€3–5",
+              "sub": "Includes 5–10 GB, valid 7–30 days",
+              "action": ""
+            },
+            {
+              "icon": "🪪",
+              "title": "No passport needed",
+              "sub": "Prepaid starter packs are sold without ID"
+            }
+          ]
+        },
+        {
+          "icon": "📶",
+          "title": "Free Wi-Fi",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "\"Tallinn Airport/Port Free Wi-Fi\" or \"Nautica Free Wi-Fi\"",
+              "sub": "No password — one click to connect"
+            }
+          ]
+        }
+      ],
+      "note": "An Estonian prepaid SIM works across the whole EU at no extra cost, so it's worth buying here even if your next port is elsewhere in Europe.",
+      "updated": "5 August 2026"
+    },
+    "vanasadam_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        {
+          "icon": "💊",
+          "title": "Nearest",
+          "rows": [
+            {
+              "icon": "🏥",
+              "title": "Apotheka — Nautica mall (Ahtri 9)",
+              "sub": "350 m from Terminal D · 09:00–20:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Tõnismäe Apotheka",
+              "sub": "Central Tallinn, a few km away — the nearest confirmed 24h pharmacy",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "📋",
+          "title": "Medicines",
+          "rows": [
+            {
+              "icon": "🧾",
+              "title": "Prescriptions from outside the EU are usually not accepted",
+              "sub": "Most basic medicines — painkillers, cold and stomach remedies — are sold over the counter without one"
+            }
+          ]
+        }
+      ],
+      "note": "Pharmacists here speak English and Russian freely and can advise on minor complaints without a doctor. For anything serious, see Emergency Contacts.",
+      "updated": "5 August 2026"
+    },
+    "vanasadam_shops_souvenirs": {
+      "title": "Souvenirs",
+      "sections": [
+        {
+          "icon": "🎁",
+          "title": "Where to find them",
+          "rows": [
+            {
+              "icon": "🏰",
+              "title": "Old Town shops — Viru street",
+              "sub": "~1 km / 12 min walk · amber, knitwear, Kalev chocolate — the biggest choice",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Rotermann Quarter shops",
+              "sub": "~600 m from the port · designer Estonian gifts and souvenirs",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_shops_seafarer": {
+      "title": "Seafarer Supplies",
+      "sections": [
+        {
+          "icon": "⚓",
+          "title": "Ship stores / marine supply",
+          "rows": [
+            {
+              "icon": "🗺",
+              "title": "Beckmann Maritime / Navimenu",
+              "sub": "Charts, workwear and ship's stores — usually ordered through your agent with delivery on board",
+              "action": ""
+            }
+          ]
+        },
+        {
+          "icon": "🦺",
+          "title": "Personal gear",
+          "rows": [
+            {
+              "icon": "🥾",
+              "title": "Tamrex — Katusepapi 35",
+              "sub": "~3 km · about 10 min by taxi · safety shoes, workwear, hi-vis gear for yourself",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        {
+          "icon": "🌊",
+          "title": "Waterfront",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Reidi tee promenade",
+              "sub": "Starts right at the Terminal D exit · 2 km along the sea",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌳",
+          "title": "Green space",
+          "rows": [
+            {
+              "icon": "🌲",
+              "title": "Kadriorg Park",
+              "sub": "~1.8 km · a large palace park",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🤫",
+          "title": "Quiet corner",
+          "rows": [
+            {
+              "icon": "🪑",
+              "title": "Rotermann Quarter courtyards",
+              "sub": "~600 m from the gate",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "👁",
+          "title": "Viewpoint",
+          "rows": [
+            {
+              "icon": "🏰",
+              "title": "Kohtuotsa viewing platform, Old Town",
+              "sub": "1.5 km · a striking view over the whole port and the bay",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "If you only have an hour and want air rather than sightseeing, the Reidi tee promenade right at Terminal D is the simplest choice.",
+      "updated": "5 August 2026"
+    },
+    "vanasadam_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        {
+          "icon": "⭐",
+          "title": "Top 5",
+          "rows": [
+            {
+              "icon": "1️⃣",
+              "title": "Rotermann Quarter",
+              "sub": "600 m / 5 min walk · modern industrial district, cafés, architecture, shops",
+              "action": "🧭"
+            },
+            {
+              "icon": "2️⃣",
+              "title": "Old Town (Vanalinn)",
+              "sub": "1 km / 12 min walk to the Viru gates · UNESCO World Heritage",
+              "action": "🧭"
+            },
+            {
+              "icon": "3️⃣",
+              "title": "Reidi tee promenade",
+              "sub": "Right at the Terminal D exit · sea view, benches, a place to rest",
+              "action": "🧭"
+            },
+            {
+              "icon": "4️⃣",
+              "title": "Toompea viewing platforms",
+              "sub": "1.8 km / 20 min walk",
+              "action": "🧭"
+            },
+            {
+              "icon": "5️⃣",
+              "title": "Lennusadam Seaplane Harbour",
+              "sub": "1.8 km west of the port · maritime museum with a real submarine",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        {
+          "icon": "🆓",
+          "title": "Somewhere to sit",
+          "rows": [
+            {
+              "icon": "🏬",
+              "title": "Nautica mall, ground floor lounge",
+              "sub": "Free Wi-Fi, comfortable seating, benches with USB charging",
+              "action": "🧭"
+            },
+            {
+              "icon": "🚪",
+              "title": "Terminal D / Terminal A waiting halls",
+              "sub": "Open lounges with chairs, power sockets, fast Wi-Fi",
+              "action": "🧭"
+            },
+            {
+              "icon": "🍽",
+              "title": "Viru Keskus food court",
+              "sub": "Plenty of seating, sockets at the tables, no obligation to buy anything",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_city_safety": {
+      "title": "Safety",
+      "callout": {
+        "tone": "warn",
+        "text": "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen. Finding the right gate again after dark is the single most common problem ashore."
+      },
+      "sections": [
+        {
+          "icon": "🟢",
+          "title": "General risk",
+          "rows": [
+            {
+              "icon": "🛡",
+              "title": "Very safe, day and night",
+              "sub": "Tallinn is one of the safest capitals in the EU"
+            }
+          ]
+        },
+        {
+          "icon": "🚫",
+          "title": "Bringing anything back to the ship",
+          "rows": [
+            {
+              "icon": "🍾",
+              "title": "Alcohol into the port is strictly forbidden without paperwork",
+              "sub": "Any amount, no exceptions — you need a permit signed by your ship's Master before it can come through the gate"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "🍺",
+              "title": "Basic caution around Suur-Karja",
+              "sub": "The Old Town's bar street — nothing dangerous, just the usual nightlife area"
+            },
+            {
+              "icon": "🚫",
+              "title": "No drinking in the street or in parks",
+              "sub": "It's against the law here — bars, restaurants and their terraces are fine"
+            },
+            {
+              "icon": "🕙",
+              "title": "Shops stop selling alcohol at 22:00",
+              "sub": "Resumes at 10:00 · only bars sell alcohol overnight"
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch out for",
+          "rows": [
+            {
+              "icon": "💸",
+              "title": "Inflated \"street\" taxi fares",
+              "sub": "At the terminal exits and around Old Town nightclubs — always use an app instead",
+              "action": ""
+            }
+          ]
+        },
+        {
+          "icon": "📞",
+          "title": "If something goes wrong",
+          "rows": [
+            {
+              "icon": "🚨",
+              "title": "112",
+              "sub": "Police and ambulance · free · 24/7",
+              "action": "📞"
+            },
+            {
+              "icon": "🏛",
+              "title": "Seamen's Mission chaplain",
+              "sub": "+372 56 462 825",
+              "action": "📞"
+            }
+          ]
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_spiritual_mission": {
+      "title": "Estonian Seamen's Mission",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "💬",
+              "title": "Ship visits, spiritual and emotional conversation",
+              "sub": "Lutheran / ecumenical — open to any Christian denomination, or none"
+            },
+            {
+              "icon": "🙏",
+              "title": "Prayer, books and literature",
+              "sub": ""
+            },
+            {
+              "icon": "🚐",
+              "title": "Practical help",
+              "sub": "Delivering groceries or a SIM card, arranging a transfer"
+            }
+          ]
+        },
+        {
+          "icon": "🕐",
+          "title": "When",
+          "rows": [
+            {
+              "icon": "📅",
+              "title": "Mon–Sat, 14:00 – 21:00",
+              "sub": "Sunday by prior request"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "🧑‍💼",
+          "title": "Revo Jaager — Chaplain",
+          "sub": "English, Estonian, Russian, German",
+          "action": "💬"
+        },
+        {
+          "icon": "📞",
+          "title": "+372 56 462 825",
+          "sub": "Also WhatsApp",
+          "action": "📞"
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_spiritual_stella": {
+      "title": "Stella Maris",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "💬",
+              "title": "Ship visits on request, Mass and services",
+              "sub": "Catholic chaplaincy — including support for Filipino crews"
+            },
+            {
+              "icon": "🙏",
+              "title": "Spiritual guidance",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🕐",
+          "title": "When",
+          "rows": [
+            {
+              "icon": "📅",
+              "title": "Daily, 08:00 – 19:00",
+              "sub": "At Sts Peter and Paul Cathedral, Old Town"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+372 644 6367",
+          "sub": "Stella Maris Estonia chaplaincy / parish line",
+          "action": "📞"
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_spiritual_orthodox": {
+      "title": "Orthodox",
+      "sections": [
+        {
+          "icon": "⛪",
+          "title": "Where",
+          "rows": [
+            {
+              "icon": "📍",
+              "title": "St Nicholas Cathedral — Vene st. 24",
+              "sub": "~1.1 km from Vanasadam",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "🙏",
+              "title": "Prayer — St Nicholas is the patron of seafarers",
+              "sub": ""
+            },
+            {
+              "icon": "⚓",
+              "title": "Ship blessing on request",
+              "sub": ""
+            },
+            {
+              "icon": "💬",
+              "title": "Conversation with a priest",
+              "sub": "Russian, Estonian"
+            }
+          ]
+        },
+        {
+          "icon": "🕐",
+          "title": "When",
+          "rows": [
+            {
+              "icon": "📅",
+              "title": "Daily, 09:00 – 18:00",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+372 644 3484",
+          "sub": "Duty priest, Tallinn",
+          "action": "📞"
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_spiritual_muslim": {
+      "title": "Muslim Support",
+      "sections": [
+        {
+          "icon": "🕌",
+          "title": "Where",
+          "rows": [
+            {
+              "icon": "📍",
+              "title": "Tallinn Islamic Cultural Centre — Keevise 9",
+              "sub": "~4 km from Vanasadam",
+              "action": "🧭"
+            },
+            {
+              "icon": "🕐",
+              "title": "Open for the five daily prayers",
+              "sub": "Friday (Jumu'ah) prayer around midday"
+            }
+          ]
+        },
+        {
+          "icon": "🤝",
+          "title": "Help available",
+          "rows": [
+            {
+              "icon": "💬",
+              "title": "Conversation in Arabic, English, Russian, Estonian",
+              "sub": "Ask at the centre"
+            },
+            {
+              "icon": "🍽",
+              "title": "Halal food guidance",
+              "sub": "The centre can point you to the nearest options"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+372 614 3086",
+          "sub": "Islamic Centre reception",
+          "action": "📞"
+        }
+      ],
+      "updated": "5 August 2026"
+    },
+    "vanasadam_spiritual_prayer": {
+      "title": "Places for Prayer",
+      "sections": [
+        {
+          "icon": "🕊",
+          "title": "Nearest formal prayer room",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "Ecumenical chapel, Estonian Seamen's Mission",
+              "sub": "At the centre in Muuga, 17 km away — not walkable from here, open to any faith",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🏙",
+          "title": "Closer, in the city",
+          "rows": [
+            {
+              "icon": "⛪",
+              "title": "Old Town churches",
+              "sub": "Mostly open to visitors during the day — sitting quietly is completely normal",
+              "action": "🧭"
+            },
+            {
+              "icon": "🕌",
+              "title": "Tallinn Islamic Cultural Centre",
+              "sub": "Keevise 9, ~4 km — prayer hall and washing facilities",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "The formal prayer room is at the centre building in Muuga, not here — but Vanasadam sits right in the Old Town, so a quiet church is a short walk away either way.",
+      "updated": "5 August 2026"
+    },
+    "premium_qr": {
+      "type": "qr_code",
+      "gated": true,
+      "title": "Your Premium QR Code",
+      "note": "Show this code to partner staff for verification — supermarkets, cafés and transport partners near the centre. Demo mode: this is a static illustrative code. Live rotating verification, tied to your real MWA-ID and checked against IMWIRSA's server, will connect once the backend is ready."
+    },
+    "port_discounts": {
+      "gated": true,
+      "title": "City Discounts & Privileges",
+      "note": "When paying at any of these partners, show your Premium QR code from the app at checkout to receive the discount included in the partner program.",
+      "contacts": [
+        {
+          "icon": "🛍",
+          "title": "Rimi Supermarket",
+          "sub": "Sadama tn 21, Tallinn",
+          "action": "🧭"
+        },
+        {
+          "icon": "☕",
+          "title": "Seafarers' Centre café",
+          "sub": "Sadama tn 25, Tallinn",
+          "action": "🧭"
+        },
+        {
+          "icon": "🚕",
+          "title": "Partner taxi service",
+          "sub": "Pickup point at the centre — ask staff",
+          "action": "🧭"
+        }
+      ]
+    },
+    "wellness_zone_vanasadam": {
+      "gated": true,
+      "title": "Wellness Recovery Zone — Tallinn",
+      "note": "Your quiet harbor to rest, recover, and reset. A comfortable space offering massage, soothing scents, and deep relaxation for body and mind — everything you need to recharge your physical and emotional strength between watches.",
+      "contacts": [
+        {
+          "icon": "🧑‍💼",
+          "title": "Kadri Saar — Your Wellness Host",
+          "sub": "Book a session via WhatsApp",
+          "action": "💬"
+        }
+      ],
+      "directions": [
+        {
+          "icon": "📍",
+          "title": "Next to the Seafarers' Centre",
+          "sub": "Sadama 25, Tallinn",
+          "action": "🧭"
+        }
+      ]
+    },
+    "medical_extended": {
+      "gated": true,
+      "title": "Free Medical Consultation",
+      "hours": [
+        [
+          "Monday",
+          "08:00 – 20:00"
+        ],
+        [
+          "Tuesday",
+          "08:00 – 20:00"
+        ],
+        [
+          "Wednesday",
+          "08:00 – 20:00"
+        ],
+        [
+          "Thursday",
+          "08:00 – 20:00"
+        ],
+        [
+          "Friday",
+          "08:00 – 20:00"
+        ],
+        [
+          "Saturday",
+          "09:00 – 15:00"
+        ],
+        [
+          "Sunday",
+          "Emergency only"
+        ]
+      ],
+      "contacts": [
+        {
+          "icon": "🩺",
+          "title": "Tallinn Medical Clinic — priority booking",
+          "sub": "Union card covers consultation fee",
+          "action": "📞"
+        },
+        {
+          "icon": "🚑",
+          "title": "Emergency services",
+          "sub": "112 · Free · 24/7",
+          "action": "📞"
+        }
+      ]
+    },
+    "legal_help": {
+      "gated": true,
+      "title": "Legal Assistance (Emergency)",
+      "note": "Free basic information and union/ITF contacts are always available to every seafarer under Emergency Contacts — this is specifically a paid, in-depth consultation with a maritime lawyer for Trade Union members.",
+      "contacts": [
+        {
+          "icon": "💬",
+          "title": "WhatsApp consultation with a maritime lawyer",
+          "sub": "Paid service, covered by Trade Union membership · response within 24h",
+          "action": "💬"
+        }
+      ],
+      "directions": [
+        {
+          "icon": "🏛",
+          "title": "In person at the Seafarers' Centre",
+          "sub": "By appointment only",
+          "action": "🧭"
+        }
+      ]
+    }
+  }
+}
