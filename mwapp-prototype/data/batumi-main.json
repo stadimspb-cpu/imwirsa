@@ -1,0 +1,1017 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "About the Centre",
+          "sub": "Currently closed for renovation — read before relying on this",
+          "action": "›",
+          "sd": "batumi_centre_about"
+        },
+        {
+          "icon": "🎱",
+          "title": "Services",
+          "sub": "Hospitality, recreation, connectivity, welfare",
+          "action": "›",
+          "sd": "batumi_centre_services"
+        },
+        {
+          "icon": "📍",
+          "title": "Location & Route",
+          "sub": "Address, map, how to get there on foot",
+          "action": "›",
+          "sd": "batumi_centre_location"
+        }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        {
+          "icon": "🚪",
+          "title": "Leaving the Port",
+          "sub": "Exit rules, required documents, gate information",
+          "action": "›",
+          "sd": "batumi_transport_leaving"
+        },
+        {
+          "icon": "🚕",
+          "title": "Taxi",
+          "sub": "Apps, phone numbers, where to catch one",
+          "action": "›",
+          "sd": "batumi_transport_taxi"
+        },
+        {
+          "icon": "🚎",
+          "title": "Public Transport",
+          "sub": "Nearest stop, routes, tickets, journey to the city",
+          "action": "›",
+          "sd": "batumi_transport_public"
+        }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        {
+          "icon": "💱",
+          "title": "Currency Exchange",
+          "sub": "How to exchange money safely — read this first, before you need it",
+          "action": "›",
+          "sd": "batumi_currency_exchange"
+        },
+        {
+          "icon": "🛒",
+          "title": "Supermarkets",
+          "sub": "Nearest stores, shopping centres, 24/7 shops",
+          "action": "›",
+          "sd": "batumi_shops_supermarkets"
+        },
+        {
+          "icon": "🍽",
+          "title": "Food & Drinks",
+          "sub": "Seafarer-friendly places, local restaurants, halal options",
+          "action": "›",
+          "sd": "batumi_shops_food"
+        },
+        {
+          "icon": "📱",
+          "title": "Electronics & SIM Cards",
+          "sub": "Operators, SIM cards, Wi-Fi, chargers",
+          "action": "›",
+          "sd": "batumi_shops_sim"
+        },
+        {
+          "icon": "💊",
+          "title": "Pharmacies",
+          "sub": "Nearest and 24/7 pharmacies, prescription & OTC medicines",
+          "action": "›",
+          "sd": "batumi_shops_pharmacies"
+        },
+        {
+          "icon": "🎁",
+          "title": "Souvenirs",
+          "sub": "Where to find something to take home",
+          "action": "›",
+          "sd": "batumi_shops_souvenirs"
+        },
+        {
+          "icon": "⚓",
+          "title": "Seafarer Supplies",
+          "sub": "Workwear, safety gear, ship's stores",
+          "action": "›",
+          "sd": "batumi_shops_seafarer"
+        }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        {
+          "icon": "🌳",
+          "title": "Parks & Waterfronts",
+          "sub": "Batumi Boulevard, right at the gate",
+          "action": "›",
+          "sd": "batumi_city_parks"
+        },
+        {
+          "icon": "🏛",
+          "title": "Culture & Must-See",
+          "sub": "Top 5 places in walking distance",
+          "action": "›",
+          "sd": "batumi_city_culture"
+        },
+        {
+          "icon": "🧘",
+          "title": "Free Time & Relax",
+          "sub": "Somewhere to sit without spending anything",
+          "action": "›",
+          "sd": "batumi_city_free"
+        },
+        {
+          "icon": "🛡",
+          "title": "Safety",
+          "sub": "What to know before going into the city",
+          "action": "›",
+          "sd": "batumi_city_safety"
+        }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        {
+          "icon": "💬",
+          "title": "No particular faith — I'd just like to talk",
+          "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator",
+          "action": "›",
+          "go": "assistantchat"
+        },
+        {
+          "icon": "⚓",
+          "title": "Sailors' Society Georgia",
+          "sub": "Ecumenical · ship visits, prayer room at the centre",
+          "action": "›",
+          "sd": "batumi_spiritual_mission"
+        }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        {
+          "icon": "🚨",
+          "title": "Police / Ambulance / Fire",
+          "sub": "112 · Free, 24/7 · English-speaking operators available",
+          "action": "📞"
+        },
+        {
+          "icon": "🩺",
+          "title": "High Technology Medical Centre",
+          "sub": "Bagrationi st. 125 · ~3.5 km · +995 422 22 22 14",
+          "action": "🧭"
+        },
+        {
+          "icon": "🇬🇧",
+          "title": "EVEX Medical Centers",
+          "sub": "English-speaking private clinic, branches in Batumi",
+          "action": "🧭"
+        },
+        {
+          "icon": "🏛",
+          "title": "Batumi Seafarers' Centre",
+          "sub": "+995 422 27 40 00 · currently closed for renovation, phone still active",
+          "action": "📞"
+        },
+        {
+          "icon": "🌐",
+          "title": "ISWAN 24/7 Helpline",
+          "sub": "+44 20 7283 2922 · Multilingual",
+          "action": "📞"
+        },
+        {
+          "icon": "⚖️",
+          "title": "Maritime Transport Agency of Georgia",
+          "sub": "+995 422 27 49 25 · info@mta.gov.ge",
+          "action": "📞"
+        },
+        {
+          "icon": "📡",
+          "title": "Port duty dispatcher",
+          "sub": "+995 422 27 60 15",
+          "action": "📞"
+        }
+      ]
+    },
+    "wellness": {
+      "title": "Premium Welfare Services",
+      "gated": true,
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "Details coming soon from the port curator",
+          "sub": "Trade Union partner services pending confirmation for this terminal",
+          "pending": true
+        }
+      ]
+    }
+  },
+  "subdetails": {
+    "batumi_centre_about": {
+      "title": "About the Centre",
+      "callout": {
+        "tone": "warn",
+        "text": "CLOSED for renovation. No confirmed reopening date — please call ahead to check. The coordinator has been told 1 November 2026 as a schedule target, but this is not confirmed and could change."
+      },
+      "hours": [
+        [
+          "Monday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Tuesday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Wednesday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Thursday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Friday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Saturday",
+          "12:00 – 21:00"
+        ],
+        [
+          "Sunday",
+          "12:00 – 21:00"
+        ]
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+995 422 27 40 00",
+          "sub": "Main line",
+          "action": "📞"
+        },
+        {
+          "icon": "📞",
+          "title": "+995 599 12 34 56",
+          "sub": "WhatsApp",
+          "action": "📞"
+        }
+      ],
+      "note": "Run by Sailors' Society Batumi with the local seafarers' rights council. Closed 1–2 Jan, 7 Jan, 24 Apr, 26 May — on top of the current renovation. Hours above are what applies once it reopens."
+    },
+    "batumi_centre_services": {
+      "title": "Services",
+      "groups": [
+        {
+          "label": "Hospitality",
+          "icon": "☕",
+          "items": [
+            "Tea & coffee, snacks — free"
+          ]
+        },
+        {
+          "label": "Recreation",
+          "icon": "🎱",
+          "items": [
+            "Rest area",
+            "Billiards",
+            "Table tennis",
+            "Library",
+            "Games room"
+          ]
+        },
+        {
+          "label": "Connectivity",
+          "icon": "📶",
+          "items": [
+            "Free Wi-Fi",
+            "Computers",
+            "Free Magti / Geocell SIM cards"
+          ]
+        },
+        {
+          "label": "Welfare services",
+          "icon": "🤝",
+          "items": [
+            "Volunteers who visit ships",
+            "Excursions"
+          ]
+        },
+        {
+          "label": "Spiritual care",
+          "icon": "🕊",
+          "items": [
+            "Prayer room",
+            "Chaplain"
+          ]
+        }
+      ],
+      "note": "No hot meals cooked — tea, coffee and snacks only. All of this is on hold while the centre is closed for renovation."
+    },
+    "batumi_centre_location": {
+      "title": "Location & Route",
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "22 Gogoberashvili St., Batumi",
+          "sub": "",
+          "action": ""
+        }
+      ],
+      "directions": [
+        {
+          "icon": "🚶",
+          "title": "From Checkpoint No.1 (passenger): ~450 m, 6 min",
+          "sub": "Turn right onto Gogoberashvili St. — the centre is on your left",
+          "action": "🧭"
+        },
+        {
+          "icon": "🚶",
+          "title": "From Checkpoint No.2 (cargo/oil): ~150 m, 2 min",
+          "sub": "Exit straight onto Gogoberashvili St. — the centre is 150 m on your right",
+          "action": "🧭"
+        },
+        {
+          "icon": "🚶",
+          "title": "From Checkpoint No.3 (industrial): ~1.2 km, 15 min, or 3 min by taxi",
+          "sub": "Along Mayakovski St. to Baku St., then to Gogoberashvili St.",
+          "action": "🧭"
+        }
+      ],
+      "note": "Avoid the unlit railway tracks near Checkpoint No.3 — use the Baku St. pavement instead."
+    },
+    "batumi_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": {
+        "tone": "ok",
+        "text": "Yes — shore leave is normally permitted at Batumi. Always confirm with your Master or ship's agent before you go."
+      },
+      "sections": [
+        {
+          "icon": "🚪",
+          "title": "Checkpoints",
+          "rows": [
+            {
+              "icon": "1️⃣",
+              "title": "No.1 — passenger — 3 Gogoberashvili St.",
+              "sub": "Pedestrian"
+            },
+            {
+              "icon": "2️⃣",
+              "title": "No.2 — cargo/oil — 15 Baku St.",
+              "sub": "Pedestrian"
+            },
+            {
+              "icon": "3️⃣",
+              "title": "No.3 — industrial — Mayakovski St.",
+              "sub": "Pedestrian, hi-vis vest required · vehicle-only during heavy cargo operations"
+            }
+          ]
+        },
+        {
+          "icon": "🪪",
+          "title": "Take with you",
+          "rows": [
+            {
+              "icon": "📘",
+              "title": "Seaman's Book + international passport",
+              "sub": ""
+            },
+            {
+              "icon": "🎫",
+              "title": "Shore Pass",
+              "sub": "Issued by Georgian Border Police through your ship's agent"
+            }
+          ]
+        },
+        {
+          "icon": "🦺",
+          "title": "On foot",
+          "rows": [
+            {
+              "icon": "🦺",
+              "title": "Hi-vis vest and helmet required inside port territory",
+              "sub": "Not required once you're past the checkpoint"
+            }
+          ]
+        }
+      ],
+      "note": "All checkpoints operate 24/7. For problems, call your agent or the port duty officer: +995 422 27 60 15.",
+      "updated": "7 August 2026"
+    },
+    "batumi_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        {
+          "icon": "📱",
+          "title": "Apps",
+          "rows": [
+            {
+              "icon": "🟢",
+              "title": "Bolt",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "🟡",
+              "title": "Yandex Go",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "🔵",
+              "title": "Maxim",
+              "sub": "",
+              "action": "›"
+            }
+          ]
+        },
+        {
+          "icon": "☎️",
+          "title": "By phone",
+          "rows": [
+            {
+              "icon": "📞",
+              "title": "Maxim Batumi",
+              "sub": "+995 422 24 00 00",
+              "action": "📞"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Pickup point",
+          "rows": [
+            {
+              "icon": "🚖",
+              "title": "Right outside Checkpoint No.1 or No.2",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "5–10 GEL (~$2–4) into the centre. Unofficial drivers: no roof sign, no taxi sticker, no yellow/white plate, quote a price before you even get in, don't use an app, and ask for cash upfront — walk past them. Always fix the price in GEL before getting in, or use an app. Don't pay street drivers in USD or EUR.",
+      "updated": "7 August 2026"
+    },
+    "batumi_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        {
+          "icon": "🚏",
+          "title": "Nearest stop",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "\"Gogoberashvili St. / Cable Car Station\"",
+              "sub": "~200 m from the checkpoints",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚌",
+          "title": "Routes",
+          "rows": [
+            {
+              "icon": "🔢",
+              "title": "Buses 1, 1a, 2, 4, 10, 15",
+              "sub": "No.10 also runs to the airport, along the boulevard"
+            }
+          ]
+        }
+      ],
+      "note": "5–10 minutes to the centre, 0.80 GEL. Cash is NOT accepted on buses — contactless international card (Visa/Mastercard), the Georgian transport card, or Apple/Google Pay only. Last buses run about 23:00–23:30.",
+      "updated": "7 August 2026"
+    },
+    "batumi_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": {
+        "tone": "warn",
+        "text": "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port."
+      },
+      "sections": [
+        {
+          "icon": "✅",
+          "title": "Where to exchange safely",
+          "rows": [
+            {
+              "icon": "🏦",
+              "title": "A bank or licensed exchange office",
+              "sub": "See the checked addresses below"
+            },
+            {
+              "icon": "🏧",
+              "title": "An ATM",
+              "sub": "Bank of Georgia / TBC Bank at Checkpoint No.1 — dispenses GEL and USD"
+            }
+          ]
+        },
+        {
+          "icon": "🚩",
+          "title": "Red flags — walk away",
+          "rows": [
+            {
+              "icon": "🗣",
+              "title": "A stranger offers you a better rate",
+              "sub": "On the street, at the gate, or \"just around the corner\" — always a scam"
+            },
+            {
+              "icon": "🧾",
+              "title": "No receipt offered",
+              "sub": "A real exchange always gives you a printed receipt with the rate used"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Checked addresses near you",
+          "rows": [
+            {
+              "icon": "💱",
+              "title": "Rico Credit — 6 Gogoberashvili St.",
+              "sub": "150 m from Checkpoint No.1 · no commission on the rate",
+              "action": "🧭"
+            },
+            {
+              "icon": "💱",
+              "title": "IntelExpress — 4 Baku St.",
+              "sub": "200 m from Checkpoint No.2",
+              "action": "🧭"
+            },
+            {
+              "icon": "💱",
+              "title": "TBC Exchange Box",
+              "sub": "Just outside the Checkpoint No.1 passenger pavilion",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        {
+          "icon": "🛒",
+          "title": "Nearest stores",
+          "rows": [
+            {
+              "icon": "🛍",
+              "title": "Carrefour Express — 12 Gogoberashvili St.",
+              "sub": "~300 m · 08:00–23:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "2 Step / Nikora — 20 Gogoberashvili St.",
+              "sub": "~150 m · 08:00–22:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Spar — 8 Baku St.",
+              "sub": "~250 m · open 24/7",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🏬",
+          "title": "Shopping centres",
+          "rows": [
+            {
+              "icon": "🏢",
+              "title": "Metro City Mall — ~5 km",
+              "sub": "Bus 10 (15 min) or Bolt (~10 GEL) · Carrefour, clothing, electronics, food court, exchange offices",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏢",
+              "title": "Batumi Mall — ~2.5 km",
+              "sub": "Bus 1a/7 or Bolt (~6 GEL) · Goodwill, pharmacy, electronics, exchange",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        {
+          "icon": "🍔",
+          "title": "Cheap & quick",
+          "rows": [
+            {
+              "icon": "🥟",
+              "title": "Bakeries on Gogoberashvili St.",
+              "sub": "Adjarian khachapuri, 12–16 GEL (~$4.50–6)",
+              "action": ""
+            }
+          ]
+        },
+        {
+          "icon": "🍽",
+          "title": "Popular with seafarers",
+          "rows": [
+            {
+              "icon": "🍴",
+              "title": "\"Heart of Batumi\" — 11 General Mazniashvili St.",
+              "sub": "English menu",
+              "action": "🧭"
+            },
+            {
+              "icon": "🎟",
+              "title": "\"Maritime Cafe\", by Checkpoint No.1",
+              "sub": "10% discount for seafarers — show your seaman's book",
+              "action": ""
+            }
+          ]
+        },
+        {
+          "icon": "🕌",
+          "title": "Halal",
+          "rows": [
+            {
+              "icon": "🍖",
+              "title": "\"Kebab House\" — 8 Kutaisi St.",
+              "sub": "~600 m from Checkpoint No.1 · halal certified",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        {
+          "icon": "📡",
+          "title": "Mobile operators",
+          "rows": [
+            {
+              "icon": "🟦",
+              "title": "Magti · Geocell (Silknet) · Cellfie",
+              "sub": ""
+            },
+            {
+              "icon": "🏪",
+              "title": "Official Magti salon — 10 Rustaveli Ave.",
+              "sub": "~800 m, or the stalls right at Checkpoint No.1",
+              "action": "🧭"
+            },
+            {
+              "icon": "💶",
+              "title": "15–20 GEL (~$6–8)",
+              "sub": "Unlimited internet, 7 days"
+            },
+            {
+              "icon": "🪪",
+              "title": "Original passport required",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "📶",
+          "title": "Free Wi-Fi",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "\"Batumi_Port_Free\"",
+              "sub": "No password — SMS authorisation"
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch out for",
+          "rows": [
+            {
+              "icon": "🚫",
+              "title": "Don't buy SIM cards from street vendors at the checkpoints",
+              "sub": "Prices are inflated and the SIM often isn't registered properly — use the official Magti/Geocell salon instead"
+            }
+          ]
+        }
+      ],
+      "note": "ATM: Bank of Georgia / TBC Bank at Checkpoint No.1 — dispenses GEL and USD.",
+      "updated": "7 August 2026"
+    },
+    "batumi_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        {
+          "icon": "💊",
+          "title": "Nearest",
+          "rows": [
+            {
+              "icon": "🏥",
+              "title": "PSP Pharmacy / Pharmadepot — 16 Gogoberashvili St.",
+              "sub": "~200 m · 08:00–22:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Aversi Pharmacy — 31 Chavchavadze St.",
+              "sub": "~1.2 km from Checkpoint No.1",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "📋",
+          "title": "Medicines",
+          "rows": [
+            {
+              "icon": "🧾",
+              "title": "Basic medicines accepted freely",
+              "sub": "Antibiotics need a prescription from a local doctor"
+            }
+          ]
+        }
+      ],
+      "note": "Younger pharmacists generally speak English and Russian.",
+      "updated": "7 August 2026"
+    },
+    "batumi_shops_souvenirs": {
+      "title": "Souvenirs",
+      "sections": [
+        {
+          "icon": "🎁",
+          "title": "Where to find them",
+          "rows": [
+            {
+              "icon": "🏪",
+              "title": "Old Batumi Craft Shop — 15 Kutaisi St.",
+              "sub": "~500 m",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Batumeli Souvenirs",
+              "sub": "On the promenade by the \"Argo\" cable car · ~300 m",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_shops_seafarer": {
+      "title": "Seafarer Supplies",
+      "sections": [
+        {
+          "icon": "🦺",
+          "title": "Workwear & ship's stores",
+          "rows": [
+            {
+              "icon": "🥾",
+              "title": "Batumi Marine Supply — 24 Baku St.",
+              "sub": "~400 m from Checkpoint No.2 · PPE, boots, coveralls, ship's log books",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        {
+          "icon": "🌊",
+          "title": "Waterfront",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Batumi Boulevard / Miracle Park",
+              "sub": "Right outside Checkpoint No.1, ~100 m",
+              "action": "🧭"
+            },
+            {
+              "icon": "🚶",
+              "title": "Seaside promenade",
+              "sub": "7 km pedestrian stretch along the sea"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        {
+          "icon": "⭐",
+          "title": "Top 5",
+          "rows": [
+            {
+              "icon": "1️⃣",
+              "title": "\"Argo\" cable car",
+              "sub": "~250 m from Checkpoint No.1 · round trip 30 GEL (~$11), one-way 20 GEL",
+              "action": "🧭"
+            },
+            {
+              "icon": "2️⃣",
+              "title": "\"Ali and Nino\" moving sculpture",
+              "sub": "Miracle Park, ~400 m · free",
+              "action": "🧭"
+            },
+            {
+              "icon": "3️⃣",
+              "title": "Europe Square & astronomical clock",
+              "sub": "Memed Abashidze Ave., ~800 m · free",
+              "action": "🧭"
+            },
+            {
+              "icon": "4️⃣",
+              "title": "Batumi Botanical Garden",
+              "sub": "~9 km · bus 31 or taxi",
+              "action": "🧭"
+            },
+            {
+              "icon": "5️⃣",
+              "title": "Piazza Square",
+              "sub": "Parnavaz Mepe St., ~600 m · free",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        {
+          "icon": "🆓",
+          "title": "Somewhere to sit",
+          "rows": [
+            {
+              "icon": "🪑",
+              "title": "Charging benches in Miracle Park",
+              "sub": "By the Ferris wheel · solar powered, USB ports",
+              "action": "🧭"
+            },
+            {
+              "icon": "📚",
+              "title": "Public library — 23 Noe Zhordania St.",
+              "sub": "Wi-Fi, quiet",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "The Seafarers' Centre would normally be the best option here, but it's closed for renovation right now.",
+      "updated": "7 August 2026"
+    },
+    "batumi_city_safety": {
+      "title": "Safety",
+      "callout": {
+        "tone": "warn",
+        "text": "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen."
+      },
+      "sections": [
+        {
+          "icon": "🟢",
+          "title": "General risk",
+          "rows": [
+            {
+              "icon": "🛡",
+              "title": "Very safe",
+              "sub": "Patrolled by tourist police"
+            }
+          ]
+        },
+        {
+          "icon": "🚫",
+          "title": "Bringing anything back to the ship",
+          "rows": [
+            {
+              "icon": "🍾",
+              "title": "Alcohol into the port is strictly forbidden without paperwork",
+              "sub": "Any amount, no exceptions — you need a permit signed by your ship's Master before it can come through the checkpoint"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "🚧",
+              "title": "Avoid the unlit railway tracks near Checkpoint No.3",
+              "sub": ""
+            },
+            {
+              "icon": "🚫",
+              "title": "No drinking in the street or in parks",
+              "sub": "It's against the law — bars, restaurants and their terraces are fine"
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch out for",
+          "rows": [
+            {
+              "icon": "💸",
+              "title": "Inflated bills at strip clubs on Baratashvili St.",
+              "sub": "Always check menu prices before ordering a drink"
+            }
+          ]
+        },
+        {
+          "icon": "🌉",
+          "title": "Night logistics",
+          "rows": [
+            {
+              "icon": "✅",
+              "title": "No bridges that open — roads stay open 24/7",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "📞",
+          "title": "If something goes wrong",
+          "rows": [
+            {
+              "icon": "🚨",
+              "title": "112",
+              "sub": "Police, ambulance, fire · English-speaking operators",
+              "action": "📞"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "batumi_spiritual_mission": {
+      "title": "Sailors' Society Georgia",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "💬",
+              "title": "Ship visits, conversation, emergency help, delivering items",
+              "sub": "Ecumenical / Christian — open to any faith or none"
+            }
+          ]
+        },
+        {
+          "icon": "🕊",
+          "title": "Prayer room",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "At the Batumi Seafarers' Centre",
+              "sub": "Currently closed for renovation along with the rest of the centre",
+              "action": ""
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+995 599 12 34 56",
+          "sub": "Georgian, English, Russian",
+          "action": "📞"
+        }
+      ],
+      "updated": "7 August 2026"
+    }
+  }
+}
