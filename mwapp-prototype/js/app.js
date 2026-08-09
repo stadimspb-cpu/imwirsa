@@ -312,6 +312,25 @@ const PORTS = {
     meta: { flag: "🇬🇪", terminal: "Poti", city: "Poti", country: "Georgia", tz: "UTC+4", lat: 42.1462, lng: 41.6710 },
     categories: null, // loaded lazily from data/poti-main.json — see ensurePortContentLoaded()
   },
+
+  // ── LITHUANIA · KLAIPĖDA ────────────────────────────────────────────
+  // Submitted 8 August 2026 at partial completion, by design — the
+  // coordinator is still tracking down centre phone numbers, transport
+  // details and city-life content, and will resubmit as it's found. Per
+  // Andrey's 8 Aug decision: waiting for a "complete" submission before
+  // publishing anything discourages coordinators mid-effort more than it
+  // protects anyone, since nothing here is yet shown to real seafarers.
+  // Before this goes live for real use, re-verify everything currently
+  // marked PENDING or "not found" below — do not assume it got filled in
+  // just because the port appears in the app.
+  "klaipeda-passenger": {
+    meta: { flag: "🇱🇹", terminal: "Passenger Terminal", city: "Klaipėda", country: "Lithuania", tz: "UTC+3", lat: 55.7061, lng: 21.1278 },
+    categories: null, // loaded lazily from data/klaipeda-passenger.json — see ensurePortContentLoaded()
+  },
+  "klaipeda-kn-energies": {
+    meta: { flag: "🇱🇹", terminal: "KN Energies Oil Terminal", city: "Klaipėda", country: "Lithuania", tz: "UTC+3", lat: 55.7332, lng: 21.1025 },
+    categories: null, // loaded lazily from data/klaipeda-kn-energies.json — see ensurePortContentLoaded()
+  },
 };
 
 function currentPort() { return PORTS[state.portId] || PORTS["tallinn-vanasadam"]; }
