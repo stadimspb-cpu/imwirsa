@@ -1,0 +1,176 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "rows": [
+        { "icon": "ℹ️", "title": "About the Centre", "sub": "No centre confirmed at this terminal — see Leaving the Port before assuming you can visit one", "pending": true },
+        { "icon": "🎱", "title": "Services", "sub": "Awaiting data from the port curator", "pending": true },
+        { "icon": "📍", "title": "Location & Route", "sub": "Awaiting data from the port curator", "pending": true }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        { "icon": "🚪", "title": "Leaving the Port", "sub": "Read this before you plan anything — pedestrian access is not allowed here", "action": "›", "sd": "klaipeda_kn_transport_leaving" },
+        { "icon": "🚕", "title": "Taxi", "sub": "Apps, rough fares by zone", "action": "›", "sd": "klaipeda_kn_transport_taxi" },
+        { "icon": "🚎", "title": "Public Transport", "sub": "Payment methods, last service", "action": "›", "sd": "klaipeda_kn_transport_public" }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        { "icon": "💱", "title": "Currency Exchange", "sub": "How to exchange money safely — read this first, before you need it", "action": "›", "sd": "klaipeda_kn_currency_exchange" },
+        { "icon": "🛒", "title": "Supermarkets", "sub": "Nearest stores, shopping centres, 24/7 shops", "action": "›", "sd": "klaipeda_kn_shops_supermarkets" },
+        { "icon": "🍽", "title": "Food & Drinks", "sub": "Fast food, local restaurants, seafarer-friendly places", "pending": true },
+        { "icon": "📱", "title": "Electronics & SIM Cards", "sub": "Operators, SIM cards, Wi-Fi, chargers", "action": "›", "sd": "klaipeda_kn_shops_sim" },
+        { "icon": "💊", "title": "Pharmacies", "sub": "Nearest and 24/7 pharmacies", "action": "›", "sd": "klaipeda_kn_shops_pharmacies" },
+        { "icon": "🎁", "title": "Souvenirs", "sub": "Where to find something to take home", "pending": true },
+        { "icon": "⚓", "title": "Seafarer Supplies", "sub": "Workwear, safety gear, ship's stores", "pending": true }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        { "icon": "🌳", "title": "Parks & Waterfronts", "sub": "Nearest park, promenade, quiet green zone, viewpoints", "pending": true },
+        { "icon": "🏛", "title": "Culture & Must-See", "sub": "Top 5 city places, museums, historic buildings", "pending": true },
+        { "icon": "🧘", "title": "Free Time & Relax", "sub": "Free attractions, viewpoints, Wi-Fi & chill spots", "pending": true },
+        { "icon": "🛡", "title": "Safety", "sub": "Same city as the Passenger Terminal — the coordinator confirmed this applies here too", "action": "›", "sd": "klaipeda_kn_city_safety" }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        { "icon": "💬", "title": "No particular faith — I'd just like to talk", "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator", "action": "›", "go": "assistantchat" },
+        { "icon": "🕊", "title": "Missions & Chaplains", "sub": "Not yet confirmed for this terminal", "pending": true },
+        { "icon": "🙏", "title": "Places for Prayer", "sub": "Prayer rooms, quiet places, opening hours", "pending": true }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞" },
+        { "icon": "🩺", "title": "Klaipėda University Hospital", "sub": "Liepojos g. 41 · +370 46 396 500", "action": "🧭" },
+        { "icon": "🇬🇧", "title": "English- and Russian-speaking care", "sub": "Available at the hospital above", "action": "" },
+        { "icon": "📡", "title": "Port administration", "sub": "+370 46 499 799", "action": "📞" },
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞" },
+        { "icon": "🤝", "title": "Local union office", "sub": "J. Janonio g. 24, Klaipėda", "action": "🧭" }
+      ]
+    },
+    "wellness": { "title": "Premium Welfare Services", "gated": true, "rows": [ { "icon": "ℹ️", "title": "Details coming soon from the port curator", "sub": "Trade Union partner services pending confirmation for this terminal", "pending": true } ] }
+  },
+  "subdetails": {
+    "klaipeda_kn_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": { "tone": "warn", "text": "Pedestrian access is STRICTLY FORBIDDEN. This is a high-level ISPS restricted facility — you cannot walk from the gangway to the checkpoint under any circumstances." },
+      "sections": [
+        { "icon": "🚗", "title": "How you actually leave", "rows": [
+          { "icon": "🚐", "title": "Only by your agent's vehicle or the terminal's own shuttle", "sub": "No exceptions, no walking any part of the route" }
+        ]},
+        { "icon": "🦺", "title": "Before you even get in the vehicle", "rows": [
+          { "icon": "🦺", "title": "Hi-vis vest, helmet and safety boots — required from the gangway", "sub": "You will not be allowed into the agent's car without full PPE" }
+        ]},
+        { "icon": "🪪", "title": "Documents", "rows": [
+          { "icon": "📘", "title": "International passport + Seaman's Book", "sub": "" },
+          { "icon": "🎫", "title": "Shore Pass", "sub": "Arranged by your ship's agent" },
+          { "icon": "🛂", "title": "Schengen visa required for non-EU citizens", "sub": "" }
+        ]}
+      ],
+      "updated": "8 August 2026"
+    },
+    "klaipeda_kn_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        { "icon": "📱", "title": "Apps", "rows": [
+          { "icon": "🟢", "title": "Bolt", "sub": "", "action": "›" },
+          { "icon": "⚫", "title": "Uber", "sub": "", "action": "›" }
+        ]},
+        { "icon": "💶", "title": "Rough fares by zone", "rows": [
+          { "icon": "🚖", "title": "From the Cruise Terminal (Pilies g.)", "sub": "€4–6, or walkable" },
+          { "icon": "🚖", "title": "From KCT / Smeltė (southern zone)", "sub": "€7–12" },
+          { "icon": "🚖", "title": "From KN Energies (northern zone)", "sub": "€6–10" }
+        ]}
+      ],
+      "note": "A taxi has to meet you at the checkpoint after your agent brings you out — it can't come to the ship.",
+      "updated": "8 August 2026"
+    },
+    "klaipeda_kn_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        { "icon": "🎫", "title": "Tickets", "rows": [
+          { "icon": "💳", "title": "Contactless bank card (Mastercard/Visa) at the validator", "sub": "" },
+          { "icon": "📱", "title": "e.Trikampis / Žiogelis app", "sub": "" },
+          { "icon": "💶", "title": "Cash to the driver", "sub": "~€1.50" }
+        ]}
+      ],
+      "note": "Last services run around 23:00–23:30 — there's almost no night service. Exact stop names and route numbers for this terminal aren't confirmed yet.",
+      "updated": "8 August 2026"
+    },
+    "klaipeda_kn_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": { "tone": "warn", "text": "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port." },
+      "sections": [
+        { "icon": "📍", "title": "Checked option", "rows": [
+          { "icon": "💱", "title": "Top Exchange / Medicinos Bankas — inside Akropolis mall", "sub": "Taikos pr. 61, Klaipėda", "action": "🧭" }
+        ]}
+      ],
+      "updated": "8 August 2026"
+    },
+    "klaipeda_kn_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        { "icon": "🛒", "title": "Nearest stores", "rows": [
+          { "icon": "🛍", "title": "Rimi — Taikos pr. 61", "sub": "", "action": "🧭" },
+          { "icon": "🛍", "title": "Maxima X — Tiltų g.", "sub": "", "action": "🧭" },
+          { "icon": "🛍", "title": "Maxima XX — Šilutės pl. 35", "sub": "", "action": "🧭" }
+        ]},
+        { "icon": "🌙", "title": "24-hour", "rows": [
+          { "icon": "⛽", "title": "Circle K and Viada petrol stations", "sub": "Food, drinks and adapters — the only genuinely 24/7 option", "action": "" }
+        ]},
+        { "icon": "🏬", "title": "Shopping centre", "rows": [
+          { "icon": "🏢", "title": "Akropolis Klaipėda — Taikos pr. 61", "sub": "Maxima XXX hypermarket, currency exchange, mobile operator shops (Tele2, Telia, Bitė), pharmacy, food court, clothing, electronics", "action": "🧭" }
+        ]}
+      ],
+      "updated": "8 August 2026"
+    },
+    "klaipeda_kn_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        { "icon": "📡", "title": "Mobile operators", "rows": [
+          { "icon": "🟦", "title": "Tele2 (Pildyk cards) · Telia (Ežys cards) · Bitė (Extra cards)", "sub": "", "action": "" },
+          { "icon": "🏪", "title": "Narvesen or Lietuvos Spauda kiosks, Maxima/Rimi checkouts, Circle K", "sub": "", "action": "" },
+          { "icon": "💶", "title": "€3–6 for a starter pack", "sub": "10–20 GB, 30 days" },
+          { "icon": "🪪", "title": "No document required", "sub": "Starter packs are sold freely" }
+        ]}
+      ],
+      "updated": "8 August 2026"
+    },
+    "klaipeda_kn_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        { "icon": "🌙", "title": "Late hours", "rows": [
+          { "icon": "🏥", "title": "Eurovaistinė — inside Akropolis mall", "sub": "Taikos pr. 61 · open until late evening", "action": "🧭" }
+        ]}
+      ],
+      "note": "A dedicated 24-hour pharmacy near the port hasn't been confirmed yet.",
+      "updated": "8 August 2026"
+    },
+    "klaipeda_kn_city_safety": {
+      "title": "Safety",
+      "callout": { "tone": "warn", "text": "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen." },
+      "sections": [
+        { "icon": "🟢", "title": "General risk", "rows": [
+          { "icon": "🛡", "title": "Klaipėda is a safe European city", "sub": "The port area and Old Town are well lit and patrolled" }
+        ]},
+        { "icon": "🚫", "title": "Where not to go", "rows": [
+          { "icon": "⚠️", "title": "Stay off closed private and industrial land beyond the marked pedestrian paths", "sub": "To avoid being stopped by police or port (ISPS) security" }
+        ]},
+        { "icon": "🍺", "title": "Alcohol", "rows": [
+          { "icon": "🚫", "title": "Drinking in the street, parks or on the waterfront is strictly forbidden", "sub": "Fines of €30–100" },
+          { "icon": "🕙", "title": "Shop sales are time-limited", "sub": "Mon–Sat 10:00–20:00, Sun 10:00–15:00" }
+        ]}
+      ],
+      "note": "Same city-wide information as the Passenger Terminal — confirmed by the coordinator as applying here too.",
+      "updated": "7 August 2026"
+    }
+  }
+}

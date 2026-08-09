@@ -1,0 +1,95 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "rows": [
+        { "icon": "ℹ️", "title": "About the Centre", "sub": "Name and address confirmed, contact details still being tracked down", "action": "›", "sd": "klaipeda_passenger_centre_about" },
+        { "icon": "🎱", "title": "Services", "sub": "Awaiting data from the port curator", "pending": true },
+        { "icon": "📍", "title": "Location & Route", "sub": "Address and rough distance from the gate", "action": "›", "sd": "klaipeda_passenger_centre_location" }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        { "icon": "🚪", "title": "Leaving the Port", "sub": "Exit rules, required documents, gate information", "pending": true },
+        { "icon": "🚐", "title": "Port Shuttle", "sub": "Timetable, pickup point, how to recognise it", "pending": true },
+        { "icon": "🚕", "title": "Taxi", "sub": "Trusted companies, apps, estimated fare, safety tips", "pending": true },
+        { "icon": "🚎", "title": "Public Transport", "sub": "Nearest stop, routes, tickets, journey to the city", "pending": true }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        { "icon": "💱", "title": "Currency Exchange", "sub": "How to exchange money safely — read this first, before you need it", "action": "›", "sd": "currency_exchange_safety" },
+        { "icon": "🛒", "title": "Supermarkets", "sub": "Nearest stores, shopping centres, 24/7 shops", "pending": true },
+        { "icon": "🍽", "title": "Food & Drinks", "sub": "Fast food, local restaurants, seafarer-friendly places", "pending": true },
+        { "icon": "📱", "title": "Electronics & SIM Cards", "sub": "Mobile operators, SIM cards, chargers & adapters", "pending": true },
+        { "icon": "💊", "title": "Pharmacies", "sub": "Nearest and 24/7 pharmacies, prescription & OTC medicines", "pending": true },
+        { "icon": "🎁", "title": "Souvenirs", "sub": "Where to find something to take home", "pending": true },
+        { "icon": "⚓", "title": "Seafarer Supplies", "sub": "Workwear, safety gear, ship's stores", "pending": true }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        { "icon": "🌳", "title": "Parks & Waterfronts", "sub": "Nearest park, promenade, quiet green zone, viewpoints", "pending": true },
+        { "icon": "🏛", "title": "Culture & Must-See", "sub": "Top 5 city places, museums, historic buildings", "pending": true },
+        { "icon": "🧘", "title": "Free Time & Relax", "sub": "Free attractions, viewpoints, Wi-Fi & chill spots", "pending": true },
+        { "icon": "🛡", "title": "Safety", "sub": "What to know before going into the city", "action": "›", "sd": "klaipeda_passenger_city_safety" }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        { "icon": "💬", "title": "No particular faith — I'd just like to talk", "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator", "action": "›", "go": "assistantchat" },
+        { "icon": "🕊", "title": "Missions & Chaplains", "sub": "Stella Maris runs the centre here, but no contact details are confirmed yet", "pending": true },
+        { "icon": "🙏", "title": "Places for Prayer", "sub": "Prayer rooms, quiet places, opening hours", "pending": true }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞" },
+        { "icon": "🩺", "title": "Klaipėda University Hospital", "sub": "Liepojos g. 41 · +370 46 396 500", "action": "🧭" },
+        { "icon": "🇬🇧", "title": "English- and Russian-speaking care", "sub": "Available at the hospital above", "action": "" },
+        { "icon": "📡", "title": "Port administration", "sub": "+370 46 499 799", "action": "📞" },
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞" },
+        { "icon": "🤝", "title": "Local union office", "sub": "J. Janonio g. 24, Klaipėda", "action": "🧭" }
+      ]
+    },
+    "wellness": { "title": "Premium Welfare Services", "gated": true, "rows": [ { "icon": "ℹ️", "title": "Details coming soon from the port curator", "sub": "Trade Union partner services pending confirmation for this terminal", "pending": true } ] }
+  },
+  "subdetails": {
+    "klaipeda_passenger_centre_about": {
+      "title": "About the Centre",
+      "contacts": [
+        { "icon": "🏛", "title": "Stella Maris Seafarers' Centre Klaipėda", "sub": "Klaipėdos jūrininkų centras", "action": "" }
+      ],
+      "note": "Phone, website and manager name not yet confirmed — the curator searched but couldn't find published contact details. If you're a coordinator reading this: if you have a direct line for this centre, that's the single most useful thing you could add next."
+    },
+    "klaipeda_passenger_centre_location": {
+      "title": "Location & Route",
+      "contacts": [
+        { "icon": "📍", "title": "Kalvos g. 7, Klaipėda", "sub": "About 1.2 km from the passenger terminal gate", "action": "" }
+      ],
+      "note": "Walking directions, exact coordinates and what to avoid on the way haven't been confirmed yet."
+    },
+    "klaipeda_passenger_city_safety": {
+      "title": "Safety",
+      "callout": { "tone": "warn", "text": "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen." },
+      "sections": [
+        { "icon": "🟢", "title": "General risk", "rows": [
+          { "icon": "🛡", "title": "Klaipėda is a safe European city", "sub": "The port area and Old Town are well lit and patrolled" }
+        ]},
+        { "icon": "🚫", "title": "Where not to go", "rows": [
+          { "icon": "⚠️", "title": "Stay off closed private and industrial land beyond the marked pedestrian paths", "sub": "To avoid being stopped by police or port (ISPS) security" }
+        ]},
+        { "icon": "🍺", "title": "Alcohol", "rows": [
+          { "icon": "🚫", "title": "Drinking in the street, parks or on the waterfront is strictly forbidden", "sub": "Fines of €30–100" },
+          { "icon": "🕙", "title": "Shop sales are time-limited", "sub": "Mon–Sat 10:00–20:00, Sun 10:00–15:00" }
+        ]}
+      ],
+      "updated": "7 August 2026"
+    }
+  }
+}
