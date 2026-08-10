@@ -1,0 +1,299 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "rows": [
+        { "icon": "ℹ️", "title": "About the Centre", "sub": "No fixed clubhouse here — the mission works by ship visit", "action": "›", "sd": "istanbul_ambarli_centre_about" },
+        { "icon": "🎱", "title": "Services", "sub": "What the visiting chaplain can help with", "action": "›", "sd": "istanbul_ambarli_centre_services" }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        { "icon": "🚪", "title": "Leaving the Port", "sub": "Exit rules, required documents, gate information", "action": "›", "sd": "istanbul_ambarli_transport_leaving" },
+        { "icon": "🚕", "title": "Taxi", "sub": "Apps, phone numbers, where to catch one", "action": "›", "sd": "istanbul_ambarli_transport_taxi" },
+        { "icon": "🚎", "title": "Public Transport", "sub": "Metrobüs, tickets, journey to the city", "action": "›", "sd": "istanbul_ambarli_transport_public" },
+        { "icon": "🚐", "title": "Inside the Port", "sub": "From the gangway to the gate — agent transport only", "action": "›", "sd": "istanbul_ambarli_transport_internal" }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        { "icon": "💱", "title": "Currency Exchange", "sub": "How to exchange money safely — read this first, before you need it", "action": "›", "sd": "istanbul_ambarli_currency_exchange" },
+        { "icon": "🛒", "title": "Supermarkets", "sub": "Nearest stores, petrol station shops, mall", "action": "›", "sd": "istanbul_ambarli_shops_supermarkets" },
+        { "icon": "🍽", "title": "Food & Drinks", "sub": "Local lokantas, mall food court, halal by default", "action": "›", "sd": "istanbul_ambarli_shops_food" },
+        { "icon": "📱", "title": "Electronics & SIM Cards", "sub": "Operators, tourist SIM, Wi-Fi, ATM", "action": "›", "sd": "istanbul_ambarli_shops_sim" },
+        { "icon": "💊", "title": "Pharmacies", "sub": "Nearest and how the duty-pharmacy system works", "action": "›", "sd": "istanbul_ambarli_shops_pharmacies" }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        { "icon": "🌳", "title": "Parks & Waterfronts", "sub": "A real park and a proper marina promenade, both nearby", "action": "›", "sd": "istanbul_ambarli_city_parks" },
+        { "icon": "🏛", "title": "Culture & Must-See", "sub": "What's realistic from an industrial zone like this", "action": "›", "sd": "istanbul_ambarli_city_culture" },
+        { "icon": "🧘", "title": "Free Time & Relax", "sub": "Somewhere to sit without spending anything", "action": "›", "sd": "istanbul_ambarli_city_free" },
+        { "icon": "🛡", "title": "Safety", "sub": "What to know before going into the city", "action": "›", "sd": "istanbul_ambarli_city_safety" }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        { "icon": "💬", "title": "No particular faith — I'd just like to talk", "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator", "action": "›", "go": "assistantchat" },
+        { "icon": "⚓", "title": "Stella Maris / Apostleship of the Sea", "sub": "Ship visits by prior arrangement with your agent", "action": "›", "sd": "istanbul_spiritual_stella_maris" }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞" },
+        { "icon": "⚓", "title": "Coast Guard (Sahil Güvenlik)", "sub": "158", "action": "📞" },
+        { "icon": "🩺", "title": "Beylikdüzü Devlet Hastanesi", "sub": "Kaya Millenium Yanı, Beylikdüzü · +90 212 871 00 00 · ER 24/7", "action": "🧭" },
+        { "icon": "🇬🇧", "title": "Medicana International Beylikdüzü", "sub": "+90 850 460 63 34 · English-speaking private clinic", "action": "📞" },
+        { "icon": "📡", "title": "Port administration", "sub": "+90 212 251 25 00", "action": "📞" },
+        { "icon": "⚖️", "title": "ITF Türkiye Inspectorate (DADDER)", "sub": "+90 212 252 50 11 · wage, injury and rights disputes", "action": "📞" },
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞" }
+      ]
+    },
+    "wellness": { "title": "Premium Welfare Services", "gated": true, "rows": [ { "icon": "ℹ️", "title": "Details coming soon from the port curator", "sub": "Trade Union partner services pending confirmation for this terminal", "pending": true } ] }
+  },
+  "subdetails": {
+    "istanbul_ambarli_centre_about": {
+      "title": "About the Centre",
+      "note": "There's no physical seafarers' club at Ambarlı. Stella Maris / Apostleship of the Sea operates purely as a ship-visiting mission here — a chaplain comes to you, arranged in advance through your ship's agent, rather than you going to a centre.",
+      "contacts": [
+        { "icon": "⚓", "title": "Stella Maris / Apostleship of the Sea", "sub": "Contact via your ship's agent", "action": "" }
+      ]
+    },
+    "istanbul_ambarli_centre_services": {
+      "title": "Services",
+      "groups": [
+        { "label": "Ship visits", "icon": "🤝", "items": ["Volunteers who visit ships"] },
+        { "label": "What the chaplain can help with", "icon": "💬", "items": ["A listening ear for urgent problems", "Information about the city and seafarers' rights", "Practical help — e.g. SIM cards or transport"] }
+      ],
+      "note": "This is a visiting service, not a drop-in centre — ask your agent to arrange contact ahead of time if you'd like a visit."
+    },
+    "istanbul_ambarli_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": { "tone": "ok", "text": "Yes — shore leave is permitted at Ambarlı. Always confirm with your Master or ship's agent before you go." },
+      "sections": [
+        { "icon": "🚪", "title": "Exit gate", "rows": [
+          { "icon": "🚶", "title": "Main checkpoint: Altaş Ambarlı (Altaş Gate)", "sub": "Liman Caddesi No:49 — the only pedestrian exit" }
+        ]},
+        { "icon": "🚫", "title": "On the terminal itself", "rows": [
+          { "icon": "⚠️", "title": "Walking on Kumport / Marport / Mardaş terminal grounds is strictly forbidden", "sub": "Violating this cancels your Shore Pass" },
+          { "icon": "📦", "title": "Container yards are absolutely off-limits on foot", "sub": "Cancellation of Shore Pass and a fine" }
+        ]},
+        { "icon": "🪪", "title": "Documents", "rows": [
+          { "icon": "📘", "title": "Seaman's Book + international passport + Shore Pass", "sub": "Shore Pass is arranged by your ship's agent — you cannot exit without it" }
+        ]},
+        { "icon": "🛂", "title": "If you're not from the EU / Schengen area", "rows": [
+          { "icon": "🛂", "title": "A Turkish tourist or business visa is required to enter Türkiye", "sub": "A Shore Pass does NOT replace a visa — many seafarers assume it does and are turned back" }
+        ]},
+        { "icon": "🦺", "title": "Equipment", "rows": [
+          { "icon": "🦺", "title": "Hi-vis vest, helmet and safety footwear — mandatory from the gangway to the agent's vehicle", "sub": "" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        { "icon": "📱", "title": "Apps", "rows": [
+          { "icon": "🟡", "title": "BiTaksi (main)", "sub": "+90 212 444 55 55", "action": "📞" },
+          { "icon": "⚫", "title": "Uber", "sub": "", "action": "›" }
+        ]},
+        { "icon": "💶", "title": "Rough fares", "rows": [
+          { "icon": "🏬", "title": "To Marmara Park mall, Beylikdüzü", "sub": "~200–300 TRY" },
+          { "icon": "🏛", "title": "To Sultanahmet / Taksim (historic centre)", "sub": "~900–1200 TRY" }
+        ]},
+        { "icon": "📍", "title": "Pickup", "rows": [
+          { "icon": "🚖", "title": "Order strictly to the main Altaş Gate", "sub": "City taxis are not allowed inside the berth areas" }
+        ]}
+      ],
+      "note": "Licensed Istanbul taxis are yellow (or blue/black), marked \"TAKŞİ\", with a working taksimetre (meter) visible on the rear-view mirror. Drivers offering a fixed \"no meter\" price right at the checkpoint booth are private operators — avoid them. Always check the meter is actually running; some \"forget\" to start it, especially in tourist areas. No pre-payment needed.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        { "icon": "🚏", "title": "Nearest stop", "rows": [
+          { "icon": "🚌", "title": "Metrobüs stop \"Beylikdüzü Belediye\"", "sub": "~2.5–3 km from the gate — reachable only by taxi or minibus, not on foot" }
+        ]},
+        { "icon": "🚎", "title": "Routes", "rows": [
+          { "icon": "🔢", "title": "Metrobüs 34BZ, 34C", "sub": "Runs from Beylikdüzü across the whole city on a dedicated lane — no traffic" }
+        ]},
+        { "icon": "🎫", "title": "Tickets", "rows": [
+          { "icon": "💳", "title": "İstanbulkart", "sub": "Bought and topped up at yellow Biletmatik machines at stations · ~15–20 TRY per ride" },
+          { "icon": "💳", "title": "Foreign contactless bank cards", "sub": "Work at some turnstiles, at a higher fare" }
+        ]}
+      ],
+      "note": "About 40–60 minutes to the centre (Zincirlikuyu / Mecidiyeköy), traffic-dependent — the Metrobüs is the fastest option precisely because of its dedicated lane. It runs 24/7.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_transport_internal": {
+      "title": "Inside the Port",
+      "sections": [
+        { "icon": "🚐", "title": "How it works", "rows": [
+          { "icon": "🚐", "title": "Agent-arranged transport only — free of charge", "sub": "From the gangway straight to the Altaş Gate" },
+          { "icon": "🚐", "title": "Minibuses marked with the agent's logo, or official port vehicles", "sub": "" }
+        ]},
+        { "icon": "📅", "title": "Booking", "rows": [
+          { "icon": "📞", "title": "Arrange in advance with your agent", "sub": "No fixed timetable — by request" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": { "tone": "warn", "text": "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port." },
+      "sections": [
+        { "icon": "📍", "title": "Checked option", "rows": [
+          { "icon": "🏧", "title": "ATMs at Marmara Park mall", "sub": "~5 km · dispense Turkish lira; some (Garanti, Yapı Kredi) may also dispense USD/EUR — availability varies, check first", "action": "🧭" }
+        ]}
+      ],
+      "note": "No dedicated currency exchange office confirmed near the gate itself — the mall's ATMs are the practical option.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        { "icon": "🛒", "title": "Nearest stores", "rows": [
+          { "icon": "🛍", "title": "BİM / A101 / ŞOK — Marmara Mahallesi", "sub": "~2 km · 09:00–21:00", "action": "🧭" }
+        ]},
+        { "icon": "🌙", "title": "24-hour", "rows": [
+          { "icon": "⛽", "title": "Shell / BP / Opet petrol station shops", "sub": "Right at the port exit · open 24/7", "action": "" }
+        ]},
+        { "icon": "🏬", "title": "Shopping centre", "rows": [
+          { "icon": "🏢", "title": "Marmara Park AVM / Migros AVM — E-5 Üzeri, Beylikdüzü", "sub": "~5 km · taxi ~10 min, or the \"Beylikdüzü Minibüs\" from the port exit · hypermarket, exchange desks, Turkcell/Vodafone shops, pharmacy, food court, clothing (LC Waikiki, Zara, Mango)", "action": "🧭" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        { "icon": "🍔", "title": "Cheap & local", "rows": [
+          { "icon": "🍲", "title": "\"Lokanta\" home-style cafés, Marmara Mahallesi", "sub": "Soup (çorba) + a hot dish, ~150–250 TRY", "action": "" }
+        ]},
+        { "icon": "🍽", "title": "Popular", "rows": [
+          { "icon": "🏬", "title": "Restaurants inside Marmara Park mall", "sub": "Wide choice, includes a food court", "action": "🧭" }
+        ]}
+      ],
+      "note": "All meat in Türkiye is halal by default. Vegetarian options are available at most cafés and restaurants.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        { "icon": "📡", "title": "Mobile operators", "rows": [
+          { "icon": "🟦", "title": "Turkcell · Vodafone · Türk Telekom", "sub": "" },
+          { "icon": "🏪", "title": "Official shops in Marmara Park mall or the central streets", "sub": "None right at the port exit", "action": "" },
+          { "icon": "💶", "title": "Tourist SIM: ~800–1200 TRY", "sub": "20–30 GB, 30 days" },
+          { "icon": "🪪", "title": "Foreign passport required", "sub": "Tourists are registered on a special \"Tourist SIM\" tariff" }
+        ]},
+        { "icon": "📶", "title": "Free Wi-Fi", "rows": [
+          { "icon": "🏙", "title": "İBB Wi-Fi (city network)", "sub": "Needs a phone number and SMS code" },
+          { "icon": "🏬", "title": "Marmara Park mall and many cafés", "sub": "" }
+        ]}
+      ],
+      "note": "ATMs at Marmara Park mall (~5 km) dispense Turkish lira; a few (Garanti, Yapı Kredi) may also have USD/EUR — check availability.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        { "icon": "💊", "title": "Nearest", "rows": [
+          { "icon": "🏥", "title": "Marmara Eczanesi, Marmara Mahallesi", "sub": "~1.5–2 km from the gate · 08:30–19:00 · Turkish only", "action": "🧭" }
+        ]},
+        { "icon": "🌙", "title": "Nights & Sundays", "rows": [
+          { "icon": "🕛", "title": "Duty pharmacy system (\"Nöbetçi Eczane\")", "sub": "The list is posted on the door of any closed pharmacy, or check eczane.istanbul", "action": "" }
+        ]},
+        { "icon": "📋", "title": "Medicines", "rows": [
+          { "icon": "🧾", "title": "Most prescription medicines require a Turkish doctor's prescription", "sub": "" }
+        ]}
+      ],
+      "note": "Central pharmacies generally have basic-English staff; Marmara Eczanesi itself is Turkish-only.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        { "icon": "🌳", "title": "Green space", "rows": [
+          { "icon": "🌲", "title": "Beylikdüzü Yaşam Vadisi (\"Life Valley\")", "sub": "A large park for walking · ~5 km", "action": "🧭" }
+        ]},
+        { "icon": "⛵", "title": "Waterfront", "rows": [
+          { "icon": "🚤", "title": "West Istanbul Marina", "sub": "A proper promenade with restaurants and a yacht club · ~4 km", "action": "🧭" }
+        ]},
+        { "icon": "👁", "title": "Viewpoint", "rows": [
+          { "icon": "🏙", "title": "Upper floors of Marmara Park mall, or the hills around Beylikdüzü", "sub": "A view over the Sea of Marmara and the port" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        { "icon": "⭐", "title": "What's realistic from here", "rows": [
+          { "icon": "1️⃣", "title": "West Istanbul Marina", "sub": "~4 km", "action": "🧭" },
+          { "icon": "2️⃣", "title": "Beylikdüzü Yaşam Vadisi", "sub": "~5 km", "action": "🧭" }
+        ]}
+      ],
+      "note": "Ambarlı itself is an industrial zone with little to see — the historic centre (Sultanahmet, Taksim) is a real trip (~900–1200 TRY by taxi), not a casual walk.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        { "icon": "🆓", "title": "Somewhere to sit", "rows": [
+          { "icon": "🏬", "title": "Marmara Park mall", "sub": "Free Wi-Fi, sockets in the food court area, toilets — no obligation to buy anything", "action": "🧭" },
+          { "icon": "⛵", "title": "West Istanbul Marina", "sub": "Wi-Fi in some restaurants and cafés, benches along the promenade", "action": "🧭" },
+          { "icon": "☕", "title": "Cafés at the port exit", "sub": "Fine to sit with a tea or coffee", "action": "" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_spiritual_stella_maris": {
+      "title": "Stella Maris / Apostleship of the Sea",
+      "sections": [
+        { "icon": "🤝", "title": "What they offer", "rows": [
+          { "icon": "💬", "title": "Ship visits, spiritual support, help in urgent situations, guidance", "sub": "Catholic / ecumenical — works across Ambarlı, Tuzla, Zeyport and Haydarpaşa" }
+        ]},
+        { "icon": "🕐", "title": "When", "rows": [
+          { "icon": "📅", "title": "By request", "sub": "Visits arranged through your ship's agent" }
+        ]}
+      ],
+      "contacts": [
+        { "icon": "🗣", "title": "Turkish, English, Italian", "sub": "Languages spoken", "action": "" }
+      ],
+      "note": "No direct phone number confirmed yet — contact is arranged through the ship's agent.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_ambarli_city_safety": {
+      "title": "Safety",
+      "callout": { "tone": "warn", "text": "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen." },
+      "sections": [
+        { "icon": "🟡", "title": "General risk", "rows": [
+          { "icon": "🌙", "title": "The Ambarlı industrial zone is poorly lit at night", "sub": "Not recommended on foot after dark" },
+          { "icon": "☀️", "title": "Safe by day, but only by vehicle", "sub": "" }
+        ]},
+        { "icon": "🚫", "title": "Where to be careful", "rows": [
+          { "icon": "⚠️", "title": "Unlit streets of the Ambarlı industrial zone at night", "sub": "Avoid" },
+          { "icon": "⚠️", "title": "In central Istanbul (Taksim, Aksaray), be wary of strangers offering help or bar invitations", "sub": "" }
+        ]},
+        { "icon": "💸", "title": "Common scams", "rows": [
+          { "icon": "🚕", "title": "Taxi drivers who \"forget\" to start the meter, or take a roundabout route", "sub": "" },
+          { "icon": "🍺", "title": "\"Friendly\" touts near Taksim/Aksaray inviting you for one beer", "sub": "Followed by a bill for hundreds of dollars" }
+        ]},
+        { "icon": "🍺", "title": "Alcohol", "rows": [
+          { "icon": "🚫", "title": "Drinking in the street, parks or on the waterfront is forbidden — fines apply", "sub": "" },
+          { "icon": "🕙", "title": "Shop sales stop between 22:00 and 06:00", "sub": "" }
+        ]},
+        { "icon": "🌙", "title": "At night", "rows": [
+          { "icon": "🚕", "title": "Use BiTaksi or Uber rather than risk an unlicensed private driver", "sub": "" },
+          { "icon": "🚌", "title": "The Metrobüs runs 24/7", "sub": "A reliable way to and from the centre at any hour" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    }
+  }
+}

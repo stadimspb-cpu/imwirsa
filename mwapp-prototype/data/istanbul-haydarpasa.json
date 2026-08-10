@@ -1,0 +1,112 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "rows": [
+        { "icon": "ℹ️", "title": "About the Centre", "sub": "Not yet confirmed for this specific terminal", "pending": true },
+        { "icon": "🎱", "title": "Services", "sub": "Hospitality, recreation, connectivity, welfare", "pending": true },
+        { "icon": "📍", "title": "Location & Route", "sub": "Address, map, how to get there", "pending": true }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        { "icon": "🚪", "title": "Leaving the Port", "sub": "Shore leave is permitted — PPE required in port territory", "action": "›", "sd": "istanbul_haydarpasa_transport_leaving" },
+        { "icon": "🚕", "title": "Taxi", "sub": "Trusted companies, apps, estimated fare, safety tips", "pending": true },
+        { "icon": "⛴", "title": "Ferry to the European side", "sub": "The fastest way across from here — 15–20 minutes", "action": "›", "sd": "istanbul_haydarpasa_transport_ferry" }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        { "icon": "💱", "title": "Currency Exchange", "sub": "How to exchange money safely — read this first, before you need it", "action": "›", "sd": "currency_exchange_safety" },
+        { "icon": "🛒", "title": "Supermarkets", "sub": "General area only — Üsküdar and Kadıköy, across the ferry", "action": "›", "sd": "istanbul_haydarpasa_shops_supermarkets" },
+        { "icon": "🍽", "title": "Food & Drinks", "sub": "Fast food, local restaurants, seafarer-friendly places", "pending": true },
+        { "icon": "📱", "title": "Electronics & SIM Cards", "sub": "Mobile operators, SIM cards, chargers & adapters", "pending": true },
+        { "icon": "💊", "title": "Pharmacies", "sub": "Nearest and 24/7 pharmacies, prescription & OTC medicines", "pending": true }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        { "icon": "🌳", "title": "Parks & Waterfronts", "sub": "Nearest park, promenade, quiet green zone, viewpoints", "pending": true },
+        { "icon": "🏛", "title": "Culture & Must-See", "sub": "Top 5 city places, museums, historic buildings", "pending": true },
+        { "icon": "🧘", "title": "Free Time & Relax", "sub": "Free attractions, viewpoints, Wi-Fi & chill spots", "pending": true },
+        { "icon": "🛡", "title": "Safety", "sub": "What to know before going into the city", "pending": true }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        { "icon": "💬", "title": "No particular faith — I'd just like to talk", "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator", "action": "›", "go": "assistantchat" },
+        { "icon": "⚓", "title": "Stella Maris / Apostleship of the Sea", "sub": "Ship visits by prior arrangement with your agent", "action": "›", "sd": "istanbul_spiritual_stella_maris" }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞" },
+        { "icon": "⚓", "title": "Coast Guard (Sahil Güvenlik)", "sub": "158", "action": "📞" },
+        { "icon": "🩺", "title": "Nearest hospital", "sub": "Not yet confirmed for this terminal — ask your agent", "pending": true },
+        { "icon": "📡", "title": "Port administration", "sub": "+90 212 251 25 00", "action": "📞" },
+        { "icon": "⚖️", "title": "ITF Türkiye Inspectorate (DADDER)", "sub": "+90 212 252 50 11 · wage, injury and rights disputes", "action": "📞" },
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞" }
+      ]
+    },
+    "wellness": { "title": "Premium Welfare Services", "gated": true, "rows": [ { "icon": "ℹ️", "title": "Details coming soon from the port curator", "sub": "Trade Union partner services pending confirmation for this terminal", "pending": true } ] }
+  },
+  "subdetails": {
+    "istanbul_haydarpasa_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": { "tone": "ok", "text": "Yes — shore leave is permitted at Haydarpaşa. Always confirm with your Master or ship's agent before you go." },
+      "sections": [
+        { "icon": "🚪", "title": "Exit", "rows": [
+          { "icon": "🚶", "title": "Main checkpoint on the Haydarpaşa waterfront", "sub": "Exact gate name not yet confirmed" }
+        ]},
+        { "icon": "🦺", "title": "Requirements", "rows": [
+          { "icon": "🦺", "title": "PPE required within port territory", "sub": "" },
+          { "icon": "🪪", "title": "Passport / Seaman's Book + Shore Pass", "sub": "As at the other Istanbul terminals" }
+        ]}
+      ],
+      "note": "This terminal is on the Asian side of the Bosphorus — most seafarers cross to the European side by ferry rather than walking into the immediate area. See the ferry card.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_haydarpasa_transport_ferry": {
+      "title": "Ferry to the European side",
+      "sections": [
+        { "icon": "⛴", "title": "Departure points", "rows": [
+          { "icon": "🚢", "title": "Kadıköy or Üsküdar piers", "sub": "Both reachable from the terminal area" }
+        ]},
+        { "icon": "🕐", "title": "Journey", "rows": [
+          { "icon": "⏱", "title": "15–20 minutes", "sub": "To Eminönü or Karaköy on the European side" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_haydarpasa_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        { "icon": "🛒", "title": "General area", "rows": [
+          { "icon": "🛍", "title": "Üsküdar and Kadıköy", "sub": "Reached via the ferry — ordinary supermarkets are there, not confirmed by name yet" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_spiritual_stella_maris": {
+      "title": "Stella Maris / Apostleship of the Sea",
+      "sections": [
+        { "icon": "🤝", "title": "What they offer", "rows": [
+          { "icon": "💬", "title": "Ship visits, spiritual support, help in urgent situations, guidance", "sub": "Catholic / ecumenical — works across Ambarlı, Tuzla, Zeyport and Haydarpaşa" }
+        ]},
+        { "icon": "🕐", "title": "When", "rows": [
+          { "icon": "📅", "title": "By request", "sub": "Visits arranged through your ship's agent" }
+        ]}
+      ],
+      "contacts": [
+        { "icon": "🗣", "title": "Turkish, English, Italian", "sub": "Languages spoken", "action": "" }
+      ],
+      "note": "No direct phone number confirmed yet — contact is arranged through the ship's agent.",
+      "updated": "10 August 2026"
+    }
+  }
+}

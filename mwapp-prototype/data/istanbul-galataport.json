@@ -1,0 +1,290 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "rows": [
+        { "icon": "ℹ️", "title": "About the Centre", "sub": "Stella Maris / Seafarers' Lounge, inside the terminal building", "action": "›", "sd": "istanbul_galataport_centre_about" },
+        { "icon": "🎱", "title": "Services", "sub": "Tea, snacks, Wi-Fi, SIM cards, currency exchange", "action": "›", "sd": "istanbul_galataport_centre_services" },
+        { "icon": "📍", "title": "Location & Route", "sub": "Right in the terminal — walkable from the gangway", "action": "›", "sd": "istanbul_galataport_centre_location" }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        { "icon": "🚪", "title": "Leaving the Port", "sub": "Exit rules, required documents, gate information", "action": "›", "sd": "istanbul_galataport_transport_leaving" },
+        { "icon": "🚕", "title": "Taxi", "sub": "Apps, phone numbers, where to catch one", "action": "›", "sd": "istanbul_galataport_transport_taxi" },
+        { "icon": "🚎", "title": "Public Transport", "sub": "Tram T1, right outside the terminal", "action": "›", "sd": "istanbul_galataport_transport_public" }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        { "icon": "💱", "title": "Currency Exchange", "sub": "How to exchange money safely — read this first, before you need it", "action": "›", "sd": "istanbul_galataport_currency_exchange" },
+        { "icon": "🛒", "title": "Supermarkets", "sub": "Carrefour, Migros, Şok — all within walking distance", "action": "›", "sd": "istanbul_galataport_shops_supermarkets" },
+        { "icon": "🍽", "title": "Food & Drinks", "sub": "Local lokantas, fish restaurants on the bridge", "action": "›", "sd": "istanbul_galataport_shops_food" },
+        { "icon": "📱", "title": "Electronics & SIM Cards", "sub": "Operators, tourist SIM, Wi-Fi, ATM", "action": "›", "sd": "istanbul_galataport_shops_sim" },
+        { "icon": "💊", "title": "Pharmacies", "sub": "Right outside the terminal, plus the duty system", "action": "›", "sd": "istanbul_galataport_shops_pharmacies" }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        { "icon": "🌳", "title": "Parks & Waterfronts", "sub": "The Galata Bridge waterfront, right outside", "action": "›", "sd": "istanbul_galataport_city_parks" },
+        { "icon": "🏛", "title": "Culture & Must-See", "sub": "Galata Tower, İstiklal Street, Sultanahmet — all close", "action": "›", "sd": "istanbul_galataport_city_culture" },
+        { "icon": "🧘", "title": "Free Time & Relax", "sub": "Somewhere to sit without spending anything", "action": "›", "sd": "istanbul_galataport_city_free" },
+        { "icon": "🛡", "title": "Safety", "sub": "What to know before going into the city", "action": "›", "sd": "istanbul_galataport_city_safety" }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        { "icon": "💬", "title": "No particular faith — I'd just like to talk", "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator", "action": "›", "go": "assistantchat" },
+        { "icon": "⚓", "title": "Stella Maris / Apostleship of the Sea", "sub": "Lounge right here in the terminal, when open", "action": "›", "sd": "istanbul_spiritual_stella_maris" }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞" },
+        { "icon": "⚓", "title": "Coast Guard (Sahil Güvenlik)", "sub": "158", "action": "📞" },
+        { "icon": "🩺", "title": "Taksim Eğitim ve Araştırma Hastanesi", "sub": "Sıraselviler Cd., Beyoğlu · ~3 km · ER 24/7", "action": "🧭" },
+        { "icon": "🇬🇧", "title": "Medicana International Beylikdüzü", "sub": "+90 850 460 63 34 · English-speaking private clinic (across the city)", "action": "📞" },
+        { "icon": "📡", "title": "Port administration", "sub": "+90 212 251 25 00", "action": "📞" },
+        { "icon": "⚖️", "title": "ITF Türkiye Inspectorate (DADDER)", "sub": "+90 212 252 50 11 · wage, injury and rights disputes", "action": "📞" },
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞" }
+      ]
+    },
+    "wellness": { "title": "Premium Welfare Services", "gated": true, "rows": [ { "icon": "ℹ️", "title": "Details coming soon from the port curator", "sub": "Trade Union partner services pending confirmation for this terminal", "pending": true } ] }
+  },
+  "subdetails": {
+    "istanbul_galataport_centre_about": {
+      "title": "About the Centre",
+      "hours": [],
+      "contacts": [
+        { "icon": "🏛", "title": "Stella Maris İstanbul / Seafarers' Lounge", "sub": "Inside the Galataport cruise terminal building", "action": "" },
+        { "icon": "🌐", "title": "stellamaris.org.uk", "sub": "", "action": "›" }
+      ],
+      "note": "Contact details are still being confirmed — ask at the terminal's own information desk when you arrive. Hours depend on the cruise schedule: it's generally open when a ship is in port, closed on days without one."
+    },
+    "istanbul_galataport_centre_services": {
+      "title": "Services",
+      "groups": [
+        { "label": "Hospitality", "icon": "☕", "items": ["Tea & coffee", "Snacks"] },
+        { "label": "Connectivity", "icon": "📶", "items": ["Free Wi-Fi", "SIM cards on site"] },
+        { "label": "Money", "icon": "💱", "items": ["Currency exchange"] }
+      ],
+      "note": "Galataport is a modern cruise terminal with its own shops, cafés and information desks — being right in the city centre makes it easy to reach anything else you need."
+    },
+    "istanbul_galataport_centre_location": {
+      "title": "Location & Route",
+      "contacts": [
+        { "icon": "📍", "title": "Meclis-i Mebusan Caddesi, Karaköy, İstanbul", "sub": "Inside the Galataport cruise terminal building", "action": "" }
+      ],
+      "note": "Walkable directly from the terminal exit — no transfer needed to reach the lounge itself."
+    },
+    "istanbul_galataport_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": { "tone": "ok", "text": "Yes — shore leave is permitted at Galataport. Always confirm with your Master, ship's agent or cruise line before you go." },
+      "sections": [
+        { "icon": "🚪", "title": "Exit", "rows": [
+          { "icon": "🚶", "title": "Main terminal exit onto Meclis-i Mebusan Caddesi", "sub": "" }
+        ]},
+        { "icon": "🪪", "title": "Documents", "rows": [
+          { "icon": "📘", "title": "Seaman's Book + international passport (with visa if required)", "sub": "" },
+          { "icon": "🎫", "title": "Crew Pass / Shore Pass", "sub": "Issued by the cruise line or your agent" }
+        ]},
+        { "icon": "🛂", "title": "If you're not from the EU / Schengen area", "rows": [
+          { "icon": "🛂", "title": "A visa may be required to enter Türkiye", "sub": "Check with your agent" }
+        ]},
+        { "icon": "🦺", "title": "Equipment", "rows": [
+          { "icon": "✅", "title": "No PPE required on the passenger terminal itself", "sub": "" },
+          { "icon": "🚫", "title": "Stay out of service areas and technical zones — follow the passenger/crew signage", "sub": "" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        { "icon": "📱", "title": "Apps", "rows": [
+          { "icon": "🟡", "title": "BiTaksi", "sub": "+90 212 444 55 55", "action": "📞" },
+          { "icon": "⚫", "title": "Uber", "sub": "", "action": "›" }
+        ]},
+        { "icon": "💶", "title": "Rough fares", "rows": [
+          { "icon": "🏛", "title": "To Taksim Square", "sub": "~100–150 TRY" },
+          { "icon": "✈️", "title": "To Istanbul Airport (IST)", "sub": "~1000–1500 TRY" }
+        ]},
+        { "icon": "📍", "title": "Pickup", "rows": [
+          { "icon": "🚖", "title": "Dedicated taxi rank right at the terminal exit", "sub": "" }
+        ]}
+      ],
+      "note": "Always check the meter is running. Central Istanbul has heavy traffic, so a metered fare can end up higher than the app's initial estimate — that's normal, not a scam by itself.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        { "icon": "🚏", "title": "Nearest stop", "rows": [
+          { "icon": "🚋", "title": "Karaköy or Tophane tram stop (T1 line)", "sub": "1–2 minutes from the terminal exit", "action": "🧭" }
+        ]},
+        { "icon": "🚎", "title": "Routes", "rows": [
+          { "icon": "🔢", "title": "Tram T1 (Kabataş–Bağcılar)", "sub": "To Sultanahmet (historic centre), Eminönü, Sirkeci" }
+        ]},
+        { "icon": "🎫", "title": "Tickets", "rows": [
+          { "icon": "💳", "title": "İstanbulkart or a paper ticket", "sub": "Bought at station machines · ~15–20 TRY" }
+        ]}
+      ],
+      "note": "About 5 minutes to Sultanahmet. The tram runs until roughly midnight — after that, use a taxi.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": { "tone": "warn", "text": "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port." },
+      "sections": [
+        { "icon": "📍", "title": "Checked options", "rows": [
+          { "icon": "💱", "title": "Inside the Galataport terminal building itself", "sub": "" },
+          { "icon": "💱", "title": "Kemeraltı Street exchange offices", "sub": "A short walk from the terminal", "action": "🧭" }
+        ]},
+        { "icon": "🏧", "title": "ATMs", "rows": [
+          { "icon": "🏧", "title": "Garanti, Yapı Kredi, Ziraat Bankası", "sub": "Dispense Turkish lira" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        { "icon": "🛒", "title": "Nearest stores", "rows": [
+          { "icon": "🛍", "title": "Carrefour / Migros — Karaköy, Şişhane", "sub": "Walkable · 09:00–22:00", "action": "🧭" },
+          { "icon": "🛍", "title": "Şok / BİM — İstiklal, Taksim", "sub": "A few minutes' walk · 09:00–21:00", "action": "🧭" }
+        ]},
+        { "icon": "🌙", "title": "24-hour", "rows": [
+          { "icon": "⛽", "title": "Petrol station shops on the way out of Karaköy", "sub": "" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        { "icon": "🍔", "title": "Cheap & local", "rows": [
+          { "icon": "🍲", "title": "\"Lokanta\" cafés, Karaköy or Şişhane", "sub": "A set meal, ~200–300 TRY" }
+        ]},
+        { "icon": "🍽", "title": "Popular", "rows": [
+          { "icon": "🐟", "title": "Fish restaurants on the Galata Bridge", "sub": "", "action": "🧭" },
+          { "icon": "☕", "title": "Cafés along İstiklal Street", "sub": "", "action": "🧭" }
+        ]}
+      ],
+      "note": "All meat is halal by default; vegetarian options are available at most cafés.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        { "icon": "📡", "title": "Mobile operators", "rows": [
+          { "icon": "🟦", "title": "Turkcell · Vodafone · Türk Telekom", "sub": "" },
+          { "icon": "🏪", "title": "Shops in Taksim, Şişhane or Karaköy", "sub": "" },
+          { "icon": "💶", "title": "Tourist package: ~800–1200 TRY", "sub": "" },
+          { "icon": "🪪", "title": "Foreign passport required", "sub": "" }
+        ]},
+        { "icon": "📶", "title": "Free Wi-Fi", "rows": [
+          { "icon": "⚓", "title": "\"Galataport Free Wi-Fi\" inside the terminal", "sub": "" },
+          { "icon": "🏙", "title": "İBB Wi-Fi (city network)", "sub": "" }
+        ]}
+      ],
+      "note": "ATMs (Garanti, Yapı Kredi, Ziraat Bankası) dispense Turkish lira.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        { "icon": "💊", "title": "Nearest", "rows": [
+          { "icon": "🏥", "title": "Karaköy Eczanesi, Karaköy Meydanı", "sub": "~200 m from the terminal · 08:30–19:00", "action": "🧭" }
+        ]},
+        { "icon": "🌙", "title": "Nights & Sundays", "rows": [
+          { "icon": "🕛", "title": "\"Nöbetçi Eczane\" duty pharmacy system", "sub": "List at eczane.istanbul", "action": "" }
+        ]}
+      ],
+      "note": "Central pharmacies generally have basic-English-speaking staff. Prescriptions aren't typically required for common medicines.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        { "icon": "🌊", "title": "Waterfront", "rows": [
+          { "icon": "🚶", "title": "Karaköy waterfront and the Galata Bridge", "sub": "Right outside the terminal", "action": "🧭" }
+        ]},
+        { "icon": "🌳", "title": "Green space", "rows": [
+          { "icon": "🌲", "title": "Gülhane Parkı (by Topkapı Palace)", "sub": "Tram T1 to \"Sultanahmet\"", "action": "🧭" }
+        ]},
+        { "icon": "🤫", "title": "Quiet corner", "rows": [
+          { "icon": "🪑", "title": "Benches in Gülhane Parkı, or by the Galata Tower", "sub": "" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        { "icon": "⭐", "title": "Top 5", "rows": [
+          { "icon": "1️⃣", "title": "Galata Tower", "sub": "~800 m", "action": "🧭" },
+          { "icon": "2️⃣", "title": "İstiklal Street & Taksim Square", "sub": "~1 km", "action": "🧭" },
+          { "icon": "3️⃣", "title": "Galata Bridge", "sub": "~600 m", "action": "🧭" },
+          { "icon": "4️⃣", "title": "Süleymaniye Mosque & the Grand Bazaar (Kapalıçarşı)", "sub": "2 stops on tram T1", "action": "🧭" },
+          { "icon": "5️⃣", "title": "Topkapı Palace & Hagia Sophia", "sub": "Tram T1 to \"Sultanahmet\"", "action": "🧭" }
+        ]}
+      ],
+      "note": "Haggling is normal at the Grand Bazaar (Kapalıçarşı) and the Egyptian Spice Bazaar (Mısır Çarşısı) — the opening price can usually be talked down 20–40%.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        { "icon": "🆓", "title": "Somewhere to sit", "rows": [
+          { "icon": "⚓", "title": "Seafarers' Lounge / Stella Maris in the terminal, if open", "sub": "Wi-Fi and power sockets", "action": "" },
+          { "icon": "☕", "title": "Cafés inside the Galataport terminal", "sub": "Fine to sit with a tea", "action": "" },
+          { "icon": "📚", "title": "Atatürk Library, Beyoğlu district", "sub": "", "action": "🧭" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    },
+    "istanbul_spiritual_stella_maris": {
+      "title": "Stella Maris / Apostleship of the Sea",
+      "sections": [
+        { "icon": "🤝", "title": "What they offer", "rows": [
+          { "icon": "💬", "title": "Ship visits, spiritual support, help in urgent situations, guidance", "sub": "Catholic / ecumenical — works across Ambarlı, Tuzla, Zeyport and Haydarpaşa" }
+        ]},
+        { "icon": "🕐", "title": "When", "rows": [
+          { "icon": "📅", "title": "By request", "sub": "Visits arranged through your ship's agent" }
+        ]}
+      ],
+      "contacts": [
+        { "icon": "🗣", "title": "Turkish, English, Italian", "sub": "Languages spoken", "action": "" }
+      ],
+      "note": "No direct phone number confirmed yet — contact is arranged through the ship's agent.",
+      "updated": "10 August 2026"
+    },
+    "istanbul_galataport_city_safety": {
+      "title": "Safety",
+      "callout": { "tone": "warn", "text": "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen." },
+      "sections": [
+        { "icon": "🟢", "title": "General risk", "rows": [
+          { "icon": "🛡", "title": "Karaköy and Galata are safe by day and night", "sub": "" }
+        ]},
+        { "icon": "🚫", "title": "Where to be careful", "rows": [
+          { "icon": "🌙", "title": "Quiet backstreets around Taksim and Beyoğlu at night", "sub": "" }
+        ]},
+        { "icon": "💸", "title": "Common scams", "rows": [
+          { "icon": "🍺", "title": "Inflated bills at bars around Taksim, \"friendly\" unofficial guides", "sub": "Same schemes as at Ambarlı — walk away" }
+        ]},
+        { "icon": "🍺", "title": "Alcohol", "rows": [
+          { "icon": "🚫", "title": "Drinking in the street is forbidden", "sub": "" }
+        ]},
+        { "icon": "🌙", "title": "At night", "rows": [
+          { "icon": "🚋", "title": "Tram runs until about midnight", "sub": "After that, take a taxi" }
+        ]}
+      ],
+      "updated": "10 August 2026"
+    }
+  }
+}
