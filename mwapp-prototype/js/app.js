@@ -268,32 +268,21 @@ const PORTS = {
     },
   },
 
+  // Field-verified by the IMWIRSA Istanbul coordinator, 10 August 2026 — this
+  // is one of three Istanbul terminals in the same submission (see Ambarlı
+  // and Galataport below). Still genuinely thin — most of what's here is
+  // "not found yet" from the coordinator, marked honestly rather than guessed.
   "istanbul-haydarpasa": {
-    meta: { flag: "🇹🇷", terminal: "Haydarpaşa", city: "Istanbul", country: "Türkiye", tz: "UTC+3", lat: 41.0011, lng: 29.0192 },
-    categories: {
-      centre: {
-        title: "Seafarers' Centre",
-        rows: [
-          PENDING("ℹ️", "About the Centre", "Opening hours, phone, coordinator, website"),
-          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
-          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
-          PENDING("📍", "Location & Route", "Address, map, how to get there"),
-        ],
-      },
-      transport: transportSkeleton(null),
-      shops: shopsSkeleton(),
-      citylife: citylifeSkeleton(),
-      spiritual: spiritualSkeleton(),
-      emergency: {
-        title: "Emergency Contacts",
-        rows: [
-          { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
-          { icon: "🏛", title: "Istanbul Seafarers' Contact Centre", sub: "+90 216 347 3771", action: "📞" },
-          { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
-        ],
-      },
-      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
-    },
+    meta: { flag: "🇹🇷", terminal: "Haydarpaşa", city: "Istanbul", country: "Türkiye", tz: "UTC+3", lat: 41.0053, lng: 29.0194 },
+    categories: null, // loaded lazily from data/istanbul-haydarpasa.json — see ensurePortContentLoaded()
+  },
+  "istanbul-ambarli": {
+    meta: { flag: "🇹🇷", terminal: "Ambarlı Port Complex", city: "Istanbul", country: "Türkiye", tz: "UTC+3", lat: 40.9682, lng: 28.6811 },
+    categories: null, // loaded lazily from data/istanbul-ambarli.json — see ensurePortContentLoaded()
+  },
+  "istanbul-galataport": {
+    meta: { flag: "🇹🇷", terminal: "Galataport Cruise Terminal", city: "Istanbul", country: "Türkiye", tz: "UTC+3", lat: 41.0256, lng: 28.9821 },
+    categories: null, // loaded lazily from data/istanbul-galataport.json — see ensurePortContentLoaded()
   },
 
   // ── GEORGIA · BATUMI ────────────────────────────────────────────────
