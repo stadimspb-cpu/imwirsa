@@ -94,6 +94,7 @@
       <a href="#summary">In short</a>
       <a href="#mwapp">MWApp</a>
       <a href="#website">This website</a>
+      <a href="#legal-basis">Legal basis</a>
       <a href="#rights">Your rights</a>
     </div>
     <div class="lang-toggle">
@@ -108,13 +109,13 @@
   <div class="section-inner">
     <span class="section-eyebrow fade-up">The Short Version</span>
     <h2 class="section-title fade-up">In short</h2>
-    <p class="body-copy fade-up">IMWIRSA is a non-profit association registered in Tallinn, Estonia. This policy explains how we handle personal data on this website and in MWApp, our application for seafarers.</p>
+    <p class="body-copy fade-up">International Maritime Welfare Innovation Research and Support Association (IMWIRSA) is a non-profit association established in Estonia. This policy explains how we handle personal data on this website, in MWApp, and across our research, correspondence and welfare initiatives more broadly — in accordance with the General Data Protection Regulation (EU) 2016/679 (GDPR).</p>
     <div class="card-grid fade-up">
       <div class="info-card"><div class="icon">📵</div><h4>No account, ever</h4><p>MWApp needs no registration, no email address and no phone number. A seafarer can use it without telling us anything about themselves.</p></div>
       <div class="info-card"><div class="icon">📱</div><h4>Stored on the phone</h4><p>What MWApp remembers — a name if given, a chosen assistant, a marked ship position — stays in the phone's own storage. We do not receive it.</p></div>
       <div class="info-card"><div class="icon">🔢</div><h4>We count, we don't watch</h4><p>We measure how many times the app is opened, in aggregate. We do not track what any individual does inside it.</p></div>
     </div>
-    <p class="body-copy fade-up" style="margin-top:24px;"><strong>Last updated:</strong> 28 July 2026. MWApp is in active development and currently has no server of its own. When that changes, this policy will be updated before the change goes live, and the date above will tell you when.</p>
+    <p class="body-copy fade-up" style="margin-top:24px;"><strong>Last updated:</strong> 11 August 2026. MWApp is in active development and currently has no server of its own for the app itself. When that changes, this policy will be updated before the change goes live, and the date above will tell you when.</p>
   </div>
 </section>
 
@@ -145,7 +146,7 @@
     <p class="body-copy fade-up">MWApp can use the phone's location for two things, and only when the seafarer asks it to. The first is finding the nearest port: the coordinates are used for a single calculation on the device and are then discarded — only the result, which port, is kept. The second is marking where the ship is docked, so the seafarer can find their way back. That position is stored on the phone and is handed to the phone's own maps application when navigation is requested. Neither is transmitted to us.</p>
 
     <h3 class="block-title fade-up">The assistant and the chat</h3>
-    <p class="body-copy fade-up">In the current prototype the assistant's replies are pre-written demonstration text. Nothing typed into the chat is transmitted anywhere or stored beyond the current session. When a live assistant and a connection to our welfare coordinator are introduced, this section will be rewritten in advance and the change described plainly.</p>
+    <p class="body-copy fade-up">In the current prototype the assistant's replies are pre-written demonstration text. Nothing typed into the chat is transmitted anywhere or stored beyond the current session. When a live assistant is introduced, it will need real port information to answer accurately — the same port data already described in our port questionnaires — and this section will be rewritten in advance, with the change described plainly, before that goes live.</p>
 
     <h3 class="block-title fade-up">Counting installations</h3>
     <p class="body-copy fade-up">We need to know roughly how many seafarers have the app on their phone. That number matters to the unions and welfare organisations we work with, because it shows whether seafarers actually want this. We measure it by recording that the app was opened from a home screen rather than from a browser. The record is a page count and nothing more: it contains no identifier, no MWA-ID, and nothing that could distinguish one seafarer from another.</p>
@@ -166,7 +167,7 @@
     <p class="body-copy fade-up">We use Cloudflare Web Analytics. It sets no cookies, stores nothing on your device, and does not identify visitors by IP address or browser fingerprint. It tells us how many pages were viewed and roughly where visitors came from. Nothing more, and nothing about you personally.</p>
 
     <h3 class="block-title fade-up">When you write to us</h3>
-    <p class="body-copy fade-up">The contact form and the partner enquiry form send what you type to us by email through the service FormSubmit.co, which acts as a processor. That means your name, email address and message pass through their systems on the way to <strong>info@imwirsa.org</strong>. Messages are then held in our mailbox for as long as needed to deal with your enquiry and to keep a record of the partnership.</p>
+    <p class="body-copy fade-up">The contact form and the port questionnaire send what you type to us by email through a mail relay we operate ourselves (a Cloudflare Worker) using Resend as the email delivery service, which acts as a processor. That means your name, email address and message pass through Resend's systems on the way to <strong>info@imwirsa.org</strong>. Messages are then held in our mailbox for as long as needed to deal with your enquiry and to keep a record of the partnership.</p>
     <p class="body-copy fade-up">If you would rather not use the form, write to us directly at info@imwirsa.org. It reaches the same place, one step shorter.</p>
 
     <h3 class="block-title fade-up">Port coordinators</h3>
@@ -177,7 +178,35 @@
   </div>
 </section>
 
-<div class="wave-divider" style="background:#ffffff;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#1B3A6B"/></svg></div>
+<div class="wave-divider" style="background:#ffffff;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#F4F7FA"/></svg></div>
+
+<!-- LEGAL BASIS & INTERNATIONAL COOPERATION -->
+<section id="legal-basis">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <span class="section-eyebrow">The Formal Part</span>
+      <h2 class="section-title">Legal basis, and working across borders</h2>
+      <p class="section-sub">This section exists because it needs to under the GDPR — it is more technical than the rest of this page on purpose.</p>
+    </div>
+
+    <h3 class="block-title fade-up">Why we're allowed to process it</h3>
+    <p class="body-copy fade-up">Depending on the situation, we rely on one of the following: your <strong>consent</strong> (for example, agreeing to have your name shown in the app, which you can withdraw at any time); our <strong>legitimate interest</strong> in running IMWIRSA and communicating with partners, coordinators and researchers; steps <strong>necessary for an agreement or cooperation</strong> we've entered into with you or your organisation; or, occasionally, a <strong>legal obligation</strong> we're required to meet.</p>
+
+    <h3 class="block-title fade-up">Research and surveys</h3>
+    <p class="body-copy fade-up">Where we collect personal data through surveys or research — including the port questionnaires our coordinators complete — participants are told what it's for and how it will be used. Where the purpose allows it, results are presented in aggregated or anonymised form. Participation in voluntary IMWIRSA surveys is voluntary unless stated otherwise.</p>
+
+    <h3 class="block-title fade-up">Working outside the EU</h3>
+    <p class="body-copy fade-up">IMWIRSA works with port coordinators, unions and welfare organisations across a genuinely international network — as of today, that includes people in Georgia and Türkiye alongside those inside the EU, and the network keeps growing. Where personal data crosses outside the European Economic Area as a result — for instance, a coordinator's own contact details, submitted from where they work — we take the safeguards required under GDPR for that transfer.</p>
+
+    <h3 class="block-title fade-up">Sharing with others</h3>
+    <p class="body-copy fade-up">We do not sell personal data, and we share it only where genuinely necessary — with a service provider actually helping run something (like Resend, above), or where the law requires disclosure. Where someone processes data on our behalf, we put the appropriate data protection terms in place.</p>
+
+    <h3 class="block-title fade-up">How long we keep it</h3>
+    <p class="body-copy fade-up">We keep personal data only for as long as it's actually needed for the reason we collected it, or as long as the law requires — this varies by what it is and why we have it, so we don't give a single fixed number here.</p>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:#F4F7FA;"><svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C360,60 720,0 1080,30 C1200,40 1320,20 1440,30 L1440,60 L0,60 Z" fill="#ffffff"/></svg></div>
 
 <!-- RIGHTS -->
 <section style="background:var(--navy);" id="rights">
@@ -199,6 +228,21 @@
         <p style="color:rgba(255,255,255,0.65);">You may ask us to erase what we hold. In the app you do not need to ask — Settings → Clear my data does it immediately.</p>
       </div>
       <div class="info-card" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12);">
+        <div class="icon">🚫</div>
+        <h4 style="color:white;">Restriction and objection</h4>
+        <p style="color:rgba(255,255,255,0.65);">You may ask us to limit how we use your data, or object to a particular use of it — for example, being listed by name as a port coordinator.</p>
+      </div>
+      <div class="info-card" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12);">
+        <div class="icon">📦</div>
+        <h4 style="color:white;">Portability</h4>
+        <p style="color:rgba(255,255,255,0.65);">Where it applies, you may ask for a copy of your data in a portable format to take elsewhere.</p>
+      </div>
+      <div class="info-card" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12);">
+        <div class="icon">↩️</div>
+        <h4 style="color:white;">Withdrawing consent</h4>
+        <p style="color:rgba(255,255,255,0.65);">Where we rely on your consent — like showing your name in the app — you can withdraw it at any time, with effect going forward.</p>
+      </div>
+      <div class="info-card" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12);">
         <div class="icon">⚖️</div>
         <h4 style="color:white;">Complaint</h4>
         <p style="color:rgba(255,255,255,0.65);">If you believe we have handled your data wrongly, you may complain to the Estonian Data Protection Inspectorate (Andmekaitse Inspektsioon).</p>
@@ -212,8 +256,8 @@
 <section>
   <div class="section-inner">
     <div class="quote-block fade-up">
-      <p style="font-style:normal; font-size:15px;">Data controller: IMWIRSA — International Maritime Welfare Innovation Research and Support Association, Tallinn, Estonia. Contact: info@imwirsa.org</p>
-      <cite>This policy was last updated on 28 July 2026. Earlier versions are available on request.</cite>
+      <p style="font-style:normal; font-size:15px;">Data controller: IMWIRSA — International Maritime Welfare Innovation Research and Support Association, Estonia. Contact: info@imwirsa.org</p>
+      <cite>This policy was last updated on 11 August 2026. Earlier versions are available on request.</cite>
     </div>
   </div>
 </section>
