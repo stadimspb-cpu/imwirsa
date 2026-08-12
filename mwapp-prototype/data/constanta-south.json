@@ -1,0 +1,1163 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "statusFrom": "constanta_south_centre_about",
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "About the Centre",
+          "sub": "Seamen's Club Constanța (Stella Maris / ITF) · 7.5 km away, shuttle only",
+          "action": "›",
+          "sd": "constanta_south_centre_about"
+        },
+        {
+          "icon": "🎱",
+          "title": "Services",
+          "sub": "Hospitality, recreation, connectivity, welfare, ITF legal office",
+          "action": "›",
+          "sd": "constanta_south_centre_services"
+        },
+        {
+          "icon": "🚐",
+          "title": "Free Shuttle Bus",
+          "sub": "Mandatory way to reach the centre from here — book ahead",
+          "action": "›",
+          "sd": "constanta_south_centre_shuttle"
+        },
+        {
+          "icon": "📍",
+          "title": "Location & Route",
+          "sub": "Why you can't walk it, and what the shuttle replaces",
+          "action": "›",
+          "sd": "constanta_south_centre_location"
+        }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        {
+          "icon": "🚪",
+          "title": "Leaving the Port",
+          "sub": "Exit rules, required documents, gate information",
+          "action": "›",
+          "sd": "constanta_south_transport_leaving"
+        },
+        {
+          "icon": "🚕",
+          "title": "Taxi",
+          "sub": "Apps, phone numbers, where to catch one",
+          "action": "›",
+          "sd": "constanta_south_transport_taxi"
+        },
+        {
+          "icon": "🚎",
+          "title": "Public Transport",
+          "sub": "Nearest stop, routes, tickets, journey to the city",
+          "action": "›",
+          "sd": "constanta_south_transport_public"
+        }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        {
+          "icon": "💱",
+          "title": "Currency Exchange",
+          "sub": "How to exchange money safely — read this first, before you need it",
+          "action": "›",
+          "sd": "constanta_south_currency_exchange"
+        },
+        {
+          "icon": "🛒",
+          "title": "Supermarkets",
+          "sub": "Nearest stores, shopping centres, 24/7 shops",
+          "action": "›",
+          "sd": "constanta_south_shops_supermarkets"
+        },
+        {
+          "icon": "🍽",
+          "title": "Food & Drinks",
+          "sub": "Cheap lunch, seafood, halal options",
+          "action": "›",
+          "sd": "constanta_south_shops_food"
+        },
+        {
+          "icon": "📱",
+          "title": "Electronics & SIM Cards",
+          "sub": "Operators, SIM cards, Wi-Fi, ATM",
+          "action": "›",
+          "sd": "constanta_south_shops_sim"
+        },
+        {
+          "icon": "💊",
+          "title": "Pharmacies",
+          "sub": "Nearest and 24/7 pharmacies, prescription & OTC medicines",
+          "action": "›",
+          "sd": "constanta_south_shops_pharmacies"
+        },
+        {
+          "icon": "🎁",
+          "title": "Souvenirs",
+          "sub": "Where to find something to take home",
+          "action": "›",
+          "sd": "constanta_shops_souvenirs"
+        },
+        {
+          "icon": "⚓",
+          "title": "Seafarer Supplies",
+          "sub": "Workwear, safety gear, ship's stores",
+          "action": "›",
+          "sd": "constanta_shops_seafarer"
+        }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        {
+          "icon": "🌳",
+          "title": "Parks & Waterfronts",
+          "sub": "~9 km away — worth the trip",
+          "action": "›",
+          "sd": "constanta_city_parks"
+        },
+        {
+          "icon": "🏛",
+          "title": "Culture & Must-See",
+          "sub": "Top 5 places in Constanța",
+          "action": "›",
+          "sd": "constanta_city_culture"
+        },
+        {
+          "icon": "🧘",
+          "title": "Free Time & Relax",
+          "sub": "Somewhere to sit without spending anything",
+          "action": "›",
+          "sd": "constanta_city_free"
+        },
+        {
+          "icon": "🛡",
+          "title": "Safety",
+          "sub": "What to know before going into the city",
+          "action": "›",
+          "sd": "constanta_city_safety"
+        }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        {
+          "icon": "💬",
+          "title": "No particular faith — I'd just like to talk",
+          "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator",
+          "action": "›",
+          "go": "assistantchat"
+        },
+        {
+          "icon": "⚓",
+          "title": "Stella Maris Constanța / ITF Seafarers Center",
+          "sub": "Interfaith / Catholic · ship visits, prayer room",
+          "action": "›",
+          "sd": "constanta_south_spiritual_mission"
+        },
+        {
+          "icon": "🤝",
+          "title": "Sindicatul Liber al Navigatorilor (SLN)",
+          "sub": "Free Navigators' Union · legal aid, not faith-based",
+          "action": "›",
+          "sd": "constanta_south_spiritual_union"
+        }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        {
+          "icon": "🚨",
+          "title": "Police / Ambulance / Fire",
+          "sub": "112 · Free, 24/7, no SIM needed",
+          "action": "📞"
+        },
+        {
+          "icon": "🩺",
+          "title": "Sf. Apostol Andrei County Emergency Hospital",
+          "sub": "Bulevardul Tomis 145 · ~4.5 km from Poarta 1 / ~11 km from Poarta 10 · +40 241 662 222",
+          "action": "🧭"
+        },
+        {
+          "icon": "🇬🇧",
+          "title": "Regina Maria / RMN Diagnostice",
+          "sub": "English-speaking private clinic · +40 21 9268",
+          "action": "📞"
+        },
+        {
+          "icon": "🏛",
+          "title": "Seamen's Club Constanța (Stella Maris / ITF)",
+          "sub": "+40 241 611 114",
+          "action": "📞"
+        },
+        {
+          "icon": "🌐",
+          "title": "ISWAN 24/7 Helpline",
+          "sub": "+44 20 7283 2922 · Multilingual",
+          "action": "📞"
+        },
+        {
+          "icon": "⚓",
+          "title": "APMC — Constanța Port Administration",
+          "sub": "+40 241 602 114 / +40 241 602 115",
+          "action": "📞"
+        },
+        {
+          "icon": "⚖️",
+          "title": "ITF Inspector — Adrian Mihălcioiu (SLN)",
+          "sub": "+40 722 242 888 / +40 241 618 587",
+          "action": "📞"
+        }
+      ]
+    },
+    "wellness": {
+      "title": "Premium Welfare Services",
+      "gated": true,
+      "rows": [
+        {
+          "icon": "⚖️",
+          "title": "Legal Assistance",
+          "sub": "Free legal consultation for ITF / SLN union members",
+          "action": "›",
+          "sd": "constanta_wellness_legal"
+        },
+        {
+          "icon": "ℹ️",
+          "title": "Other Premium services",
+          "sub": "Discounts, medical priority and wellness — pending confirmation for this terminal",
+          "pending": true
+        }
+      ]
+    }
+  },
+  "subdetails": {
+    "constanta_south_centre_about": {
+      "title": "About the Centre",
+      "callout": {
+        "tone": "warn",
+        "text": "You cannot walk here from the South Gate — it's 7.5 km away and walking inside the terminal is forbidden. Take the free shuttle (see below)."
+      },
+      "hours": [
+        [
+          "Monday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Tuesday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Wednesday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Thursday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Friday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Saturday",
+          "12:00 – 22:00"
+        ],
+        [
+          "Sunday",
+          "12:00 – 22:00"
+        ]
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+40 241 611 114",
+          "sub": "Main line",
+          "action": "📞"
+        },
+        {
+          "icon": "✉️",
+          "title": "stella.maris.constanta@gmail.com",
+          "sub": "Email",
+          "action": "✉️"
+        },
+        {
+          "icon": "🧑‍💼",
+          "title": "Lucian Gheorghiu — chaplain / director",
+          "sub": "Romanian, English",
+          "action": "💬"
+        }
+      ],
+      "note": "Run by Apostleship of the Sea / Stella Maris, and doubles as the ITF Seafarers' Centre. Closed Orthodox Easter, 1 January, 25 December.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_centre_services": {
+      "title": "Services",
+      "groups": [
+        {
+          "label": "Hospitality",
+          "icon": "☕",
+          "items": [
+            "Tea & coffee",
+            "Snacks — hot meals not available (~€1–3)"
+          ]
+        },
+        {
+          "label": "Recreation",
+          "icon": "🎱",
+          "items": [
+            "TV room",
+            "Terrace",
+            "Rest area",
+            "Billiards",
+            "Table tennis",
+            "Library",
+            "Book exchange",
+            "Games room"
+          ]
+        },
+        {
+          "label": "Connectivity",
+          "icon": "📶",
+          "items": [
+            "Free Wi-Fi",
+            "Computers",
+            "SIM cards on site"
+          ]
+        },
+        {
+          "label": "Welfare services",
+          "icon": "🤝",
+          "items": [
+            "Volunteers who visit ships",
+            "Events and excursions",
+            "Currency exchange (limited)"
+          ]
+        },
+        {
+          "label": "Spiritual care",
+          "icon": "🕊",
+          "items": [
+            "Prayer room",
+            "Chaplain"
+          ]
+        },
+        {
+          "label": "Legal",
+          "icon": "⚖️",
+          "items": [
+            "ITF office on site — legal help for union members"
+          ]
+        }
+      ],
+      "note": "The free shuttle to and from your ship is the centre's key service here — without it there's no practical way to reach it from the South Port.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_centre_shuttle": {
+      "title": "Free Shuttle Bus",
+      "from": "Right at your gangway, on call",
+      "directions": [
+        {
+          "icon": "📞",
+          "title": "Book 1–2 hours ahead",
+          "sub": "Through your agent, or WhatsApp the club directly",
+          "action": "📞"
+        },
+        {
+          "icon": "🚐",
+          "title": "How to recognise it",
+          "sub": "White minivan (Ford Transit / VW Crafter) with a Stella Maris / ITF Seafarers' Trust logo on the windscreen",
+          "action": ""
+        },
+        {
+          "icon": "📅",
+          "title": "Demand-based, 10:00 – 21:00",
+          "sub": "Both directions — no fixed timetable",
+          "action": ""
+        },
+        {
+          "icon": "🗓",
+          "title": "Weekends",
+          "sub": "Runs — same as weekdays",
+          "action": ""
+        }
+      ],
+      "note": "Free of charge. Booking is not optional here — this is the only realistic way in or out for South Port arrivals, since walking inside the terminal is against ISPS rules.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_centre_location": {
+      "title": "Location & Route",
+      "callout": {
+        "tone": "warn",
+        "text": "NOT RECOMMENDED — walking inside the terminal is strictly forbidden under ISPS security rules. Use the agent's transport or the club shuttle only."
+      },
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Incinta Port Constanța, Gara Fluvială, Clădirea Seamen's Club, Constanța 900900",
+          "sub": "~7.5 km from the South Gate (Poarta 10) — closer to the North Port side (Poarta 1)",
+          "action": "🧭"
+        }
+      ],
+      "note": "Even if you could walk it, avoid it: the route crosses the huge DP World container terminal, heavy truck traffic, no pavements, and stray dogs. Take the shuttle.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": {
+        "tone": "ok",
+        "text": "Yes — shore leave is normally permitted. Always confirm with your Master or agent first."
+      },
+      "sections": [
+        {
+          "icon": "🚪",
+          "title": "Gates",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Poarta 10 / Poarta 10 Bis — pedestrian (turnstiles)",
+              "sub": "Open 24 hours"
+            },
+            {
+              "icon": "🚗",
+              "title": "Poarta 9 — vehicles",
+              "sub": ""
+            },
+            {
+              "icon": "🚛",
+              "title": "Poarta 10 — trucks",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🪪",
+          "title": "Take with you",
+          "rows": [
+            {
+              "icon": "📘",
+              "title": "Seaman's Book + international passport",
+              "sub": ""
+            },
+            {
+              "icon": "🎫",
+              "title": "Shore Pass",
+              "sub": "Issued by Romanian Border Police (Poliția de Frontieră) through your agent"
+            }
+          ]
+        },
+        {
+          "icon": "🌍",
+          "title": "If you need a Schengen visa",
+          "rows": [
+            {
+              "icon": "⚠️",
+              "title": "Shore leave limited to the port zone and Constanța city",
+              "sub": "With a valid Shore Pass. Leaving the city without a visa is forbidden"
+            }
+          ]
+        },
+        {
+          "icon": "🦺",
+          "title": "On foot within the terminal",
+          "rows": [
+            {
+              "icon": "🦺",
+              "title": "Hi-vis vest and hard hat required",
+              "sub": "From the gangway to the transport pickup point"
+            }
+          ]
+        },
+        {
+          "icon": "🚫",
+          "title": "Off-limits",
+          "rows": [
+            {
+              "icon": "🚫",
+              "title": "No walking inside the DP World / CSCT container terminal",
+              "sub": "Strictly enforced"
+            }
+          ]
+        }
+      ],
+      "note": "Checkpoint contact: through your ship's agent, or the ITF inspector.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        {
+          "icon": "📱",
+          "title": "Apps",
+          "rows": [
+            {
+              "icon": "🟢",
+              "title": "Bolt",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "⚫",
+              "title": "Uber",
+              "sub": "",
+              "action": "›"
+            }
+          ]
+        },
+        {
+          "icon": "☎️",
+          "title": "By phone",
+          "rows": [
+            {
+              "icon": "📞",
+              "title": "Taxi Rompetrol",
+              "sub": "+40 241 630 000",
+              "action": "📞"
+            },
+            {
+              "icon": "📞",
+              "title": "Taxi Sageata",
+              "sub": "+40 241 638 888",
+              "action": "📞"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Pickup point",
+          "rows": [
+            {
+              "icon": "🚖",
+              "title": "Outside Poarta 10 checkpoint",
+              "sub": "City taxis can't drive into the terminal without a special pass",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "~40–60 RON (~€8–12) into the city. Unofficial drivers: white or yellow cars with no company markings or roof sign, hanging around Poarta 10, pushing their services. Always insist on the meter (Aparat de taxat) or book through Bolt — don't agree to a fixed price a private driver names.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        {
+          "icon": "🚏",
+          "title": "Nearest stop",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "\"Poarta 10\"",
+              "sub": "~150 m from the checkpoint exit",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚌",
+          "title": "Route",
+          "rows": [
+            {
+              "icon": "🔢",
+              "title": "Bus 153 (to Agigea / Lazu)",
+              "sub": "Transfer to bus 2-43 for Constanța city centre"
+            }
+          ]
+        }
+      ],
+      "note": "45–60 minutes total. ~3 RON per ride, contactless bank card on the validator or the 24PAY app. Last bus around 22:30–23:00.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": {
+        "tone": "warn",
+        "text": "Only the Romanian leu (RON) is legal tender. Euros are usually not accepted in shops or taxis, or only at a very poor rate — exchange some cash or use a card."
+      },
+      "sections": [
+        {
+          "icon": "✅",
+          "title": "Where to exchange safely",
+          "rows": [
+            {
+              "icon": "🏦",
+              "title": "Exchange Casa de Schimb Valutar",
+              "sub": "Inside City Park Mall or VIVO! Constanța",
+              "action": "🧭"
+            },
+            {
+              "icon": "💱",
+              "title": "Exchange points on Bulevardul 1 Mai",
+              "sub": "Near the Constanța railway station (Gara)",
+              "action": "🧭"
+            },
+            {
+              "icon": "⚓",
+              "title": "Seamen's Club",
+              "sub": "Limited currency exchange on site",
+              "action": ""
+            },
+            {
+              "icon": "🏧",
+              "title": "ATM — BRD / Banca Transilvania",
+              "sub": "Near Penny Market, Agigea · dispenses RON",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚩",
+          "title": "Red flags — walk away",
+          "rows": [
+            {
+              "icon": "🗣",
+              "title": "A stranger offers you a better rate",
+              "sub": "On the street or at the gate — always a scam"
+            },
+            {
+              "icon": "🧾",
+              "title": "No receipt offered",
+              "sub": "A real exchange always gives you a printed receipt with the rate used"
+            }
+          ]
+        }
+      ],
+      "updated": "9 August 2026"
+    },
+    "constanta_south_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        {
+          "icon": "🛒",
+          "title": "Nearest stores",
+          "rows": [
+            {
+              "icon": "🛍",
+              "title": "Lidl — Agigea",
+              "sub": "~2.5 km from Poarta 10 · Mon–Sat 07:30–22:00, Sun 08:00–20:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Penny Market",
+              "sub": "~2.8 km · Mon–Sat 07:30–21:00, Sun 08:00–19:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Kaufland — Constanța Sud",
+              "sub": "~6 km · Mon–Sat 07:00–22:00, Sun 08:00–20:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "⛽",
+              "title": "Rompetrol / OMV petrol-station minimarkets on DN39",
+              "sub": "Right by Poarta 10 · limited range — food, drinks, cigarettes",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🏬",
+          "title": "Shopping centres",
+          "rows": [
+            {
+              "icon": "🏢",
+              "title": "City Park Mall",
+              "sub": "~12 km · taxi/Bolt (~30 RON) or bus with a transfer · Carrefour, clothing, currency exchange, Vodafone/Orange, food court",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏢",
+              "title": "VIVO! Constanța",
+              "sub": "~13 km · taxi/Bolt · Auchan, pharmacies, banks, Altex electronics",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "9 August 2026"
+    },
+    "constanta_south_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        {
+          "icon": "🍔",
+          "title": "Cheap & quick",
+          "rows": [
+            {
+              "icon": "🍽",
+              "title": "Autoservire Agigea (DN39 highway)",
+              "sub": "Business lunch (Meniul Zilei) ~25–35 RON (€5–7)",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🐟",
+          "title": "Popular with seafarers",
+          "rows": [
+            {
+              "icon": "🎣",
+              "title": "Pescăria Lui Matei",
+              "sub": "Beachfront in Agigea, ~4 km · well-known seafood restaurant",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🕌",
+          "title": "Halal",
+          "rows": [
+            {
+              "icon": "🍖",
+              "title": "Oz Tırgana or Efendi Doner",
+              "sub": "In the city — Constanța has established Tatar and Turkish communities",
+              "action": ""
+            }
+          ]
+        }
+      ],
+      "updated": "9 August 2026"
+    },
+    "constanta_south_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        {
+          "icon": "📡",
+          "title": "Mobile operators",
+          "rows": [
+            {
+              "icon": "🟠",
+              "title": "Orange · Vodafone · Digi Romania",
+              "sub": ""
+            },
+            {
+              "icon": "🏪",
+              "title": "Prepaid SIM (Cartelă Prepay)",
+              "sub": "Any supermarket (Lidl, Penny), newsstands (Inmedio), or petrol stations",
+              "action": ""
+            },
+            {
+              "icon": "💶",
+              "title": "~€5–8",
+              "sub": "30–50 GB of data, 30 days"
+            },
+            {
+              "icon": "🪪",
+              "title": "No passport required",
+              "sub": "Standard prepaid SIM purchase is anonymous in Romania"
+            }
+          ]
+        },
+        {
+          "icon": "📶",
+          "title": "Wi-Fi",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "None on the quays",
+              "sub": "Available at the Seamen's Club and at the checkpoint"
+            }
+          ]
+        }
+      ],
+      "note": "ATM: BRD / Banca Transilvania near Penny Market, Agigea — dispenses RON.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        {
+          "icon": "💊",
+          "title": "Nearest",
+          "rows": [
+            {
+              "icon": "🏥",
+              "title": "Catena — Str. Bujorului 2, Agigea",
+              "sub": "~2.4 km from Poarta 10 · 08:00–20:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Farmacia Minifarm Tomis — Bulevardul Tomis 133, Constanța",
+              "sub": "~11 km from the South Port",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "📋",
+          "title": "Prescriptions",
+          "rows": [
+            {
+              "icon": "🧾",
+              "title": "International English-language prescriptions accepted",
+              "sub": "For antibiotics and other prescription medicines"
+            }
+          ]
+        }
+      ],
+      "note": "Pharmacists at chain pharmacies (Catena, Dr. Max) generally have basic English.",
+      "updated": "9 August 2026"
+    },
+    "constanta_south_spiritual_mission": {
+      "title": "Stella Maris Constanța / ITF Seafarers Center",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "💬",
+              "title": "Ship visits, conversation, transport into the city, prayer, practical help",
+              "sub": "Interfaith / Catholic — open to any faith or none"
+            }
+          ]
+        },
+        {
+          "icon": "🕊",
+          "title": "Prayer room",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "At the Seamen's Club, Gara Fluvială building",
+              "sub": "Shared by both terminals",
+              "action": ""
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "Lucian Gheorghiu — chaplain / director",
+          "sub": "+40 241 611 114 · Romanian, English",
+          "action": "📞"
+        }
+      ],
+      "updated": "9 August 2026"
+    },
+    "constanta_south_spiritual_union": {
+      "title": "Sindicatul Liber al Navigatorilor (SLN)",
+      "sections": [
+        {
+          "icon": "⚖️",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "📋",
+              "title": "Legal aid, protection of seafarers' rights, labour consultations",
+              "sub": "Free Navigators' Union · not a faith-based organisation"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Str. Mircea cel Bătrân 104, Constanța",
+          "sub": "Near Poarta 1 (North Port)",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "Adrian Mihălcioiu",
+          "sub": "+40 722 242 888 / +40 241 618 587 · Romanian, English",
+          "action": "📞"
+        }
+      ],
+      "note": "Available by appointment.",
+      "updated": "9 August 2026"
+    },
+    "constanta_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        {
+          "icon": "🌳",
+          "title": "Green space",
+          "rows": [
+            {
+              "icon": "🌲",
+              "title": "Tăbăcărie Park",
+              "sub": "Large park with a lake, next to City Park Mall — benches, shade, walking paths",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌊",
+          "title": "Waterfront",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Constanța Casino promenade (Faleza Cazino)",
+              "sub": "Seafront walk past the old Casino building",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "All of this sits in and around the Old Town — around 9 km from the South Gate (Poarta 10), but effectively at the doorstep of the North Port (Poarta 1).",
+      "updated": "9 August 2026"
+    },
+    "constanta_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        {
+          "icon": "⭐",
+          "title": "Top 5",
+          "rows": [
+            {
+              "icon": "1️⃣",
+              "title": "Constanța Casino (Cazinoul din Constanța)",
+              "sub": "Historic Art Nouveau landmark on the waterfront",
+              "action": "🧭"
+            },
+            {
+              "icon": "2️⃣",
+              "title": "Carol I Grand Mosque (Marea Moschee)",
+              "sub": "Climb the minaret for a view over the port and Old Town",
+              "action": "🧭"
+            },
+            {
+              "icon": "3️⃣",
+              "title": "Ovidiu Square (Piața Ovidiu)",
+              "sub": "The heart of the Old Town — cafés and restaurants",
+              "action": "🧭"
+            },
+            {
+              "icon": "4️⃣",
+              "title": "Constanța Aquarium & Dolphinarium",
+              "sub": "On the waterfront",
+              "action": "🧭"
+            },
+            {
+              "icon": "5️⃣",
+              "title": "Old Town (Centrul Vechi)",
+              "sub": "Narrow streets, historic architecture — good for a walk",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "~9 km from the South Gate (Poarta 10) — a taxi or the shuttle. From the North Port (Poarta 1) these are all within easy walking distance.",
+      "updated": "9 August 2026"
+    },
+    "constanta_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        {
+          "icon": "🆓",
+          "title": "Somewhere to sit",
+          "rows": [
+            {
+              "icon": "🪑",
+              "title": "Benches in Tăbăcărie Park, or by the Casino",
+              "sub": "Free, no time limit",
+              "action": "🧭"
+            },
+            {
+              "icon": "📚",
+              "title": "Ion N. Roman County Library (Biblioteca Județeană)",
+              "sub": "Quiet, Wi-Fi",
+              "action": "🧭"
+            },
+            {
+              "icon": "🍔",
+              "title": "Food court, City Park Mall",
+              "sub": "Tables, power outlets, free Wi-Fi",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "9 August 2026"
+    },
+    "constanta_shops_souvenirs": {
+      "title": "Souvenirs",
+      "sections": [
+        {
+          "icon": "🎁",
+          "title": "Where to find them",
+          "rows": [
+            {
+              "icon": "🏪",
+              "title": "Shops along the Casino promenade (Faleza Cazino)",
+              "sub": "Black Sea souvenirs, amber, magnets",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Old Town, around Piața Ovidiu",
+              "sub": "Local crafts",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "~9 km from the South Gate — much closer from the North Port side.",
+      "updated": "9 August 2026"
+    },
+    "constanta_shops_seafarer": {
+      "title": "Seafarer Supplies",
+      "sections": [
+        {
+          "icon": "🦺",
+          "title": "Workwear & ship's stores",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "Maritime Safety Equipment / Marine Store",
+              "sub": "Bulevardul 1 Mai 2, Constanța · ~8 km from the South Gate",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "9 August 2026"
+    },
+    "constanta_city_safety": {
+      "title": "Safety",
+      "callout": {
+        "tone": "warn",
+        "text": "Before you leave, agree your return time with the ship and mark your ship's position on the Ship screen."
+      },
+      "sections": [
+        {
+          "icon": "🟢",
+          "title": "General risk",
+          "rows": [
+            {
+              "icon": "🛡",
+              "title": "Relatively safe",
+              "sub": "Ordinary city-centre caution is enough in the Old Town and on the waterfront"
+            }
+          ]
+        },
+        {
+          "icon": "🚫",
+          "title": "Bringing anything back to the ship",
+          "rows": [
+            {
+              "icon": "🍾",
+              "title": "Alcohol into the port is strictly forbidden without paperwork",
+              "sub": "Any amount, no exceptions — you need a permit signed by your ship's Master before it can come through the checkpoint"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "💡",
+              "title": "Poorly lit around the South Gate (Poarta 10) and along the DN39 highway",
+              "sub": "Stick to the shuttle or a taxi after dark near the South Port"
+            },
+            {
+              "icon": "🚧",
+              "title": "Avoid the outskirts of the Henri Coandă district at night",
+              "sub": ""
+            },
+            {
+              "icon": "🚫",
+              "title": "No drinking in the street, in parks, or at bus stops",
+              "sub": "It's against local rules"
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch out for",
+          "rows": [
+            {
+              "icon": "🚕",
+              "title": "Unlicensed taxis overcharging right at the port gates",
+              "sub": "Use Bolt/Uber or insist on the meter — see Taxi"
+            },
+            {
+              "icon": "💶",
+              "title": "Street vendors \"forgetting\" your change",
+              "sub": "Count it before you walk away"
+            }
+          ]
+        },
+        {
+          "icon": "🐕",
+          "title": "Stray dogs",
+          "rows": [
+            {
+              "icon": "🐕",
+              "title": "Packs of strays around the open storage areas and roads on the South side (Agigea, Poarta 10–12)",
+              "sub": "Don't walk there alone after dark — take the shuttle or agent transport instead"
+            }
+          ]
+        },
+        {
+          "icon": "📞",
+          "title": "If something goes wrong",
+          "rows": [
+            {
+              "icon": "🚨",
+              "title": "112",
+              "sub": "Police, ambulance, fire — free, works with any SIM or none",
+              "action": "📞"
+            }
+          ]
+        }
+      ],
+      "updated": "9 August 2026"
+    },
+    "constanta_wellness_legal": {
+      "title": "Legal Assistance",
+      "sections": [
+        {
+          "icon": "⚖️",
+          "title": "Who it's for",
+          "rows": [
+            {
+              "icon": "🪪",
+              "title": "ITF / SLN union members with a valid Membership Card",
+              "sub": "Show the card at the SLN office"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Where",
+          "rows": [
+            {
+              "icon": "🏢",
+              "title": "SLN office — Str. Mircea cel Bătrân 104, Constanța",
+              "sub": "Near Poarta 1 (North Port)",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "9 August 2026"
+    }
+  }
+}
