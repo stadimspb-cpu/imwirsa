@@ -94,14 +94,11 @@ const SUBDETAILS = {
       { icon: "🌐", title: "duckdalben.de", sub: "Club website", action: "›" },
     ],
   },
-  constanta_centre_about: {
-    title: "About the Centre",
-    contacts: [
-      { icon: "📞", title: "+40 723 000 555", sub: "Constanța & Midia-Năvodari · also for shuttle pickup", action: "📞" },
-      { icon: "📞", title: "+40 723 218 090", sub: "Agigea (South Constanța)", action: "📞" },
-      { icon: "🌐", title: "romania.seamensclub.ro", sub: "Club website", action: "›" },
-    ],
-  },
+  // constanta_centre_about removed 12 August 2026 — Constanța split into two
+  // real terminals (constanta-south / constanta-north) with verified data
+  // from the coordinator's questionnaire; see data/constanta-south.json and
+  // data/constanta-north.json. This placeholder contact info was a guess
+  // from before the questionnaire came back and is now superseded.
 
   // Pattern for future ports: duplicate this object as wellness_zone_{portId}
   // once a real cabin is confirmed there (e.g. wellness_zone_hamburg). Until
@@ -211,32 +208,19 @@ const PORTS = {
     categories: null, // loaded lazily from data/tallinn-muuga.json — see ensurePortContentLoaded()
   },
 
-  "constanta-main": {
-    meta: { flag: "🇷🇴", terminal: "Constanța", city: "Constanța", country: "Romania", tz: "UTC+2", lat: 44.1730, lng: 28.6520 },
-    categories: {
-      centre: {
-        title: "Seafarers' Centre",
-        rows: [
-          { icon: "ℹ️", title: "About the Centre", sub: "Seamen's Club Constanța · phones, website", action: "›", sd: "constanta_centre_about" },
-          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
-          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
-          PENDING("📍", "Location & Route", "Address, map, how to get there"),
-        ],
-      },
-      transport: transportSkeleton(null),
-      shops: shopsSkeleton(),
-      citylife: citylifeSkeleton(),
-      spiritual: spiritualSkeleton(),
-      emergency: {
-        title: "Emergency Contacts",
-        rows: [
-          { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
-          { icon: "🏛", title: "Seamen's Club Constanța", sub: "+40 723 000 555", action: "📞" },
-          { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
-        ],
-      },
-      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
-    },
+  // Constanța split into two real terminals on 12 August 2026, replacing the
+  // old single "constanta-main" skeleton — the coordinator's questionnaire
+  // showed the South Port (Agigea) and North Port are practically two
+  // different worlds for a seafarer (shuttle-only vs. walk-into-town), so
+  // they need separate entries rather than one shared skeleton. Full data
+  // loaded lazily from data/constanta-south.json and data/constanta-north.json.
+  "constanta-south": {
+    meta: { flag: "🇷🇴", terminal: "South Port / Agigea", city: "Constanța", country: "Romania", tz: "UTC+3", lat: 44.0953, lng: 28.6369 },
+    categories: null, // loaded lazily from data/constanta-south.json — see ensurePortContentLoaded()
+  },
+  "constanta-north": {
+    meta: { flag: "🇷🇴", terminal: "North Port", city: "Constanța", country: "Romania", tz: "UTC+3", lat: 44.1706, lng: 28.6588 },
+    categories: null, // loaded lazily from data/constanta-north.json — see ensurePortContentLoaded()
   },
 
   "hamburg-main": {
@@ -345,7 +329,7 @@ const PORT_CONTENT_CACHE = {};
 async function ensurePortContentLoaded(portId) {
   const port = PORTS[portId];
   if (!port) return null;
-  if (port.categories) return port.categories; // still-inline skeleton ports (constanta, hamburg, istanbul) — nothing to fetch
+  if (port.categories) return port.categories; // still-inline skeleton ports (hamburg) — nothing to fetch
   if (PORT_CONTENT_CACHE[portId]) return PORT_CONTENT_CACHE[portId].categories;
 
   const res = await fetch(`data/${portId}.json`);
@@ -636,7 +620,8 @@ function saveState() { try { localStorage.setItem("mwapp_state", JSON.stringify(
 // the default terminal.
 const LEGACY_PORT_ID_MAP = {
   tallinn: "tallinn-vanasadam",
-  constanta: "constanta-main",
+  constanta: "constanta-south",
+  "constanta-main": "constanta-south", // pre-12-Aug-2026 single skeleton port, now split in two
   hamburg: "hamburg-main",
   istanbul: "istanbul-haydarpasa",
 };
