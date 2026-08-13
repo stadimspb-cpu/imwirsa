@@ -936,8 +936,39 @@
       },
       "sections": [
         {
-          "icon": "✅",
-          "title": "Where to exchange safely",
+          "icon": "🚩",
+          "title": "Red flags — walk away",
+          "rows": [
+            {
+              "icon": "🗣",
+              "title": "A stranger offers you a better rate",
+              "sub": "On the street, at the gate, or \"just around the corner\" — always a scam"
+            },
+            {
+              "icon": "🚗",
+              "title": "Being asked to go somewhere private",
+              "sub": "A car, a back room, an alley — a legitimate exchange never needs this"
+            },
+            {
+              "icon": "🧾",
+              "title": "No receipt offered",
+              "sub": "A real exchange always gives you a printed receipt with the rate used"
+            },
+            {
+              "icon": "🔢",
+              "title": "Know the rough official rate first",
+              "sub": "Check on your phone before you go — so you can spot a bad deal immediately"
+            },
+            {
+              "icon": "🧮",
+              "title": "Count what you receive, before you walk away",
+              "sub": "In front of the person who gave it to you, not after"
+            }
+          ]
+        },
+        {
+          "icon": "🏦",
+          "title": "Where to Exchange",
           "rows": [
             {
               "icon": "🏦",
@@ -960,23 +991,17 @@
           ]
         },
         {
-          "icon": "🚩",
-          "title": "Red flags — walk away",
+          "icon": "ℹ️",
+          "title": "Useful to know",
           "rows": [
             {
-              "icon": "🗣",
-              "title": "A stranger offers you a better rate",
-              "sub": "On the street or at the gate — always a scam"
-            },
-            {
-              "icon": "🧾",
-              "title": "No receipt offered",
-              "sub": "A real exchange always gives you a printed receipt with the rate used"
+              "icon": "🚌",
+              "title": "Getting there",
+              "sub": "Taxi or public transport into the centre."
             }
           ]
         }
       ],
-      "note": "Taxi or public transport into the centre.",
       "updated": "13 August 2026"
     }
   }

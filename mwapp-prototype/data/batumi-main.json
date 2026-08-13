@@ -504,22 +504,6 @@
       },
       "sections": [
         {
-          "icon": "✅",
-          "title": "Where to exchange safely",
-          "rows": [
-            {
-              "icon": "🏦",
-              "title": "A bank or licensed exchange office",
-              "sub": "See the checked addresses below"
-            },
-            {
-              "icon": "🏧",
-              "title": "An ATM",
-              "sub": "Bank of Georgia / TBC Bank at Checkpoint No.1 — dispenses GEL and USD"
-            }
-          ]
-        },
-        {
           "icon": "🚩",
           "title": "Red flags — walk away",
           "rows": [
@@ -529,15 +513,30 @@
               "sub": "On the street, at the gate, or \"just around the corner\" — always a scam"
             },
             {
+              "icon": "🚗",
+              "title": "Being asked to go somewhere private",
+              "sub": "A car, a back room, an alley — a legitimate exchange never needs this"
+            },
+            {
               "icon": "🧾",
               "title": "No receipt offered",
               "sub": "A real exchange always gives you a printed receipt with the rate used"
+            },
+            {
+              "icon": "🔢",
+              "title": "Know the rough official rate first",
+              "sub": "Check on your phone before you go — so you can spot a bad deal immediately"
+            },
+            {
+              "icon": "🧮",
+              "title": "Count what you receive, before you walk away",
+              "sub": "In front of the person who gave it to you, not after"
             }
           ]
         },
         {
-          "icon": "📍",
-          "title": "Checked addresses near you",
+          "icon": "🏦",
+          "title": "Where to Exchange",
           "rows": [
             {
               "icon": "💱",
@@ -555,6 +554,12 @@
               "icon": "💱",
               "title": "TBC Exchange Box",
               "sub": "Just outside the Checkpoint No.1 passenger pavilion",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏧",
+              "title": "Bank of Georgia / TBC Bank ATM — Checkpoint No.1",
+              "sub": "Dispenses GEL and USD",
               "action": "🧭"
             }
           ]

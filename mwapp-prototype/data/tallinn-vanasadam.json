@@ -687,22 +687,6 @@
       },
       "sections": [
         {
-          "icon": "✅",
-          "title": "Where to exchange safely",
-          "rows": [
-            {
-              "icon": "🏦",
-              "title": "A bank or licensed exchange office",
-              "sub": "See the checked addresses below"
-            },
-            {
-              "icon": "🏧",
-              "title": "An ATM",
-              "sub": "Usually the safest option where available — official bank rate, no one to negotiate with"
-            }
-          ]
-        },
-        {
           "icon": "🚩",
           "title": "Red flags — walk away",
           "rows": [
@@ -720,13 +704,7 @@
               "icon": "🧾",
               "title": "No receipt offered",
               "sub": "A real exchange always gives you a printed receipt with the rate used"
-            }
-          ]
-        },
-        {
-          "icon": "🛡",
-          "title": "Before you hand over money",
-          "rows": [
+            },
             {
               "icon": "🔢",
               "title": "Know the rough official rate first",
@@ -740,8 +718,8 @@
           ]
         },
         {
-          "icon": "📍",
-          "title": "Checked addresses near you",
+          "icon": "🏦",
+          "title": "Where to Exchange",
           "rows": [
             {
               "icon": "💱",
@@ -760,6 +738,17 @@
               "title": "Swedbank / SEB ATMs",
               "sub": "Nautica mall and inside the Terminal D building",
               "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "ℹ️",
+          "title": "Useful to know",
+          "rows": [
+            {
+              "icon": "🏧",
+              "title": "An ATM is usually the simplest option",
+              "sub": "Official bank rate, no one to negotiate with"
             }
           ]
         }
