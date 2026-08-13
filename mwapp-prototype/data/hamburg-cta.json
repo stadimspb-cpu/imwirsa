@@ -66,9 +66,9 @@
         {
           "icon": "💱",
           "title": "Currency Exchange",
-          "sub": "How to exchange money safely — read this first, before you need it",
+          "sub": "ReiseBank at the station or airport, or right at the club",
           "action": "›",
-          "sd": "currency_exchange_safety"
+          "sd": "hamburg_cta_currency_exchange"
         },
         {
           "icon": "🛒",
@@ -1024,6 +1024,57 @@
         }
       ],
       "updated": "7 August 2026"
+    },
+    "hamburg_cta_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": {
+        "tone": "warn",
+        "text": "Never exchange money on the street, even for a good rate someone offers you — it's one of the most common ways seafarers get scammed near a port."
+      },
+      "sections": [
+        {
+          "icon": "✅",
+          "title": "Where to exchange safely",
+          "rows": [
+            {
+              "icon": "🏦",
+              "title": "ReiseBank AG — Hamburg Hauptbahnhof",
+              "sub": "Hamburg's central station · ~11 km",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏦",
+              "title": "ReiseBank AG — Hamburg Airport",
+              "sub": "",
+              "action": "🧭"
+            },
+            {
+              "icon": "⛵",
+              "title": "Duckdalben Seemannsclub",
+              "sub": "Exchanges major currencies (USD, GBP, etc.) into EUR for seafarers at a fair rate — the easiest option from here",
+              "action": ""
+            }
+          ]
+        },
+        {
+          "icon": "🚩",
+          "title": "Red flags — walk away",
+          "rows": [
+            {
+              "icon": "🗣",
+              "title": "A stranger offers you a better rate",
+              "sub": "On the street or at the gate — always a scam"
+            },
+            {
+              "icon": "🧾",
+              "title": "No receipt offered",
+              "sub": "A real exchange always gives you a printed receipt with the rate used"
+            }
+          ]
+        }
+      ],
+      "note": "To Duckdalben: free club shuttle. To the station: taxi or public transport.",
+      "updated": "13 August 2026"
     }
   }
 }

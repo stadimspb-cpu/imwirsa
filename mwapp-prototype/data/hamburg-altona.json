@@ -59,9 +59,9 @@
         {
           "icon": "💱",
           "title": "Currency Exchange",
-          "sub": "How to exchange money safely — read this first, before you need it",
+          "sub": "ReiseBank, Altona Center, or a bank on Große Elbstraße",
           "action": "›",
-          "sd": "currency_exchange_safety"
+          "sd": "hamburg_altona_currency_exchange"
         },
         {
           "icon": "🛒",
@@ -977,6 +977,57 @@
         }
       ],
       "updated": "7 August 2026"
+    },
+    "hamburg_altona_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": {
+        "tone": "warn",
+        "text": "Never exchange money on the street, even for a good rate someone offers you — it's one of the most common ways seafarers get scammed near a port."
+      },
+      "sections": [
+        {
+          "icon": "✅",
+          "title": "Where to exchange safely",
+          "rows": [
+            {
+              "icon": "🏦",
+              "title": "ReiseBank AG — Hamburg Hauptbahnhof or Airport",
+              "sub": "",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏬",
+              "title": "Exchange desks in Altona Center and Europa Passage",
+              "sub": "",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏦",
+              "title": "Banks (Sparkasse, Volksbank) on Große Elbstraße and in Altona",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚩",
+          "title": "Red flags — walk away",
+          "rows": [
+            {
+              "icon": "🗣",
+              "title": "A stranger offers you a better rate",
+              "sub": "On the street or at the gate — always a scam"
+            },
+            {
+              "icon": "🧾",
+              "title": "No receipt offered",
+              "sub": "A real exchange always gives you a printed receipt with the rate used"
+            }
+          ]
+        }
+      ],
+      "note": "On foot to Altona Center, or taxi/public transport into the centre.",
+      "updated": "13 August 2026"
     }
   }
 }

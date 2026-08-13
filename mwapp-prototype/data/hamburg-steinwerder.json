@@ -58,9 +58,9 @@
         {
           "icon": "💱",
           "title": "Currency Exchange",
-          "sub": "How to exchange money safely — read this first, before you need it",
+          "sub": "ReiseBank, mall exchange desks, or a city-centre bank",
           "action": "›",
-          "sd": "currency_exchange_safety"
+          "sd": "hamburg_steinwerder_currency_exchange"
         },
         {
           "icon": "🛒",
@@ -927,6 +927,57 @@
         }
       ],
       "updated": "7 August 2026"
+    },
+    "hamburg_steinwerder_currency_exchange": {
+      "title": "Currency Exchange",
+      "callout": {
+        "tone": "warn",
+        "text": "Never exchange money on the street, even for a good rate someone offers you — it's one of the most common ways seafarers get scammed near a port."
+      },
+      "sections": [
+        {
+          "icon": "✅",
+          "title": "Where to exchange safely",
+          "rows": [
+            {
+              "icon": "🏦",
+              "title": "ReiseBank AG — Hamburg Hauptbahnhof or Airport",
+              "sub": "",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏬",
+              "title": "Exchange desks in Europa Passage and Westfield Hamburg-Überseequartier",
+              "sub": "",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏦",
+              "title": "Banks (Sparkasse, Volksbank) in the city centre",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚩",
+          "title": "Red flags — walk away",
+          "rows": [
+            {
+              "icon": "🗣",
+              "title": "A stranger offers you a better rate",
+              "sub": "On the street or at the gate — always a scam"
+            },
+            {
+              "icon": "🧾",
+              "title": "No receipt offered",
+              "sub": "A real exchange always gives you a printed receipt with the rate used"
+            }
+          ]
+        }
+      ],
+      "note": "Taxi or public transport into the centre.",
+      "updated": "13 August 2026"
     }
   }
 }
