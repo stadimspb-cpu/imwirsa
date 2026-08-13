@@ -33,21 +33,19 @@ const SUBDETAILS = {
     title: "Currency Exchange",
     callout: { tone: "warn", text: "Never exchange money on the street, even for a good rate someone offers you. In some countries this is a criminal offence — and it's one of the most common ways seafarers get scammed near a port." },
     sections: [
-      { icon: "✅", title: "Where to exchange safely", rows: [
-        { icon: "🏦", title: "A bank or licensed exchange office", sub: "Look under this port's Shops & Food card for ones checked by your coordinator" },
-        { icon: "🏧", title: "An ATM", sub: "Usually the safest option where available — official bank rate, no one to negotiate with" },
-      ]},
       { icon: "🚩", title: "Red flags — walk away", rows: [
         { icon: "🗣", title: "A stranger offers you a better rate", sub: "On the street, at the gate, or \"just around the corner\" — always a scam" },
         { icon: "🚗", title: "Being asked to go somewhere private", sub: "A car, a back room, an alley — a legitimate exchange never needs this" },
         { icon: "🧾", title: "No receipt offered", sub: "A real exchange always gives you a printed receipt with the rate used" },
-      ]},
-      { icon: "🛡", title: "Before you hand over money", rows: [
         { icon: "🔢", title: "Know the rough official rate first", sub: "Check on your phone before you go — so you can spot a bad deal immediately" },
         { icon: "🧮", title: "Count what you receive, before you walk away", sub: "In front of the person who gave it to you, not after" },
       ]},
+      { icon: "🏦", title: "Where to Exchange", rows: [
+        { icon: "🏦", title: "A bank or licensed exchange office", sub: "Specific addresses for this terminal are still being confirmed by the coordinator" },
+        { icon: "🏧", title: "An ATM", sub: "Usually the safest option where available — official bank rate, no one to negotiate with" },
+      ]},
     ],
-    note: "This page is the same in every port — the specific exchange offices your coordinator has checked are listed under this port's own Shops & Food card.",
+    note: "This terminal's coordinator hasn't confirmed specific exchange addresses yet — once they do, this page will list the checked options directly.",
   },
 
 
