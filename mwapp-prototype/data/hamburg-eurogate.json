@@ -1,0 +1,1130 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "statusFrom": "hamburg_eurogate_centre_about",
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "About the Centre",
+          "sub": "Duckdalben Seemannsclub · ~1.8 km, shuttle recommended",
+          "action": "›",
+          "sd": "hamburg_eurogate_centre_about"
+        },
+        {
+          "icon": "🎱",
+          "title": "Services",
+          "sub": "Hospitality, recreation, connectivity, welfare, karaoke room, summer pool",
+          "action": "›",
+          "sd": "hamburg_eurogate_centre_services"
+        },
+        {
+          "icon": "🚐",
+          "title": "Free Shuttle Bus",
+          "sub": "On call, 7 days a week — how to book it",
+          "action": "›",
+          "sd": "hamburg_eurogate_centre_shuttle"
+        },
+        {
+          "icon": "📍",
+          "title": "Location & Route",
+          "sub": "Why you shouldn't walk it, and what to take instead",
+          "action": "›",
+          "sd": "hamburg_eurogate_centre_location"
+        }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        {
+          "icon": "🚪",
+          "title": "Leaving the Port",
+          "sub": "Exit rules, required documents, gate information",
+          "action": "›",
+          "sd": "hamburg_eurogate_transport_leaving"
+        },
+        {
+          "icon": "🚌",
+          "title": "Terminal Shuttle (Safety Transport)",
+          "sub": "Free ride from gangway to gate — separate from the club shuttle",
+          "action": "›",
+          "sd": "hamburg_eurogate_transport_internal"
+        },
+        {
+          "icon": "🚕",
+          "title": "Taxi",
+          "sub": "Apps, phone numbers, where to catch one",
+          "action": "›",
+          "sd": "hamburg_eurogate_transport_taxi"
+        },
+        {
+          "icon": "🚎",
+          "title": "Public Transport",
+          "sub": "Nearest stop, ferry to Landungsbrücken, tickets",
+          "action": "›",
+          "sd": "hamburg_eurogate_transport_public"
+        }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        {
+          "icon": "💱",
+          "title": "Currency Exchange",
+          "sub": "How to exchange money safely — read this first, before you need it",
+          "action": "›",
+          "sd": "currency_exchange_safety"
+        },
+        {
+          "icon": "🛒",
+          "title": "Supermarkets",
+          "sub": "Nearest stores — remember, everything's shut on Sundays",
+          "action": "›",
+          "sd": "hamburg_eurogate_shops_supermarkets"
+        },
+        {
+          "icon": "🍽",
+          "title": "Food & Drinks",
+          "sub": "Currywurst, Fischbrötchen, halal options",
+          "action": "›",
+          "sd": "hamburg_eurogate_shops_food"
+        },
+        {
+          "icon": "📱",
+          "title": "Electronics & SIM Cards",
+          "sub": "Operators, SIM cards, ATM, Wi-Fi",
+          "action": "›",
+          "sd": "hamburg_eurogate_shops_sim"
+        },
+        {
+          "icon": "💊",
+          "title": "Pharmacies",
+          "sub": "Nearest and 24/7 pharmacies",
+          "action": "›",
+          "sd": "hamburg_eurogate_shops_pharmacies"
+        },
+        {
+          "icon": "🎁",
+          "title": "Souvenirs",
+          "sub": "Where to find something to take home",
+          "action": "›",
+          "sd": "hamburg_shops_souvenirs"
+        },
+        {
+          "icon": "⚓",
+          "title": "Seafarer Supplies",
+          "sub": "Workwear, safety gear, ship's stores",
+          "action": "›",
+          "sd": "hamburg_shops_seafarer"
+        }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        {
+          "icon": "🌳",
+          "title": "Parks & Waterfronts",
+          "sub": "Rüschpark and the Elbstrand",
+          "action": "›",
+          "sd": "hamburg_waltershof_city_parks"
+        },
+        {
+          "icon": "🏛",
+          "title": "Culture & Must-See",
+          "sub": "Top 5 places in Hamburg",
+          "action": "›",
+          "sd": "hamburg_waltershof_city_culture"
+        },
+        {
+          "icon": "🧘",
+          "title": "Free Time & Relax",
+          "sub": "Somewhere to sit without spending anything",
+          "action": "›",
+          "sd": "hamburg_waltershof_city_free"
+        },
+        {
+          "icon": "🛡",
+          "title": "Safety",
+          "sub": "What to know before going into the city",
+          "action": "›",
+          "sd": "hamburg_waltershof_city_safety"
+        }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        {
+          "icon": "💬",
+          "title": "No particular faith — I'd just like to talk",
+          "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator",
+          "action": "›",
+          "go": "assistantchat"
+        },
+        {
+          "icon": "⛵",
+          "title": "Deutsche Seemannsmission (Duckdalben)",
+          "sub": "Protestant / Ecumenical · ship visits, prayer, crisis support",
+          "action": "›",
+          "sd": "hamburg_spiritual_duckdalben"
+        },
+        {
+          "icon": "⛪",
+          "title": "Stella Maris Hamburg",
+          "sub": "Catholic · pastoral care, ship visits, services",
+          "action": "›",
+          "sd": "hamburg_spiritual_stellamaris"
+        }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        {
+          "icon": "🚨",
+          "title": "Police / Ambulance / Fire",
+          "sub": "112 · Free, 24/7, English-speaking operator available",
+          "action": "📞"
+        },
+        {
+          "icon": "🚔",
+          "title": "Police (non-emergency)",
+          "sub": "110",
+          "action": "📞"
+        },
+        {
+          "icon": "🩺",
+          "title": "Asklepios Klinik Harburg",
+          "sub": "Eißendorfer Pferdeweg 52 · ~8.5 km from Waltershof/Altenwerder · +49 40 181886-0",
+          "action": "🧭"
+        },
+        {
+          "icon": "🏛",
+          "title": "Duckdalben Seemannsclub",
+          "sub": "+49 40 740 1660",
+          "action": "📞"
+        },
+        {
+          "icon": "🌐",
+          "title": "ISWAN 24/7 Helpline",
+          "sub": "+44 20 7283 2922 · Multilingual",
+          "action": "📞"
+        }
+      ]
+    },
+    "wellness": {
+      "title": "Premium Welfare Services",
+      "gated": true,
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "Trade Union partner services",
+          "sub": "Pending confirmation for this terminal",
+          "pending": true
+        }
+      ]
+    }
+  },
+  "subdetails": {
+    "hamburg_eurogate_centre_about": {
+      "title": "About the Centre",
+      "hours": [
+        [
+          "Monday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Tuesday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Wednesday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Thursday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Friday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Saturday",
+          "10:00 – 22:00"
+        ],
+        [
+          "Sunday",
+          "10:00 – 22:00"
+        ]
+      ],
+      "contacts": [
+        {
+          "icon": "📞",
+          "title": "+49 40 740 1660",
+          "sub": "Main line",
+          "action": "📞"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 176 174 01660",
+          "sub": "Second line",
+          "action": "📞"
+        },
+        {
+          "icon": "✉️",
+          "title": "duckdalben@seemannsmission.de",
+          "sub": "Email",
+          "action": "✉️"
+        },
+        {
+          "icon": "🌐",
+          "title": "www.duckdalben.de",
+          "sub": "Website",
+          "action": "›"
+        }
+      ],
+      "note": "Run by Deutsche Seemannsmission Hamburg-Harburg e.V. Open on 24–25 December with a special holiday programme for seafarers.",
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_centre_services": {
+      "title": "Services",
+      "groups": [
+        {
+          "label": "Hospitality",
+          "icon": "☕",
+          "items": [
+            "Tea & coffee",
+            "Snacks",
+            "Hot meals (~€6–9)"
+          ]
+        },
+        {
+          "label": "Recreation",
+          "icon": "🎱",
+          "items": [
+            "TV room",
+            "Terrace",
+            "Rest area",
+            "Games room",
+            "Billiards",
+            "Table tennis",
+            "Library",
+            "Book exchange",
+            "Sports facilities",
+            "Karaoke room",
+            "Summer pool (seasonal)"
+          ]
+        },
+        {
+          "label": "Connectivity",
+          "icon": "📶",
+          "items": [
+            "Free Wi-Fi",
+            "Computers for seafarers",
+            "SIM cards on site"
+          ]
+        },
+        {
+          "label": "Welfare services",
+          "icon": "🤝",
+          "items": [
+            "Shop",
+            "Volunteers who visit ships",
+            "Events and excursions",
+            "Currency exchange",
+            "Money transfers"
+          ]
+        },
+        {
+          "label": "Spiritual care",
+          "icon": "🕊",
+          "items": [
+            "Prayer room",
+            "Chapel",
+            "Chaplain"
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_centre_shuttle": {
+      "title": "Free Shuttle Bus",
+      "from": "Right at your gangway (on call) or from the terminal checkpoint",
+      "directions": [
+        {
+          "icon": "📞",
+          "title": "Call +49 40 740 1660",
+          "sub": "Or ask the duty officer at the gangway / your agent to call the club for you",
+          "action": "📞"
+        },
+        {
+          "icon": "🚐",
+          "title": "How to recognise it",
+          "sub": "Dark blue or white VW/Mercedes minivan with \"DUCKDALBEN Seemannsclub\" and \"Deutsche Seemannsmission\" markings",
+          "action": ""
+        },
+        {
+          "icon": "📅",
+          "title": "On demand, 10:00 – 21:30 outbound",
+          "sub": "Return every 30 minutes on request, last ride back to the ship at 21:45",
+          "action": ""
+        },
+        {
+          "icon": "🗓",
+          "title": "Weekends",
+          "sub": "Runs 7 days a week",
+          "action": ""
+        }
+      ],
+      "note": "Free of charge, funded by the Duckdalben mission and donations.",
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_centre_location": {
+      "title": "Location & Route",
+      "callout": {
+        "tone": "warn",
+        "text": "Walking is not recommended — pedestrian movement in the Waltershof port area is severely restricted and unsafe due to heavy container-truck traffic. Use the club shuttle."
+      },
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Zellmannstraße 16, 21129 Hamburg",
+          "sub": "~1.8 km from the gate",
+          "action": "🧭"
+        }
+      ],
+      "note": "Avoid walking along Zellmannstraße and Finkenwerder Straße — both carry heavy traffic. Take the Duckdalben minivan or port transport/taxi instead.",
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": {
+        "tone": "ok",
+        "text": "Yes — shore leave is normally permitted. Always confirm with your Master or agent first."
+      },
+      "sections": [
+        {
+          "icon": "🚪",
+          "title": "Gates",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Haupttor EUROGATE — Kurt-Eckelmann-Straße 1",
+              "sub": "Pedestrian access through a dedicated turnstile zone with a valid pass · open 24/7"
+            },
+            {
+              "icon": "🚛",
+              "title": "LKW-Zufahrt on Kurt-Eckelmann-Straße",
+              "sub": "Vehicle gate with automatic weighing and optical recognition"
+            }
+          ]
+        },
+        {
+          "icon": "🪪",
+          "title": "Take with you",
+          "rows": [
+            {
+              "icon": "📘",
+              "title": "Passport (with valid Schengen visa or visa-free entry right)",
+              "sub": ""
+            },
+            {
+              "icon": "📗",
+              "title": "Seaman's Book",
+              "sub": ""
+            },
+            {
+              "icon": "📋",
+              "title": "Certified Crew List / Shore Pass",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🎫",
+          "title": "Shore Pass",
+          "rows": [
+            {
+              "icon": "🎫",
+              "title": "Issued by the German Federal Police (Bundespolizei)",
+              "sub": "Through your ship's agent"
+            }
+          ]
+        },
+        {
+          "icon": "🌍",
+          "title": "If you're not from a Schengen or visa-free country",
+          "rows": [
+            {
+              "icon": "⚠️",
+              "title": "Leaving the port area may be restricted without an official Shore Pass",
+              "sub": "Issued through the Bundespolizei via your agent"
+            }
+          ]
+        },
+        {
+          "icon": "🦺",
+          "title": "Required gear",
+          "rows": [
+            {
+              "icon": "🦺",
+              "title": "Hi-vis vest and protective footwear/helmet",
+              "sub": "Required moving from the gangway to the shuttle"
+            }
+          ]
+        },
+        {
+          "icon": "🚫",
+          "title": "Off-limits",
+          "rows": [
+            {
+              "icon": "🚫",
+              "title": "No walking on the container quay, under the crane rails, or in AGV/straddle-carrier working areas",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "note": "Checkpoint contact: your ship's agent, or EUROGATE terminal security at +49 40 74050.",
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_transport_internal": {
+      "title": "Terminal Shuttle (Safety Transport)",
+      "callout": {
+        "tone": "ok",
+        "text": "Free — separate from the Duckdalben club shuttle. This one just gets you from the ship to the gate."
+      },
+      "sections": [
+        {
+          "icon": "🚌",
+          "title": "Route",
+          "rows": [
+            {
+              "icon": "🚌",
+              "title": "From the gangway to Haupttor EUROGATE, or to the Duckdalben club",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "📞",
+          "title": "How to call it",
+          "rows": [
+            {
+              "icon": "📞",
+              "title": "Through the duty officer or your ship",
+              "sub": "On request"
+            }
+          ]
+        },
+        {
+          "icon": "🚐",
+          "title": "How to recognise it",
+          "rows": [
+            {
+              "icon": "🚐",
+              "title": "White/grey minivan marked \"EUROGATE Safety Transport\"",
+              "sub": "Or a Duckdalben club vehicle"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        {
+          "icon": "📱",
+          "title": "Apps",
+          "rows": [
+            {
+              "icon": "🟢",
+              "title": "FREE NOW",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "🟣",
+              "title": "Bolt",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "⚫",
+              "title": "Uber",
+              "sub": "",
+              "action": "›"
+            }
+          ]
+        },
+        {
+          "icon": "☎️",
+          "title": "By phone",
+          "rows": [
+            {
+              "icon": "📞",
+              "title": "Hansa-Taxi",
+              "sub": "+49 40 211121",
+              "action": "📞"
+            },
+            {
+              "icon": "📞",
+              "title": "Taxi Hamburg",
+              "sub": "+49 40 666666",
+              "action": "📞"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Pickup point",
+          "rows": [
+            {
+              "icon": "🚖",
+              "title": "Outside the checkpoint on Kurt-Eckelmann-Straße",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "~€35–45 to Landungsbrücken/Hauptbahnhof. Official German taxis are ivory/beige with an illuminated \"TAXI\" roof sign and a taxameter — anyone without that isn't licensed. Always ask for the taxameter to be switched on. Pay in EUR, card accepted.",
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        {
+          "icon": "🚏",
+          "title": "Nearest stop",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "\"Finkenwerder Werk\" or HADAG ferry pier \"Waltershof\"",
+              "sub": "~1.5 km from the checkpoint",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚌",
+          "title": "Routes",
+          "rows": [
+            {
+              "icon": "🚌",
+              "title": "Bus 151",
+              "sub": "To S-Bahn station Veddel"
+            },
+            {
+              "icon": "⛴",
+              "title": "HADAG Ferry 61",
+              "sub": "Waltershof → Landungsbrücken, ~20–30 minutes — the nicer option"
+            }
+          ]
+        }
+      ],
+      "note": "~€3.80 per ride. Buy in the hvv app, from the pier ticket machine, or from the driver/ferry captain. Ferries run to about 21:00–22:00; night buses (601/641) run every 30–60 minutes after that.",
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_shops_supermarkets": {
+      "title": "Supermarkets",
+      "callout": {
+        "tone": "warn",
+        "text": "All German supermarkets close on Sundays."
+      },
+      "sections": [
+        {
+          "icon": "🛒",
+          "title": "Nearest stores",
+          "rows": [
+            {
+              "icon": "🛍",
+              "title": "REWE City, Neugraben/Hausbruch — Cuxhavener Str. 335",
+              "sub": "~6 km · Mon–Sat 07:00–22:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "ALDI Nord, Harburg — Moorstraße 2",
+              "sub": "~8 km · Mon–Sat 08:00–20:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Edeka Center, Harburg Arcaden — Lüneburger Str. 39",
+              "sub": "~8.5 km · Mon–Sat 08:00–21:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "⛽",
+              "title": "Shell / Aral petrol-station shops on Finkenwerder Straße",
+              "sub": "~2 km · limited range — food, drinks, cigarettes",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        {
+          "icon": "🍔",
+          "title": "Cheap & quick",
+          "rows": [
+            {
+              "icon": "🍽",
+              "title": "Duckdalben canteen/bar",
+              "sub": "Hot meals ~€6–9",
+              "action": ""
+            },
+            {
+              "icon": "🌭",
+              "title": "Imbiss Waltershof, Kurt-Eckelmann-Str.",
+              "sub": "Currywurst with fries, ~€6.50",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🐟",
+          "title": "Popular with seafarers",
+          "rows": [
+            {
+              "icon": "🐟",
+              "title": "Restaurants around Landungsbrücken",
+              "sub": "Fischbrötchen (fish rolls) from €4.50",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "💳",
+          "title": "Seafarer discount",
+          "rows": [
+            {
+              "icon": "💳",
+              "title": "Special prices on food and drinks at Duckdalben",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🕌",
+          "title": "Halal / vegetarian",
+          "rows": [
+            {
+              "icon": "🥗",
+              "title": "Vegetarian and halal meals available on request at Duckdalben",
+              "sub": ""
+            },
+            {
+              "icon": "🍖",
+              "title": "Numerous Turkish Döner cafés (halal) in Harburg",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        {
+          "icon": "📡",
+          "title": "Mobile operators",
+          "rows": [
+            {
+              "icon": "🟣",
+              "title": "Telekom · Vodafone · O2 · Lebara · Lycamobile",
+              "sub": ""
+            },
+            {
+              "icon": "🏪",
+              "title": "Buy right at the Duckdalben counter",
+              "sub": ""
+            },
+            {
+              "icon": "💶",
+              "title": "~€10–15",
+              "sub": "10–20 GB of data"
+            },
+            {
+              "icon": "🪪",
+              "title": "Passport required",
+              "sub": "German law requires SIM registration"
+            }
+          ]
+        },
+        {
+          "icon": "🏧",
+          "title": "ATM",
+          "rows": [
+            {
+              "icon": "🏧",
+              "title": "Sparkasse / Euronet ATM inside Duckdalben",
+              "sub": "Dispenses EUR"
+            }
+          ]
+        },
+        {
+          "icon": "📶",
+          "title": "Wi-Fi",
+          "rows": [
+            {
+              "icon": "📶",
+              "title": "Free at Duckdalben",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_eurogate_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        {
+          "icon": "💊",
+          "title": "Nearest",
+          "rows": [
+            {
+              "icon": "🏥",
+              "title": "Finkenwerder Apotheke — Steendiek 41",
+              "sub": "~4.5 km · Mon–Fri 08:30–18:30, Sat 08:30–13:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Apotheken-Notdienst (rotates daily)",
+              "sub": "Nearest fixed 24/7: Apotheke im Hauptbahnhof, ~12 km",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "📋",
+          "title": "Prescriptions",
+          "rows": [
+            {
+              "icon": "🧾",
+              "title": "Non-EU prescriptions usually not accepted",
+              "sub": "Without confirmation from a German doctor"
+            }
+          ]
+        }
+      ],
+      "note": "English is widely spoken at pharmacies.",
+      "updated": "7 August 2026"
+    },
+    "hamburg_shops_souvenirs": {
+      "title": "Souvenirs",
+      "sections": [
+        {
+          "icon": "🎁",
+          "title": "Where to find them",
+          "rows": [
+            {
+              "icon": "🏪",
+              "title": "Souvenir shop inside Duckdalben",
+              "sub": "Maritime souvenirs, postcards, magnets — right in the club",
+              "action": ""
+            },
+            {
+              "icon": "🛍",
+              "title": "Souvenir shop, Landungsbrücken pier 3",
+              "sub": "~8 km by land or 20 min by ferry",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_shops_seafarer": {
+      "title": "Seafarer Supplies",
+      "sections": [
+        {
+          "icon": "🦺",
+          "title": "Workwear & ship's stores",
+          "rows": [
+            {
+              "icon": "⚓",
+              "title": "Hanseatic Marine Supply and other specialised suppliers",
+              "sub": "Delivered to the gangway via your ship's agent",
+              "action": ""
+            },
+            {
+              "icon": "🦺",
+              "title": "Engelbert Strauss workwear stores, Harburg",
+              "sub": "Protective footwear and clothing",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_waltershof_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        {
+          "icon": "🌳",
+          "title": "Green space",
+          "rows": [
+            {
+              "icon": "🌲",
+              "title": "Rüschpark, Finkenwerder",
+              "sub": "Park on the Elbe with a view over the port and the Airbus plant · ~5 km",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🏖",
+          "title": "Waterfront",
+          "rows": [
+            {
+              "icon": "🏖",
+              "title": "Elbstrand (Övelgönne beach)",
+              "sub": "Sandy riverbank on the opposite shore of the Elbe — take ferry 61 from Waltershof to Övelgönne",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_waltershof_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        {
+          "icon": "⭐",
+          "title": "Top 5",
+          "rows": [
+            {
+              "icon": "1️⃣",
+              "title": "St. Pauli Landungsbrücken",
+              "sub": "Historic piers, the heart of maritime Hamburg — ferry 61 goes straight there",
+              "action": "🧭"
+            },
+            {
+              "icon": "2️⃣",
+              "title": "Alter Elbtunnel (Old Elbe Tunnel)",
+              "sub": "Pedestrian tunnel under the Elbe from 1911, connecting Steinwerder and St. Pauli — free for pedestrians",
+              "action": "🧭"
+            },
+            {
+              "icon": "3️⃣",
+              "title": "Elbphilharmonie",
+              "sub": "Hamburg's architectural landmark — the Plaza viewing platform is free with an e-ticket",
+              "action": "🧭"
+            },
+            {
+              "icon": "4️⃣",
+              "title": "Speicherstadt & HafenCity",
+              "sub": "UNESCO World Heritage warehouse district · ~10 km",
+              "action": "🧭"
+            },
+            {
+              "icon": "5️⃣",
+              "title": "Museum ships Rickmer Rickmers & Cap San Diego",
+              "sub": "Floating museums at Landungsbrücken",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_waltershof_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        {
+          "icon": "🆓",
+          "title": "Somewhere to sit",
+          "rows": [
+            {
+              "icon": "☕",
+              "title": "Duckdalben Seemannsclub",
+              "sub": "The best option — sockets, Wi-Fi, sofas, free tea & coffee",
+              "action": ""
+            },
+            {
+              "icon": "🎼",
+              "title": "Elbphilharmonie Plaza",
+              "sub": "Sockets, Wi-Fi, and a striking view",
+              "action": "🧭"
+            },
+            {
+              "icon": "📚",
+              "title": "Zentralbibliothek (Central Library)",
+              "sub": "Hühnerposten 1, near the Hauptbahnhof · ~11 km",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_waltershof_city_safety": {
+      "title": "Safety",
+      "sections": [
+        {
+          "icon": "🟢",
+          "title": "General risk",
+          "rows": [
+            {
+              "icon": "🛡",
+              "title": "Walking is forbidden in the terminal area for safety reasons",
+              "sub": "Once in the city (central Hamburg), it's safe both day and night"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "⚠️",
+              "title": "Take care near the south exit of the Hauptbahnhof (Steindamm / Hansaplatz)",
+              "sub": ""
+            },
+            {
+              "icon": "⚠️",
+              "title": "Take care in side streets off the Reeperbahn",
+              "sub": ""
+            },
+            {
+              "icon": "⛴",
+              "title": "HADAG ferries stop around 22:00",
+              "sub": "Use a taxi or night bus to get back to the terminal after that"
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch out for",
+          "rows": [
+            {
+              "icon": "💶",
+              "title": "Inflated prices and hidden entry fees at clubs and strip bars on the Reeperbahn (St. Pauli)",
+              "sub": "Always confirm drink prices before ordering"
+            }
+          ]
+        },
+        {
+          "icon": "🍺",
+          "title": "Alcohol",
+          "rows": [
+            {
+              "icon": "🍺",
+              "title": "Drinking in public is generally allowed",
+              "sub": "But strictly forbidden on public transport (buses, S-Bahn, U-Bahn, ferries) — €40 fine"
+            }
+          ]
+        },
+        {
+          "icon": "📞",
+          "title": "If something goes wrong",
+          "rows": [
+            {
+              "icon": "🚨",
+              "title": "112",
+              "sub": "Police, ambulance, fire — English-speaking operator available",
+              "action": "📞"
+            }
+          ]
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_spiritual_duckdalben": {
+      "title": "Deutsche Seemannsmission Hamburg-Harburg (Duckdalben)",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "⛵",
+              "title": "Ship visits, spiritual conversation, crisis support, prayer",
+              "sub": "Protestant / Ecumenical — open to any faith or none"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Zellmannstraße 16, 21129 Hamburg",
+          "sub": "",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 40 740 1660",
+          "sub": "Daily 10:00–22:00 · German, English",
+          "action": "📞"
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_spiritual_stellamaris": {
+      "title": "Stella Maris Hamburg",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "⛪",
+              "title": "Pastoral care, ship visits, services",
+              "sub": "Catholic mission"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Krayenkamp 11, 20459 Hamburg",
+          "sub": "",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 40 365825",
+          "sub": "German, English, Spanish, Polish",
+          "action": "📞"
+        },
+        {
+          "icon": "💬",
+          "title": "WhatsApp +49 40 41542872",
+          "sub": "",
+          "action": "💬"
+        }
+      ],
+      "updated": "7 August 2026"
+    }
+  }
+}

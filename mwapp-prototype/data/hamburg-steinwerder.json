@@ -1,0 +1,932 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "About the Centre",
+          "sub": "Seafarer's Lounge Steinwerder — no fixed club, runs during ship calls",
+          "action": "›",
+          "sd": "hamburg_steinwerder_centre_about"
+        },
+        {
+          "icon": "🎱",
+          "title": "Services",
+          "sub": "Tea/coffee, Wi-Fi, SIM cards, small hygiene items",
+          "action": "›",
+          "sd": "hamburg_steinwerder_centre_services"
+        },
+        {
+          "icon": "📍",
+          "title": "Location & Route",
+          "sub": "Walkable — via the Alter Elbtunnel",
+          "action": "›",
+          "sd": "hamburg_steinwerder_centre_location"
+        }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        {
+          "icon": "🚪",
+          "title": "Leaving the Port",
+          "sub": "Exit rules, required documents, gate information",
+          "action": "›",
+          "sd": "hamburg_steinwerder_transport_leaving"
+        },
+        {
+          "icon": "🚕",
+          "title": "Taxi",
+          "sub": "Apps, phone numbers, where to catch one",
+          "action": "›",
+          "sd": "hamburg_steinwerder_transport_taxi"
+        },
+        {
+          "icon": "🚎",
+          "title": "Public Transport",
+          "sub": "Ferry to Landungsbrücken, bus, tickets",
+          "action": "›",
+          "sd": "hamburg_steinwerder_transport_public"
+        }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        {
+          "icon": "💱",
+          "title": "Currency Exchange",
+          "sub": "How to exchange money safely — read this first, before you need it",
+          "action": "›",
+          "sd": "currency_exchange_safety"
+        },
+        {
+          "icon": "🛒",
+          "title": "Supermarkets",
+          "sub": "Nearest stores — remember, everything's shut on Sundays",
+          "action": "›",
+          "sd": "hamburg_steinwerder_shops_supermarkets"
+        },
+        {
+          "icon": "🍽",
+          "title": "Food & Drinks",
+          "sub": "Fischbrötchen, halal, vegetarian/vegan",
+          "action": "›",
+          "sd": "hamburg_steinwerder_shops_food"
+        },
+        {
+          "icon": "📱",
+          "title": "Electronics & SIM Cards",
+          "sub": "Operators, SIM cards, ATM, Wi-Fi",
+          "action": "›",
+          "sd": "hamburg_steinwerder_shops_sim"
+        },
+        {
+          "icon": "💊",
+          "title": "Pharmacies",
+          "sub": "Nearest and 24/7 pharmacies",
+          "action": "›",
+          "sd": "hamburg_steinwerder_shops_pharmacies"
+        },
+        {
+          "icon": "🎁",
+          "title": "Souvenirs",
+          "sub": "Where to find something to take home",
+          "action": "›",
+          "sd": "hamburg_steinwerder_shops_souvenirs"
+        },
+        {
+          "icon": "⚓",
+          "title": "Seafarer Supplies",
+          "sub": "Not confirmed for this terminal",
+          "pending": true
+        }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        {
+          "icon": "🌳",
+          "title": "Parks & Waterfronts",
+          "sub": "Elbphilharmonie Promenade and Landungsbrücken",
+          "action": "›",
+          "sd": "hamburg_steinwerder_city_parks"
+        },
+        {
+          "icon": "🏛",
+          "title": "Culture & Must-See",
+          "sub": "Top 5 places in Hamburg",
+          "action": "›",
+          "sd": "hamburg_steinwerder_city_culture"
+        },
+        {
+          "icon": "🧘",
+          "title": "Free Time & Relax",
+          "sub": "The Seafarer's Lounge and the Elbphilharmonie Plaza",
+          "action": "›",
+          "sd": "hamburg_steinwerder_city_free"
+        },
+        {
+          "icon": "🛡",
+          "title": "Safety",
+          "sub": "What to know before going into the city",
+          "action": "›",
+          "sd": "hamburg_steinwerder_city_safety"
+        }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        {
+          "icon": "💬",
+          "title": "No particular faith — I'd just like to talk",
+          "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator",
+          "action": "›",
+          "go": "assistantchat"
+        },
+        {
+          "icon": "⛵",
+          "title": "Deutsche Seemannsmission (Duckdalben)",
+          "sub": "Protestant / Ecumenical · ship visits, prayer, crisis support",
+          "action": "›",
+          "sd": "hamburg_spiritual_duckdalben"
+        },
+        {
+          "icon": "⛪",
+          "title": "Stella Maris Hamburg",
+          "sub": "Catholic · pastoral care, ship visits, services",
+          "action": "›",
+          "sd": "hamburg_spiritual_stellamaris"
+        }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        {
+          "icon": "🚨",
+          "title": "Police / Ambulance / Fire",
+          "sub": "112 · Free, 24/7, English-speaking operator available",
+          "action": "📞"
+        },
+        {
+          "icon": "🚔",
+          "title": "Police (non-emergency)",
+          "sub": "110",
+          "action": "📞"
+        },
+        {
+          "icon": "🩺",
+          "title": "Asklepios Klinik St. Georg",
+          "sub": "Lohmühlenstraße 5 · for the central Hamburg zones · +49 40 181885-0",
+          "action": "🧭"
+        },
+        {
+          "icon": "🏛",
+          "title": "Duckdalben Seemannsclub",
+          "sub": "+49 40 740 1660",
+          "action": "📞"
+        },
+        {
+          "icon": "🌐",
+          "title": "ISWAN 24/7 Helpline",
+          "sub": "+44 20 7283 2922 · Multilingual",
+          "action": "📞"
+        }
+      ]
+    },
+    "wellness": {
+      "title": "Premium Welfare Services",
+      "gated": true,
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "Trade Union partner services",
+          "sub": "Pending confirmation for this terminal",
+          "pending": true
+        }
+      ]
+    }
+  },
+  "subdetails": {
+    "hamburg_steinwerder_centre_about": {
+      "title": "About the Centre",
+      "callout": {
+        "tone": "info",
+        "text": "There's no fixed clubhouse at Steinwerder — the Seafarer's Lounge is organised by Deutsche Seemannsmission Hamburg-Altona during cruise ship calls, typically 08:00–18:00/20:00."
+      },
+      "contacts": [
+        {
+          "icon": "✉️",
+          "title": "lounge@seemannsmission-altona.de",
+          "sub": "Email",
+          "action": "✉️"
+        },
+        {
+          "icon": "🌐",
+          "title": "seemannsmission-altona.org",
+          "sub": "Website",
+          "action": "›"
+        }
+      ],
+      "note": "Run by Deutsche Seemannsmission Hamburg-Altona e.V. Opening hours follow the ship-call schedule, not a fixed weekly timetable.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_centre_services": {
+      "title": "Services",
+      "groups": [
+        {
+          "label": "Hospitality",
+          "icon": "☕",
+          "items": [
+            "Tea & coffee",
+            "Snacks"
+          ]
+        },
+        {
+          "label": "Recreation",
+          "icon": "🎱",
+          "items": [
+            "TV room",
+            "Rest area"
+          ]
+        },
+        {
+          "label": "Connectivity",
+          "icon": "📶",
+          "items": [
+            "Free Wi-Fi",
+            "SIM cards on site"
+          ]
+        },
+        {
+          "label": "Welfare services",
+          "icon": "🤝",
+          "items": [
+            "Small hygiene items",
+            "Volunteers who visit ships",
+            "Money transfers"
+          ]
+        },
+        {
+          "label": "Spiritual care",
+          "icon": "🕊",
+          "items": [
+            "Chaplain"
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_centre_location": {
+      "title": "Location & Route",
+      "callout": {
+        "tone": "ok",
+        "text": "Walkable — about 30 minutes to the Alter Elbtunnel, then 5 more minutes through the tunnel to St. Pauli/Landungsbrücken."
+      },
+      "sections": [
+        {
+          "icon": "🚶",
+          "title": "Route",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Follow the signs from the terminal towards \"Elbtunnel\"",
+              "sub": "The path runs along a well-lit riverside promenade"
+            },
+            {
+              "icon": "🚇",
+              "title": "Alter Elbtunnel (1911)",
+              "sub": "Open 24/7 for pedestrians and cyclists, free"
+            }
+          ]
+        },
+        {
+          "icon": "🚫",
+          "title": "Avoid",
+          "rows": [
+            {
+              "icon": "🚫",
+              "title": "Don't wander into industrial port areas outside the marked pedestrian route",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": {
+        "tone": "ok",
+        "text": "Yes — always confirm with your Master, agent or cruise manager first."
+      },
+      "sections": [
+        {
+          "icon": "🚪",
+          "title": "Gate",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Through the main passenger terminal",
+              "sub": "Confirm the exact route with terminal staff or your agent — the terminal has shore power and berths are used flexibly"
+            }
+          ]
+        },
+        {
+          "icon": "🪪",
+          "title": "Take with you",
+          "rows": [
+            {
+              "icon": "📗",
+              "title": "Seaman's Book",
+              "sub": ""
+            },
+            {
+              "icon": "📘",
+              "title": "Passport (with Schengen visa if required)",
+              "sub": ""
+            },
+            {
+              "icon": "🎫",
+              "title": "Crew Pass",
+              "sub": "Issued by the cruise line"
+            }
+          ]
+        },
+        {
+          "icon": "🌍",
+          "title": "Visa",
+          "rows": [
+            {
+              "icon": "⚠️",
+              "title": "Schengen visa required for some nationalities",
+              "sub": "Confirm with your agent"
+            }
+          ]
+        },
+        {
+          "icon": "🦺",
+          "title": "Gear",
+          "rows": [
+            {
+              "icon": "✅",
+              "title": "No special gear required at this passenger terminal",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "note": "Checkpoint contact: your ship's agent or cruise manager.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        {
+          "icon": "📱",
+          "title": "Apps",
+          "rows": [
+            {
+              "icon": "🟢",
+              "title": "FREE NOW",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "🟣",
+              "title": "Bolt",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "⚫",
+              "title": "Uber",
+              "sub": "",
+              "action": "›"
+            }
+          ]
+        },
+        {
+          "icon": "☎️",
+          "title": "By phone",
+          "rows": [
+            {
+              "icon": "📞",
+              "title": "Hansa-Taxi",
+              "sub": "+49 40 211121",
+              "action": "📞"
+            },
+            {
+              "icon": "📞",
+              "title": "Taxi Hamburg",
+              "sub": "+49 40 666666",
+              "action": "📞"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Pickup point",
+          "rows": [
+            {
+              "icon": "🚖",
+              "title": "Marked taxi area right outside the terminal exit",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "~€25–35 to the city centre (Landungsbrücken/Hbf). Official German taxis are ivory/beige with a \"TAXI\" roof sign and taxameter. Unlicensed drivers wait at the gate and quote a price before you get in without switching on a meter. Always check the taxameter is running.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        {
+          "icon": "🚏",
+          "title": "Nearest stop",
+          "rows": [
+            {
+              "icon": "⛴",
+              "title": "HADAG ferry pier \"Arningstraße\"",
+              "sub": "~800 m",
+              "action": "🧭"
+            },
+            {
+              "icon": "🚌",
+              "title": "Bus stop \"Schildmeyer\" (route 256)",
+              "sub": "~400 m",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚌",
+          "title": "Routes",
+          "rows": [
+            {
+              "icon": "⛴",
+              "title": "Ferry 73",
+              "sub": "Arningstraße → Landungsbrücken, ~10–15 min"
+            },
+            {
+              "icon": "🚌",
+              "title": "Bus 256",
+              "sub": "To S-Bahn Veddel"
+            }
+          ]
+        }
+      ],
+      "note": "~€3.80, buy via the HVV app, ticket machine, or from the driver/ferry captain. Ferries run to about 22:00; night buses (601/641) run every 30–60 minutes after that.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_shops_supermarkets": {
+      "title": "Supermarkets",
+      "callout": {
+        "tone": "warn",
+        "text": "All German supermarkets close on Sundays."
+      },
+      "sections": [
+        {
+          "icon": "🛒",
+          "title": "Nearest stores",
+          "rows": [
+            {
+              "icon": "🛍",
+              "title": "Edeka / Rewe, Landungsbrücken area",
+              "sub": "~3 km · 07:00–22:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "ALDI Nord, Neustadt",
+              "sub": "~3.5 km · 08:00–20:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "⛽",
+              "title": "Petrol-station shops leaving Steinwerder (Aral/Shell)",
+              "sub": "Limited range",
+              "action": ""
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        {
+          "icon": "🍔",
+          "title": "Cheap & quick",
+          "rows": [
+            {
+              "icon": "🐟",
+              "title": "Cafés and restaurants around Landungsbrücken and St. Pauli",
+              "sub": "~€10–15, Fischbrötchen and sandwiches",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🐟",
+          "title": "Popular with seafarers",
+          "rows": [
+            {
+              "icon": "🐟",
+              "title": "Fish restaurants at Landungsbrücken and in Altona",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🥗",
+          "title": "Vegetarian / vegan / halal",
+          "rows": [
+            {
+              "icon": "🥗",
+              "title": "Vegetarian and vegan options at most modern cafés",
+              "sub": ""
+            },
+            {
+              "icon": "🕌",
+              "title": "Halal restaurants in St. Pauli and Altona",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        {
+          "icon": "📡",
+          "title": "Mobile operators",
+          "rows": [
+            {
+              "icon": "🟣",
+              "title": "Deutsche Telekom · Vodafone · O2",
+              "sub": ""
+            },
+            {
+              "icon": "🏪",
+              "title": "Telekom/Vodafone/O2 shops in the city, e.g. Landungsbrücken or Hbf",
+              "sub": "Also sold in large supermarkets"
+            },
+            {
+              "icon": "💶",
+              "title": "~€10–20",
+              "sub": "5–10 GB of data, 30 days"
+            },
+            {
+              "icon": "🪪",
+              "title": "Passport required",
+              "sub": "German law requires SIM registration"
+            }
+          ]
+        },
+        {
+          "icon": "🏧",
+          "title": "ATM",
+          "rows": [
+            {
+              "icon": "🏧",
+              "title": "Sparkasse, Volksbank, Commerzbank in the centre (Landungsbrücken, St. Pauli)",
+              "sub": "Dispense EUR"
+            }
+          ]
+        },
+        {
+          "icon": "📶",
+          "title": "Wi-Fi",
+          "rows": [
+            {
+              "icon": "📶",
+              "title": "Free at the Steinwerder terminal",
+              "sub": "Also \"HafenCity WiFi\" around the port"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        {
+          "icon": "💊",
+          "title": "Nearest",
+          "rows": [
+            {
+              "icon": "🏥",
+              "title": "Apotheke im Portugiesenviertel — Davidstraße 10",
+              "sub": "~2.5 km · 09:00–20:00",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Adler Apotheke, Reeperbahn (St. Pauli)",
+              "sub": "Nearest round-the-clock option — not in Steinwerder itself",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "📋",
+          "title": "Prescriptions",
+          "rows": [
+            {
+              "icon": "🧾",
+              "title": "Most prescription medicines need a German doctor's prescription",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "note": "English spoken at central pharmacies.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_shops_souvenirs": {
+      "title": "Souvenirs",
+      "sections": [
+        {
+          "icon": "🎁",
+          "title": "Where to find them",
+          "rows": [
+            {
+              "icon": "🏪",
+              "title": "Souvenir shops at Landungsbrücken and in St. Pauli",
+              "sub": "",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Shops in Europa Passage and Westfield Hamburg-Überseequartier",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        {
+          "icon": "🌳",
+          "title": "Green space",
+          "rows": [
+            {
+              "icon": "🌲",
+              "title": "Planten un Blomen",
+              "sub": "Large park in the city centre · ~3 km",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌊",
+          "title": "Waterfront",
+          "rows": [
+            {
+              "icon": "🎼",
+              "title": "Elbphilharmonie Promenade and Landungsbrücken",
+              "sub": "~2.5 km",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        {
+          "icon": "⭐",
+          "title": "Top 5",
+          "rows": [
+            {
+              "icon": "1️⃣",
+              "title": "Elbphilharmonie",
+              "sub": "~2.5 km — Hamburg's architectural landmark",
+              "action": "🧭"
+            },
+            {
+              "icon": "2️⃣",
+              "title": "Landungsbrücken",
+              "sub": "~2.5 km — historic piers, the heart of maritime Hamburg",
+              "action": "🧭"
+            },
+            {
+              "icon": "3️⃣",
+              "title": "Speicherstadt",
+              "sub": "~3.5 km — the oldest warehouse district, a UNESCO World Heritage site",
+              "action": "🧭"
+            },
+            {
+              "icon": "4️⃣",
+              "title": "Alter Elbtunnel",
+              "sub": "~1.5 km — pedestrian tunnel under the Elbe, built in 1911",
+              "action": "🧭"
+            },
+            {
+              "icon": "5️⃣",
+              "title": "Reeperbahn",
+              "sub": "~3.5 km — Hamburg's famous nightlife street, bars and theatres",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        {
+          "icon": "🆓",
+          "title": "Somewhere to sit",
+          "rows": [
+            {
+              "icon": "☕",
+              "title": "Seafarer's Lounge at the Steinwerder terminal",
+              "sub": "When it's running for a ship call",
+              "action": ""
+            },
+            {
+              "icon": "🎼",
+              "title": "Elbphilharmonie Plaza",
+              "sub": "Sockets, Wi-Fi, and a great view",
+              "action": "🧭"
+            },
+            {
+              "icon": "🍔",
+              "title": "Europa Passage food court",
+              "sub": "Sockets, free Wi-Fi",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_steinwerder_city_safety": {
+      "title": "Safety",
+      "sections": [
+        {
+          "icon": "🟢",
+          "title": "General risk",
+          "rows": [
+            {
+              "icon": "🛡",
+              "title": "Steinwerder is safe in daylight",
+              "sub": "At night, stick to well-lit streets"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "⚠️",
+              "title": "Take care around Reeperbahn and Hansaplatz — scams possible",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch out for",
+          "rows": [
+            {
+              "icon": "🧳",
+              "title": "Pickpockets at tourist spots (Landungsbrücken, Speicherstadt)",
+              "sub": ""
+            },
+            {
+              "icon": "💶",
+              "title": "Inflated bills at Reeperbahn nightclubs",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🍺",
+          "title": "Alcohol",
+          "rows": [
+            {
+              "icon": "🍺",
+              "title": "Drinking in the street and in parks is allowed",
+              "sub": "Forbidden on public transport — €40 fine"
+            }
+          ]
+        },
+        {
+          "icon": "⛴",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "⛴",
+              "title": "HADAG ferries run to ~22:00",
+              "sub": "After that, use a taxi or night bus"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_spiritual_duckdalben": {
+      "title": "Deutsche Seemannsmission Hamburg-Harburg (Duckdalben)",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "⛵",
+              "title": "Ship visits, spiritual conversation, crisis support, prayer",
+              "sub": "Protestant / Ecumenical — open to any faith or none"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Zellmannstraße 16, 21129 Hamburg",
+          "sub": "",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 40 740 1660",
+          "sub": "Daily 10:00–22:00 · German, English",
+          "action": "📞"
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_spiritual_stellamaris": {
+      "title": "Stella Maris Hamburg",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "⛪",
+              "title": "Pastoral care, ship visits, services",
+              "sub": "Catholic mission"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Krayenkamp 11, 20459 Hamburg",
+          "sub": "",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 40 365825",
+          "sub": "German, English, Spanish, Polish",
+          "action": "📞"
+        },
+        {
+          "icon": "💬",
+          "title": "WhatsApp +49 40 41542872",
+          "sub": "",
+          "action": "💬"
+        }
+      ],
+      "updated": "7 August 2026"
+    }
+  }
+}

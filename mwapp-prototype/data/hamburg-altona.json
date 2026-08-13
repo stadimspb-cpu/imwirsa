@@ -1,0 +1,982 @@
+{
+  "categories": {
+    "centre": {
+      "title": "Seafarers' Centre",
+      "statusFrom": "hamburg_altona_centre_about",
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "About the Centre",
+          "sub": "Deutsche Seemannsmission Hamburg-Altona — ~300 m, walkable",
+          "action": "›",
+          "sd": "hamburg_altona_centre_about"
+        },
+        {
+          "icon": "🎱",
+          "title": "Services",
+          "sub": "Club, hotel, chapel and garden — a full seafarers' complex",
+          "action": "›",
+          "sd": "hamburg_altona_centre_services"
+        },
+        {
+          "icon": "📍",
+          "title": "Location & Route",
+          "sub": "Right on the waterfront — you can just walk out",
+          "action": "›",
+          "sd": "hamburg_altona_centre_location"
+        }
+      ]
+    },
+    "transport": {
+      "title": "Transport",
+      "rows": [
+        {
+          "icon": "🚪",
+          "title": "Leaving the Port",
+          "sub": "Exit rules, required documents, gate information",
+          "action": "›",
+          "sd": "hamburg_altona_transport_leaving"
+        },
+        {
+          "icon": "🚕",
+          "title": "Taxi",
+          "sub": "Apps, phone numbers, where to catch one",
+          "action": "›",
+          "sd": "hamburg_altona_transport_taxi"
+        },
+        {
+          "icon": "🚎",
+          "title": "Public Transport",
+          "sub": "Ferry to Landungsbrücken, bus, tickets",
+          "action": "›",
+          "sd": "hamburg_altona_transport_public"
+        }
+      ]
+    },
+    "shops": {
+      "title": "Shops & Food",
+      "rows": [
+        {
+          "icon": "💱",
+          "title": "Currency Exchange",
+          "sub": "How to exchange money safely — read this first, before you need it",
+          "action": "›",
+          "sd": "currency_exchange_safety"
+        },
+        {
+          "icon": "🛒",
+          "title": "Supermarkets",
+          "sub": "Right by the terminal — Fischmarkt too",
+          "action": "›",
+          "sd": "hamburg_altona_shops_supermarkets"
+        },
+        {
+          "icon": "🍽",
+          "title": "Food & Drinks",
+          "sub": "Große Elbstraße, Fischmarkt, halal options",
+          "action": "›",
+          "sd": "hamburg_altona_shops_food"
+        },
+        {
+          "icon": "📱",
+          "title": "Electronics & SIM Cards",
+          "sub": "Operators, SIM cards, ATM, Wi-Fi",
+          "action": "›",
+          "sd": "hamburg_altona_shops_sim"
+        },
+        {
+          "icon": "💊",
+          "title": "Pharmacies",
+          "sub": "Nearest and 24/7 pharmacies",
+          "action": "›",
+          "sd": "hamburg_altona_shops_pharmacies"
+        },
+        {
+          "icon": "🎁",
+          "title": "Souvenirs",
+          "sub": "Where to find something to take home",
+          "action": "›",
+          "sd": "hamburg_altona_shops_souvenirs"
+        },
+        {
+          "icon": "⚓",
+          "title": "Seafarer Supplies",
+          "sub": "Not confirmed for this terminal",
+          "pending": true
+        }
+      ]
+    },
+    "citylife": {
+      "title": "City Life",
+      "rows": [
+        {
+          "icon": "🌳",
+          "title": "Parks & Waterfronts",
+          "sub": "Große Elbstraße and Park an der Elbe",
+          "action": "›",
+          "sd": "hamburg_altona_city_parks"
+        },
+        {
+          "icon": "🏛",
+          "title": "Culture & Must-See",
+          "sub": "Top 5 places in Hamburg",
+          "action": "›",
+          "sd": "hamburg_altona_city_culture"
+        },
+        {
+          "icon": "🧘",
+          "title": "Free Time & Relax",
+          "sub": "The mission's own garden, right next door",
+          "action": "›",
+          "sd": "hamburg_altona_city_free"
+        },
+        {
+          "icon": "🛡",
+          "title": "Safety",
+          "sub": "What to know before going into the city",
+          "action": "›",
+          "sd": "hamburg_altona_city_safety"
+        }
+      ]
+    },
+    "spiritual": {
+      "title": "Spiritual Care",
+      "rows": [
+        {
+          "icon": "💬",
+          "title": "No particular faith — I'd just like to talk",
+          "sub": "Speak with your assistant, who can bring in the IMWIRSA Coordinator",
+          "action": "›",
+          "go": "assistantchat"
+        },
+        {
+          "icon": "⛵",
+          "title": "Deutsche Seemannsmission (Duckdalben)",
+          "sub": "Protestant / Ecumenical · ship visits, prayer, crisis support",
+          "action": "›",
+          "sd": "hamburg_spiritual_duckdalben"
+        },
+        {
+          "icon": "⛪",
+          "title": "Stella Maris Hamburg",
+          "sub": "Catholic · pastoral care, ship visits, services",
+          "action": "›",
+          "sd": "hamburg_spiritual_stellamaris"
+        }
+      ]
+    },
+    "emergency": {
+      "title": "Emergency Contacts",
+      "rows": [
+        {
+          "icon": "🚨",
+          "title": "Police / Ambulance / Fire",
+          "sub": "112 · Free, 24/7, English-speaking operator available",
+          "action": "📞"
+        },
+        {
+          "icon": "🚔",
+          "title": "Police (non-emergency)",
+          "sub": "110",
+          "action": "📞"
+        },
+        {
+          "icon": "🩺",
+          "title": "Asklepios Klinik St. Georg",
+          "sub": "Lohmühlenstraße 5 · for the central Hamburg zones · +49 40 181885-0",
+          "action": "🧭"
+        },
+        {
+          "icon": "🏛",
+          "title": "Duckdalben Seemannsclub",
+          "sub": "+49 40 740 1660",
+          "action": "📞"
+        },
+        {
+          "icon": "🌐",
+          "title": "ISWAN 24/7 Helpline",
+          "sub": "+44 20 7283 2922 · Multilingual",
+          "action": "📞"
+        }
+      ]
+    },
+    "wellness": {
+      "title": "Premium Welfare Services",
+      "gated": true,
+      "rows": [
+        {
+          "icon": "ℹ️",
+          "title": "Trade Union partner services",
+          "sub": "Pending confirmation for this terminal",
+          "pending": true
+        }
+      ]
+    }
+  },
+  "subdetails": {
+    "hamburg_altona_centre_about": {
+      "title": "About the Centre",
+      "hours": [
+        [
+          "Monday",
+          "12:00 – 18:00"
+        ],
+        [
+          "Tuesday",
+          "12:00 – 18:00"
+        ],
+        [
+          "Wednesday",
+          "12:00 – 18:00"
+        ],
+        [
+          "Thursday",
+          "12:00 – 18:00"
+        ],
+        [
+          "Friday",
+          "12:00 – 22:00"
+        ],
+        [
+          "Saturday",
+          "12:00 – 22:00"
+        ],
+        [
+          "Sunday",
+          "12:00 – 22:00"
+        ]
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Große Elbstraße 132, 22767 Hamburg",
+          "sub": "~300 m from the terminal",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 40 30622-0",
+          "sub": "",
+          "action": "📞"
+        },
+        {
+          "icon": "✉️",
+          "title": "reception@dsm-altona.org",
+          "sub": "Email",
+          "action": "✉️"
+        },
+        {
+          "icon": "🌐",
+          "title": "seemannsmission.org/stationen/altona",
+          "sub": "Website",
+          "action": "›"
+        },
+        {
+          "icon": "🧑‍💼",
+          "title": "Fiete Sturm (diaconal lead) · Martin Behrens (commercial lead)",
+          "sub": "German, English",
+          "action": ""
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_centre_services": {
+      "title": "Services",
+      "groups": [
+        {
+          "label": "Hospitality",
+          "icon": "☕",
+          "items": [
+            "Tea & coffee",
+            "Snacks",
+            "Hot meals"
+          ]
+        },
+        {
+          "label": "Recreation",
+          "icon": "🎱",
+          "items": [
+            "TV room",
+            "Rest area",
+            "Billiards"
+          ]
+        },
+        {
+          "label": "Connectivity",
+          "icon": "📶",
+          "items": [
+            "Free Wi-Fi"
+          ]
+        },
+        {
+          "label": "Spiritual care",
+          "icon": "🕊",
+          "items": [
+            "Prayer room",
+            "Chapel — St. Clemens am Hafen",
+            "Chaplain"
+          ]
+        }
+      ],
+      "note": "This is a full complex: a Seemannsclub, a Seemannshotel where seafarers (and tourists) can stay the night, the St. Clemens am Hafen chapel, and a garden. There's a memorial book for seafarers lost at sea, including the crew of the sailing ship Pamir. Meals at the hotel restaurant run roughly €10–20; the club has snacks and drinks.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_centre_location": {
+      "title": "Location & Route",
+      "callout": {
+        "tone": "ok",
+        "text": "Walkable — you come out of the terminal straight onto the Große Elbstraße waterfront."
+      },
+      "sections": [
+        {
+          "icon": "🚶",
+          "title": "Route",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Exit the terminal onto Große Elbstraße",
+              "sub": "The mission is right there, ~300 m along the waterfront"
+            },
+            {
+              "icon": "🐟",
+              "title": "Fischmarkt / Landungsbrücken",
+              "sub": "~5–10 minutes further on foot",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch for",
+          "rows": [
+            {
+              "icon": "🧳",
+              "title": "Small-time pickpockets in tourist areas",
+              "sub": "Don't accept \"tour guide\" offers from strangers"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_transport_leaving": {
+      "title": "Leaving the Port",
+      "callout": {
+        "tone": "ok",
+        "text": "Yes — always confirm with your Master, agent or cruise manager first."
+      },
+      "sections": [
+        {
+          "icon": "🚪",
+          "title": "Gate",
+          "rows": [
+            {
+              "icon": "🚶",
+              "title": "Through the main passenger terminal",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🪪",
+          "title": "Take with you",
+          "rows": [
+            {
+              "icon": "📗",
+              "title": "Seaman's Book",
+              "sub": ""
+            },
+            {
+              "icon": "📘",
+              "title": "Passport (with Schengen visa if required)",
+              "sub": ""
+            },
+            {
+              "icon": "🎫",
+              "title": "Crew Pass",
+              "sub": "Issued by the cruise line or agent"
+            }
+          ]
+        },
+        {
+          "icon": "🌍",
+          "title": "Visa",
+          "rows": [
+            {
+              "icon": "⚠️",
+              "title": "Schengen visa required for some nationalities",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🦺",
+          "title": "Gear",
+          "rows": [
+            {
+              "icon": "✅",
+              "title": "No special gear required at this passenger terminal",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "note": "Checkpoint contact: your ship's agent or cruise manager.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_transport_taxi": {
+      "title": "Taxi",
+      "sections": [
+        {
+          "icon": "📱",
+          "title": "Apps",
+          "rows": [
+            {
+              "icon": "🟢",
+              "title": "FREE NOW",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "🟣",
+              "title": "Bolt",
+              "sub": "",
+              "action": "›"
+            },
+            {
+              "icon": "⚫",
+              "title": "Uber",
+              "sub": "",
+              "action": "›"
+            }
+          ]
+        },
+        {
+          "icon": "☎️",
+          "title": "By phone",
+          "rows": [
+            {
+              "icon": "📞",
+              "title": "Hansa-Taxi",
+              "sub": "+49 40 211121",
+              "action": "📞"
+            },
+            {
+              "icon": "📞",
+              "title": "Taxi Hamburg",
+              "sub": "+49 40 666666",
+              "action": "📞"
+            }
+          ]
+        },
+        {
+          "icon": "📍",
+          "title": "Pickup point",
+          "rows": [
+            {
+              "icon": "🚖",
+              "title": "Dedicated rank at the terminal exit",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "note": "~€15–20 to the city centre (Hbf/Rathaus) — the shortest and cheapest of all four Hamburg terminals. Official taxis are ivory/beige with a lit \"TAXI\" sign. Always check the taxameter is running.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_transport_public": {
+      "title": "Public Transport",
+      "sections": [
+        {
+          "icon": "🚏",
+          "title": "Nearest stop",
+          "rows": [
+            {
+              "icon": "⛴",
+              "title": "HADAG ferry pier \"Dockland / Fischmarkt\"",
+              "sub": "~100 m from the terminal",
+              "action": "🧭"
+            },
+            {
+              "icon": "🚌",
+              "title": "Bus stop on Große Elbstraße",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🚌",
+          "title": "Routes",
+          "rows": [
+            {
+              "icon": "⛴",
+              "title": "Ferry 62",
+              "sub": "To Landungsbrücken, ~10 minutes"
+            },
+            {
+              "icon": "🚌",
+              "title": "Bus 111",
+              "sub": "To Altona and the city centre"
+            }
+          ]
+        }
+      ],
+      "note": "~€3.80, buy via the HVV app, ticket machine, or from the ferry captain. Ferries run to about 22:00; night buses run every 30–60 minutes after that.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_shops_supermarkets": {
+      "title": "Supermarkets",
+      "sections": [
+        {
+          "icon": "🛒",
+          "title": "Nearest stores",
+          "rows": [
+            {
+              "icon": "🛍",
+              "title": "ALDI Nord / Edeka — Große Elbstraße 27",
+              "sub": "~300 m · 08:00–21:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Rewe, Altona",
+              "sub": "~600 m · 07:00–22:00",
+              "action": "🧭"
+            },
+            {
+              "icon": "🐟",
+              "title": "Fischmarkt",
+              "sub": "~400 m · Sundays from 05:00 — a Hamburg institution",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "⛽",
+              "title": "Petrol-station shops",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_shops_food": {
+      "title": "Food & Drinks",
+      "sections": [
+        {
+          "icon": "🍔",
+          "title": "Cheap & quick",
+          "rows": [
+            {
+              "icon": "🍽",
+              "title": "Cafés and restaurants on Große Elbstraße or at Fischmarkt",
+              "sub": "~€10–15",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🐟",
+          "title": "Popular with seafarers",
+          "rows": [
+            {
+              "icon": "🐟",
+              "title": "Restaurants on Große Elbstraße, cafés at Fischmarkt",
+              "sub": ""
+            },
+            {
+              "icon": "⛪",
+              "title": "The Seemannsmission itself has a club restaurant",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🥗",
+          "title": "Vegetarian / halal",
+          "rows": [
+            {
+              "icon": "🥗",
+              "title": "Vegetarian options at most cafés",
+              "sub": ""
+            },
+            {
+              "icon": "🕌",
+              "title": "Halal restaurants in Altona",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_shops_sim": {
+      "title": "Electronics & SIM Cards",
+      "sections": [
+        {
+          "icon": "📡",
+          "title": "Mobile operators",
+          "rows": [
+            {
+              "icon": "🟣",
+              "title": "Deutsche Telekom · Vodafone · O2",
+              "sub": ""
+            },
+            {
+              "icon": "🏪",
+              "title": "Telekom/Vodafone/O2 shops in the centre, or large supermarkets",
+              "sub": ""
+            },
+            {
+              "icon": "💶",
+              "title": "~€10–20",
+              "sub": "5–10 GB of data, 30 days"
+            },
+            {
+              "icon": "🪪",
+              "title": "Passport required",
+              "sub": "German law requires SIM registration"
+            }
+          ]
+        },
+        {
+          "icon": "🏧",
+          "title": "ATM",
+          "rows": [
+            {
+              "icon": "🏧",
+              "title": "Sparkasse, Volksbank, Commerzbank on Große Elbstraße and in Altona",
+              "sub": "Dispense EUR"
+            }
+          ]
+        },
+        {
+          "icon": "📶",
+          "title": "Wi-Fi",
+          "rows": [
+            {
+              "icon": "📶",
+              "title": "Free at the Altona terminal and at the Seemannsmission",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_shops_pharmacies": {
+      "title": "Pharmacies",
+      "sections": [
+        {
+          "icon": "💊",
+          "title": "Nearest",
+          "rows": [
+            {
+              "icon": "🏥",
+              "title": "Fischmarkt Apotheke — Große Elbstraße 14",
+              "sub": "~250 m · 08:30–18:30",
+              "action": "🧭"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "24-hour",
+          "rows": [
+            {
+              "icon": "🕛",
+              "title": "Rotating duty pharmacies (Apotheken-Notdienst) in the centre",
+              "sub": "Not in Altona itself"
+            }
+          ]
+        },
+        {
+          "icon": "📋",
+          "title": "Prescriptions",
+          "rows": [
+            {
+              "icon": "🧾",
+              "title": "A German doctor's prescription is required",
+              "sub": ""
+            }
+          ]
+        }
+      ],
+      "note": "English spoken at central pharmacies.",
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_shops_souvenirs": {
+      "title": "Souvenirs",
+      "sections": [
+        {
+          "icon": "🎁",
+          "title": "Where to find them",
+          "rows": [
+            {
+              "icon": "🏪",
+              "title": "Souvenir shops on Große Elbstraße and at Fischmarkt",
+              "sub": "",
+              "action": "🧭"
+            },
+            {
+              "icon": "🛍",
+              "title": "Shops in Altona Center and Europa Passage",
+              "sub": "",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_city_parks": {
+      "title": "Parks & Waterfronts",
+      "sections": [
+        {
+          "icon": "🌳",
+          "title": "Green space",
+          "rows": [
+            {
+              "icon": "🌲",
+              "title": "Park an der Elbe",
+              "sub": "~1 km",
+              "action": "🧭"
+            },
+            {
+              "icon": "🌷",
+              "title": "The Seemannsmission's own garden",
+              "sub": "A quiet green spot right next to the club, Große Elbstraße 132",
+              "action": ""
+            }
+          ]
+        },
+        {
+          "icon": "🌊",
+          "title": "Waterfront",
+          "rows": [
+            {
+              "icon": "🌊",
+              "title": "Große Elbstraße",
+              "sub": "Right at the terminal — views over the port and the Elbe",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_city_culture": {
+      "title": "Culture & Must-See",
+      "sections": [
+        {
+          "icon": "⭐",
+          "title": "Top 5",
+          "rows": [
+            {
+              "icon": "1️⃣",
+              "title": "Elbphilharmonie",
+              "sub": "~4 km — Hamburg's architectural landmark",
+              "action": "🧭"
+            },
+            {
+              "icon": "2️⃣",
+              "title": "Fischmarkt",
+              "sub": "~400 m — the famous market, open Sundays",
+              "action": "🧭"
+            },
+            {
+              "icon": "3️⃣",
+              "title": "Landungsbrücken",
+              "sub": "~2 km — historic piers, the heart of maritime Hamburg",
+              "action": "🧭"
+            },
+            {
+              "icon": "4️⃣",
+              "title": "Altona Rathaus",
+              "sub": "~1.5 km — Altona's historic town hall",
+              "action": "🧭"
+            },
+            {
+              "icon": "5️⃣",
+              "title": "Planten un Blomen",
+              "sub": "~4 km — Hamburg's big central park",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_city_free": {
+      "title": "Free Time & Relax",
+      "sections": [
+        {
+          "icon": "🆓",
+          "title": "Somewhere to sit",
+          "rows": [
+            {
+              "icon": "⛪",
+              "title": "Deutsche Seemannsmission Altona",
+              "sub": "Club, garden, Wi-Fi, sockets — right next to the terminal",
+              "action": ""
+            },
+            {
+              "icon": "🐟",
+              "title": "Fischmarkt",
+              "sub": "Cafés with Wi-Fi",
+              "action": "🧭"
+            },
+            {
+              "icon": "🏬",
+              "title": "Altona Center",
+              "sub": "Seating areas with sockets",
+              "action": "🧭"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_altona_city_safety": {
+      "title": "Safety",
+      "sections": [
+        {
+          "icon": "🟢",
+          "title": "General risk",
+          "rows": [
+            {
+              "icon": "🛡",
+              "title": "Altona and the waterfront are safe at any time of day",
+              "sub": "Well-lit throughout"
+            }
+          ]
+        },
+        {
+          "icon": "🌙",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "⚠️",
+              "title": "Take care around Reeperbahn and Hansaplatz",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "⚠️",
+          "title": "Watch out for",
+          "rows": [
+            {
+              "icon": "🧳",
+              "title": "Pickpockets in tourist areas",
+              "sub": ""
+            },
+            {
+              "icon": "💶",
+              "title": "Inflated bills at nightclubs",
+              "sub": ""
+            }
+          ]
+        },
+        {
+          "icon": "🍺",
+          "title": "Alcohol",
+          "rows": [
+            {
+              "icon": "🍺",
+              "title": "Drinking in the street is allowed",
+              "sub": "Forbidden on public transport — €40 fine"
+            }
+          ]
+        },
+        {
+          "icon": "⛴",
+          "title": "At night",
+          "rows": [
+            {
+              "icon": "⛴",
+              "title": "Ferries run to ~22:00",
+              "sub": "After that, use a taxi or night bus"
+            }
+          ]
+        }
+      ],
+      "updated": "12 August 2026"
+    },
+    "hamburg_spiritual_duckdalben": {
+      "title": "Deutsche Seemannsmission Hamburg-Harburg (Duckdalben)",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "⛵",
+              "title": "Ship visits, spiritual conversation, crisis support, prayer",
+              "sub": "Protestant / Ecumenical — open to any faith or none"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Zellmannstraße 16, 21129 Hamburg",
+          "sub": "",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 40 740 1660",
+          "sub": "Daily 10:00–22:00 · German, English",
+          "action": "📞"
+        }
+      ],
+      "updated": "7 August 2026"
+    },
+    "hamburg_spiritual_stellamaris": {
+      "title": "Stella Maris Hamburg",
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "What they offer",
+          "rows": [
+            {
+              "icon": "⛪",
+              "title": "Pastoral care, ship visits, services",
+              "sub": "Catholic mission"
+            }
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "icon": "📍",
+          "title": "Krayenkamp 11, 20459 Hamburg",
+          "sub": "",
+          "action": "🧭"
+        },
+        {
+          "icon": "📞",
+          "title": "+49 40 365825",
+          "sub": "German, English, Spanish, Polish",
+          "action": "📞"
+        },
+        {
+          "icon": "💬",
+          "title": "WhatsApp +49 40 41542872",
+          "sub": "",
+          "action": "💬"
+        }
+      ],
+      "updated": "7 August 2026"
+    }
+  }
+}
