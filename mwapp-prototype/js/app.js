@@ -82,18 +82,11 @@ const SUBDETAILS = {
   // Unlike Vanasadam, the Estonian Seamen's Mission chapel is physically
 
 
-  hamburg_centre_about: {
-    title: "About the Centre",
-    hours: [
-      ["Monday", "10:00 – 21:00"], ["Tuesday", "10:00 – 21:00"], ["Wednesday", "10:00 – 21:00"],
-      ["Thursday", "10:00 – 21:00"], ["Friday", "10:00 – 21:00"], ["Saturday", "15:00 – 21:00"], ["Sunday", "15:00 – 21:00"],
-    ],
-    contacts: [
-      { icon: "📞", title: "+49 40 740 1661", sub: "Main line", action: "📞" },
-      { icon: "☎️", title: "Freecall 0800 382 5325236", sub: "For pickup requests from your ship", action: "📞" },
-      { icon: "🌐", title: "duckdalben.de", sub: "Club website", action: "›" },
-    ],
-  },
+  // hamburg_centre_about removed 13 August 2026 — Hamburg split into four
+  // real terminals (EUROGATE, HHLA CTA Altenwerder, Cruise Center Steinwerder,
+  // Cruise Center Altona) with verified data from the coordinator's
+  // questionnaire; see data/hamburg-*.json. This placeholder was a guess
+  // from before the questionnaire came back and is now superseded.
   // constanta_centre_about removed 12 August 2026 — Constanța split into two
   // real terminals (constanta-south / constanta-north) with verified data
   // from the coordinator's questionnaire; see data/constanta-south.json and
@@ -223,33 +216,28 @@ const PORTS = {
     categories: null, // loaded lazily from data/constanta-north.json — see ensurePortContentLoaded()
   },
 
-  "hamburg-main": {
-    meta: { flag: "🇩🇪", terminal: "Hamburg", city: "Hamburg", country: "Germany", tz: "UTC+2", lat: 53.5335, lng: 9.9481 },
-    categories: {
-      centre: {
-        title: "Seafarers' Centre",
-        statusFrom: "hamburg_centre_about",
-        rows: [
-          { icon: "ℹ️", title: "About the Centre", sub: "Duckdalben International Seamen's Club", action: "›", sd: "hamburg_centre_about" },
-          PENDING("🎱", "Services", "Hospitality, recreation, connectivity, welfare"),
-          PENDING("🚐", "Free Shuttle Bus", "Timetable, pickup point, how to recognise it"),
-          PENDING("📍", "Location & Route", "Address, map, how to get there"),
-        ],
-      },
-      transport: transportSkeleton(null),
-      shops: shopsSkeleton(),
-      citylife: citylifeSkeleton(),
-      spiritual: spiritualSkeleton(),
-      emergency: {
-        title: "Emergency Contacts",
-        rows: [
-          { icon: "🚨", title: "Police / Ambulance", sub: "112 · Free, 24/7", action: "📞" },
-          { icon: "🏛", title: "Duckdalben Club", sub: "+49 40 740 1661", action: "📞" },
-          { icon: "🌐", title: "ISWAN 24/7 Helpline", sub: "+44 20 7283 2922 · Multilingual", action: "📞" },
-        ],
-      },
-      wellness: { title: "Premium Welfare Services", gated: true, rows: [ PENDING("ℹ️", TBD, "Trade Union partner services pending confirmation") ] },
-    },
+  // Hamburg split into four real terminals on 13 August 2026, replacing the
+  // old single "hamburg-main" skeleton — the coordinator's questionnaire
+  // covered two container terminals (EUROGATE, HHLA CTA Altenwerder — both
+  // walk-free, shuttle-only, industrial Waltershof/Altenwerder side) and two
+  // cruise terminals (Steinwerder, Altona — both walkable, Altona especially
+  // so, right on the Große Elbstraße waterfront). Full data loaded lazily
+  // from data/hamburg-*.json.
+  "hamburg-eurogate": {
+    meta: { flag: "🇩🇪", terminal: "EUROGATE Container Terminal", city: "Hamburg", country: "Germany", tz: "UTC+2", lat: 53.518611, lng: 9.932222 },
+    categories: null, // loaded lazily from data/hamburg-eurogate.json — see ensurePortContentLoaded()
+  },
+  "hamburg-cta": {
+    meta: { flag: "🇩🇪", terminal: "HHLA CTA Altenwerder", city: "Hamburg", country: "Germany", tz: "UTC+2", lat: 53.502778, lng: 9.934722 },
+    categories: null, // loaded lazily from data/hamburg-cta.json — see ensurePortContentLoaded()
+  },
+  "hamburg-steinwerder": {
+    meta: { flag: "🇩🇪", terminal: "Cruise Center Steinwerder", city: "Hamburg", country: "Germany", tz: "UTC+2", lat: 53.5386, lng: 9.9686 },
+    categories: null, // loaded lazily from data/hamburg-steinwerder.json — see ensurePortContentLoaded()
+  },
+  "hamburg-altona": {
+    meta: { flag: "🇩🇪", terminal: "Cruise Center Altona", city: "Hamburg", country: "Germany", tz: "UTC+2", lat: 53.5462, lng: 9.9375 },
+    categories: null, // loaded lazily from data/hamburg-altona.json — see ensurePortContentLoaded()
   },
 
   // Field-verified by the IMWIRSA Istanbul coordinator, 10 August 2026 — this
@@ -329,7 +317,7 @@ const PORT_CONTENT_CACHE = {};
 async function ensurePortContentLoaded(portId) {
   const port = PORTS[portId];
   if (!port) return null;
-  if (port.categories) return port.categories; // still-inline skeleton ports (hamburg) — nothing to fetch
+  if (port.categories) return port.categories; // no remaining inline-skeleton ports as of 13 Aug 2026 — every port now loads from data/*.json
   if (PORT_CONTENT_CACHE[portId]) return PORT_CONTENT_CACHE[portId].categories;
 
   const res = await fetch(`data/${portId}.json`);
@@ -622,7 +610,8 @@ const LEGACY_PORT_ID_MAP = {
   tallinn: "tallinn-vanasadam",
   constanta: "constanta-south",
   "constanta-main": "constanta-south", // pre-12-Aug-2026 single skeleton port, now split in two
-  hamburg: "hamburg-main",
+  hamburg: "hamburg-eurogate",
+  "hamburg-main": "hamburg-eurogate", // pre-13-Aug-2026 single skeleton port, now split in four
   istanbul: "istanbul-haydarpasa",
 };
 
