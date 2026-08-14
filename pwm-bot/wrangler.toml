@@ -4,13 +4,13 @@ compatibility_date = "2026-08-01"
 
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "REPLACE_WITH_SESSIONS_KV_ID"
+id = "6d8fd50fbe714f9ab87ab5c4c2fabc0d"
 
 [[kv_namespaces]]
 binding = "COORDINATORS"
-id = "REPLACE_WITH_COORDINATORS_KV_ID"
+id = "357a1c34907d4746bff1827d6bd50aac"
 
 [vars]
-ADMIN_CHAT_ID = "REPLACE_WITH_YOUR_TELEGRAM_CHAT_ID"
+ADMIN_CHAT_ID = 6593853723
 NOTIFY_EMAIL = "info@imwirsa.org"
 RESEND_FROM = "PWM Bot <pwm@imwirsa.org>"
