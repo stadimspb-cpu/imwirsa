@@ -11,7 +11,7 @@
  * different job (fast structured field reports, not a welfare chat).
  *
  * Deliberately NOT full auto-sync into the live port JSON files either.
- * Every report is a human-readable message that lands in Andrey's
+ * Every report is a human-readable message that lands in the admin's
  * Telegram + inbox for review before anything changes in the app —
  * "one tap instead of refilling the questionnaire", not an unattended
  * pipeline. Direct-write-to-GitHub is a possible future upgrade (see
@@ -32,6 +32,15 @@ import { PORTS } from "./ports.js";
 import { t, DEFAULT_LANG } from "./i18n.js";
 
 const SESSION_TTL_SECONDS = 60 * 60 * 6; // 6h — a field report shouldn't span longer than that
+
+// The reviewing party shown to field coordinators. Deliberately not a named
+// individual (e.g. "Andrey") — reports may be reviewed by whoever is on duty
+// (Olga, other coordinators, etc.), and hardcoding one name misrepresents
+// that and reads as "the founder personally checks every card." Configurable
+// via the TEAM_LABEL var so wording can change without touching code.
+function teamVars(env) {
+  return { team: env.TEAM_LABEL || "the IMWIRSA coordination team" };
+}
 
 // ---------------------------------------------------------------- utils
 
@@ -157,7 +166,7 @@ function confirmMenu(lang) {
 async function startFlow(env, chatId, userId, lang) {
   const coordinator = await getCoordinator(env, userId);
   if (!coordinator) {
-    await sendMessage(env, chatId, t(lang, "notRegistered"));
+    await sendMessage(env, chatId, t(lang, "notRegistered", teamVars(env)));
     return;
   }
   await setSession(env, chatId, { step: "port", coordinator, data: {} });
@@ -206,13 +215,21 @@ async function notifyAdmin(env, session, coordinator) {
   if (data.section) bodyLines.push(`Section: ${fieldLabel("en", data.section)}`);
   if (data.text) bodyLines.push("", data.text);
 
+  // Telegram uses parse_mode HTML, so <b> renders as bold there.
   const telegramText = [`<b>${header}</b>`, ...bodyLines].join("\n");
+  // Plain-text version for the email — Resend's `text` field is not HTML,
+  // so a literal <b> tag would just show up as clutter in the inbox.
   const emailText = [header, ...bodyLines].join("\n");
 
+  // 1) Instant Telegram notification — this is the primary channel; the bot
+  //    already lives in Telegram, so this is the zero-friction path.
   if (env.ADMIN_CHAT_ID) {
     await sendMessage(env, env.ADMIN_CHAT_ID, telegramText);
   }
 
+  // 2) Email via Resend — same delivery pattern as the site's contact form
+  //    and port questionnaire (Cloudflare Worker → Resend), kept as a
+  //    written record in the inbox alongside those.
   if (env.RESEND_API_KEY && env.NOTIFY_EMAIL) {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -245,7 +262,7 @@ async function handleCallback(env, update) {
   if (!session) {
     const coordinator = await getCoordinator(env, userId);
     if (!coordinator) {
-      await sendMessage(env, chatId, t(lang, "notRegistered"));
+      await sendMessage(env, chatId, t(lang, "notRegistered", teamVars(env)));
       return;
     }
     session = { step: "port", coordinator, data: {} };
@@ -270,6 +287,7 @@ async function handleCallback(env, update) {
     session.data.type = type;
 
     if (type === "verify") {
+      // one-tap path — no further questions
       await notifyAdmin(env, session, session.coordinator);
       await clearSession(env, chatId);
       await sendMessage(env, chatId, t(lang, "verifiedThanks"));
@@ -287,7 +305,7 @@ async function handleCallback(env, update) {
     session.step = "text";
     await setSession(env, chatId, session);
     const prompt =
-      session.data.type === "urgent" ? t(lang, "askUrgentText") : t(lang, "askDetailText");
+      session.data.type === "urgent" ? t(lang, "askUrgentText", teamVars(env)) : t(lang, "askDetailText");
     await sendMessage(env, chatId, prompt);
     return;
   }
@@ -295,7 +313,7 @@ async function handleCallback(env, update) {
   if (data === "nav:send") {
     await notifyAdmin(env, session, session.coordinator);
     await clearSession(env, chatId);
-    await sendMessage(env, chatId, t(lang, "sentThanks"));
+    await sendMessage(env, chatId, t(lang, "sentThanks", teamVars(env)));
     return;
   }
 }
@@ -327,12 +345,16 @@ async function handleMessage(env, update) {
 
   if (session && session.step === "text") {
     session.data.text = text;
+    // photo support: if the coordinator sends a photo in the same step,
+    // Telegram delivers it as a separate update with msg.photo — handled
+    // below in handlePhoto(), which merges into the same session.
     session.step = "confirm";
     await setSession(env, chatId, session);
     await sendMessage(env, chatId, summaryText(lang, session), { reply_markup: confirmMenu(lang) });
     return;
   }
 
+  // No active session and not a recognised command
   await sendMessage(env, chatId, t(lang, "fallback"));
 }
 
@@ -347,12 +369,15 @@ async function handlePhoto(env, update) {
     return;
   }
 
+  // Largest resolution is last in the array
   const fileId = msg.photo[msg.photo.length - 1].file_id;
   session.data.photoFileId = fileId;
   session.data.text = (msg.caption || session.data.text || "").trim() || t(lang, "photoOnlyPlaceholder");
   session.step = "confirm";
   await setSession(env, chatId, session);
 
+  // Forward the photo itself to the admin chat immediately — Resend email
+  // stays text-only for simplicity, Telegram gets the actual image.
   if (env.ADMIN_CHAT_ID) {
     await tgCall(env, "forwardMessage", {
       chat_id: env.ADMIN_CHAT_ID,
@@ -393,6 +418,8 @@ export default {
       return new Response("ok");
     }
 
+    // One-time setup helper: visit /register-webhook?url=https://your-worker.workers.dev/webhook
+    // after deploying, to point Telegram at this Worker. See README.md.
     if (request.method === "GET" && url.pathname === "/register-webhook") {
       const target = url.searchParams.get("url");
       if (!target) return new Response("missing ?url=", { status: 400 });
