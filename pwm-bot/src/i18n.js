@@ -11,19 +11,19 @@ const STRINGS = {
   en: {
     notRegistered:
       "You're not registered as an IMWIRSA port coordinator yet. " +
-      "Contact Andrey to get set up, then send /start again.",
+      "Contact {team} to get set up, then send /start again.",
     chooseGreeting: "Hi {name} 👋\nWhich port/terminal is this about?",
     chooseType: "What would you like to report?",
     chooseSection: "Which part of the listing does this concern?",
     askDetailText: "Go ahead — describe it in a few sentences (a photo is welcome too).",
     askUrgentText:
       "🆘 Describe what's happening and how urgent it is. If this needs action in the " +
-      "next hour, also call/message Andrey directly — this bot is not a monitored SOS line.",
+      "next hour, also contact {team} directly — this bot is not a monitored SOS line.",
     photoOnlyPlaceholder: "(photo only, no description provided)",
     photoNoContext: "Send /report first, then attach your photo at the right step.",
     cancelled: "Cancelled — nothing was sent. Send /report to start again anytime.",
     verifiedThanks: "✅ Thanks — logged as confirmed current. That's it, no further steps needed.",
-    sentThanks: "✅ Sent — thank you. Andrey will review and update the app.",
+    sentThanks: "✅ Sent — thank you, {team} will review it and update the app.",
     fallback: "Send /report to start a new update, or /help for what this bot does.",
     help:
       "<b>IMWIRSA PWM Bot</b>\n\n" +
