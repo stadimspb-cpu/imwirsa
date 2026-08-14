@@ -163,9 +163,36 @@ function confirmMenu(lang) {
 
 // ---------------------------------------------------------------- flow
 
-async function startFlow(env, chatId, userId, lang) {
+// Notify the admin when someone the bot doesn't recognise tries to use it —
+// saves the round-trip of disabling the webhook to read getUpdates just to
+// find a new coordinator's id. De-duplicated per user for 24h via SESSIONS
+// so retrying /start a few times doesn't spam the admin chat.
+async function notifyUnregistered(env, from) {
+  if (!env.ADMIN_CHAT_ID || !from || !from.id) return;
+  const dedupeKey = `notified:${from.id}`;
+  const already = await env.SESSIONS.get(dedupeKey);
+  if (already) return;
+
+  const name = [from.first_name, from.last_name].filter(Boolean).join(" ") || "(no name)";
+  const username = from.username ? `@${from.username}` : "(no username)";
+  const lines = [
+    "<b>🆕 NEW PERSON TRIED THE BOT</b>",
+    `Name: ${name}`,
+    `Username: ${username}`,
+    `Telegram id: <code>${from.id}</code>`,
+    "",
+    `To register them, add this to imwirsa-pwm-coordinators KV:`,
+    `Key: coord:${from.id}`,
+    `Value: {"name": "${name}", "telegramUsername": "${from.username || ""}", "ports": []}`,
+  ];
+  await sendMessage(env, env.ADMIN_CHAT_ID, lines.join("\n"));
+  await env.SESSIONS.put(dedupeKey, "1", { expirationTtl: 60 * 60 * 24 });
+}
+
+async function startFlow(env, chatId, userId, lang, from) {
   const coordinator = await getCoordinator(env, userId);
   if (!coordinator) {
+    await notifyUnregistered(env, from);
     await sendMessage(env, chatId, t(lang, "notRegistered", teamVars(env)));
     return;
   }
@@ -262,6 +289,7 @@ async function handleCallback(env, update) {
   if (!session) {
     const coordinator = await getCoordinator(env, userId);
     if (!coordinator) {
+      await notifyUnregistered(env, cb.from);
       await sendMessage(env, chatId, t(lang, "notRegistered", teamVars(env)));
       return;
     }
@@ -326,7 +354,7 @@ async function handleMessage(env, update) {
   const text = (msg.text || "").trim();
 
   if (text === "/start" || text === "/report") {
-    await startFlow(env, chatId, userId, lang);
+    await startFlow(env, chatId, userId, lang, msg.from);
     return;
   }
 
