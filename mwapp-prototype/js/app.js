@@ -5,13 +5,17 @@
 // Visual identity only — name/tag/greet text lives in js/i18n.js so it can be
 // translated per language. Use getAssistant(id) (defined in i18n.js) to get an
 // assistant merged with its translated text fields.
+// Cache-busting: the avatar PNGs were reprocessed (recropped to a uniform
+// scale, Grace's logo fixed) on 2026-08-14, but their filenames stayed the
+// same — some browsers/edges keep serving the old bytes at an unchanged URL
+// until it changes. Bump AVATAR_V any time these files are replaced again.
+const AVATAR_V = 2;
 const ASSISTANTS = {
-  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: "assets/avatars/alex.png",   photos: ["assets/avatars/alex.png"] },
-  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: "assets/avatars/omar.png",   photos: ["assets/avatars/omar.png"] },
-  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: "assets/avatars/sophia.png", photos: ["assets/avatars/sophia.png"] },
-  grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: "assets/avatars/grace.png",  photos: ["assets/avatars/grace.png"] },
+  alex:   { id: "alex",   icon: "⚓", grad: ["#0D6E8A", "#0A5A72"], accent: "#29C5FF", photo: `assets/avatars/alex.png?v=${AVATAR_V}`,   photos: [`assets/avatars/alex.png?v=${AVATAR_V}`] },
+  omar:   { id: "omar",   icon: "🧭", grad: ["#1B3A6B", "#B8860B"], accent: "#2AD9A8", photo: `assets/avatars/omar.png?v=${AVATAR_V}`,   photos: [`assets/avatars/omar.png?v=${AVATAR_V}`] },
+  sophia: { id: "sophia", icon: "⭐", grad: ["#5DD3F0", "#0D6E8A"], accent: "#B15CFF", photo: `assets/avatars/sophia.png?v=${AVATAR_V}`, photos: [`assets/avatars/sophia.png?v=${AVATAR_V}`] },
+  grace:  { id: "grace",  icon: "🌙", grad: ["#E8523A", "#B8860B"], accent: "#FFA83D", photo: `assets/avatars/grace.png?v=${AVATAR_V}`,  photos: [`assets/avatars/grace.png?v=${AVATAR_V}`] },
 };
-
 const LANGUAGES = [
   { code: "en", flag: "🇬🇧", label: "English", accent: "#29C5FF" },
   { code: "ru", flag: "🇷🇺", label: "Русский", accent: "#2AD9A8" },
