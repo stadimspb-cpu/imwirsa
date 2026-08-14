@@ -1,0 +1,16 @@
+name = "imwirsa-pwm-bot"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "REPLACE_WITH_SESSIONS_KV_ID"
+
+[[kv_namespaces]]
+binding = "COORDINATORS"
+id = "REPLACE_WITH_COORDINATORS_KV_ID"
+
+[vars]
+ADMIN_CHAT_ID = "REPLACE_WITH_YOUR_TELEGRAM_CHAT_ID"
+NOTIFY_EMAIL = "info@imwirsa.org"
+RESEND_FROM = "PWM Bot <pwm@imwirsa.org>"
