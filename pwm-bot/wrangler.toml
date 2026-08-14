@@ -2,6 +2,11 @@ name = "imwirsa-pwm-bot"
 main = "src/index.js"
 compatibility_date = "2026-08-01"
 
+# Two KV namespaces are required — create them in the Cloudflare dashboard
+# (Workers & Pages → KV) and paste their ids below, or bind them to this
+# Worker under Settings → Variables → KV Namespace Bindings if you're
+# deploying via the dashboard's "Connect to Git" flow instead of `wrangler`.
+
 [[kv_namespaces]]
 binding = "SESSIONS"
 id = "6d8fd50fbe714f9ab87ab5c4c2fabc0d"
@@ -10,7 +15,19 @@ id = "6d8fd50fbe714f9ab87ab5c4c2fabc0d"
 binding = "COORDINATORS"
 id = "357a1c34907d4746bff1827d6bd50aac"
 
+# Plain (non-secret) variables — set these under Settings → Variables.
 [vars]
 ADMIN_CHAT_ID = 6593853723
 NOTIFY_EMAIL = "info@imwirsa.org"
 RESEND_FROM = "PWM Bot <pwm@imwirsa.org>"
+# How the bot refers to the reviewing party in messages shown to field
+# coordinators (e.g. "Contact {team} to get set up", "{team} will review
+# it"). Deliberately institutional, not a named person — change freely,
+# no redeploy of code needed, just this value.
+TEAM_LABEL = "the IMWIRSA coordination team"
+
+# Secrets are NOT set here (this file is public in the repo). Set them via
+# the Cloudflare dashboard → Settings → Variables → "Encrypt" toggle, or
+# `wrangler secret put NAME` if you ever use the CLI:
+#   TELEGRAM_BOT_TOKEN
+#   RESEND_API_KEY
