@@ -1,9 +1,10 @@
-// Bot UI text. English by default — coordinators are local port staff in
-// Estonia, Germany, Türkiye, Georgia, Lithuania, Romania etc., not
-// necessarily Russian speakers, so English is the safer shared default
-// (same reasoning MWApp uses for seafarers). Structured the same way as
-// mwapp-prototype/js/i18n.js so a RU (or other) translation is just adding
-// a sibling object — nothing else in index.js needs to change.
+// Bot UI text. English is the default for coordinators without a saved
+// language preference (port staff across Estonia, Germany, Türkiye, Georgia,
+// Lithuania, Romania etc. aren't necessarily Russian speakers). Which
+// language a given coordinator sees is decided by their own `lang` field in
+// the COORDINATORS KV record (see index.js) — "en" or "ru" today, and any
+// further language is just another sibling object here, nothing else in
+// index.js needs to change.
 
 export const DEFAULT_LANG = "en";
 
@@ -55,6 +56,55 @@ const STRINGS = {
     "summary.port": "Port",
     "summary.type": "Type",
     "summary.section": "Section",
+  },
+
+  ru: {
+    notRegistered:
+      "Вы ещё не зарегистрированы как координатор порта IMWIRSA. " +
+      "Свяжитесь с {team}, чтобы вас добавили, и затем снова отправьте /start.",
+    chooseGreeting: "Привет, {name} 👋\nО каком порте/терминале речь?",
+    chooseType: "Что вы хотите сообщить?",
+    chooseSection: "К какому разделу это относится?",
+    askDetailText: "Опишите в нескольких предложениях (фото тоже приветствуется).",
+    askUrgentText:
+      "🆘 Опишите, что происходит, и насколько это срочно. Если нужны действия в течение " +
+      "ближайшего часа, свяжитесь с {team} напрямую — этот бот не отслеживаемая SOS-линия.",
+    photoOnlyPlaceholder: "(только фото, без описания)",
+    photoNoContext: "Сначала отправьте /report, затем прикрепите фото на нужном шаге.",
+    cancelled: "Отменено — ничего не отправлено. В любой момент можно снова начать через /report.",
+    verifiedThanks: "✅ Спасибо — зафиксировано как подтверждённое актуальное. Больше ничего делать не нужно.",
+    sentThanks: "✅ Отправлено — спасибо, {team} рассмотрит и обновит приложение.",
+    fallback: "Отправьте /report, чтобы начать новое обновление, или /help — что умеет этот бот.",
+    help:
+      "<b>Бот IMWIRSA PWM</b>\n\n" +
+      "Для портовых координаторов — сообщать об изменениях в карточке порта в MWApp, " +
+      "не заполняя анкету заново.\n\n" +
+      "/report — начать новое обновление\n" +
+      "/cancel — отменить текущее обновление\n" +
+      "/help — это сообщение",
+
+    "type.verify": "✅ Данные всё ещё актуальны",
+    "type.correction": "✏️ Исправление существующей информации",
+    "type.addition": "➕ Добавить что-то новое",
+    "type.warning": "⚠️ Предупреждение для других",
+    "type.urgent": "🆘 Срочно — закрытие или инцидент сегодня",
+
+    "section.hours": "🕐 Часы работы",
+    "section.transport": "🚌 Транспорт / шаттл",
+    "section.wifi": "📶 Wi-Fi и связь",
+    "section.currency": "💱 Обмен валюты",
+    "section.contacts": "☎️ Контакты",
+    "section.services": "🛍 Услуги / магазины",
+    "section.safety": "🦺 Безопасность",
+    "section.other": "❓ Другое",
+
+    "nav.send": "Отправить",
+    "nav.cancel": "Отмена",
+
+    "summary.title": "Подтвердите, пожалуйста",
+    "summary.port": "Порт",
+    "summary.type": "Тип",
+    "summary.section": "Раздел",
   },
 };
 

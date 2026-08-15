@@ -183,7 +183,8 @@ async function notifyUnregistered(env, from) {
     "",
     `To register them, add this to imwirsa-pwm-coordinators KV:`,
     `Key: coord:${from.id}`,
-    `Value: {"name": "${name}", "telegramUsername": "${from.username || ""}", "ports": []}`,
+    `Value: {"name": "${name}", "telegramUsername": "${from.username || ""}", "ports": [], "lang": "en"}`,
+    `(change "lang" to "ru" if this coordinator prefers Russian)`,
   ];
   await sendMessage(env, env.ADMIN_CHAT_ID, lines.join("\n"));
   await env.SESSIONS.put(dedupeKey, "1", { expirationTtl: 60 * 60 * 24 });
@@ -280,21 +281,26 @@ async function handleCallback(env, update) {
   const cb = update.callback_query;
   const chatId = cb.message.chat.id;
   const userId = cb.from.id;
-  const lang = DEFAULT_LANG;
   const data = cb.data;
 
   await answerCallback(env, cb.id, "");
 
   let session = await getSession(env, chatId);
+  let coordinator = session ? session.coordinator : null;
   if (!session) {
-    const coordinator = await getCoordinator(env, userId);
+    coordinator = await getCoordinator(env, userId);
     if (!coordinator) {
       await notifyUnregistered(env, cb.from);
-      await sendMessage(env, chatId, t(lang, "notRegistered", teamVars(env)));
+      await sendMessage(env, chatId, t(DEFAULT_LANG, "notRegistered", teamVars(env)));
       return;
     }
     session = { step: "port", coordinator, data: {} };
   }
+  // coordinator.lang is set per-coordinator in the COORDINATORS KV record
+  // (see README.md). Missing/unset falls back to DEFAULT_LANG, so existing
+  // coordinators registered before this field existed keep working exactly
+  // as before, in English, until their record is updated.
+  const lang = coordinator?.lang || DEFAULT_LANG;
 
   if (data === "nav:cancel") {
     await clearSession(env, chatId);
@@ -350,7 +356,12 @@ async function handleMessage(env, update) {
   const msg = update.message;
   const chatId = msg.chat.id;
   const userId = msg.from.id;
-  const lang = DEFAULT_LANG;
+  // Looked up once per message so /start, /report, /cancel, /help and the
+  // free-text "describe it" reply are all in the coordinator's own
+  // language, not just the initial greeting. Unregistered users (no
+  // coordinator record yet) fall back to DEFAULT_LANG — same as before.
+  const coordinator = await getCoordinator(env, userId);
+  const lang = coordinator?.lang || DEFAULT_LANG;
   const text = (msg.text || "").trim();
 
   if (text === "/start" || text === "/report") {
@@ -389,8 +400,8 @@ async function handleMessage(env, update) {
 async function handlePhoto(env, update) {
   const msg = update.message;
   const chatId = msg.chat.id;
-  const lang = DEFAULT_LANG;
   const session = await getSession(env, chatId);
+  const lang = session?.coordinator?.lang || DEFAULT_LANG;
 
   if (!session || session.step !== "text") {
     await sendMessage(env, chatId, t(lang, "photoNoContext"));
