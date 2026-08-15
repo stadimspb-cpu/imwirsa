@@ -580,6 +580,13 @@ const state = {
   chatStarted: false,
   assistantReplyIndex: 0,
   surveyAnswers: [],      // [{ context, portId, q1, q2, q3, free, at }] — local + best-effort emailed, see submitSurvey()
+  // "std" | "large" — controls ONLY --content-text-scale (assistant
+  // messages, descriptions, card info, Port Card, transport rows,
+  // warnings). Deliberately does NOT touch Top Bar, Tab Bar, button
+  // labels, or assistant portrait composition — those stay fixed so the
+  // layout can't come apart the way it did under uncontrolled iOS
+  // Dynamic Type inheritance. See applyTextSize().
+  textSize: "std",
 };
 
 // Удаляет всё, что приложение хранит на устройстве, и возвращает его
@@ -669,7 +676,25 @@ function setAvatarPhoto(elId, a, screenKey) {
   el.innerHTML = `<img src="${photo}" alt="${a.name}" loading="lazy">`;
 }
 
+// Settings → Text size (Standard / Large). Only moves --content-text-scale,
+// which only the deliberately-listed content selectors in app.css read
+// (chat-msg, home-hero-bubble, ab-text, d-title/d-sub, sd-card-title,
+// svc-chip, sd-callout .sc-text, sd-note, contact-row texts, hours-table,
+// sched-row, home-port-sub, gate-msg/gate-sub, hero-status). Top Bar,
+// Tab Bar, category/button labels, and the assistant portrait containers
+// never read this variable, so they can't be pushed out of place by it —
+// that decoupling is the whole point after the Dynamic Type layout bug.
+function applyTextSize() {
+  const scale = state.textSize === "large" ? "1.2" : "1";
+  document.documentElement.style.setProperty("--content-text-scale", scale);
+  const btnStd = document.getElementById("btnTextStd");
+  const btnLarge = document.getElementById("btnTextLarge");
+  if (btnStd) btnStd.classList.toggle("active", state.textSize !== "large");
+  if (btnLarge) btnLarge.classList.toggle("active", state.textSize === "large");
+}
+
 function updateAssistantUI() {
+  applyTextSize();
   const a = getAssistant(state.assistant);
   if (!a) return;
 
@@ -1414,6 +1439,7 @@ function positionBeamAndEmblem() {
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
   ensureMwaId();
+  applyTextSize();
   applyStaticI18n();
   renderAssistantGrid("assistantGrid", "");
   renderLangGrid("langGrid", "");
@@ -1503,6 +1529,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ctxEl = e.target.closest("[data-context]");
     if (ctxEl) { state.context = ctxEl.dataset.context; updateAssistantUI(); closeModal("contextModal"); }
+
+    const textSizeEl = e.target.closest("[data-textsize]");
+    if (textSizeEl) { state.textSize = textSizeEl.dataset.textsize; applyTextSize(); saveState(); }
 
     const assistantEl = e.target.closest("[data-assistant]");
     if (assistantEl) {
