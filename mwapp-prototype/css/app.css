@@ -24,12 +24,30 @@
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --navbar-h: 76px; /* высота .bottom-nav без учёта safe-area, для расчёта отступов под оверлей */
+  /* Управляемый масштаб текста для информационного контента (описания,
+     сообщения ассистента, тексты в карточках). Меняется JS через
+     Настройки → Размер текста (Стандартный/Крупный/Очень крупный),
+     НЕ системными настройками телефона. Top Bar, Tab Bar, кнопки уровней
+     и портреты ассистентов эту переменную не используют — их размер
+     всегда фиксирован. */
+  --content-text-scale: 1;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body {
   height: 100%; overscroll-behavior: none;
   position: fixed; width: 100%; overflow: hidden;
+  /* Отключает автоматическое раздувание текста системным iOS Dynamic
+     Type / Larger Text. В standalone-режиме (иконка на экране Домой)
+     у Safari нет своей кнопки "Aa" для регулировки конкретного сайта —
+     без этой строки WebKit может напрямую унаследовать системный размер
+     шрифта и растянуть текст поверх заданных в CSS px, из-за чего едут
+     контейнеры (шапка, навбар, портреты ассистентов). Управляемое
+     увеличение текста для контента реализовано отдельно ниже
+     (.text-scalable + --content-text-scale), это осознанный выбор, а
+     не системное наследование. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
@@ -547,7 +565,12 @@ a { color: inherit; text-decoration: none; }
   position: sticky; top: 0; z-index: 15;
 }
 .detail-header.dh-with-photo { position: sticky; top: 0; overflow: hidden; }
-.dh-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 86px; z-index: 1; }
+/* Фиксированная высота вместо top:0/bottom:0 (растяжение на всю высоту
+   шапки). Раньше если заголовок переносился на 2 строки, шапка становилась
+   выше — и фото растягивалось/обрезалось вместе с ней. Теперь высота фото
+   не зависит от длины заголовка; при 2-строчном заголовке под фото
+   просто останется немного фона шапки, что безопаснее искажения портрета. */
+.dh-photo { position: absolute; top: 0; right: 0; height: 84px; width: 86px; z-index: 1; }
 .dh-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block; }
 .dh-scrim {
   position: absolute; inset: 0; z-index: 1;
@@ -707,13 +730,20 @@ a { color: inherit; text-decoration: none; }
 
 /* ── HOME HERO — full-bleed assistant portrait + greeting ─────────── */
 .home-hero {
-  display: flex; align-items: stretch; width: 100%;
+  /* align-items: flex-start (не stretch) — портрет больше НЕ тянется по
+     высоте вслед за текстом справа. Раньше при переносе текста на доп.
+     строку (например от увеличенного текста) вся строка flex становилась
+     выше, портрет растягивался вместе с ней, и object-position показывал
+     другую часть фото — отсюда "съехавшие плечи". Теперь высота портрета
+     фиксирована через .home-hero-media, а текстовая колонка может расти
+     свободно, не влияя на фото. */
+  display: flex; align-items: flex-start; width: 100%;
   background: transparent; border: none; text-align: left;
   min-height: 260px;
 }
-.home-hero-media { flex: 0 0 44%; background: transparent; overflow: hidden; }
+.home-hero-media { flex: 0 0 44%; height: 260px; background: transparent; overflow: hidden; }
 .home-hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block; }
-.home-hero-content { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 20px 18px 20px 14px; }
+.home-hero-content { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 20px 18px 20px 14px; min-height: 260px; }
 .home-hero-bubble {
   margin: 0; max-width: none; font-size: 15px; line-height: 1.55;
   background: white; color: var(--dark);
@@ -859,6 +889,13 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid rgba(255,255,255,0.14);
   padding: 8px 6px calc(6px + var(--safe-bottom));
+  /* Явная высота = защита: экраны позади рассчитывают отступ снизу от
+     --navbar-h (76px). Раньше .bottom-nav не имел заданной высоты — если
+     бы подписи вкладок когда-либо выросли, бар стал бы выше 76px и
+     "съел" бы контент под собой. Теперь этого физически не может
+     произойти. */
+  height: calc(var(--navbar-h) + var(--safe-bottom));
+  overflow: hidden;
 }
 /* Screens shown behind the nav overlay need bottom padding so their last
    row of content scrolls fully clear of the translucent bar instead of
