@@ -771,10 +771,6 @@ function goToScreen(name) {
   }
 
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
-  if (name === "volunteer") {
-    const ctxEl = document.getElementById("chatPortContext");
-    if (ctxEl) ctxEl.textContent = portDisplayName(currentPort());
-  }
   if (name === "assistantchat") openAssistantChat();
   if (name === "ship") renderShipScreen();
   if (name === "home") { maybeShowInstallBanner(); maybeShowLocationBanner(); }
