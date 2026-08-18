@@ -95,7 +95,6 @@ const I18N = {
     coordinator: {
       title: "💬 IMWIRSA Central Office",
       statusAnonymous: "Advice & Support · Available 24/7",
-      connecting: "Connecting you with a Coordinator…",
       firstMessage: "Hello, this is Linda, IMWIRSA Senior Coordinator. How can I help you?",
       askReason: "Of course — before I connect you, could you tell me briefly what this is about? That way I can make sure you reach the right place.",
       pointToSpiritual: "It sounds like you'd just like someone to talk to — that's exactly what Spiritual Care is here for. You'll find caring people ready to talk, no topic too small.",
@@ -377,7 +376,6 @@ const I18N = {
     coordinator: {
       title: "💬 Центральный офис IMWIRSA",
       statusAnonymous: "Консультация и поддержка · Доступно 24/7",
-      connecting: "Соединяем вас с координатором…",
       firstMessage: "Здравствуйте, это Линда, старший координатор IMWIRSA. Чем я могу вам помочь?",
       askReason: "Конечно — прежде чем соединить вас, расскажите коротко, в чём дело? Так я смогу быть уверен, что направляю вас в нужное место.",
       pointToSpiritual: "Похоже, вам просто хочется с кем-то поговорить — как раз для этого есть раздел «Духовная поддержка». Там есть неравнодушные люди, готовые выслушать, тема неважна.",
@@ -655,7 +653,6 @@ const I18N = {
     coordinator: {
       title: "💬 IMWIRSA Merkez Ofisi",
       statusAnonymous: "Danışmanlık ve Destek · 7/24 Erişilebilir",
-      connecting: "Bir koordinatörle bağlanıyorsun…",
       firstMessage: "Merhaba, ben Linda, IMWIRSA Kıdemli Koordinatörü. Size nasıl yardımcı olabilirim?",
       askReason: "Tabii — seni bağlamadan önce, kısaca konunun ne olduğunu söyler misin? Böylece seni doğru yere yönlendirdiğimden emin olabilirim.",
       pointToSpiritual: "Görünüşe göre sadece biriyle konuşmak istiyorsun — Manevi Destek tam da bunun için burada. Konuşmaya hazır, önemseyen insanlar bulacaksın, konu ne olursa olsun.",
@@ -933,7 +930,6 @@ const I18N = {
     coordinator: {
       title: "💬 IMWIRSA Central Office",
       statusAnonymous: "Payo at Suporta · Magagamit 24/7",
-      connecting: "Ikinokonekta ka sa isang Coordinator…",
       firstMessage: "Kamusta, ako si Linda, IMWIRSA Senior Coordinator. Paano kita matutulungan?",
       askReason: "Sige — bago kita ikonekta, maaari mo bang sabihin nang maikli kung ano ang tungkol dito? Sa ganoon, matitiyak kong maidudulog kita sa tamang lugar.",
       pointToSpiritual: "Mukhang gusto mo lang na may makausap — para dito talaga ang Espirituwal na Alaga. Doon ay may mga taong handang makinig, anuman ang paksa.",
