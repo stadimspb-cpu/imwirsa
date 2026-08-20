@@ -150,6 +150,12 @@ function citylifeSkeleton() {
       PENDING("🏛", "Culture & Must-See", "Top 5 city places, museums, historic buildings"),
       PENDING("🧘", "Free Time & Relax", "Free attractions, viewpoints, Wi-Fi & chill spots"),
       PENDING("🛡", "Safety", "What to know before going into the city"),
+      // "What can I do right after the gate?" (rows above) vs. "Where do I go
+      // if I have more time?" (this one) — deliberately last in the list, and
+      // filled from the questionnaire's shared Part 7 "City Centre" section
+      // (one submission per city, not per terminal — see port-questionnaire.html),
+      // never redone per-terminal like the rows above it.
+      PENDING("🏙", "City Centre", "Where to go, shop & explore"),
     ],
   };
 }
