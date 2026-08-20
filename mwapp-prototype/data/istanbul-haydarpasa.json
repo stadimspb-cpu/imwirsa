@@ -32,7 +32,8 @@
         { "icon": "🌳", "title": "Parks & Waterfronts", "sub": "Nearest park, promenade, quiet green zone, viewpoints", "pending": true },
         { "icon": "🏛", "title": "Culture & Must-See", "sub": "Top 5 city places, museums, historic buildings", "pending": true },
         { "icon": "🧘", "title": "Free Time & Relax", "sub": "Free attractions, viewpoints, Wi-Fi & chill spots", "pending": true },
-        { "icon": "🛡", "title": "Safety", "sub": "What to know before going into the city", "pending": true }
+        { "icon": "🛡", "title": "Safety", "sub": "What to know before going into the city", "pending": true },
+        { "icon": "🏙", "title": "City Centre", "sub": "Where to go, shop & explore", "pending": true }
       ]
     },
     "spiritual": {

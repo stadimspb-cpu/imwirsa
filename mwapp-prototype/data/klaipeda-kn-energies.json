@@ -127,6 +127,12 @@
           "sub": "Same city as the Passenger Terminal — the coordinator confirmed this applies here too",
           "action": "›",
           "sd": "klaipeda_kn_city_safety"
+        },
+        {
+          "icon": "🏙",
+          "title": "City Centre",
+          "sub": "Where to go, shop & explore",
+          "pending": true
         }
       ]
     },

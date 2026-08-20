@@ -151,6 +151,12 @@
           "sub": "What to know before going into the city",
           "action": "›",
           "sd": "hamburg_waltershof_city_safety"
+        },
+        {
+          "icon": "🏙",
+          "title": "City Centre",
+          "sub": "Where to go, shop & explore",
+          "pending": true
         }
       ]
     },

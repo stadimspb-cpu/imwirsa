@@ -144,6 +144,12 @@
           "sub": "What to know before going into the city",
           "action": "›",
           "sd": "constanta_city_safety"
+        },
+        {
+          "icon": "🏙",
+          "title": "City Centre",
+          "sub": "Where to go, shop & explore",
+          "pending": true
         }
       ]
     },
