@@ -315,7 +315,21 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── SCREEN: ASSISTANT INTRO ──────────────────────────────────────── */
-.screen-intro { background: #0d1520; overflow: hidden; }
+.screen-intro {
+  background: #0d1520; overflow: hidden;
+  /* Single source of truth for the portrait's width — everything else on
+     this screen (the text column's left offset) is derived from this one
+     value, so the two can never drift apart on a narrow phone the way the
+     old fixed height:52%/max-width:58% (photo) vs. padding-left:60% (text)
+     pair did. All four assistant portraits share the same 620×710 crop
+     (0.873 aspect ratio) since the 14 Aug 2026 recrop, so one fixed ratio
+     below is correct for all of them, not just a lucky match for one.
+     Scales with viewport width (vw) between phone sizes, capped in px so
+     it doesn't balloon on a tablet/desktop preview. */
+  --intro-photo-w: min(44vw, 180px);
+  --intro-photo-ratio: 0.873; /* actual w/h of the source PNGs — keep in sync if avatars are ever recropped */
+  --intro-gutter: 16px; /* clear space between portrait edge and text */
+}
 .intro-bg {
   position: absolute; inset: 0;
   background-size: cover; background-position: center top; background-repeat: no-repeat;
@@ -329,14 +343,24 @@ a { color: inherit; text-decoration: none; }
 
 .intro-photo {
   position: absolute; left: 0; bottom: 108px; z-index: 2;
-  height: 52%; max-width: 58%;
+  width: var(--intro-photo-w);
+  aspect-ratio: var(--intro-photo-ratio);
+  max-height: 52%; /* safety cap only — width above is now what actually drives sizing */
   display: flex; align-items: flex-end; justify-content: flex-start;
   -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 99%);
   mask-image: linear-gradient(to bottom, black 82%, transparent 99%);
 }
-.intro-photo img { height: 100%; width: auto; max-width: none; object-fit: contain; display: block; }
+/* width:100% (was width:auto; max-width:none) so the image can never render
+   wider than its container — that mismatch was the actual overlap bug: the
+   PNG was sizing itself off height+aspect ratio alone and ignoring the
+   container's max-width entirely, silently bleeding under the text. */
+.intro-photo img { width: 100%; height: 100%; object-fit: contain; object-position: left bottom; display: block; }
 
-.intro-content { position: relative; z-index: 3; padding: 26px 22px 0 60%; min-height: 30%; }
+.intro-content {
+  position: relative; z-index: 3;
+  padding: 26px 20px 0 calc(var(--intro-photo-w) + var(--intro-gutter));
+  min-height: 30%;
+}
 .intro-headline {
   font-size: 25px; font-weight: 800; line-height: 1.32; color: #10233F;
   text-shadow: 0 1px 12px rgba(255,255,255,0.4);
