@@ -591,8 +591,8 @@ h3.block-title { font-size: 22px; font-weight: 800; color: var(--navy); margin: 
 .persona-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 24px; }
 .persona-card { background: white; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: all .2s; }
 .persona-card:hover { border-color: var(--teal); transform: translateY(-4px); box-shadow: 0 14px 32px rgba(27,58,107,0.12); }
-.persona-top { background: linear-gradient(135deg, var(--navy), var(--teal2)); padding: 26px 20px; text-align: center; color: white; }
-.persona-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 10px; }
+.persona-top { background: linear-gradient(135deg, var(--navy), var(--teal2)); padding: 18px 20px 24px; text-align: center; color: white; }
+.persona-avatar-img { display: block; height: 132px; width: auto; margin: 0 auto 10px; border-radius: 0; }
 .persona-name { font-size: 16px; font-weight: 800; }
 .persona-role { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px; }
 .persona-body { padding: 18px 20px; }
