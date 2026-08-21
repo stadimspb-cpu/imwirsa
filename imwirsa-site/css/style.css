@@ -213,6 +213,40 @@ a { color: inherit; }
 }
 .page-nav-pills a:hover { background: rgba(255,255,255,0.2); color: white; }
 
+/* ── HERO LANGUAGE SWITCH ─────────────────────────────────────────────
+   Compact EN/RU switch, top-right of the hero, level with the page
+   title. Built to hold a third segment (ET) later — the flex row
+   below just wraps another .lang-switch-btn in, no width/layout
+   assumptions are baked in for exactly two languages. Only EN/RU
+   actually render today; adding ET is one more <a> in the markup. */
+.page-hero-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.page-hero-heading { flex: 1 1 420px; min-width: 0; }
+.page-hero-heading .breadcrumb { margin-bottom: 18px; }
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 20px; padding: 3px; margin-top: 2px;
+}
+.lang-switch-btn {
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.3px;
+  padding: 6px 15px; min-width: 32px; text-align: center;
+  border-radius: 16px; color: rgba(255,255,255,0.68);
+  text-decoration: none; white-space: nowrap; transition: all .2s;
+}
+.lang-switch-btn.active { background: white; color: var(--navy); }
+.lang-switch-btn:hover:not(.active) { background: rgba(255,255,255,0.16); color: white; }
+/* Reserved for when ET is connected: a visible-but-inactive third
+   segment (page not translated yet) rather than hiding it outright. */
+.lang-switch-btn--soon { color: rgba(255,255,255,0.32); cursor: default; pointer-events: none; }
+@media (max-width: 560px) {
+  .page-hero-top { gap: 14px; }
+  .lang-switch-btn { padding: 6px 12px; font-size: 12px; }
+}
+
+
 /* ── WAVE ──────────────────────────────────────────────────────────── */
 .wave-divider { line-height: 0; }
 .wave-divider svg { display: block; width: 100%; }
