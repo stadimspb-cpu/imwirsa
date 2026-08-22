@@ -36,6 +36,10 @@
 //   MWAPP_PASS
 // (Same two secrets as before — nothing new to configure if this is
 // replacing the earlier Basic Auth version.)
+//
+// Redeploy trigger (no functional change): 2026-08-22 — forcing a fresh
+// Cloudflare Pages deployment so the current MWAPP_USER / MWAPP_PASS
+// values are picked up (a "Retry deployment" reuses the old snapshot).
 
 const COOKIE_NAME = "mwapp_auth";
 const SESSION_DAYS = 30;
