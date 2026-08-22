@@ -193,13 +193,28 @@ export async function onRequest(context) {
   const secret = `${validUser}:${validPass}`;
   const url = new URL(request.url);
 
+  // ── TEMPORARY diagnostic route ──────────────────────────────────────
+  // Visit /__mwapp-debug?check=1 to see the CHARACTER LENGTH (not the
+  // actual value) of what Cloudflare currently has stored for
+  // MWAPP_USER / MWAPP_PASS. Useful for confirming "what I typed in the
+  // Cloudflare dashboard" actually matches "what I typed on the login
+  // page" length-for-length, without ever exposing the real secret.
+  // Remove this block once the login issue is confirmed fixed.
+  if (url.pathname === "/__mwapp-debug" && url.searchParams.get("check") === "1") {
+    return new Response(
+      `MWAPP_USER length: ${validUser.length} (trimmed: ${validUser.trim().length})\n` +
+      `MWAPP_PASS length: ${validPass.length} (trimmed: ${validPass.trim().length})\n`,
+      { status: 200, headers: { "Content-Type": "text/plain; charset=UTF-8" } }
+    );
+  }
+
   // Handle the login form submission.
   if (request.method === "POST" && url.pathname === LOGIN_PATH) {
     const form = await request.formData();
     const user = String(form.get("username") || "");
     const pass = String(form.get("password") || "");
 
-    if (user === validUser && pass === validPass) {
+    if (user.trim() === validUser.trim() && pass.trim() === validPass.trim()) {
       const cookieValue = await makeSessionCookieValue(secret);
       return new Response(null, {
         status: 302,
