@@ -740,6 +740,38 @@ footer { background: var(--dark); color: rgba(255,255,255,0.7); padding: 60px 32
   .persona-grid { grid-template-columns: 1fr; }
 }
 
+/* ── PROJECT SIDE RAIL (Projects page — desktop left column) ────────── */
+.project-side-rail {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.project-side-num { font-size: 13px; font-weight: 800; color: var(--teal); letter-spacing: 1px; }
+.project-side-label {
+  font-size: 11px; font-weight: 800; color: var(--navy);
+  text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.4;
+}
+.project-side-flow { display: none; }
+
+@media (min-width: 1100px) {
+  .project-section-grid {
+    display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: start;
+  }
+  .project-side-rail {
+    flex-direction: column; align-items: flex-start; gap: 12px;
+    margin-bottom: 0;
+  }
+  .project-side-num { font-size: 40px; line-height: 1; color: var(--border); font-weight: 800; letter-spacing: 0; }
+  .project-side-label { font-size: 12.5px; }
+  .project-side-flow {
+    display: flex; flex-direction: column; gap: 7px; margin-top: 10px;
+    padding-top: 14px; border-top: 1px solid var(--border);
+  }
+  .project-side-flow span {
+    display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px;
+    text-transform: uppercase; color: var(--gray);
+  }
+  .project-side-flow .flow-arrow { color: var(--teal); font-weight: 400; margin: -2px 0; }
+}
+
 /* ── SCROLL ANIMATIONS ─────────────────────────────────────────────── */
 .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
