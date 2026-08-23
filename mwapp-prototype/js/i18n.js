@@ -37,7 +37,7 @@ const I18N = {
     intro: {
       hello: "Hello!",
       imText: "I'm",
-      role: "your MWA Assistant.",
+      role: "Your MWApp Assistant.",
       changeLink: "Change assistant or language",
       continueBtn: "Continue",
     },
@@ -318,8 +318,9 @@ const I18N = {
     },
     intro: {
       hello: "Привет!",
-      imText: "Меня зовут",
-      role: "ваш ассистент MWA.",
+      imText: "Я",
+      role: "Ваш ассистент MWApp",
+      msg: "Я буду рядом, пока вы в порту. Спросите меня о транспорте, городе, помощи или возвращении на судно.",
       changeLink: "Сменить ассистента или язык",
       continueBtn: "Продолжить",
     },
@@ -596,7 +597,7 @@ const I18N = {
     intro: {
       hello: "Merhaba!",
       imText: "Ben",
-      role: "senin MWA Asistanınım.",
+      role: "Senin MWApp Asistanınım.",
       changeLink: "Asistanı veya dili değiştir",
       continueBtn: "Devam et",
     },
@@ -873,7 +874,7 @@ const I18N = {
     intro: {
       hello: "Kamusta!",
       imText: "Ako si",
-      role: "ang iyong MWA Assistant.",
+      role: "Ang iyong MWApp Assistant.",
       changeLink: "Palitan ang assistant o wika",
       continueBtn: "Magpatuloy",
     },

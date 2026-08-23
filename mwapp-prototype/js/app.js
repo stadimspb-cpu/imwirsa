@@ -707,7 +707,7 @@ function updateAssistantUI() {
   const introPhoto = getAssistantPhoto(a.id, "introHero");
   document.getElementById("introAvatar").innerHTML = `<img src="${introPhoto}" alt="${a.name}" loading="lazy">`;
   document.getElementById("introName").textContent = a.name;
-  document.getElementById("introMsg").textContent = a.greet;
+  document.getElementById("introMsg").textContent = t("intro.msg") || a.greet;
 
   const namePhoto = getAssistantPhoto(a.id, "nameScreen");
   document.getElementById("nameAvatar").innerHTML = `<img src="${namePhoto}" alt="${a.name}" loading="lazy">`;
