@@ -326,7 +326,7 @@ a { color: inherit; text-decoration: none; }
      below is correct for all of them, not just a lucky match for one.
      Scales with viewport width (vw) between phone sizes, capped in px so
      it doesn't balloon on a tablet/desktop preview. */
-  --intro-photo-w: min(44vw, 180px);
+  --intro-photo-w: min(56vw, 230px);
   --intro-photo-ratio: 0.873; /* actual w/h of the source PNGs — keep in sync if avatars are ever recropped */
   --intro-gutter: 16px; /* clear space between portrait edge and text */
 }
@@ -362,12 +362,12 @@ a { color: inherit; text-decoration: none; }
   min-height: 30%;
 }
 .intro-headline {
-  font-size: 25px; font-weight: 800; line-height: 1.32; color: #10233F;
-  text-shadow: 0 1px 12px rgba(255,255,255,0.4);
+  font-size: 23px; font-weight: 800; line-height: 1.32; color: #FFFFFF;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.4);
 }
-.intro-name { color: #2E7DF0; }
-.intro-divider { width: 40px; height: 3px; background: #2E7DF0; border-radius: 2px; margin: 14px 0 16px; }
-.intro-msg { font-size: 13.5px; line-height: 1.7; color: #1B2C42; max-width: 300px; }
+.intro-name { color: #5DD3F0; }
+.intro-divider { width: 40px; height: 3px; background: #5DD3F0; border-radius: 2px; margin: 14px 0 16px; }
+.intro-msg { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.92); max-width: 260px; text-shadow: 0 1px 8px rgba(0,0,0,0.45); }
 
 .intro-bottom {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
