@@ -231,13 +231,6 @@
       "gated": true,
       "rows": [
         {
-          "icon": "⚖️",
-          "title": "Legal Assistance",
-          "sub": "Free legal consultation for ITF / SLN union members",
-          "action": "›",
-          "sd": "constanta_wellness_legal"
-        },
-        {
           "icon": "ℹ️",
           "title": "Other Premium services",
           "sub": "Discounts, medical priority and wellness — pending confirmation for this terminal",
@@ -1145,35 +1138,6 @@
               "title": "112",
               "sub": "Police, ambulance, fire — free, works with any SIM or none",
               "action": "📞"
-            }
-          ]
-        }
-      ],
-      "updated": "9 August 2026"
-    },
-    "constanta_wellness_legal": {
-      "title": "Legal Assistance",
-      "sections": [
-        {
-          "icon": "⚖️",
-          "title": "Who it's for",
-          "rows": [
-            {
-              "icon": "🪪",
-              "title": "ITF / SLN union members with a valid Membership Card",
-              "sub": "Show the card at the SLN office"
-            }
-          ]
-        },
-        {
-          "icon": "📍",
-          "title": "Where",
-          "rows": [
-            {
-              "icon": "🏢",
-              "title": "SLN office — Str. Mircea cel Bătrân 104, Constanța",
-              "sub": "Near Poarta 1 (North Port)",
-              "action": "🧭"
             }
           ]
         }
