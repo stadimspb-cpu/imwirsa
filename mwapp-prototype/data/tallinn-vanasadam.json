@@ -284,20 +284,6 @@
           "sub": "Private spaces to relax, recharge, and reduce stress during your port call.",
           "action": "›",
           "sd": "wellness_zone_vanasadam"
-        },
-        {
-          "icon": "🩺",
-          "title": "Free Medical Consultation",
-          "sub": "Free English-speaking health guidance and medical advice during your stay.",
-          "action": "›",
-          "sd": "medical_extended"
-        },
-        {
-          "icon": "⚖️",
-          "title": "Legal Assistance (Emergency)",
-          "sub": "Discounted English legal aid in critical situations with local authorities.",
-          "action": "›",
-          "sd": "legal_help"
         }
       ]
     }
@@ -1482,75 +1468,6 @@
           "icon": "📍",
           "title": "Next to the Seafarers' Centre",
           "sub": "Sadama 25, Tallinn",
-          "action": "🧭"
-        }
-      ]
-    },
-    "medical_extended": {
-      "gated": true,
-      "title": "Free Medical Consultation",
-      "hours": [
-        [
-          "Monday",
-          "08:00 – 20:00"
-        ],
-        [
-          "Tuesday",
-          "08:00 – 20:00"
-        ],
-        [
-          "Wednesday",
-          "08:00 – 20:00"
-        ],
-        [
-          "Thursday",
-          "08:00 – 20:00"
-        ],
-        [
-          "Friday",
-          "08:00 – 20:00"
-        ],
-        [
-          "Saturday",
-          "09:00 – 15:00"
-        ],
-        [
-          "Sunday",
-          "Emergency only"
-        ]
-      ],
-      "contacts": [
-        {
-          "icon": "🩺",
-          "title": "Tallinn Medical Clinic — priority booking",
-          "sub": "Union card covers consultation fee",
-          "action": "📞"
-        },
-        {
-          "icon": "🚑",
-          "title": "Emergency services",
-          "sub": "112 · Free · 24/7",
-          "action": "📞"
-        }
-      ]
-    },
-    "legal_help": {
-      "gated": true,
-      "title": "Legal Assistance (Emergency)",
-      "note": "Free basic information and union/ITF contacts are always available to every seafarer under Emergency Contacts — this is specifically a paid, in-depth consultation with a maritime lawyer for Trade Union members.",
-      "contacts": [
-        {
-          "icon": "💬",
-          "title": "WhatsApp consultation with a maritime lawyer",
-          "sub": "Paid service, covered by Trade Union membership · response within 24h",
-          "action": "💬"
-        }
-      ],
-      "directions": [
-        {
-          "icon": "🏛",
-          "title": "In person at the Seafarers' Centre",
-          "sub": "By appointment only",
           "action": "🧭"
         }
       ]
