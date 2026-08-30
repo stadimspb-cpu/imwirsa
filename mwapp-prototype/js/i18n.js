@@ -229,7 +229,7 @@ const I18N = {
       emergencyBtn: "🚨 Emergency contacts",
       talkToPersonBtn: "Talk to a person now",
     },
-    escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Coordinator" },
+    escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Duty Office" },
     categoryPrompts: {
       centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
       transport: "Need help getting around — shuttle times, taxis, buses, or leaving the port? Just ask, I'm right here.",
@@ -511,7 +511,7 @@ const I18N = {
       emergencyBtn: "🚨 Экстренные контакты",
       talkToPersonBtn: "Связаться с человеком сейчас",
     },
-    escalationToggle: { continueBtn: "Продолжить", coordinatorBtn: "Координатор" },
+    escalationToggle: { continueBtn: "Продолжить", coordinatorBtn: "Дежурный офис" },
     categoryPrompts: {
       centre: "Есть вопросы о центре моряков — часы работы, услуги, как добраться? Спросите меня, и я подключу команду центра, если это то, в чём могут помочь только они.",
       transport: "Нужна помощь с передвижением — расписание шаттлов, такси, автобусы или выход из порта? Просто спросите, я рядом.",
@@ -788,7 +788,7 @@ const I18N = {
       emergencyBtn: "🚨 Acil durum iletişim bilgileri",
       talkToPersonBtn: "Şimdi bir kişiyle konuş",
     },
-    escalationToggle: { continueBtn: "Devam et", coordinatorBtn: "Koordinatör" },
+    escalationToggle: { continueBtn: "Devam et", coordinatorBtn: "Nöbetçi Ofis" },
     categoryPrompts: {
       centre: "Denizci merkezi hakkında sorun mu var — açılış saatleri, hizmetler, nasıl gidilir? Bana sor, sadece onların yardımcı olabileceği bir konuysa merkezin kendi ekibini devreye sokarım.",
       transport: "Etrafta dolaşmak için yardıma mı ihtiyacın var — servis saatleri, taksiler, otobüsler ya da limandan çıkış? Sadece sor, buradayım.",
@@ -1065,7 +1065,7 @@ const I18N = {
       emergencyBtn: "🚨 Mga emergency contact",
       talkToPersonBtn: "Kausapin ang isang tao ngayon",
     },
-    escalationToggle: { continueBtn: "Magpatuloy", coordinatorBtn: "Coordinator" },
+    escalationToggle: { continueBtn: "Magpatuloy", coordinatorBtn: "Duty Office" },
     categoryPrompts: {
       centre: "May mga tanong ka ba tungkol sa sentro ng mga marino — oras ng operasyon, mga serbisyo, paano makarating? Tanungin mo ako, at kokontakin ko ang sarili nilang team kung isa itong bagay na sila lang ang makakatulong.",
       transport: "Kailangan mo ba ng tulong sa paggalaw — oras ng shuttle, taxi, bus, o pag-alis sa daungan? Tanungin mo lang, nandito ako.",
