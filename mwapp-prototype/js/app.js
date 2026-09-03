@@ -1373,9 +1373,14 @@ function sendAssistantChatMessage() {
           <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("escalationToggle.coordinatorBtn")}</button>
         </div>`);
     } else {
-      const replies = t("demoReplies");
-      const reply = replies[state.assistantReplyIndex % replies.length];
-      state.assistantReplyIndex++;
+      // Try the 185-question approved offline table before falling back to
+      // a meaningless rotating placeholder. findOfflineAnswer() only ever
+      // returns pre-approved, literal text (see offline-qa-match.js) — it
+      // cannot invent anything, so this is safe to show as-is even though
+      // it runs with no human review per message.
+      const offlineAnswer = typeof findOfflineAnswer === "function" ? findOfflineAnswer(text) : null;
+      const reply = offlineAnswer || t("demoReplies")[state.assistantReplyIndex % t("demoReplies").length];
+      if (!offlineAnswer) state.assistantReplyIndex++;
       state.chatMessages.push({ who: "them", text: reply });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(reply)}</div>`);
