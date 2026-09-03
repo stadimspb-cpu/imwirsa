@@ -39,6 +39,17 @@ const STRINGS = {
     "type.addition": "➕ Something new to add",
     "type.warning": "⚠️ Warning / heads-up for others",
     "type.urgent": "🆘 Urgent — closure or incident today",
+    "type.qa": "📋 A seafarer's question I answered on the spot",
+
+    askQaQuestion: "What did the seafarer ask, in their own words (or close to it)?",
+    askQaAnswer: "And what did you actually tell them? Write it the way you said it, not a summary.",
+    chooseQaScope: "Is this answer specific to this port, or would it work the same way in any port?",
+    "scope.universal": "🌍 Same answer would work in any port",
+    "scope.portonly": "📍 Specific to this port only",
+
+    "summary.question": "Seafarer asked",
+    "summary.answer": "Volunteer answered",
+    "summary.scope": "Scope",
 
     "section.hours": "🕐 Hours",
     "section.transport": "🚌 Transport / shuttle",
@@ -88,6 +99,17 @@ const STRINGS = {
     "type.addition": "➕ Добавить что-то новое",
     "type.warning": "⚠️ Предупреждение для других",
     "type.urgent": "🆘 Срочно — закрытие или инцидент сегодня",
+    "type.qa": "📋 Вопрос моряка, на который я ответил на месте",
+
+    askQaQuestion: "Что именно спросил моряк — своими словами (или максимально близко к тому, как он спросил)?",
+    askQaAnswer: "А что вы ему реально ответили? Напишите так, как сказали, а не пересказ смысла.",
+    chooseQaScope: "Этот ответ специфичен именно для этого порта, или подошёл бы так же в любом порту?",
+    "scope.universal": "🌍 Такой же ответ подошёл бы в любом порту",
+    "scope.portonly": "📍 Только для этого порта",
+
+    "summary.question": "Вопрос моряка",
+    "summary.answer": "Ответ волонтёра",
+    "summary.scope": "Область применения",
 
     "section.hours": "🕐 Часы работы",
     "section.transport": "🚌 Транспорт / шаттл",

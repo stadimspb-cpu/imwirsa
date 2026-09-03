@@ -125,6 +125,7 @@ function typeMenu(lang) {
       kbRow([[t(lang, "type.addition"), "type:addition"]]),
       kbRow([[t(lang, "type.warning"), "type:warning"]]),
       kbRow([[t(lang, "type.urgent"), "type:urgent"]]),
+      kbRow([[t(lang, "type.qa"), "type:qa"]]),
       kbRow([[t(lang, "nav.cancel"), "nav:cancel"]]),
     ],
   };
@@ -148,6 +149,16 @@ function sectionMenu(lang) {
   }
   rows.push(kbRow([[t(lang, "nav.cancel"), "nav:cancel"]]));
   return { inline_keyboard: rows };
+}
+
+function scopeMenu(lang) {
+  return {
+    inline_keyboard: [
+      kbRow([[t(lang, "scope.universal"), "scope:universal"]]),
+      kbRow([[t(lang, "scope.portonly"), "scope:portonly"]]),
+      kbRow([[t(lang, "nav.cancel"), "nav:cancel"]]),
+    ],
+  };
 }
 
 function confirmMenu(lang) {
@@ -216,6 +227,17 @@ function summaryText(lang, session) {
     `${t(lang, "summary.port")}: ${port.flag} ${port.city} — ${port.terminal}`,
     `${t(lang, "summary.type")}: ${t(lang, `type.${data.type}`)}`,
   ];
+
+  if (data.type === "qa") {
+    // Q&A reports carry question/answer/scope instead of section+text —
+    // shown as their own labeled lines so the coordinator can spot a typo
+    // before sending, same as the free-text preview for other types.
+    lines.push(`${t(lang, "summary.scope")}: ${t(lang, `scope.${data.qaScope}`)}`);
+    lines.push("", `${t(lang, "summary.question")}:`, data.qaQuestion);
+    lines.push("", `${t(lang, "summary.answer")}:`, data.qaAnswer);
+    return lines.join("\n");
+  }
+
   if (data.section) lines.push(`${t(lang, "summary.section")}: ${fieldLabel(lang, data.section)}`);
   if (data.text) lines.push("", data.text);
   return lines.join("\n");
@@ -232,6 +254,7 @@ async function notifyAdmin(env, session, coordinator) {
     addition: "➕ ADDITION",
     warning: "⚠️ WARNING",
     urgent: "🆘 URGENT — needs attention today",
+    qa: "📋 SEAFARER Q&A SUBMISSION",
   };
 
   const header = typeLabels[data.type] || data.type.toUpperCase();
@@ -240,8 +263,25 @@ async function notifyAdmin(env, session, coordinator) {
     `Coordinator: ${coordinator.name}${coordinator.telegramUsername ? " @" + coordinator.telegramUsername : ""}`,
     `When: ${now}`,
   ];
-  if (data.section) bodyLines.push(`Section: ${fieldLabel("en", data.section)}`);
-  if (data.text) bodyLines.push("", data.text);
+
+  if (data.type === "qa") {
+    // Deliberately NOT auto-added to the assistant's answer bank — same
+    // human-review gate as every other report type here. This just puts
+    // it in front of the Central Office (Telegram + email) in one
+    // consistent shape, so reviewing 50 of these side by side is fast:
+    // question / answer as actually given / whether it's portable to
+    // other ports or specific to this one.
+    const scopeLabels = {
+      universal: "🌍 Any port (universal — candidate for the shared template list)",
+      portonly: "📍 This port only",
+    };
+    bodyLines.push(`Scope: ${scopeLabels[data.qaScope] || data.qaScope}`);
+    bodyLines.push("", "Question:", data.qaQuestion || "");
+    bodyLines.push("", "Answer given on site:", data.qaAnswer || "");
+  } else {
+    if (data.section) bodyLines.push(`Section: ${fieldLabel("en", data.section)}`);
+    if (data.text) bodyLines.push("", data.text);
+  }
 
   // Telegram uses parse_mode HTML, so <b> renders as bold there.
   const telegramText = [`<b>${header}</b>`, ...bodyLines].join("\n");
@@ -328,6 +368,17 @@ async function handleCallback(env, update) {
       return;
     }
 
+    if (type === "qa") {
+      // Seafarer Q&A reports skip the port-data section menu entirely —
+      // "hours / transport / wifi / ..." doesn't apply to a question a
+      // seafarer asked out loud. This branch asks question → answer →
+      // scope instead, then rejoins the normal confirm/send step.
+      session.step = "qa_question";
+      await setSession(env, chatId, session);
+      await sendMessage(env, chatId, t(lang, "askQaQuestion"));
+      return;
+    }
+
     session.step = "section";
     await setSession(env, chatId, session);
     await sendMessage(env, chatId, t(lang, "chooseSection"), { reply_markup: sectionMenu(lang) });
@@ -341,6 +392,14 @@ async function handleCallback(env, update) {
     const prompt =
       session.data.type === "urgent" ? t(lang, "askUrgentText", teamVars(env)) : t(lang, "askDetailText");
     await sendMessage(env, chatId, prompt);
+    return;
+  }
+
+  if (data.startsWith("scope:")) {
+    session.data.qaScope = data.slice("scope:".length);
+    session.step = "confirm";
+    await setSession(env, chatId, session);
+    await sendMessage(env, chatId, summaryText(lang, session), { reply_markup: confirmMenu(lang) });
     return;
   }
 
@@ -381,6 +440,22 @@ async function handleMessage(env, update) {
   }
 
   const session = await getSession(env, chatId);
+
+  if (session && session.step === "qa_question") {
+    session.data.qaQuestion = text;
+    session.step = "qa_answer";
+    await setSession(env, chatId, session);
+    await sendMessage(env, chatId, t(lang, "askQaAnswer"));
+    return;
+  }
+
+  if (session && session.step === "qa_answer") {
+    session.data.qaAnswer = text;
+    session.step = "qa_scope";
+    await setSession(env, chatId, session);
+    await sendMessage(env, chatId, t(lang, "chooseQaScope"), { reply_markup: scopeMenu(lang) });
+    return;
+  }
 
   if (session && session.step === "text") {
     session.data.text = text;
