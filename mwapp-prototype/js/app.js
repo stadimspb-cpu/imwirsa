@@ -1207,6 +1207,22 @@ const COMPLEX_TOPIC_KEYWORDS = [
   "captain", "master", "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
   "bar", "alcohol", "drink", "girl", "girlfriend", "women", "woman", "dating", "meet someone",
   "bad news from home", "family problem", "divorce",
+  "police", "arrest", "arrested", "detained", "robbed", "stole", "stolen", "theft", "deport",
+  "deported", "visa problem", "immigration",
+  // Added 03.09.2026 after a live test surfaced a real gap: "меня арестовала
+  // полиция" fell through this English-only list straight to a meaningless
+  // filler reply instead of the escalation toggle. This list was English-
+  // only from the start (unlike RED_LINE_KEYWORDS, which already has all
+  // four app languages) — treat that as its own standing gap, not something
+  // fixed just by adding today's specific misses.
+  "грустно", "одиноко", "не с кем поговорить", "никто не слушает", "подавлен", "безнадёжно",
+  "капитан", "старпом", "поругались", "поругался", "кричит", "накричал", "угрожает", "угрожали",
+  "бар", "алкоголь", "выпить", "девушка", "девушкой", "познакомиться", "свидание",
+  "плохие новости из дома", "проблемы в семье", "развод",
+  "полиция", "арестовал", "арестовала", "арестован", "задержал", "задержали", "ограбили",
+  "украли", "кража", "депортация", "депортируют", "проблема с визой", "иммиграция",
+  "polis", "tutuklandı", "gözaltına", "soyuldu", "çaldı", "hırsızlık", "sınır dışı", "vize sorunu",
+  "pulis", "inaresto", "hinuli", "ninakawan", "nawalan", "deport", "problema sa visa",
 ];
 
 function isComplexTopic(text) {

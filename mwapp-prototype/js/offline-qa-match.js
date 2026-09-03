@@ -38,7 +38,8 @@ function stem(word) {
 const MATCH_STOPWORDS = new Set([
   "где", "как", "что", "можно", "ли", "есть", "здесь", "тут", "мне", "я", "и", "в", "на",
   "с", "по", "до", "от", "для", "это", "а", "но", "или", "у", "из", "за", "то", "же", "бы",
-  "не", "он", "она", "если", "меня", "мне", "мой", "моя",
+  "не", "он", "она", "если", "меня", "мне", "мой", "моя", "делать", "нужно", "надо", "хочу",
+  "мы", "нам", "нас", "вы", "вам", "вас", "мои", "своей", "свой",
   "the", "a", "an", "is", "are", "can", "where", "what", "how", "do", "i", "to", "in", "on",
   "of", "for", "this", "that",
 ]);
@@ -57,11 +58,22 @@ const OFFLINE_QA_INDEX = (typeof OFFLINE_QA !== "undefined" ? OFFLINE_QA : []).m
   tokens: new Set(keywordsOf(entry.q)),
 }));
 
-// Requires at least 2 shared keywords AND at least half of the DATABASE
-// question's own keywords to be present -- guards against a long rambling
-// message spuriously matching a short question by raw word-count alone.
-// Both thresholds are a starting point, not a tuned value; revisit once we
-// have real seafarer phrasing to test against instead of our own guesses.
+// Score = overlap / min(query size, database-question size) -- i.e. "what
+// share of the SMALLER side's own words are shared". Dividing by the
+// database question's size alone (the original version of this function)
+// unfairly penalised longer, more specific questions: "Меня хотят забрать
+// в полицию из-за драки в баре" has 6 keywords, so a 2-word overlap only
+// scored 33% and lost to the 50% bar -- even though those 2 words
+// ("полиция", "делать") were exactly the words that mattered. Scoring
+// against the smaller set fixes that without needing a lower bar overall.
+//
+// The bar here is intentionally generous (0.4, overlap >= 1) rather than
+// strict, for a reason specific to this dataset: every possible answer is
+// already pre-approved, reviewed text -- there is no "wrong" answer in the
+// pool, only a more-or-less on-topic one. A loose match to a safe, relevant
+// canned answer is a better outcome than falling through to a meaningless
+// rotating placeholder on a real question. That tradeoff would NOT be
+// correct in a system generating free text, but it is correct here.
 function findOfflineAnswer(text) {
   const queryTokens = new Set(keywordsOf(text));
   if (queryTokens.size === 0) return null;
@@ -72,10 +84,11 @@ function findOfflineAnswer(text) {
     if (entry.tokens.size === 0) continue;
     let overlap = 0;
     for (const tok of entry.tokens) if (queryTokens.has(tok)) overlap++;
-    const coverage = overlap / entry.tokens.size;
-    if (overlap >= 2 && coverage >= 0.5 && overlap > bestScore) {
+    const denom = Math.min(queryTokens.size, entry.tokens.size);
+    const score = overlap / denom;
+    if (overlap >= 1 && score >= 0.4 && score > bestScore) {
       best = entry;
-      bestScore = overlap;
+      bestScore = score;
     }
   }
   return best ? best.a : null;
