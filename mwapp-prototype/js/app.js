@@ -1359,6 +1359,16 @@ function openAssistantChat() {
   const input = document.getElementById("assistantChatInput");
   if (input) input.value = "";
 
+  // Fire-and-forget: warm the port-content cache (SUBDETAILS) so that if
+  // the seafarer asks something covered by port-card-answers.js, the data
+  // is already there by the time they finish typing. Not awaited — chat
+  // opens immediately either way, this only helps the FIRST message if the
+  // seafarer hasn't already opened the Port tab this session (which loads
+  // the same cache as a side effect already).
+  if (typeof ensurePortContentLoaded === "function") {
+    ensurePortContentLoaded(state.portId).catch(() => {});
+  }
+
   if (!state.chatStarted) {
     state.chatMessages = [{ who: "them", text: a.greet }];
     state.chatStarted = true;
@@ -1466,7 +1476,22 @@ function sendAssistantChatMessage() {
       //      topic"; its absence is treated as "unclear, ask them to say
       //      it differently".
       const companionReply = typeof findCompanionReply === "function" ? findCompanionReply(text) : null;
-      const offlineAnswer = companionReply || (typeof findOfflineAnswer === "function" ? findOfflineAnswer(text) : null);
+      let offlineAnswer = companionReply;
+      if (!offlineAnswer && typeof findOfflineIntent === "function") {
+        const matchedIntent = findOfflineIntent(text);
+        if (matchedIntent) {
+          // Pilot, 04.09.2026: try the CURRENT port's real card data first
+          // (see port-card-answers.js) — only a handful of fields are wired
+          // up so far, everything else still falls through to the same
+          // generic .a text as before this existed.
+          const cardAnswer = typeof getPortSpecificAnswer === "function"
+            ? getPortSpecificAnswer(matchedIntent.q, state.portId)
+            : null;
+          offlineAnswer = cardAnswer || matchedIntent.a;
+        } else if (typeof findOfflineAnswer === "function") {
+          offlineAnswer = findOfflineAnswer(text); // covers the FOOD/COFFEE combo-override case, which has no single intent to attach card data to
+        }
+      }
       let replyKey = null;
       if (!offlineAnswer) {
         // MISSING_OBJECT checked first: "где это находится" is neither a

@@ -31,10 +31,10 @@ const GENERIC_CONTEXT_WORDS = new Set([
   "где", "купить", "можно", "рядом", "здесь", "тут", "порт", "сколько", "хочу",
   "нужен", "нужна", "нужны", "нужно", "взять", "надо", "есть", "цена", "стоит",
   "разрешен", "разрешено", "делать", "далеко", "близко", "туда", "сюда", "там",
-  "город", "время", "минут",
+  "город", "время", "минут", "центр",
   "это", "мне", "меня", "я", "и", "в", "на", "с",
   "where", "buy", "can", "near", "here", "there", "how much", "want", "need",
-  "price", "cost", "allowed", "port", "city", "time", "minutes",
+  "price", "cost", "allowed", "port", "city", "time", "minutes", "center", "centre",
 ]);
 
 function isGeneric(anchor) {
@@ -111,9 +111,45 @@ const CONFIDENCE_THRESHOLD = 3;
 // silently pick one and be wrong half the time.
 const AMBIGUITY_MARGIN = 1;
 
-function findOfflineAnswer(text) {
+// Composite-query override, proposed by Markus/Andrey 04.09.2026 for the
+// FOOD <-> COFFEE mutual-exclusion deadlock: "Где выпить кофе и что-нибудь
+// поесть?" mentions both topics' own strong anchors, so each intent's
+// exclusion of the OTHER topic (correct when asked about alone) cancels
+// both out and the message falls to UNKNOWN. Rather than removing the
+// exclusions (which would reintroduce the original cross-contamination
+// risk for single-topic questions), this checks for "both topics'
+// anchors present at once" as a distinct case FIRST and answers a
+// combined "cafe that does both" reply directly, bypassing both
+// exclusions only for this specific combination. Add more entries here
+// the same way if another such deadlock pair turns up.
+const COMBO_OVERRIDES = [
+  {
+    id: "food_coffee",
+    aAnchors: ["поест", "еда", "перекус", "обед"],
+    bAnchors: ["кофе", "капучин", "эспресс", "американо"],
+    answer:
+      "«В портовых городах почти всегда есть кафе, где можно и перекусить, и выпить кофе — обычно недалеко от входа в порт. Ищи вывески «кафе» или заведения фастфуда, там обычно есть и то, и другое.»",
+  },
+];
+
+function findComboOverride(normalizedMessage) {
+  for (const combo of COMBO_OVERRIDES) {
+    const hasA = combo.aAnchors.some((a) => containsAnchor(normalizedMessage, a));
+    const hasB = combo.bAnchors.some((a) => containsAnchor(normalizedMessage, a));
+    if (hasA && hasB) return combo.answer;
+  }
+  return null;
+}
+
+// Returns the matched INTENT OBJECT itself (not just .a) -- needed so a
+// caller can look up port-specific real data for this exact intent (see
+// port-card-answers.js) before falling back to the generic .a text.
+// findOfflineAnswer() below is now a thin wrapper kept for anything that
+// only ever needed the text.
+function findOfflineIntent(text) {
   const msg = normalizeText(text);
   if (!msg) return null;
+  if (findComboOverride(msg)) return null; // combo answers have no single backing intent to attach card data to
   let best = null, bestScore = 0, secondScore = 0;
   for (const intent of typeof INTENTS !== "undefined" ? INTENTS : []) {
     const score = scoreIntent(msg, intent);
@@ -127,7 +163,16 @@ function findOfflineAnswer(text) {
   }
   if (!best || bestScore < CONFIDENCE_THRESHOLD) return null;
   if (bestScore - secondScore < AMBIGUITY_MARGIN) return null;
-  return best.a;
+  return best;
+}
+
+function findOfflineAnswer(text) {
+  const msg = normalizeText(text);
+  if (!msg) return null;
+  const combo = findComboOverride(msg);
+  if (combo) return combo;
+  const intent = findOfflineIntent(text);
+  return intent ? intent.a : null;
 }
 
 // Companion chat (Block 26): same generic-word and confidence-floor rules,

@@ -1,5 +1,4 @@
-// Auto-generated 04.09.2026 (v12, final) — cleaned 31 exclude lists
-// corrupted by comma-splitting Markus's parenthetical comments
+// Auto-generated 04.09.2026 (v13, final) — FOOD/COFFEE combo override, "дорого" false-positive fixed
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -1136,8 +1135,7 @@ const INTENTS = [
       "стриптиз",
       "клуб",
       "шест",
-      "танц",
-      "дорого"
+      "танц"
     ],
     "synonyms": [
       "стрип",
