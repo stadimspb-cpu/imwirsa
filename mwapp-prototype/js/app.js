@@ -1231,36 +1231,59 @@ function looksLikeAQuestion(text) {
   return QUESTION_MARKERS.some((w) => lower.includes(w));
 }
 
+// MISSING_OBJECT proxy, proposed by Markus 04.09.2026: "Где это находится
+// рядом с портом?" isn't really unclear (the sentence is grammatically
+// fine) and isn't really "understood but not my topic" either (there's no
+// topic yet, just an unresolved "this") — it's its own third case. No
+// conversation memory here, so this is a rough heuristic like everything
+// else in this file: a bare demonstrative/anaphoric pronoun.
+//
+// NOTE: deliberately NOT using \b here. JavaScript's \b is defined against
+// \w, which is ASCII-only by default -- it does not treat Cyrillic letters
+// as "word characters" at all, so \b silently fails to find any boundary
+// around a Cyrillic word and the whole regex never matches. Caught this
+// during testing 04.09.2026: "Где это находится" should have matched and
+// didn't. Same character-class boundary check as WORD_START in
+// offline-qa-match.js is used here instead.
+const REFERENT_WORDS = ["это", "этот", "эта", "эти", "он", "она", "они", "that", "this", "it"];
+const NON_WORD_CYR = /[^\wа-яё]/i;
+
+function hasUnresolvedReferent(text) {
+  const lower = text.toLowerCase();
+  for (const w of REFERENT_WORDS) {
+    let from = 0;
+    while (true) {
+      const idx = lower.indexOf(w, from);
+      if (idx === -1) break;
+      const before = idx === 0 ? " " : lower[idx - 1];
+      const after = idx + w.length >= lower.length ? " " : lower[idx + w.length];
+      if (NON_WORD_CYR.test(before) && NON_WORD_CYR.test(after)) return true;
+      from = idx + 1;
+    }
+  }
+  return false;
+}
+
 const COMPLEX_TOPIC_KEYWORDS = [
-  "captain", "master", "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
-  "bar", "alcohol", "drink", "girl", "girlfriend", "women", "woman", "dating", "meet someone",
+  // 04.09.2026 — pruned after a live test found "Где выпить кофе и
+  // что-нибудь поесть?" triggering this toggle via the bare word "выпить".
+  // Everything here used to include single generic topic words (bar,
+  // alcohol, girl, captain) that are now redundant AND dangerous: the
+  // intents-data.js system already gives safe, specific, carefully-worded
+  // answers for alcohol/dating/police questions, checked further down the
+  // priority chain. Having this cruder substring list fire FIRST on a bare
+  // topic word both duplicates that work and produces false positives like
+  // the coffee case. What's left here is specifically conflict/crisis verbs
+  // and serious incident words that are rarely mentioned incidentally.
+  "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
   "police", "arrest", "arrested", "detained", "robbed", "stole", "stolen", "theft", "deport",
   "deported", "visa problem", "immigration",
-  // Added 03.09.2026 after a live test surfaced a real gap: "меня арестовала
-  // полиция" fell through this English-only list straight to a meaningless
-  // filler reply instead of the escalation toggle. This list was English-
-  // only from the start (unlike RED_LINE_KEYWORDS, which already has all
-  // four app languages) — treat that as its own standing gap, not something
-  // fixed just by adding today's specific misses.
-  "капитан", "старпом", "поругались", "поругался", "кричит", "накричал", "угрожает", "угрожали",
-  "бар", "алкоголь", "выпить", "девушка", "девушкой", "познакомиться", "свидание",
+  "поругались", "поругался", "кричит", "накричал", "угрожает", "угрожали",
   "полиция", "арестовал", "арестовала", "арестован", "задержал", "задержали", "ограбили",
   "украли", "кража", "депортация", "депортируют", "проблема с визой", "иммиграция",
   "polis", "tutuklandı", "gözaltına", "soyuldu", "çaldı", "hırsızlık", "sınır dışı", "vize sorunu",
   "pulis", "inaresto", "hinuli", "ninakawan", "nawalan", "deport", "problema sa visa",
 ];
-// Pruned 04.09.2026: removed "sad/lonely/alone/depressed/hopeless/грустно/
-// одиноко/подавлен/безнадёжно/плохие новости из дома/проблемы в семье/
-// развод" and their kin. Plain loneliness, boredom, homesickness and
-// fatigue after watch are now handled by the Block 26 companion-chat
-// intents (offline-qa-match.js) with a warm conversational reply instead
-// of immediately offering the escalation toggle — offering "talk to Duty
-// Office" every time someone says they're bored risked feeling like an
-// overreaction. This list is now reserved for things that plausibly need
-// a human either way: on-board conflict, police/legal trouble, ambiguous
-// shore-leave topics. The companion layer still defers to RED_LINE_KEYWORDS
-// first for anything that reads as a genuine crisis, same priority order
-// as before this change.
 
 function isComplexTopic(text) {
   const lower = text.toLowerCase();
@@ -1444,7 +1467,15 @@ function sendAssistantChatMessage() {
       //      it differently".
       const companionReply = typeof findCompanionReply === "function" ? findCompanionReply(text) : null;
       const offlineAnswer = companionReply || (typeof findOfflineAnswer === "function" ? findOfflineAnswer(text) : null);
-      const replyKey = offlineAnswer ? null : (looksLikeAQuestion(text) ? "demoReplies" : "unclearReplies");
+      let replyKey = null;
+      if (!offlineAnswer) {
+        // MISSING_OBJECT checked first: "где это находится" is neither a
+        // clear off-topic question nor plain gibberish, it's a question
+        // whose actual subject never got said. See hasUnresolvedReferent().
+        if (hasUnresolvedReferent(text)) replyKey = "missingObjectReplies";
+        else if (looksLikeAQuestion(text)) replyKey = "demoReplies";
+        else replyKey = "unclearReplies";
+      }
       const reply = offlineAnswer || t(replyKey)[state.assistantReplyIndex % t(replyKey).length];
       if (!offlineAnswer) state.assistantReplyIndex++;
       state.chatMessages.push({ who: "them", text: reply });

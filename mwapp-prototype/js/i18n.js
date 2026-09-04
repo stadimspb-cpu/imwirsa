@@ -271,6 +271,10 @@ const I18N = {
       "Not sure I understood that one. Could you describe it a little differently?",
       "Sorry, that didn't come through clearly on my end — what exactly are you looking for?",
     ],
+    missingObjectReplies: [
+      "Not sure which place or thing you mean — can you name it directly?",
+      "What exactly are you asking about? A specific place, or something else?",
+    ],
     ship: {
       title: "My Ship",
       introText: "Before you go ashore, mark exactly where your ship is docked. If you're not sure how to get back — especially at night, or if the port has several gates — MWApp will guide you to this exact spot, not just \"the port\".",
@@ -560,6 +564,10 @@ const I18N = {
       "Не уверен, что правильно понял вопрос. Попробуй объяснить немного по-другому?",
       "Кажется, я не разобрал, о чём речь — что именно ты имеешь в виду?",
     ],
+    missingObjectReplies: [
+      "Не понял, о каком месте или предмете идёт речь — назови его прямо?",
+      "Уточни, пожалуйста, что именно ты имеешь в виду — конкретное место или что-то другое?",
+    ],
     ship: {
       title: "Моё судно",
       introText: "Прежде чем сойти на берег, отметьте точное место стоянки вашего судна. Если не уверены, как вернуться — особенно ночью или если в порту несколько проходных — MWApp приведёт вас именно к этому месту, а не просто «в порт».",
@@ -844,6 +852,10 @@ const I18N = {
       "Tam anlayamadım — ne istediğini biraz daha anlatabilir misin?",
       "Bunu doğru anladığımdan emin değilim. Biraz farklı anlatmayı dener misin?",
     ],
+    missingObjectReplies: [
+      // same translation caveat as above
+      "Hangi yer ya da şeyden bahsettiğini anlamadım — açıkça söyler misin?",
+    ],
     ship: {
       title: "Gemim",
       introText: "Karaya çıkmadan önce geminin tam olarak nerede demirlediğini işaretle. Nasıl geri döneceğinden emin değilsen — özellikle geceleri ya da limanın birden fazla kapısı varsa — MWApp seni sadece \"limana\" değil, tam olarak bu noktaya yönlendirecek.",
@@ -1127,6 +1139,10 @@ const I18N = {
       // same translation caveat as above
       "Hindi ko masyadong naintindihan — pwede mo bang ipaliwanag ng kaunti pa?",
       "Hindi ako sigurado kung naintindihan ko 'yan. Subukan mo bang sabihin sa ibang paraan?",
+    ],
+    missingObjectReplies: [
+      // same translation caveat as above
+      "Hindi ko alam kung anong lugar o bagay ang tinutukoy mo — sabihin mo nang direkta?",
     ],
     ship: {
       title: "Aking Barko",
