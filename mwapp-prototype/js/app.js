@@ -1192,21 +1192,27 @@ function sendChatMessage() {
 // even more so given the stakes.
 const RED_LINE_KEYWORDS = [
   "suicide", "kill myself", "want to die", "hurt myself", "harm myself", "end my life",
+  "no point living", "hang myself",
   "самоубийств", "покончить с собой", "убью себя", "не хочу жить", "причинить себе вред",
+  "повеситься", "не вижу смысла",
   "intihar", "kendimi öldür", "yaşamak istemiyorum", "kendime zarar",
   "magpakamatay", "papatayin ko ang sarili ko", "ayoko na mabuhay",
 ];
+// "повеситься"/"не вижу смысла" added 4 сентября from Markus's Block 26
+// companion-chat draft — deliberately did NOT add "конец" or "всё ужасно"
+// from that same draft: "конец" collides with an unrelated massage-service
+// question elsewhere in the Q&A base, and "всё ужасно" is too generic
+// (would fire on an ordinary bad-day complaint). EN/TR/FIL phrasings for
+// the two new additions are a good-faith translation, not verified by a
+// native speaker — same caveat as the rest of this list.
 function isRedLineTopic(text) {
   const lower = text.toLowerCase();
   return RED_LINE_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
 const COMPLEX_TOPIC_KEYWORDS = [
-  "sad", "lonely", "alone", "can't sleep", "cant sleep", "no one listens", "nobody listens",
-  "depressed", "hopeless",
   "captain", "master", "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
   "bar", "alcohol", "drink", "girl", "girlfriend", "women", "woman", "dating", "meet someone",
-  "bad news from home", "family problem", "divorce",
   "police", "arrest", "arrested", "detained", "robbed", "stole", "stolen", "theft", "deport",
   "deported", "visa problem", "immigration",
   // Added 03.09.2026 after a live test surfaced a real gap: "меня арестовала
@@ -1215,15 +1221,25 @@ const COMPLEX_TOPIC_KEYWORDS = [
   // only from the start (unlike RED_LINE_KEYWORDS, which already has all
   // four app languages) — treat that as its own standing gap, not something
   // fixed just by adding today's specific misses.
-  "грустно", "одиноко", "не с кем поговорить", "никто не слушает", "подавлен", "безнадёжно",
   "капитан", "старпом", "поругались", "поругался", "кричит", "накричал", "угрожает", "угрожали",
   "бар", "алкоголь", "выпить", "девушка", "девушкой", "познакомиться", "свидание",
-  "плохие новости из дома", "проблемы в семье", "развод",
   "полиция", "арестовал", "арестовала", "арестован", "задержал", "задержали", "ограбили",
   "украли", "кража", "депортация", "депортируют", "проблема с визой", "иммиграция",
   "polis", "tutuklandı", "gözaltına", "soyuldu", "çaldı", "hırsızlık", "sınır dışı", "vize sorunu",
   "pulis", "inaresto", "hinuli", "ninakawan", "nawalan", "deport", "problema sa visa",
 ];
+// Pruned 04.09.2026: removed "sad/lonely/alone/depressed/hopeless/грустно/
+// одиноко/подавлен/безнадёжно/плохие новости из дома/проблемы в семье/
+// развод" and their kin. Plain loneliness, boredom, homesickness and
+// fatigue after watch are now handled by the Block 26 companion-chat
+// intents (offline-qa-match.js) with a warm conversational reply instead
+// of immediately offering the escalation toggle — offering "talk to Duty
+// Office" every time someone says they're bored risked feeling like an
+// overreaction. This list is now reserved for things that plausibly need
+// a human either way: on-board conflict, police/legal trouble, ambiguous
+// shore-leave topics. The companion layer still defers to RED_LINE_KEYWORDS
+// first for anything that reads as a genuine crisis, same priority order
+// as before this change.
 
 function isComplexTopic(text) {
   const lower = text.toLowerCase();
@@ -1389,12 +1405,23 @@ function sendAssistantChatMessage() {
           <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("escalationToggle.coordinatorBtn")}</button>
         </div>`);
     } else {
-      // Try the 185-question approved offline table before falling back to
-      // a meaningless rotating placeholder. findOfflineAnswer() only ever
-      // returns pre-approved, literal text (see offline-qa-match.js) — it
-      // cannot invent anything, so this is safe to show as-is even though
-      // it runs with no human review per message.
-      const offlineAnswer = typeof findOfflineAnswer === "function" ? findOfflineAnswer(text) : null;
+      // Priority order below RED_LINE_KEYWORDS / COMPLEX_TOPIC_KEYWORDS
+      // (checked earlier in this function, unchanged):
+      //   1. Companion chat (Block 26) — ordinary conversation: greetings,
+      //      boredom, homesickness, fatigue, thanks, jokes. Checked FIRST
+      //      because these are short, casual phrasings that could otherwise
+      //      spuriously share a word with an unrelated factual intent (e.g.
+      //      "устал... сил нет" sharing "нет" with the "no money" question) —
+      //      a warm conversational reply is also simply the more fitting
+      //      response to plain small talk than a port fact would be.
+      //   2. The 171-intent anchor-based Q&A table (offline-qa-match.js /
+      //      intents-data.js) — concrete port/practical questions.
+      //   3. The old rotating placeholder, only if neither above matched.
+      // Both (1) and (2) only ever return pre-approved, literal text — see
+      // offline-qa-match.js — so this is safe to show with no per-message
+      // human review, same reasoning as 03.09.2026.
+      const companionReply = typeof findCompanionReply === "function" ? findCompanionReply(text) : null;
+      const offlineAnswer = companionReply || (typeof findOfflineAnswer === "function" ? findOfflineAnswer(text) : null);
       const reply = offlineAnswer || t("demoReplies")[state.assistantReplyIndex % t("demoReplies").length];
       if (!offlineAnswer) state.assistantReplyIndex++;
       state.chatMessages.push({ who: "them", text: reply });
