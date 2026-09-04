@@ -1,4 +1,4 @@
-// Auto-generated 04.09.2026 (final) — 171 Q&A intents + 16 companion topics
+// Auto-generated 04.09.2026 (v4) — fixed "купить"/"взять" as over-generic primary anchors
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -2294,8 +2294,7 @@ const INTENTS = [
     "primary": [
       "антибиотик",
       "рецепт",
-      "аптека",
-      "купить"
+      "аптека"
     ],
     "synonyms": [],
     "exclude": [
@@ -2863,7 +2862,6 @@ const INTENTS = [
     "primary": [
       "документ",
       "берег",
-      "взять",
       "паспорт",
       "seaman's book"
     ],
