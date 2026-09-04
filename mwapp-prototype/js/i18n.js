@@ -255,9 +255,11 @@ const I18N = {
       roleSuffix: "Trade Union Support",
     },
     demoReplies: [
-      "Got it — let me know if you'd like directions or more details on that.",
-      "I can help with that. Is there anything else on your mind?",
-      "Sure thing. Feel free to ask me anything else about the port or the app.",
+      "That's not really my area — I'm here to help with the port, your ship, and how you're doing ashore. If you have a signal right now, it's faster to look it up online. Once full online mode is running, I'll be able to help with this myself.",
+      "I'm not the right one to ask here — my job is port info, safety, and practical questions ashore. Right now I'm working offline, so I can't answer this. Maybe ask someone on the crew? Once I'm online, I'll be able to handle this too.",
+      "Honestly, this isn't my department. Without an internet connection right now, I just don't have access to that kind of knowledge. If you've got signal, searching yourself will get you a better answer. Once full online mode kicks in, you'll be able to ask me directly.",
+      "This one's outside what I'm responsible for — I'm here for the port, the ship, and how you're holding up ashore. With no internet right now, I can't help with this. Look it up when you get signal, or better — wait until I'm running in full online mode.",
+      "I've got nothing for you on this one — not my topic. If there's someone on the crew who knows, ask them, it's usually faster. Down the line, once online mode is on, I'll be able to help with this kind of thing too.",
     ],
     ship: {
       title: "My Ship",
@@ -537,9 +539,11 @@ const I18N = {
       roleSuffix: "Поддержка профсоюза",
     },
     demoReplies: [
-      "Понял — дайте знать, если нужны маршрут или подробности.",
-      "Я могу с этим помочь. Есть ещё что-то, что вас беспокоит?",
-      "Конечно. Не стесняйтесь спрашивать меня о порте или приложении что угодно ещё.",
+      "Это не совсем моя тема — я больше помогаю с портом, судном и твоим самочувствием на берегу. Если сейчас есть связь, поищи в интернете, так будет быстрее. А когда заработает полный онлайн-режим, я и сам смогу подсказать.",
+      "Тут я не специалист — моя зона ответственности другая: порт, безопасность, практические вопросы на берегу. Пока я работаю без интернета, ответить на это не могу. Может, спросишь кого-то из экипажа? А в онлайн-режиме я и сам разберусь с этим.",
+      "Честно говоря, это не по моей части. Сейчас, без подключения к интернету, у меня просто нет доступа к таким знаниям. Если есть сеть — поищи сам, будет точнее. Позже, когда включится полноценный онлайн-режим, сможешь спросить меня напрямую.",
+      "Это вопрос не в моей зоне ответственности — я здесь для порта, судна и твоего состояния на берегу. Пока нет интернета, тут я не помощник. Как появится связь — поищи там, а лучше всего дождись, когда я заработаю в полном онлайн-режиме.",
+      "Тут мне нечем помочь — не моя тема. Если рядом есть кто-то из экипажа, кто разбирается — спроси у него, это часто быстрее. А со временем, когда включится онлайн-режим, я и сам смогу подсказать по таким вопросам.",
     ],
     ship: {
       title: "Моё судно",
@@ -814,9 +818,11 @@ const I18N = {
       roleSuffix: "Sendika Desteği",
     },
     demoReplies: [
-      "Anladım — yol tarifi veya daha fazla ayrıntı istersen haber ver.",
-      "Bu konuda yardımcı olabilirim. Aklında başka bir şey var mı?",
-      "Tabii. Liman veya uygulama hakkında başka bir şey sormaktan çekinme.",
+      // 04.09.2026 — good-faith translation, NOT verified by a native
+      // speaker yet, same caveat as the RED_LINE_KEYWORDS TR/FIL entries.
+      "Bu benim alanım değil — ben liman, gemi ve karadaki durumun için buradayım. Şu an internet varsa oradan bakman daha hızlı olur. Tam çevrimiçi mod çalışınca ben de yardımcı olabilirim.",
+      "Bu konuda uzman değilim — görevim liman ve pratik konular. Şu an internetsiz çalışıyorum, bu yüzden yanıtlayamam. Belki mürettebattan biri bilir? Çevrimiçi olduğumda ben de yardımcı olurum.",
+      "Bu konuda elimden bir şey gelmiyor — benim konum değil. Bağlantın varsa kendin ara, daha doğru olur. İleride tam çevrimiçi mod açılınca bunu da sorabilirsin.",
     ],
     ship: {
       title: "Gemim",
@@ -1091,9 +1097,11 @@ const I18N = {
       roleSuffix: "Suporta ng Trade Union",
     },
     demoReplies: [
-      "Nakuha ko — sabihin mo lang kung gusto mo ng direksyon o karagdagang detalye tungkol dito.",
-      "Matutulungan kita diyan. May iba ka pa bang naiisip?",
-      "Sige. Huwag mag-atubiling magtanong ng kahit ano pa tungkol sa daungan o sa app.",
+      // 04.09.2026 — good-faith translation, NOT verified by a native
+      // speaker yet, same caveat as the RED_LINE_KEYWORDS TR/FIL entries.
+      "Hindi talaga ito ang larangan ko — nandito ako para tumulong sa daungan, sa barko, at kung kumusta ka sa lupa. Kung may signal ka ngayon, mas mabilis kung doon ka maghahanap. Kapag naka-online na ako nang buo, matutulungan na kita dito.",
+      "Hindi ako ang tamang tanungin dito — trabaho ko ay impormasyon sa daungan at praktikal na bagay-bagay. Ngayon, offline ako kaya hindi ko masasagot 'to. Baka may kasamahan kang marunong? Kapag online na ako, kaya ko na rin ito.",
+      "Wala akong masabi dito — hindi ito paksa ko. Kung may signal ka, mas mabuting doon ka maghanap. Sa susunod, kapag gumagana na ang buong online mode, pwede mo na akong tanungin nito.",
     ],
     ship: {
       title: "Aking Barko",
