@@ -254,12 +254,22 @@ const I18N = {
       lockedIntro: "These are Trade Union member services. To unlock them, please confirm your card status in Settings → Union / Trade Card.",
       roleSuffix: "Trade Union Support",
     },
+    // demoReplies = the question is clear, just not a topic covered here
+    // (see 04.09.2026 change log). unclearReplies = the message itself
+    // wasn't clear enough to tell what's being asked at all — a different
+    // situation, needs a different, non-misleading reply. See app.js for
+    // how the two are told apart (presence of an ordinary question word).
     demoReplies: [
       "That's not really my area — I'm here to help with the port, your ship, and how you're doing ashore. If you have a signal right now, it's faster to look it up online. Once full online mode is running, I'll be able to help with this myself.",
       "I'm not the right one to ask here — my job is port info, safety, and practical questions ashore. Right now I'm working offline, so I can't answer this. Maybe ask someone on the crew? Once I'm online, I'll be able to handle this too.",
       "Honestly, this isn't my department. Without an internet connection right now, I just don't have access to that kind of knowledge. If you've got signal, searching yourself will get you a better answer. Once full online mode kicks in, you'll be able to ask me directly.",
       "This one's outside what I'm responsible for — I'm here for the port, the ship, and how you're holding up ashore. With no internet right now, I can't help with this. Look it up when you get signal, or better — wait until I'm running in full online mode.",
       "I've got nothing for you on this one — not my topic. If there's someone on the crew who knows, ask them, it's usually faster. Down the line, once online mode is on, I'll be able to help with this kind of thing too.",
+    ],
+    unclearReplies: [
+      "I didn't quite catch that — can you tell me a bit more about what you need?",
+      "Not sure I understood that one. Could you describe it a little differently?",
+      "Sorry, that didn't come through clearly on my end — what exactly are you looking for?",
     ],
     ship: {
       title: "My Ship",
@@ -545,6 +555,11 @@ const I18N = {
       "Это вопрос не в моей зоне ответственности — я здесь для порта, судна и твоего состояния на берегу. Пока нет интернета, тут я не помощник. Как появится связь — поищи там, а лучше всего дождись, когда я заработаю в полном онлайн-режиме.",
       "Тут мне нечем помочь — не моя тема. Если рядом есть кто-то из экипажа, кто разбирается — спроси у него, это часто быстрее. А со временем, когда включится онлайн-режим, я и сам смогу подсказать по таким вопросам.",
     ],
+    unclearReplies: [
+      "Не совсем понял — можешь описать чуть подробнее, что тебе нужно?",
+      "Не уверен, что правильно понял вопрос. Попробуй объяснить немного по-другому?",
+      "Кажется, я не разобрал, о чём речь — что именно ты имеешь в виду?",
+    ],
     ship: {
       title: "Моё судно",
       introText: "Прежде чем сойти на берег, отметьте точное место стоянки вашего судна. Если не уверены, как вернуться — особенно ночью или если в порту несколько проходных — MWApp приведёт вас именно к этому месту, а не просто «в порт».",
@@ -824,6 +839,11 @@ const I18N = {
       "Bu konuda uzman değilim — görevim liman ve pratik konular. Şu an internetsiz çalışıyorum, bu yüzden yanıtlayamam. Belki mürettebattan biri bilir? Çevrimiçi olduğumda ben de yardımcı olurum.",
       "Bu konuda elimden bir şey gelmiyor — benim konum değil. Bağlantın varsa kendin ara, daha doğru olur. İleride tam çevrimiçi mod açılınca bunu da sorabilirsin.",
     ],
+    unclearReplies: [
+      // same translation caveat as above
+      "Tam anlayamadım — ne istediğini biraz daha anlatabilir misin?",
+      "Bunu doğru anladığımdan emin değilim. Biraz farklı anlatmayı dener misin?",
+    ],
     ship: {
       title: "Gemim",
       introText: "Karaya çıkmadan önce geminin tam olarak nerede demirlediğini işaretle. Nasıl geri döneceğinden emin değilsen — özellikle geceleri ya da limanın birden fazla kapısı varsa — MWApp seni sadece \"limana\" değil, tam olarak bu noktaya yönlendirecek.",
@@ -1102,6 +1122,11 @@ const I18N = {
       "Hindi talaga ito ang larangan ko — nandito ako para tumulong sa daungan, sa barko, at kung kumusta ka sa lupa. Kung may signal ka ngayon, mas mabilis kung doon ka maghahanap. Kapag naka-online na ako nang buo, matutulungan na kita dito.",
       "Hindi ako ang tamang tanungin dito — trabaho ko ay impormasyon sa daungan at praktikal na bagay-bagay. Ngayon, offline ako kaya hindi ko masasagot 'to. Baka may kasamahan kang marunong? Kapag online na ako, kaya ko na rin ito.",
       "Wala akong masabi dito — hindi ito paksa ko. Kung may signal ka, mas mabuting doon ka maghanap. Sa susunod, kapag gumagana na ang buong online mode, pwede mo na akong tanungin nito.",
+    ],
+    unclearReplies: [
+      // same translation caveat as above
+      "Hindi ko masyadong naintindihan — pwede mo bang ipaliwanag ng kaunti pa?",
+      "Hindi ako sigurado kung naintindihan ko 'yan. Subukan mo bang sabihin sa ibang paraan?",
     ],
     ship: {
       title: "Aking Barko",

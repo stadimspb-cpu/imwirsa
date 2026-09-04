@@ -1210,6 +1210,27 @@ function isRedLineTopic(text) {
   return RED_LINE_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
+// Rough proxy for "this reads as an actual question, just about a topic we
+// don't cover" vs "this message is unclear on its own terms" — see the
+// 04.09.2026 note where this is used, next to demoReplies/unclearReplies.
+// Deliberately simple (a fixed word list, not real language understanding,
+// consistent with everything else in this file): presence of an ordinary
+// question word is treated as "the question came through fine".
+const QUESTION_MARKERS = [
+  "где", "можно ли", "можно", "сколько", "нужно ли", "нужно", "как", "есть ли",
+  "куда", "почему", "какой", "какая", "какие", "кто", "что такое", "разрешено ли",
+  "разрешено", "во сколько", "когда",
+  "where", "how", "can i", "is there", "are there", "do i need", "what", "why",
+  "when", "which", "who", "how much", "how many",
+  "nerede", "nasıl", "ne zaman", "kaç", "var mı", "gerekli mi",
+  "saan", "paano", "kailan", "magkano", "meron ba", "pwede ba",
+];
+
+function looksLikeAQuestion(text) {
+  const lower = text.toLowerCase();
+  return QUESTION_MARKERS.some((w) => lower.includes(w));
+}
+
 const COMPLEX_TOPIC_KEYWORDS = [
   "captain", "master", "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
   "bar", "alcohol", "drink", "girl", "girlfriend", "women", "woman", "dating", "meet someone",
@@ -1407,22 +1428,24 @@ function sendAssistantChatMessage() {
     } else {
       // Priority order below RED_LINE_KEYWORDS / COMPLEX_TOPIC_KEYWORDS
       // (checked earlier in this function, unchanged):
-      //   1. Companion chat (Block 26) — ordinary conversation: greetings,
-      //      boredom, homesickness, fatigue, thanks, jokes. Checked FIRST
-      //      because these are short, casual phrasings that could otherwise
-      //      spuriously share a word with an unrelated factual intent (e.g.
-      //      "устал... сил нет" sharing "нет" with the "no money" question) —
-      //      a warm conversational reply is also simply the more fitting
-      //      response to plain small talk than a port fact would be.
-      //   2. The 171-intent anchor-based Q&A table (offline-qa-match.js /
-      //      intents-data.js) — concrete port/practical questions.
-      //   3. The old rotating placeholder, only if neither above matched.
-      // Both (1) and (2) only ever return pre-approved, literal text — see
-      // offline-qa-match.js — so this is safe to show with no per-message
-      // human review, same reasoning as 03.09.2026.
+      //   1. Companion chat (Block 26) — ordinary conversation.
+      //   2. The intent-anchor Q&A table (offline-qa-match.js).
+      //   3. If neither matched: a genuinely unclear message ("расч
+      //      уыекуцй") gets a DIFFERENT reply than a clear question about
+      //      a topic we simply don't cover ("where can I buy a comb?").
+      //      Telling someone to "try rephrasing" when the real issue is
+      //      that the topic isn't in the table would just have them retry
+      //      forever for nothing — see 04.09.2026 discussion. Distinguishing
+      //      the two isn't exact (no real language understanding here,
+      //      same as everywhere else in this file) — it's a rough proxy:
+      //      the presence of an ordinary question word is treated as
+      //      "the question came through fine, we just don't have this
+      //      topic"; its absence is treated as "unclear, ask them to say
+      //      it differently".
       const companionReply = typeof findCompanionReply === "function" ? findCompanionReply(text) : null;
       const offlineAnswer = companionReply || (typeof findOfflineAnswer === "function" ? findOfflineAnswer(text) : null);
-      const reply = offlineAnswer || t("demoReplies")[state.assistantReplyIndex % t("demoReplies").length];
+      const replyKey = offlineAnswer ? null : (looksLikeAQuestion(text) ? "demoReplies" : "unclearReplies");
+      const reply = offlineAnswer || t(replyKey)[state.assistantReplyIndex % t(replyKey).length];
       if (!offlineAnswer) state.assistantReplyIndex++;
       state.chatMessages.push({ who: "them", text: reply });
       saveState();
