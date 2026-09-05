@@ -1,5 +1,6 @@
-// Auto-generated 05.09.2026 (v27, final) — phrase-anchor weighting +
-// centre_about connected + туалет/центр-моряков collision fixed
+// Auto-generated 05.09.2026 (v28, final) — fixed word-order fragility:
+// "позвонить туда" as fixed phrase missed "туда позвонить" -- replaced
+// with bare "позвонить"/"звонить" synonyms, order-independent
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -1421,18 +1422,19 @@ const INTENTS = [
       "seafarer"
     ],
     "synonyms": [
-      "seafarers centre",
-      "seafarers center",
-      "seamen's club",
+      "звонить",
       "берут",
-      "mission to seafarers",
       "помощь",
-      "позвонить туда",
-      "чай",
+      "позвонить",
+      "seafarers centre",
       "номер телефона",
-      "морской клуб",
+      "клуб моряк",
       "интернет",
-      "клуб моряк"
+      "чай",
+      "seamen's club",
+      "seafarers center",
+      "морской клуб",
+      "mission to seafarers"
     ],
     "exclude": [
       "порт",
