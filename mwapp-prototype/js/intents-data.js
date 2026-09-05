@@ -1,4 +1,5 @@
-// Auto-generated 05.09.2026 (v25, final) — fixed рабочая одежда + церковь/крестик collision
+// Auto-generated 05.09.2026 (v27, final) — phrase-anchor weighting +
+// centre_about connected + туалет/центр-моряков collision fixed
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -1420,16 +1421,18 @@ const INTENTS = [
       "seafarer"
     ],
     "synonyms": [
-      "клуб моряк",
-      "помощь",
-      "берут",
-      "чай",
-      "интернет",
-      "seamen's club",
       "seafarers centre",
       "seafarers center",
+      "seamen's club",
+      "берут",
       "mission to seafarers",
-      "морской клуб"
+      "помощь",
+      "позвонить туда",
+      "чай",
+      "номер телефона",
+      "морской клуб",
+      "интернет",
+      "клуб моряк"
     ],
     "exclude": [
       "порт",
@@ -2527,7 +2530,6 @@ const INTENTS = [
       "туалет",
       "ворота",
       "бесплатн",
-      "центр моряков",
       "азс"
     ],
     "synonyms": [],
@@ -2841,10 +2843,11 @@ const INTENTS = [
       "главные ворота"
     ],
     "exclude": [
+      "улица",
+      "экипаж",
       "такси",
-      "автобус",
       "центр",
-      "улица"
+      "автобус"
     ],
     "a": "«Обычно в порту одни главные ворота. Спроси у охраны.»"
   },

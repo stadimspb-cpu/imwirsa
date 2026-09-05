@@ -62,6 +62,12 @@ const INTENT_CARD_MAP = {
   "Есть ли рядом бесплатный Wi-Fi?": "city_free",
   "Есть ли поблизости церковь, мечеть или храм?": "spiritual_prayer",
   "Что интересного посмотреть рядом, куда сходить погулять?": "city_culture",
+  // centre_about uses a different data shape (contacts[]/hours[]) than
+  // most fields -- getRealCardFact() was updated 05.09.2026 to also read
+  // that shape, found via a live test asking for the seamen's centre
+  // phone number, which Vanasadam's card actually has (chaplain's direct
+  // line, main line) but the old extraction never looked in the right place.
+  "Где ближайший центр моряков?": "centre_about",
 };
 
 // Rows that are universal safety-education advice, not a specific fact —
@@ -87,18 +93,37 @@ const KNOWN_ADVICE_ROW_TITLES = new Set([
 // Pulls the first genuinely-populated, fact-like row out of a subdetail
 // record. Walks ALL rows in ALL sections (not just the first one) so a
 // field that leads with advice/caution rows still yields the real fact
-// further down the list, instead of stopping at row one and giving up —
-// this is what makes currency_exchange usable without touching the card.
+// further down the list, instead of stopping at row one and giving up.
+//
+// NOT every subdetail uses the {sections:[{rows:[...]}]} shape -- found
+// 05.09.2026 while chasing why "centre_about" looked empty on every port
+// during the 04.09.2026 audit: it actually has real data (phone numbers,
+// hours, chaplain contact for Vanasadam), just under a DIFFERENT shape —
+// {title, hours:[[day,time]], contacts:[{title,sub}], note}. This function
+// now also checks a top-level `contacts` array. Other "centre_*" fields
+// use yet other shapes again (centre_shuttle: {from, directions, note};
+// centre_services: {groups, note}) — not handled here yet, audit each
+// before wiring it up rather than assuming they behave like this one.
 function getRealCardFact(subdetailKey) {
   const sd = typeof SUBDETAILS !== "undefined" ? SUBDETAILS[subdetailKey] : null;
-  if (!sd || !Array.isArray(sd.sections)) return null;
-  for (const section of sd.sections) {
-    if (!Array.isArray(section.rows)) continue;
-    for (const row of section.rows) {
-      if (!row.title) continue;
-      if (KNOWN_ADVICE_ROW_TITLES.has(row.title)) continue;
-      if (/scam|warning|not confirmed|tbd|coming soon|stranger/i.test(row.title + " " + (row.sub || ""))) continue;
-      return row.sub ? `${row.title} — ${row.sub}` : row.title;
+  if (!sd) return null;
+
+  if (Array.isArray(sd.contacts)) {
+    for (const c of sd.contacts) {
+      if (!c.title) continue;
+      return c.sub ? `${c.title} — ${c.sub}` : c.title;
+    }
+  }
+
+  if (Array.isArray(sd.sections)) {
+    for (const section of sd.sections) {
+      if (!Array.isArray(section.rows)) continue;
+      for (const row of section.rows) {
+        if (!row.title) continue;
+        if (KNOWN_ADVICE_ROW_TITLES.has(row.title)) continue;
+        if (/scam|warning|not confirmed|tbd|coming soon|stranger/i.test(row.title + " " + (row.sub || ""))) continue;
+        return row.sub ? `${row.title} — ${row.sub}` : row.title;
+      }
     }
   }
   return null;

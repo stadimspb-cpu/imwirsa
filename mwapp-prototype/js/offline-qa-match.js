@@ -90,12 +90,32 @@ function anyExcluded(normalizedMessage, exclude) {
 // lists), a real PRIMARY hit is mandatory for the intent to be considered
 // at all, and the weighting (primary x3, synonym x1) makes a single
 // specific word outweigh several generic ones every time.
+//
+// Refined 05.09.2026: a multi-word PHRASE anchor ("центр моряков") is
+// inherently much stronger evidence than a single common word ("номер",
+// "телефон", "позвонить") -- found via a real long message ("я хочу
+// позвонить в центр моряков, есть номер телефона") that tied 12 different
+// intents at score 3 each, one common word apiece, with the actually-
+// correct phrase match getting no more credit than any of them. Anchors
+// containing a space now score higher (x5) than single-word primary hits
+// (x3) -- a phrase match essentially never happens by accident the way a
+// bare common word does.
+function countWeightedPrimaryHits(normalizedMessage, anchors) {
+  let score = 0;
+  for (const a of anchors || []) {
+    if (isGeneric(a)) continue;
+    if (!containsAnchor(normalizedMessage, a)) continue;
+    score += a.includes(" ") ? 5 : 3;
+  }
+  return score;
+}
+
 function scoreIntent(normalizedMessage, intent) {
   if (anyExcluded(normalizedMessage, intent.exclude)) return -1;
-  const primaryHits = countHits(normalizedMessage, intent.primary, { excludeGeneric: true });
-  if (primaryHits === 0) return 0; // no topic-defining word present -> not a candidate, full stop
+  const primaryScore = countWeightedPrimaryHits(normalizedMessage, intent.primary);
+  if (primaryScore === 0) return 0; // no topic-defining word present -> not a candidate, full stop
   const synonymHits = countHits(normalizedMessage, intent.synonyms, { excludeGeneric: true });
-  return primaryHits * 3 + synonymHits;
+  return primaryScore + synonymHits;
 }
 
 // Minimum score to accept ANY answer at all (roughly: one real primary hit).
@@ -179,11 +199,39 @@ function findOfflineAnswer(text) {
 // lower stakes (worst case is a slightly-off friendly reply, not a wrong
 // factual answer), so no ambiguity-margin check here -- picking one warm
 // reply over another tied one costs nothing.
+//
+// Some topics (currently just the neutral "привет"-style greeting) carry
+// a `timeReplies` array instead of a flat `replies` list -- each entry
+// tagged with an hour range (`from`/`to`, wraps past midnight when
+// from > to, e.g. 23→5). When the caller passes `localHour` (the PORT's
+// local hour, not the device's own -- see getPortLocalHour() in app.js,
+// computed from the port's tz offset, no internet required), the
+// matching range is used instead of a random pick. A topic matched via an
+// EXPLICIT time word the seafarer typed ("добрый вечер") still just uses
+// its own flat `replies` list -- say what they said, don't second-guess
+// it with the real clock.
+function pickCompanionReply(topic, localHour) {
+  if (Array.isArray(topic.timeReplies) && topic.timeReplies.length > 0) {
+    if (typeof localHour === "number") {
+      for (const slot of topic.timeReplies) {
+        const inRange = slot.from <= slot.to
+          ? localHour >= slot.from && localHour < slot.to
+          : localHour >= slot.from || localHour < slot.to; // wraps past midnight
+        if (inRange) return slot.text;
+      }
+    }
+    return topic.timeReplies[Math.floor(Math.random() * topic.timeReplies.length)].text;
+  }
+  const variants = topic.replies || [];
+  if (variants.length === 0) return null;
+  return variants[Math.floor(Math.random() * variants.length)];
+}
+
 function scoreCompanion(normalizedMessage, topic) {
   return countHits(normalizedMessage, topic.primary, { excludeGeneric: true });
 }
 
-function findCompanionReply(text) {
+function findCompanionReply(text, localHour) {
   const msg = normalizeText(text);
   if (!msg) return null;
   let best = null, bestScore = 0;
@@ -192,7 +240,5 @@ function findCompanionReply(text) {
     if (score > bestScore) { bestScore = score; best = topic; }
   }
   if (!best || bestScore < 1) return null;
-  const variants = best.replies || [];
-  if (variants.length === 0) return null;
-  return variants[Math.floor(Math.random() * variants.length)];
+  return pickCompanionReply(best, localHour);
 }
