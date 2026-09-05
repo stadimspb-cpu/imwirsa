@@ -1,8 +1,4 @@
-// Auto-generated 04.09.2026 (v19, final) — распечат/напечат added
-// (Russian verb prefixes are a different phenomenon from case endings --
-// stem-prefix matching only handles suffix variation, not the рас-/на-
-// class of prefixes; collecting known prefixed forms explicitly, same
-// approach as case-ending mismatches found earlier today)
+// Auto-generated 04.09.2026 (v21, final) — karaoke intent, покараочить fixed to primary
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -3972,6 +3968,22 @@ const INTENTS = [
       "восстановлени"
     ],
     "a": "«В карточке этого порта пока нет подтверждённой точки с такими бытовыми и дорожными товарами — попробуй супермаркет или ближайший торговый центр.»"
+  },
+  {
+    "q": "Есть ли здесь караоке?",
+    "primary": [
+      "караоке",
+      "спеть",
+      "покараочить",
+      "попеть"
+    ],
+    "synonyms": [
+      "спеть песню",
+      "караоке-бар",
+      "караоке-клуб"
+    ],
+    "exclude": [],
+    "a": "«Караоке-бары есть во многих портовых городах, особенно в Азии — часто прямо при ресторанах или барах в центре. Спроси у местных или в центре моряков, где ближайший.»"
   }
 ];
 
