@@ -34,32 +34,53 @@ const PORT_PREFIX = {
   "tallinn-vanasadam": "vanasadam",
 };
 
-// Intent question -> subdetail field suffix. Picked only where the FIRST
-// row of the FIRST section is reliably a standalone usable fact across
-// ports, not a warning, a category header, or empty. Checked this by hand
-// against the real Vanasadam file before adding each line -- do the same
-// before adding more, rather than assuming every field behaves the same
-// way. Known fields that do NOT belong here yet:
-//   - currency_exchange: first row on Vanasadam is a scam warning, not a
-//     place to exchange money -- needs smarter extraction (skip warning
-//     rows, or a dedicated "location" row), not "take row one".
-//   - centre_about / centre_shuttle: genuinely empty for ports without a
-//     physical Seafarers' Centre (correctly so, e.g. Vanasadam) -- getReal
-//     CardFact() already returns null for these and falls back to the
-//     generic answer, which is the right behaviour, not a bug to fix.
+// Intent question -> subdetail field suffix. Picked only where the data
+// is reliably a standalone usable fact across MOST of the 15 ports where
+// the field exists — checked 05.09.2026 by auditing every port's actual
+// first row(s) for each field, not just Vanasadam. Fields NOT here yet:
+//   - centre_about / centre_services: empty on every port audited so
+//     far — genuinely no confirmed Seafarers' Centre data yet almost
+//     anywhere, not a bug. getPortSpecificAnswer() correctly returns
+//     null for these and falls back to the generic answer.
+//   - Anything not yet audited port-by-port — add here only after
+//     checking, not by assumption that "similar" fields behave the same.
 const INTENT_CARD_MAP = {
   "Где сесть в такси и сколько это будет стоить?": "transport_taxi",
   "Где ближайший супермаркет?": "shops_supermarkets",
   "Где купить местную SIM-карту?": "shops_sim",
   "Как доехать до центра на общественном транспорте?": "transport_public",
   "Через какие ворота выйти в город": "transport_leaving",
+  "Где ближайшая аптека?": "shops_pharmacies",
+  "Где недорого поесть рядом с портом?": "shops_food",
+  "Безопасно ли гулять здесь вечером или ночью?": "city_safety",
+  "Где ближайший обменник валюты?": "currency_exchange",
 };
 
-// Pulls the first genuinely-populated row's fact out of a subdetail record,
-// skipping anything that reads as a warning/disclaimer rather than a fact
-// (a crude filter, same spirit as everything else in this file -- a real
-// per-field extraction strategy can replace this one field at a time as
-// coverage grows past this pilot set).
+// Rows that are universal safety-education advice, not a specific fact —
+// found by auditing currency_exchange across all 15 ports on 05.09.2026:
+// every single port leads with these exact same 5 scam-warning rows
+// before the real exchange-office facts. This is a deliberate, sensible
+// order for a human reading the Port tab top to bottom (learn the risk,
+// then get the address) — restructuring the underlying card data would
+// fix extraction but risks making that human-facing reading flow worse
+// for no real reason. Skipping these known rows during EXTRACTION (not
+// reordering the data itself) gets the assistant a real fact without
+// touching the card. Exact-title match, not a keyword guess — these
+// titles are identical verbatim across every port's currency_exchange
+// field, so hardcoding them is safe and won't over-match anything else.
+const KNOWN_ADVICE_ROW_TITLES = new Set([
+  "A stranger offers you a better rate",
+  "Being asked to go somewhere private",
+  "No receipt offered",
+  "Know the rough official rate first",
+  "Count what you receive, before you walk away",
+]);
+
+// Pulls the first genuinely-populated, fact-like row out of a subdetail
+// record. Walks ALL rows in ALL sections (not just the first one) so a
+// field that leads with advice/caution rows still yields the real fact
+// further down the list, instead of stopping at row one and giving up —
+// this is what makes currency_exchange usable without touching the card.
 function getRealCardFact(subdetailKey) {
   const sd = typeof SUBDETAILS !== "undefined" ? SUBDETAILS[subdetailKey] : null;
   if (!sd || !Array.isArray(sd.sections)) return null;
@@ -67,6 +88,7 @@ function getRealCardFact(subdetailKey) {
     if (!Array.isArray(section.rows)) continue;
     for (const row of section.rows) {
       if (!row.title) continue;
+      if (KNOWN_ADVICE_ROW_TITLES.has(row.title)) continue;
       if (/scam|warning|not confirmed|tbd|coming soon|stranger/i.test(row.title + " " + (row.sub || ""))) continue;
       return row.sub ? `${row.title} — ${row.sub}` : row.title;
     }
