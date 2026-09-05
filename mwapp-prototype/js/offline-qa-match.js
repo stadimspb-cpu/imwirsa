@@ -41,9 +41,24 @@ function isGeneric(anchor) {
   return GENERIC_CONTEXT_WORDS.has(anchor.toLowerCase());
 }
 
+// Suggested by Markus 05.09.2026, both cheap and clearly worth doing:
+// ё/е are the same letter for matching purposes (мёрзну/мерзну), and
+// common tech-term spelling variants (Type-C / Type C / TypeC, USB-C /
+// USB C / USBC) should all collide to one anchor instead of needing every
+// spelling enumerated separately in every intent that mentions them.
+const SPELLING_VARIANTS = [
+  [/\btype[\s-]?c\b/gi, "type-c"],
+  [/\busb[\s-]?c\b/gi, "usb-c"],
+  [/\bmicro[\s-]?usb\b/gi, "micro-usb"],
+  [/\bwi[\s-]?fi\b/gi, "wi-fi"],
+];
+
 function normalizeText(text) {
-  return text
-    .toLowerCase()
+  let t = text.toLowerCase().replace(/ё/g, "е");
+  for (const [pattern, replacement] of SPELLING_VARIANTS) {
+    t = t.replace(pattern, replacement);
+  }
+  return t
     .replace(/[«»"'.,!?;:()]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
