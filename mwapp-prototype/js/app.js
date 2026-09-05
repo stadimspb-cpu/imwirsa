@@ -1293,14 +1293,23 @@ const COMPLEX_TOPIC_KEYWORDS = [
   // topic word both duplicates that work and produces false positives like
   // the coffee case. What's left here is specifically conflict/crisis verbs
   // and serious incident words that are rarely mentioned incidentally.
+  //
+  // 05.09.2026 — removed "robbed/stole/stolen/theft/ограбили/украли/кража"
+  // for the exact same reason: "Меня ограбили" and "У меня украли телефон"
+  // now have their own specific intents with better, more actionable
+  // answers (both already point to Дежурный офис within their own text),
+  // and this array runs BEFORE the intent system, so it was hijacking
+  // those messages before the better answer ever got a chance to show.
+  // Standing rule: once a topic has a good specific intent, remove it from
+  // here rather than letting both systems compete for the same message.
   "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
-  "police", "arrest", "arrested", "detained", "robbed", "stole", "stolen", "theft", "deport",
+  "police", "arrest", "arrested", "detained", "deport",
   "deported", "visa problem", "immigration",
   "поругались", "поругался", "кричит", "накричал", "угрожает", "угрожали",
-  "полиция", "арестовал", "арестовала", "арестован", "задержал", "задержали", "ограбили",
-  "украли", "кража", "депортация", "депортируют", "проблема с визой", "иммиграция",
-  "polis", "tutuklandı", "gözaltına", "soyuldu", "çaldı", "hırsızlık", "sınır dışı", "vize sorunu",
-  "pulis", "inaresto", "hinuli", "ninakawan", "nawalan", "deport", "problema sa visa",
+  "полиция", "арестовал", "арестовала", "арестован", "задержал", "задержали",
+  "депортация", "депортируют", "проблема с визой", "иммиграция",
+  "polis", "tutuklandı", "gözaltına", "sınır dışı", "vize sorunu",
+  "pulis", "inaresto", "hinuli", "deport", "problema sa visa",
 ];
 
 function isComplexTopic(text) {

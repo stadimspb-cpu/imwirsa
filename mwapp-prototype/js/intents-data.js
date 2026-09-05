@@ -1,4 +1,7 @@
-// Auto-generated 05.09.2026 (v35, final) — переходник/розетка default: adapter-buy wins unless "какой тип" present
+// Auto-generated 05.09.2026 (v37, final) -- CRITICAL SAFETY FIX: chto-delat
+// removed as phrase-anchor from meta-question, was beating real crisis
+// intents due to yesterday phrase-weight boost. bol removed from
+// painkiller-shopping intent, was tying with chest-pain intent.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -339,7 +342,6 @@ const INTENTS = [
     "primary": [
       "обезболив",
       "таблетк",
-      "боль",
       "рецепт"
     ],
     "synonyms": [
@@ -501,9 +503,11 @@ const INTENTS = [
   {
     "q": "Какой тип розетки или переходника нужен?",
     "primary": [
-      "вилка",
       "вольт",
+      "какой переходник",
+      "вилка",
       "стандарт розетк",
+      "какой адаптер",
       "какой тип"
     ],
     "synonyms": [
@@ -2086,7 +2090,6 @@ const INTENTS = [
     "primary": [
       "запчаст",
       "инструмент",
-      "судов",
       "снабж",
       "chandler"
     ],
@@ -2239,8 +2242,7 @@ const INTENTS = [
       "шаттл",
       "не успева",
       "срочн",
-      "звонок",
-      "агент"
+      "звонок"
     ],
     "synonyms": [],
     "exclude": [
@@ -2385,7 +2387,6 @@ const INTENTS = [
     "q": "Меня остановила полиция, что говорить?",
     "primary": [
       "документ",
-      "агент",
       "говорить",
       "остановила",
       "задержа",
@@ -3614,9 +3615,7 @@ const INTENTS = [
     "q": "Я не нашёл ответа на свой вопрос. Что делать?",
     "primary": [
       "не нашёл",
-      "нет ответа",
-      "что делать",
-      "помощи"
+      "нет ответа"
     ],
     "synonyms": [],
     "exclude": [],
@@ -3640,8 +3639,7 @@ const INTENTS = [
     "primary": [
       "позвонить",
       "за меня",
-      "связаться",
-      "агент"
+      "связаться"
     ],
     "synonyms": [],
     "exclude": [],

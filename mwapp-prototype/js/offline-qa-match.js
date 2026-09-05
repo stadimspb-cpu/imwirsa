@@ -72,7 +72,14 @@ function isWordCharAt(message, index) {
 const WORD_START = /[\wа-яё]/i;
 
 function containsAnchor(normalizedMessage, anchor) {
-  const a = anchor.toLowerCase();
+  // ё->е must happen on the ANCHOR too, not just the incoming message --
+  // normalizeText() already converts а seafarer's "нашел" and a stored
+  // anchor's "нашёл" to the same "е", but containsAnchor() was still
+  // comparing the RAW anchor string. Found 05.09.2026: this silently broke
+  // 24 anchors across the base ("нашёл", "дешёв", "счётчик", "тёплая"...),
+  // including the meta-question's own "не нашёл" failing to match its own
+  // canonical text once "что делать" was removed as a competing anchor.
+  const a = anchor.toLowerCase().replace(/ё/g, "е");
   if (a.length > 5) return normalizedMessage.includes(a);
   let from = 0;
   while (true) {
