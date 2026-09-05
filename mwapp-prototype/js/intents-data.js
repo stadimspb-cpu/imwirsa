@@ -1,4 +1,4 @@
-// Auto-generated 05.09.2026 (v34, final)
+// Auto-generated 05.09.2026 (v35, final) — переходник/розетка default: adapter-buy wins unless "какой тип" present
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -49,9 +49,10 @@ const INTENTS = [
       "lightning"
     ],
     "synonyms": [
-      "micro-usb",
+      "type-c",
       "пауэрбанк",
-      "type-c"
+      "для розетки",
+      "micro-usb"
     ],
     "exclude": [
       "какой тип",
