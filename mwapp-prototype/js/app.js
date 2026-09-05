@@ -304,6 +304,24 @@ const PORTS = {
 
 function currentPort() { return PORTS[state.portId] || PORTS["tallinn-vanasadam"]; }
 
+// Real local hour AT THE PORT, not the device's own -- a seafarer's phone
+// may still be on their home timezone or auto-adjust unpredictably, while
+// the port itself has a known, fixed offset in its own meta (`tz: "UTC+3"`
+// etc., already used elsewhere for today's-hours calculations). Pure
+// arithmetic on the device's own clock -- works fully offline, no network
+// or geolocation needed, contrary to the assumption that this required an
+// internet connection. Used to pick a time-appropriate greeting instead of
+// hardcoding "привет" to always mean morning (found as a real mismatch
+// 05.09.2026 -- see offline-qa-match.js companion topic notes).
+function getPortLocalHour(portId) {
+  const port = PORTS[portId] || PORTS["tallinn-vanasadam"];
+  const tz = port && port.meta && port.meta.tz;
+  const match = tz && /UTC([+-]\d+)/.exec(tz);
+  const offsetHours = match ? parseInt(match[1], 10) : 0;
+  const utcHour = new Date().getUTCHours();
+  return ((utcHour + offsetHours) % 24 + 24) % 24;
+}
+
 // ---- Lazy port content loading -------------------------------------------
 // Full port content (categories + their subdetail cards) used to be baked
 // directly into this file for every port, which meant every phone downloaded
@@ -1475,7 +1493,9 @@ function sendAssistantChatMessage() {
       //      "the question came through fine, we just don't have this
       //      topic"; its absence is treated as "unclear, ask them to say
       //      it differently".
-      const companionReply = typeof findCompanionReply === "function" ? findCompanionReply(text) : null;
+      const companionReply = typeof findCompanionReply === "function"
+        ? findCompanionReply(text, getPortLocalHour(state.portId))
+        : null;
       let offlineAnswer = companionReply;
       if (!offlineAnswer && typeof findOfflineIntent === "function") {
         const matchedIntent = findOfflineIntent(text);
