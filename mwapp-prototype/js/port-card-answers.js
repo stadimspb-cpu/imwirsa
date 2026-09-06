@@ -9,6 +9,12 @@
 // v4, 06.09.2026 -- BRAND_CATEGORY_FOLLOWUP extended with "pharmacy" and
 // "optics" entries (Benu/Specsavers, see conversation) -- same mechanism
 // as v3, just two more categories.
+//
+// v5, 06.09.2026 -- getRawCardFact() split out of getPortSpecificAnswer()
+// so categoryFallbackAnswer() (new) can build the CATEGORY-ANCHOR
+// OVERRIDE reply (see offline-qa-match.js) around the same raw fact
+// without duplicating the suffix/prefix lookup. getPortSpecificAnswer()
+// itself is unchanged behavior, just now a thin wrapper.
 // First working version of "the assistant reads the real port card" per
 // Andrey's decision to start this now rather than wait for the offline
 // dialogue system to be fully polished first. Deliberately scoped to a
@@ -140,23 +146,51 @@ function getRealCardFact(subdetailKey) {
 }
 
 // intentQuestion is the .q field of the matched INTENTS[] entry (see
-// findOfflineIntent() in offline-qa-match.js). Returns a Russian sentence
-// wrapping the real fact, or null if there's no mapping for this intent,
-// no data loaded for this port, or the port's card simply doesn't have
-// this field filled in yet -- callers should fall back to intent.a in all
-// of those cases exactly as before this feature existed.
-function getPortSpecificAnswer(intentQuestion, portId) {
+// findOfflineIntent() in offline-qa-match.js). Returns the raw fact
+// string, or null if there's no mapping for this intent, no data loaded
+// for this port, or the port's card simply doesn't have this field
+// filled in yet. Split out from getPortSpecificAnswer() (which wraps this
+// in a Russian sentence) 06.09.2026 so categoryFallbackAnswer() below can
+// build its OWN sentence around the same raw fact instead of duplicating
+// the suffix/prefix lookup.
+function getRawCardFact(intentQuestion, portId) {
   const suffix = INTENT_CARD_MAP[intentQuestion];
   if (!suffix) return null;
   const prefix = PORT_PREFIX[portId];
   if (!prefix) return null;
-  const fact = getRealCardFact(`${prefix}_${suffix}`);
+  return getRealCardFact(`${prefix}_${suffix}`);
+}
+
+// Returns a Russian sentence wrapping the real fact, or null in all the
+// cases getRawCardFact() returns null -- callers fall back to intent.a
+// exactly as before this feature existed.
+function getPortSpecificAnswer(intentQuestion, portId) {
+  const fact = getRawCardFact(intentQuestion, portId);
   if (!fact) return null;
   // Note the English/Russian mix here: port card content is authored in
   // English across every terminal so far, while this sentence wrapper is
   // Russian -- a real language mismatch, not an oversight. Flagged to
   // Andrey as a known limitation of this first pass, not fixed here.
   return `По данным карточки этого порта: ${fact}.`;
+}
+
+// ---- CATEGORY-ANCHOR OVERRIDE, 06.09.2026 -----------------------------
+// Builds the reply for resolveCategoryOverride()'s result (see
+// offline-qa-match.js for the full rationale): a known CATEGORY was named
+// alongside an organization name this base doesn't and won't track. If
+// the port card has a real fact for the category, wrap it in the
+// category's own honest "that specific place isn't confirmed, but here's
+// the confirmed one" template. If the card has nothing for this field at
+// this port either, fall back to the category intent's plain generic
+// answer -- exactly the same fallback as an ordinary unnamed "Где
+// аптека?" question gets, since claiming "the nearest one is X" when
+// there is no X to point to would be worse than the plain generic advice.
+function categoryFallbackAnswer(category, portId) {
+  const fact = getRawCardFact(category.intentQ, portId);
+  if (fact) return category.template(fact);
+  const intents = typeof INTENTS !== "undefined" ? INTENTS : [];
+  const intent = intents.find((i) => i.q === category.intentQ);
+  return intent ? intent.a : null;
 }
 
 // ---- SPECIFIC BRAND / NAMED ENTITY HANDLING, 06.09.2026 --------------

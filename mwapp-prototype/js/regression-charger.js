@@ -178,6 +178,76 @@ for (const [text, category] of CASES_BRAND2) {
 console.log(`Block 4 brand cases (pharmacy/optics): ${brand2Ok ? "all passed" : "FAILED"}\n`);
 
 // ---------------------------------------------------------------------
+// Block 5 — category-anchor override, 06.09.2026, per Andrey's general
+// principle: a known CATEGORY word ("аптека"/"супермаркет"/"кафе") plus
+// an unrecognized organization NAME must never tie into UNKNOWN or
+// hijack an unrelated intent. NOT a brand database -- see
+// resolveCategoryOverride() in offline-qa-match.js.
+//
+// The negative cases here matter as much as the positive ones: this
+// mechanism's first draft (compare the winner to the category intent by
+// identity) silently broke "Есть ли аптека с антибиотиками без
+// рецепта?" -- a real, more-specific intent that legitimately outscores
+// bare PHARMACY -- by dragging it back to the generic pharmacy answer.
+// Caught before shipping by testing it alongside the fix, not after.
+// The corrected version only overrides a genuine UNKNOWN (tie / no
+// candidate), never a clean win by a different intent -- these cases
+// pin that distinction down so it can't quietly regress back.
+const CASES_CATEGORY_OVERRIDE_POSITIVE = [
+  // the exact example from the conversation: unknown name must not tie
+  // pharmacy into UNKNOWN via the emergency-services intent's "скор" anchor
+  ["Где аптека Скорая помощь?", "pharmacy"],
+  // constructed collisions proving this isn't pharmacy-only: "обменник"
+  // is the currency-exchange intent's own word; "ночной" is the
+  // 24-hour-bar intent's word -- both would otherwise tie their category
+  // into UNKNOWN the same way
+  ["Где кафе Ночной?", "food"],
+];
+let categoryOverridePositiveOk = true;
+for (const [text, categoryId] of CASES_CATEGORY_OVERRIDE_POSITIVE) {
+  const override = typeof resolveCategoryOverride === "function" ? resolveCategoryOverride(text) : null;
+  const idOk = override && override.category.id === categoryId;
+  // when real card data is loaded, also check the actual reply uses the
+  // category's own "not confirmed for this specific place" template, not
+  // the plain getPortSpecificAnswer() wrapper (that would mean the
+  // override fired but categoryFallbackAnswer() was bypassed somewhere).
+  const reply = idOk && typeof categoryFallbackAnswer === "function" && typeof SUBDETAILS !== "undefined"
+    ? categoryFallbackAnswer(override.category, "tallinn-vanasadam")
+    : null;
+  const replyOk = reply === null || !reply.startsWith("По данным карточки этого порта");
+  const ok = idOk && replyOk;
+  if (!ok) categoryOverridePositiveOk = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(30), "-> override:", override ? override.category.id : "NONE (expected " + categoryId + ")", reply ? "| reply: " + reply.slice(0, 60) : "");
+}
+console.log(`Block 5a (category override fires when it should): ${categoryOverridePositiveOk ? "all passed" : "FAILED"}\n`);
+
+const CASES_CATEGORY_OVERRIDE_NEGATIVE = [
+  // must NOT be dragged back to generic PHARMACY -- each of these is a
+  // real, specific intent that legitimately outscores or excludes it
+  ["Есть ли аптека с антибиотиками без рецепта?", "Есть ли аптека с антибиотиками без рецепта?"],
+  ["Нужно срочно к зубному врачу", "Что делать, если заболел зуб?"],
+  ["У меня болит голова. Где купить таблетки?", "Можно ли купить обезболивающее без рецепта?"],
+  ["Мне нужен раствор для линз — есть аптека рядом?", "Где купить раствор для контактных линз или очки?"],
+  // must NOT trigger PHARMACY at all -- no category anchor present, this
+  // is a self-contained different topic, not "category + unknown name"
+  ["Мне нужна скорая помощь", "UNKNOWN"],
+  // plain category questions with no trailing name must resolve exactly
+  // as before this feature existed
+  ["Где ближайшая аптека?", "Где ближайшая аптека?"],
+  ["Где ближайший супермаркет?", "Где ближайший супермаркет?"],
+  ["Где недорого поесть рядом с портом?", "Где недорого поесть рядом с портом?"],
+];
+let categoryOverrideNegativeOk = true;
+for (const [text, expected] of CASES_CATEGORY_OVERRIDE_NEGATIVE) {
+  const got = findOfflineIntent(text);
+  const gotQ = got ? got.q : "UNKNOWN";
+  const ok = gotQ === expected;
+  if (!ok) categoryOverrideNegativeOk = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(50), "->", gotQ.slice(0, 55));
+}
+console.log(`Block 5b (category override must NOT fire / must not regress): ${categoryOverrideNegativeOk ? "all passed" : "FAILED"}\n`);
+
+// ---------------------------------------------------------------------
 // Self-check #1, added 05.09.2026 per Andrey/Markus: every intent's OWN
 // canonical question must produce at least one real (non-generic) primary
 // hit against its OWN anchor list. Catches an anchor cleanup that removed
@@ -235,7 +305,7 @@ const selfMatchCount = INTENTS.filter((i) => {
 }).length;
 console.log(`Self-check #2 (uniquely wins its own match): ${selfMatchCount}/${INTENTS.length} intents\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok) {
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

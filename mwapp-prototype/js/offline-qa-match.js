@@ -10,6 +10,15 @@
 // BRAND_ENTITIES per Andrey's "Block 3" live test -- same mechanism,
 // no code change, confirming the list is genuinely extensible as
 // designed.
+//
+// v13, 06.09.2026 -- CATEGORY_ANCHORS + resolveCategoryOverride() added:
+// a general (non-brand-database) rule so an unrecognized organization
+// NAME attached to a known CATEGORY word ("аптека", "супермаркет",
+// "кафе") can never tie the category into UNKNOWN or hijack an unrelated
+// intent via incidental word overlap. See the block itself for the full
+// rationale and why it deliberately reuses each category intent's
+// existing `exclude` list rather than adding a new mechanism for
+// "deliberate vs accidental" deferral.
 // Replaces the 03.09.2026 approach (compare seafarer's message to the
 // QUESTION TEXT itself) with matching against hand-picked ANCHOR WORDS per
 // intent, built by Andrey/Markus/Olga from real field phrasing. This fixes
@@ -261,6 +270,85 @@ function findOfflineAnswer(text) {
   if (combo) return combo;
   const intent = findOfflineIntent(text);
   return intent ? intent.a : null;
+}
+
+// ---- CATEGORY-ANCHOR OVERRIDE, 06.09.2026 -----------------------------
+// General principle from Andrey: when a message explicitly names a KNOWN
+// CATEGORY (pharmacy/supermarket/cafe/...) alongside a specific
+// organization NAME the offline base has never heard of -- and never will,
+// per Andrey's explicit instruction NOT to build a database of every
+// pharmacy/shop/cafe brand in Europe -- the unrecognized name must never
+// (a) tie the category into UNKNOWN, or (b) accidentally activate a
+// DIFFERENT intent just because the name happens to share a real word
+// with that intent's own anchors (e.g. a pharmacy literally named "Скорая
+// помощь" sharing a word with the emergency-services intent). The
+// category is the confirmed part of the request; the name is not, and
+// must never outweigh it.
+//
+// Deliberately NOT a brand database (see BRAND_ENTITIES above for the
+// small, curated, name-specific exception to that rule) -- this is a
+// content-free structural rule about a handful of CATEGORY-DEFINING
+// intents, not about any specific organization. "Where's the [category]
+// [unknown name]?" is a shape of question, not a lookup table entry.
+//
+// Deliberately reuses each category intent's own `exclude` list as one
+// signal for "this is a DELIBERATE handoff", and, more importantly, only
+// treats a result as a name collision when normal resolution produced
+// NO winner at all (a genuine tie, or nothing above the confidence floor)
+// -- never when some OTHER intent won CLEANLY with a real margin. That
+// second condition is what keeps this from swallowing legitimate wins:
+// "Есть ли аптека с антибиотиками без рецепта?" contains "аптек" (the
+// category anchor) but the antibiotics intent WINS outright (score 4 vs
+// pharmacy's 3, via its own "аптека" synonym) -- a real, specific,
+// correctly-scored match, not a name collision, and must be left alone.
+// PHARMACY already excludes itself for "зубн"/"обезболив"/"линз"/etc (see
+// v40) so DENTIST/PAINKILLER/LENS also win cleanly this same way. This
+// mechanism can only ever fire on the ambiguity/UNKNOWN failure mode
+// (like the "Скорая помощь" example) -- it deliberately does NOT try to
+// catch a foreign intent winning outright via an unlucky word in the
+// unrecognized name, since telling that apart from a real topic match
+// (antibiotics) isn't reliably decidable by keyword matching, and a
+// missed edge case here is a far smaller risk than reopening the
+// specific-beats-generic fixes from the last two rounds.
+//
+// Only 3 categories today because only 3 have a dedicated intent in the
+// base (checked directly, 06.09.2026: no "shopping centre / mall" intent
+// exists yet) -- the mechanism extends to a 4th the moment one does, same
+// as BRAND_ENTITIES: add an entry, no other code changes.
+const CATEGORY_ANCHORS = [
+  {
+    id: "pharmacy",
+    anchors: ["аптек"],
+    intentQ: "Где ближайшая аптека?",
+    template: (fact) => `«Адрес именно этой аптеки у меня не подтверждён. Ближайшая аптека по данным карточки порта: ${fact}.»`,
+  },
+  {
+    id: "supermarket",
+    anchors: ["супермаркет"],
+    intentQ: "Где ближайший супермаркет?",
+    template: (fact) => `«Адрес именно этого супермаркета у меня не подтверждён. Ближайший супермаркет по данным карточки порта: ${fact}.»`,
+  },
+  {
+    id: "food",
+    anchors: ["кафе"],
+    intentQ: "Где недорого поесть рядом с портом?",
+    template: (fact) => `«Это конкретное заведение у меня не подтверждено. Подтверждённый вариант, где поесть, по данным карточки порта: ${fact}.»`,
+  },
+];
+
+function resolveCategoryOverride(text) {
+  const msg = normalizeText(text);
+  if (!msg) return null;
+  const intents = typeof INTENTS !== "undefined" ? INTENTS : [];
+  for (const category of CATEGORY_ANCHORS) {
+    if (!category.anchors.some((a) => containsAnchor(msg, a))) continue;
+    const categoryIntent = intents.find((i) => i.q === category.intentQ);
+    if (!categoryIntent) continue;
+    if (anyExcluded(msg, categoryIntent.exclude)) return null; // deliberate handoff -- leave the normal result alone
+    if (findOfflineIntent(text)) return null; // something won cleanly (the category itself, or a legitimately more specific intent) -- never override a clean win
+    return { category, categoryIntent };
+  }
+  return null;
 }
 
 // Companion chat (Block 26): same generic-word and confidence-floor rules,
