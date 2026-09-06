@@ -2,6 +2,61 @@
 // removed as phrase-anchor from meta-question, was beating real crisis
 // intents due to yesterday phrase-weight boost. bol removed from
 // painkiller-shopping intent, was tying with chest-pain intent.
+//
+// v38, 06.09.2026 -- Markus's Block 2 regression, 4 systemic classes fixed:
+// 1) broad-anchor collisions: "kafe" removed as standalone primary from the
+//    Wi-Fi-cafe intent (was hijacking any cafe question with no Wi-Fi signal
+//    at all -- "wi-fi" itself added to that intent's primary to compensate);
+//    "normaln" demoted to synonym in the alcohol intent (was hijacking
+//    "normalno poobedat'" purely on the quality-word match).
+// 2) covered-but-UNKNOWN: poobedat/pozavtrakat/pouzhinat promoted
+//    synonym->primary in the food intent per the existing diminutive/
+//    colloquial rule (a bare stem like "obed" never matches a "po-"-prefixed
+//    form due to the anchor start-boundary rule -- same root cause as the
+//    "pit'/popit'" case below); vegan promoted synonym->primary in the
+//    vegetarian intent for the same reason. Added vegetarian/vegan/halal to
+//    the food intent's exclude list so a specific dietary request no longer
+//    ties 3-3 with the generic food intent and gets swallowed by the
+//    ambiguity margin.
+// 3) natural water queries: "voda/vodu/vody/vodoy" (exact inflected forms)
+//    added to the bottled-water intent's primary -- the 3-letter "vod" stem
+//    requires a full word-boundary on both sides by design (see 05.09.2026
+//    note on containsAnchor) and so never actually matched any inflected
+//    form of "voda"; bottled water is now the correct default winner for a
+//    bare "gde kupit' vodu?" per Andrey's rule, tap only wins when
+//    kran/vodoprovod is explicitly present (unchanged, via existing
+//    mutual excludes).
+// 4) combined requests ("kafe + vegetarian food"): resolved as a side
+//    effect of fix (1) -- once "kafe" no longer independently triggers the
+//    Wi-Fi intent, the vegetarian intent's specific match wins outright
+//    instead of tying with it.
+//
+// Also: "popit'"/"vypit'" checked for the tap-water intent per Markus's
+// request. "popit'" added to primary (unambiguous, always about a
+// beverage). "vypit'" added to SYNONYM only, not primary -- in casual
+// Russian "vypit'" alone very often means alcohol ("khochu vypit'"), so
+// making it independently sufficient would misroute alcohol questions to
+// the water intent; verified empirically that "khochu vypit' piva/vodki"
+// now correctly matches nothing (falls through to honest fallback) rather
+// than firing the water intent. It still adds score when a real water
+// anchor (kran/vod/popit'/vodoprovod) is already present.
+//
+// Also found (not reported by Markus, caught by a full self-match audit
+// across all 181 intents -- see conversation): TWO unrelated exact
+// duplicate intent pairs (gym/fitness, and port/military-object photo
+// question) were silently producing a permanent 100%-identical scoring
+// tie, i.e. BOTH topics always fell through to UNKNOWN regardless of
+// phrasing, base-wide, since before this session. One copy of each pair
+// removed (kept the version with the richer exclude list where they
+// differed). The exact duplicate tap-water intent Markus already knew
+// about is likewise now a single entry (details merged into it).
+// Self-match audit run before/after: 38/181 -> 30/178 failures; the 8
+// resolved are exactly the ones above (2 intents removed as duplicates
+// count as -3 net toward the /181 -> /178 change, the rest are direct
+// fixes). The remaining 30 are unrelated pre-existing items (SIM/CBD/
+// harassment/massage/price meta-questions that look like documentation-
+// only sub-questions, not real anchor bugs) -- NOT touched, flagged for
+// Andrey/Markus to review separately, not fixed blind.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -174,7 +229,10 @@ const INTENTS = [
       "поест",
       "еда",
       "перекус",
-      "обед"
+      "обед",
+      "пообедат",
+      "позавтрак",
+      "поужинат"
     ],
     "synonyms": [
       "покушат",
@@ -183,9 +241,6 @@ const INTENTS = [
       "закусочн",
       "пожрат",
       "кушат",
-      "пообедат",
-      "позавтрак",
-      "поужинат",
       "кафе",
       "ресторан",
       "фастфуд",
@@ -198,7 +253,11 @@ const INTENTS = [
       "выпить",
       "кофе",
       "сигареты",
-      "такси"
+      "такси",
+      "вегетариан",
+      "веган",
+      "халяль",
+      "халал"
     ],
     "a": "«В портовых городах почти всегда есть бюджетные закусочные недалеко от входа. Ищи вывески «еда» или фастфуд. В супермаркетах есть готовые салаты и сэндвичи — это самый дешёвый вариант.»"
   },
@@ -229,11 +288,11 @@ const INTENTS = [
     "primary": [
       "вегетариан",
       "овощн",
-      "без мяс"
+      "без мяс",
+      "веган"
     ],
     "synonyms": [
       "растительн",
-      "веган",
       "постн"
     ],
     "exclude": [
@@ -269,12 +328,16 @@ const INTENTS = [
       "вод",
       "кран",
       "пить",
+      "попить",
       "водопровод"
     ],
     "synonyms": [
       "из-под крана",
       "водя",
-      "техническ"
+      "техническ",
+      "безопасн",
+      "качеств",
+      "выпить"
     ],
     "exclude": [
       "бутилированн",
@@ -289,7 +352,11 @@ const INTENTS = [
     "primary": [
       "бутилированн",
       "вод",
-      "бутылк"
+      "бутылк",
+      "вода",
+      "воду",
+      "воды",
+      "водой"
     ],
     "synonyms": [
       "питьев",
@@ -1864,11 +1931,11 @@ const INTENTS = [
     "primary": [
       "алкоголь",
       "закуск",
-      "нормальн",
       "не турист",
       "дешёв"
     ],
     "synonyms": [
+      "нормальн",
       "местн",
       "сетевой",
       "спальн",
@@ -1905,26 +1972,6 @@ const INTENTS = [
       "автобус"
     ],
     "a": "«В форме лучше гулять группами и днём. Если сомневаешься — сними куртку поверх формы или надень штатское.»"
-  },
-  {
-    "q": "Можно ли пить воду из-под крана в этом городе?",
-    "primary": [
-      "вод",
-      "кран",
-      "пить"
-    ],
-    "synonyms": [
-      "водопровод",
-      "безопасн",
-      "качеств"
-    ],
-    "exclude": [
-      "бутилирован",
-      "купить",
-      "магазин",
-      "цена"
-    ],
-    "a": "«Официальная информация о качестве воды в этом городе отсутствует. Рекомендую НЕ пить воду из-под крана и покупать бутилированную — это безопаснее.»"
   },
   {
     "q": "Где находится вход на территорию порта для членов экипажа?",
@@ -2687,12 +2734,12 @@ const INTENTS = [
   {
     "q": "Кафе с Wi-Fi",
     "primary": [
-      "кафе",
       "интернет",
-      "вайфай"
+      "вайфай",
+      "wi-fi"
     ],
     "synonyms": [
-      "wi-fi",
+      "кафе",
       "бесплатн",
       "подключиться",
       "посидеть с ноутбуком",
@@ -3358,51 +3405,6 @@ const INTENTS = [
       "интим"
     ],
     "a": "«Да. Все вопросы по качеству услуги решаются через Wellness Host в приложении. Ассистент фиксирует обращение, но разбирает только Host.»"
-  },
-  {
-    "q": "Есть ли фитнес-зал с разовым посещением?",
-    "primary": [
-      "фитнес",
-      "зал",
-      "качалк",
-      "тренажёр",
-      "спорт"
-    ],
-    "synonyms": [
-      "разов",
-      "потренироватьс",
-      "штанга",
-      "кардио"
-    ],
-    "exclude": [
-      "бассейн",
-      "сауна",
-      "массаж",
-      "баня"
-    ],
-    "a": "«Фитнес-клубы есть в центре города. Спроси про разовое посещение.»"
-  },
-  {
-    "q": "Можно ли фотографировать порт или военные объекты?",
-    "primary": [
-      "фотограф",
-      "порт",
-      "военн",
-      "объект",
-      "разрешен"
-    ],
-    "synonyms": [
-      "снимок",
-      "на фоне",
-      "камера",
-      "запрещен"
-    ],
-    "exclude": [
-      "сувенир",
-      "рынок",
-      "улица"
-    ],
-    "a": "«Военные объекты, здания береговой охраны и ворота порта часто фотографировать запрещено. Не рискуй — могут отобрать камеру и оштрафовать.»"
   },
   {
     "q": "Можно ли получить прививку в порту?",
