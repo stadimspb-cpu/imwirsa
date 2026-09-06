@@ -26,6 +26,14 @@
 // Root cause and full rationale in the block itself; lives here (not
 // app.js) specifically so regression-charger.js can test it directly,
 // same reason detectBrandEntity/resolveCategoryOverride live here.
+//
+// v15, 06.09.2026 -- false positive found live ("Скоро буду в порту" ->
+// emergency): root cause was the SEPARATE scored intent's bare "скор"
+// stem (fixed in intents-data.js v44), not this function, but this
+// function was also switched from plain substring to containsAnchor()
+// (word-boundary aware) per Markus's request, and a conditional
+// "медицинская помощь" + explicit urgency word check was added. Full
+// story in the block itself.
 // Replaces the 03.09.2026 approach (compare seafarer's message to the
 // QUESTION TEXT itself) with matching against hand-picked ANCHOR WORDS per
 // intent, built by Andrey/Markus/Olga from real field phrasing. This fixes
@@ -273,18 +281,36 @@ function detectBrandEntity(text) {
 // calls this BEFORE isComplexTopic, companion chat, or the intent table
 // -- see the priority order in sendAssistantChatMessage.
 //
-// Plain substring matching on normalizeText()'s output (lowercase,
-// punctuation stripped, whitespace collapsed, ё→е) rather than exact-
-// phrase matching, per Andrey's explicit requirement: this makes every
-// marker robust to case, trailing punctuation, extra spaces, and word
-// order (word order only matters WITHIN a multi-word marker itself, and
-// every multi-word marker here keeps the natural RU/EN word order, so
-// this is not a practical limitation in tested cases). Bare "скорая"/
-// "скорую"/"скорой" already cover every RU ambulance phrase in this list
-// ("вызвать скорую", "нужна скорая", "скорая помощь") as substrings --
-// kept as explicit separate entries anyway so the list stays self-
-// documenting and doesn't silently lose coverage if the bare forms are
-// ever edited without noticing they were load-bearing for the phrases too.
+// v15, 06.09.2026 -- FALSE POSITIVE found live: "Скоро буду в порту" was
+// firing this check. Root cause was NOT this function -- it tested clean
+// against every negative example even before this fix -- it was the
+// SEPARATE scored intent "Какой номер экстренных служб?", whose PRIMARY
+// anchor was bare "скор" (4 letters): containsAnchor()'s boundary rule
+// only checks a LEFT boundary for anchors longer than 3 characters, not a
+// right one, so "скор" happily prefix-matched "скоро"/"скорость"/
+// "скоростной" too. Fixed at the data layer the same way every other
+// over-broad stem has been fixed all session: "скор" replaced with the
+// exact inflected forms that actually mean ambulance -- "скорая"/
+// "скорую"/"скорой" -- intents-data.js v44.
+//
+// Also switched this function from plain normalizedMessage.includes(kw)
+// to containsAnchor(), per Markus's explicit request to check word
+// boundaries rather than raw substring/root matching. All markers here
+// are either exact 6+ letter words (already effectively safe even under
+// containsAnchor's right-boundary exemption, since nothing in real RU
+// extends "скорая"/"скорую"/"скорой" into an unrelated word the way
+// "скор" did) or clean multi-word phrases -- containsAnchor's LEFT
+// boundary check is what actually matters here, and is worth having
+// uniformly rather than only where it happened to bite.
+//
+// Also added, per Markus's spec: "медицинская помощь" alone is too
+// generic to fire on its own (a seafarer could mention needing ongoing
+// medical care with zero urgency), so it only counts combined with an
+// explicit urgency word -- see MEDICAL_URGENCY_WORDS below. This is a
+// narrow AND-condition, not a new broad anchor: it requires the specific
+// 2-word phrase "медицинская помощь" AND a separate urgency word, not
+// just "помощь" alone (which is exactly the kind of bare generic word
+// that caused the original "Мне плохо" tie in the first place).
 const MEDICAL_EMERGENCY_KEYWORDS = [
   "скорая", "скорую", "скорой",
   "вызвать скорую", "нужна скорая", "скорая помощь",
@@ -293,10 +319,16 @@ const MEDICAL_EMERGENCY_KEYWORDS = [
   "call an ambulance", "need an ambulance",
 ];
 
+const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно"];
+
 function isMedicalEmergencyTopic(text) {
   const normalized = normalizeText(text);
   if (!normalized) return false;
-  return MEDICAL_EMERGENCY_KEYWORDS.some((kw) => normalized.includes(kw));
+  if (MEDICAL_EMERGENCY_KEYWORDS.some((kw) => containsAnchor(normalized, kw))) return true;
+  if (containsAnchor(normalized, "медицинская помощь") && MEDICAL_URGENCY_WORDS.some((w) => containsAnchor(normalized, w))) {
+    return true;
+  }
+  return false;
 }
 
 // Returns the matched INTENT OBJECT itself (not just .a) -- needed so a

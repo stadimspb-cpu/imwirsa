@@ -169,6 +169,19 @@
 // new isMedicalEmergencyTopic() deterministic check in offline-qa-match.js
 // (v14), called before this scored table runs at all -- see there and
 // app.js's priority order for the full picture.
+//
+// v44, 06.09.2026 -- false positive found live: "Скоро буду в порту" was
+// firing the emergency route. Root cause: this same intent's "скор" (4
+// letters) primary anchor -- containsAnchor()'s boundary rule only
+// checks a LEFT boundary for anchors longer than 3 characters, so "скор"
+// happily prefix-matched "скоро"/"скорость"/"скоростной" too, none of
+// which have anything to do with an ambulance. Replaced with the exact
+// forms that actually mean ambulance: "скорая"/"скорую"/"скорой". No
+// coverage lost -- every real ambulance mention is caught earlier anyway
+// by isMedicalEmergencyTopic() (v15, offline-qa-match.js), which now
+// ALSO checks word boundaries per Markus's request rather than raw
+// substring. Checked directly: "скор" appeared as a bare anchor ONLY in
+// this one intent, nowhere else in the base.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -972,7 +985,9 @@ const INTENTS = [
       "экстренн",
       "номер",
       "полици",
-      "скор",
+      "скорая",
+      "скорую",
+      "скорой",
       "пожар"
     ],
     "synonyms": [

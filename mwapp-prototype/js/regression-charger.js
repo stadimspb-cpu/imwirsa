@@ -554,7 +554,50 @@ for (const [text, expectedId] of CASES_MEDICAL_EMERGENCY_ID) {
 }
 console.log(`Block 9b (findOfflineIntent tie fixed at data layer too): ${medicalEmergencyIdOk ? "all passed" : "FAILED"}\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk) {
+// ---------------------------------------------------------------------
+// Block 10 — "скор" root false positive, 06.09.2026, per Markus's live
+// test: "Скоро буду в порту" was firing the emergency route. Root cause
+// was NOT isMedicalEmergencyTopic() (Block 9a already tested clean
+// against these before this fix) -- it was the SEPARATE scored intent
+// "Какой номер экстренных служб?" (id "medical_emergency"), whose bare
+// "скор" (4-letter) primary anchor prefix-matched "скоро"/"скорость"/
+// "скоростной" too, since containsAnchor()'s boundary rule only checks a
+// LEFT boundary for anchors longer than 3 characters. Fixed by replacing
+// "скор" with the exact forms "скорая"/"скорую"/"скорой" (intents-data.js
+// v44), and isMedicalEmergencyTopic() itself switched from raw substring
+// to containsAnchor() (word-boundary aware) per Markus's explicit
+// request. Positive and negative sets kept SEPARATE below, exactly as
+// Markus ran them, rather than interleaved with Block 9's.
+const CASES_ROOT_FALSE_POSITIVE_NEGATIVE = [
+  "скоро буду в порту", "какая скорость автобуса", "скоростной поезд",
+  "надо ускорить погрузку", "скоро откроется магазин",
+];
+const CASES_ROOT_FALSE_POSITIVE_POSITIVE = [
+  "нужна скорая", "вызови скорую", "как вызвать скорую помощь", "мне плохо, нужна скорая",
+];
+let rootFalsePositiveOk = true;
+if (typeof isMedicalEmergencyTopic === "function") {
+  console.log("-- positive (must be true) --");
+  for (const text of CASES_ROOT_FALSE_POSITIVE_POSITIVE) {
+    const ok = isMedicalEmergencyTopic(text);
+    if (!ok) rootFalsePositiveOk = false;
+    console.log(ok ? "OK" : "!!", text.padEnd(35), "-> isMedicalEmergencyTopic:", ok);
+  }
+  console.log("-- negative (must be false, AND must not reach medical_emergency via the scored table either) --");
+  for (const text of CASES_ROOT_FALSE_POSITIVE_NEGATIVE) {
+    const detectorOk = !isMedicalEmergencyTopic(text);
+    const intent = findOfflineIntent(text);
+    const scoredOk = !intent || intent.id !== "medical_emergency";
+    const ok = detectorOk && scoredOk;
+    if (!ok) rootFalsePositiveOk = false;
+    console.log(ok ? "OK" : "!!", text.padEnd(35), "-> detector:", !detectorOk, "| scored table:", intent ? (intent.id || intent.q) : "UNKNOWN");
+  }
+} else {
+  console.log("Block 10 SKIPPED -- isMedicalEmergencyTopic() not loaded in this run");
+}
+console.log(`Block 10 ("скор" root false positive, positive/negative tested separately): ${rootFalsePositiveOk ? "all passed" : "FAILED"}\n`);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");
