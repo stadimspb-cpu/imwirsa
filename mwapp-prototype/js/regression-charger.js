@@ -597,7 +597,58 @@ if (typeof isMedicalEmergencyTopic === "function") {
 }
 console.log(`Block 10 ("скор" root false positive, positive/negative tested separately): ${rootFalsePositiveOk ? "all passed" : "FAILED"}\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk) {
+// ---------------------------------------------------------------------
+// Block 11 — DENTAL fallback, 06.09.2026, per Andrey's general MWApp
+// principle: when a specialized service isn't on the card, give a safe
+// next step from CONFIRMED data instead of stopping at "no data". See
+// dentalFallbackAnswer() in port-card-answers.js for the full rationale.
+// Needs PORT_CONTENT_CACHE (same as Block 7) -- skipped gracefully when
+// it isn't loaded, everything else still runs.
+let dentalFallbackOk = true;
+if (typeof PORT_CONTENT_CACHE !== "undefined" && typeof dentalFallbackAnswer === "function") {
+  const CASES_DENTAL_FALLBACK = [
+    // no dental data on any port (checked directly across all 15) --
+    // must point to the confirmed hospital, not stop at "no data"
+    ["tallinn-vanasadam", "Ida-Tallinna Keskhaigla", "нет подтверждённой стоматологии"],
+    // this port's hospital row happens to include a phone number in the
+    // card's own text -- must show it, since it's part of the confirmed fact
+    ["batumi-main", "+995 422 22 22 14", "нет подтверждённой стоматологии"],
+    // this port's hospital is ITSELF unconfirmed -- must fall back to the
+    // original honest dental .a text, not a broken half-answer
+    ["istanbul-haydarpasa", "экстренную службу", null],
+  ];
+  for (const [portId, expectSubstr, alsoExpect] of CASES_DENTAL_FALLBACK) {
+    const reply = dentalFallbackAnswer(portId);
+    const hasFirst = reply && reply.includes(expectSubstr);
+    const hasSecond = alsoExpect === null || (reply && reply.includes(alsoExpect));
+    // must NEVER claim the hospital treats dental issues -- only that the
+    // seafarer can go there to ask/get directed further
+    const noOverclaim = !reply || !/стоматологи[а-я]* доступна|лечит зуб|зубной кабинет в больниц/i.test(reply);
+    const ok = hasFirst && hasSecond && noOverclaim;
+    if (!ok) dentalFallbackOk = false;
+    console.log(ok ? "OK" : "!!", portId.padEnd(22), "-> reply:", (reply || "NULL").slice(0, 90));
+  }
+  console.log(`Block 11 (DENTAL fallback to confirmed hospital): ${dentalFallbackOk ? "all passed" : "FAILED"}\n`);
+} else {
+  console.log("Block 11 (DENTAL fallback to confirmed hospital): SKIPPED -- PORT_CONTENT_CACHE not loaded in this run\n");
+}
+
+// Emergency priority over dental wording, defense in depth: a message
+// combining dental words with a real ambulance signal must still be
+// caught by isMedicalEmergencyTopic() BEFORE reaching dental at all (the
+// actual guarantee lives in app.js's priority order, checked here at the
+// detector level since regression-charger.js has no DOM to run app.js's
+// real branching).
+let dentalEmergencyPriorityOk = true;
+if (typeof isMedicalEmergencyTopic === "function") {
+  const text = "Зуб болит невыносимо, вызовите скорую!";
+  const ok = isMedicalEmergencyTopic(text);
+  if (!ok) dentalEmergencyPriorityOk = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(40), "-> isMedicalEmergencyTopic:", ok, "(emergency must win over dental wording)");
+}
+console.log(`Block 11b (emergency priority over dental wording): ${dentalEmergencyPriorityOk ? "all passed" : "FAILED"}\n`);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

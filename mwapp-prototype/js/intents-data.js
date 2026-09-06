@@ -182,6 +182,14 @@
 // ALSO checks word boundaries per Markus's request rather than raw
 // substring. Checked directly: "скор" appeared as a bare anchor ONLY in
 // this one intent, nowhere else in the base.
+//
+// v45, 06.09.2026 -- DENTAL given a stable "id": "dental" field, same
+// reason as v42/v43 -- app.js now special-cases this intent's reply the
+// same way it already does for medical_facility/medical_emergency (see
+// dentalFallbackAnswer() in port-card-answers.js): a two-part answer
+// pointing to the nearest CONFIRMED hospital when no dentistry is
+// confirmed on the card, instead of stopping at "no data". No anchor or
+// scoring change here at all -- purely wiring for the new reply logic.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -551,6 +559,7 @@ const INTENTS = [
     "a": "«В большинстве стран простые обезболивающие продают без рецепта, но в некоторых могут попросить рецепт на сильные препараты. Спроси в аптеке.»"
   },
   {
+    "id": "dental",
     "q": "Что делать, если заболел зуб?",
     "primary": [
       "зуб",

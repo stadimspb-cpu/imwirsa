@@ -32,6 +32,15 @@
 // port files on disk, not a synthetic fixture, so a future icon change
 // anywhere fails loudly instead of silently degrading to the generic
 // fallback text.
+//
+// v8, 06.09.2026 -- dentalFallbackAnswer() added: the general MWApp
+// principle of "no specialized data on the card -> safe next step from
+// CONFIRMED data, not just 'no data'" applied to dental, per Andrey.
+// Checks for real dental data first (none exists on any of the 15 ports
+// today, checked directly), then falls back to the nearest CONFIRMED
+// hospital (reusing getHospitalCardFact()) with an explicit caveat that
+// this is not a claim the hospital treats dental issues -- see the block
+// itself for the full reasoning.
 // First working version of "the assistant reads the real port card" per
 // Andrey's decision to start this now rather than wait for the offline
 // dialogue system to be fully polished first. Deliberately scoped to a
@@ -269,6 +278,60 @@ function medicalFacilityAnswer(portId) {
   const intents = typeof INTENTS !== "undefined" ? INTENTS : [];
   const intent = intents.find((i) => i.id === "medical_facility");
   return intent ? intent.a : null;
+}
+
+// ---- DENTAL FALLBACK, 06.09.2026 --------------------------------------
+// General MWApp principle behind this, per Andrey: if a specialized
+// service isn't on the card, don't stop at "no data" -- give a safe next
+// step built ONLY from what the card actually confirms. Dental is the
+// first concrete case of this, not a one-off: the same shape (try the
+// specific service, then fall back to the nearest confirmed general
+// facility with an explicit "this isn't a claim that place offers X"
+// caveat) is the template for any future specialized service that turns
+// out not to be tracked on a card.
+//
+// Step 1 -- check for CONFIRMED dental data the normal way, through
+// INTENT_CARD_MAP, exactly like every other intent. Checked directly,
+// 06.09.2026: no port's data/{portId}.json has ANY dental-specific field
+// today, in subdetails or categories -- not guessed, actually searched
+// all 15 real files. So this always falls through to step 2 right now.
+// If a coordinator ever adds real dental data and someone maps it in
+// INTENT_CARD_MAP (intents-data.js's "q" -> subdetail suffix, same
+// process as every other field), this picks it up automatically with NO
+// further code change here.
+//
+// Step 2 -- no confirmed dentistry: state that plainly, then point to
+// the nearest CONFIRMED hospital -- reusing getHospitalCardFact(), the
+// exact same categories.emergency "🩺" data medical_facility already
+// uses, not a new lookup. Critically, this NEVER claims the hospital
+// itself provides dental care -- it directs the seafarer to ask there,
+// nothing stronger. Only whatever text the card itself confirms (title,
+// address, distance, hours) is shown; a phone number appears ONLY when
+// the port's own row text happens to include one (checked directly:
+// batumi/constanta/poti do, tallinn/klaipeda/istanbul mostly don't) --
+// nothing is invented either way.
+//
+// Step 3 -- no confirmed hospital either (istanbul-haydarpasa today, or
+// data not loaded yet): falls back to the DENTAL intent's own original
+// .a text, unchanged, which already points to the Seafarers' Centre and
+// Emergency Contacts.
+//
+// Emergency priority is untouched by any of this: isMedicalEmergencyTopic()
+// (offline-qa-match.js) is checked in app.js BEFORE the intent table is
+// even reached, so a message with real emergency signals never gets this
+// far regardless of dental wording in the same message.
+function dentalFallbackAnswer(portId) {
+  const dentalFact = getRawCardFact("Что делать, если заболел зуб?", portId);
+  if (dentalFact) return `«По данным карточки этого порта: ${dentalFact}.»`;
+
+  const noDentalLine = "В карточке этого порта нет подтверждённой стоматологии.";
+  const hospitalFact = getHospitalCardFact(portId);
+  if (hospitalFact) {
+    return `«${noDentalLine} Но вы можете обратиться в приёмное отделение ближайшей подтверждённой больницы и уточнить, где получить срочную стоматологическую помощь: ${hospitalFact}.»`;
+  }
+  const intents = typeof INTENTS !== "undefined" ? INTENTS : [];
+  const intent = intents.find((i) => i.id === "dental");
+  return intent ? intent.a : `«${noDentalLine}»`;
 }
 
 // ---- SPECIFIC BRAND / NAMED ENTITY HANDLING, 06.09.2026 --------------

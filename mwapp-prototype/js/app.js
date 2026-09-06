@@ -1596,8 +1596,15 @@ function sendAssistantChatMessage() {
           // medicalFacilityAnswer() in port-card-answers.js. Matched by the
           // intent's stable "id" (v42), not its .q text, so rewording that
           // question later won't silently break this wiring.
+          //
+          // DENTAL (v45/v8, 06.09.2026) is special-cased the same way:
+          // when no confirmed dentistry is on the card, dentalFallbackAnswer()
+          // points to the nearest CONFIRMED hospital instead of stopping at
+          // "no data" -- see that function in port-card-answers.js.
           const cardAnswer = matchedIntent.id === "medical_facility" && typeof medicalFacilityAnswer === "function"
             ? medicalFacilityAnswer(state.portId)
+            : matchedIntent.id === "dental" && typeof dentalFallbackAnswer === "function"
+            ? dentalFallbackAnswer(state.portId)
             : (typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, state.portId) : null);
           offlineAnswer = cardAnswer || matchedIntent.a;
         } else if (typeof findOfflineAnswer === "function") {
