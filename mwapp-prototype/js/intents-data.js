@@ -80,6 +80,36 @@
 // All four required phrases plus the fast-food additions are now locked
 // into regression-tests.js (new this session, part 2 "NAMED_CASES") so
 // they can never silently regress again.
+// v40, 06.09.2026 -- Andrey's "Block 3" live test (7 FAIL of 22): PHARMACY
+// intent's primary list had absorbed the exact anchor words of THREE other
+// specific intents (dentist's "врач", painkiller's "таблетк"/"обезболив",
+// lens/optics's "линз"/"очк"/"раствор для линз"), so specific requests
+// tied or lost to the generic pharmacy answer instead of winning. Removed
+// those from PHARMACY's primary, added as excludes instead -- same
+// generic-defers-to-specific pattern as FOOD-vs-vegetarian/halal in v39,
+// not a weight/scoring change. Two more instances of the identical
+// broad-anchor pattern ("врач" in a CBD-prescription sub-question, bare
+// "голова" in the hangover-remedy intent, bare "зубн" in the toiletries
+// intent, "срочн" causing two unrelated intents to tie against an
+// explicit "к зубному врачу" mention) turned up as a direct side effect
+// of fixing the dentist case alone and are fixed the same way (demote or
+// exclude), NOT by touching offline-qa-match.js -- engine untouched this
+// round per Andrey's instruction. "срочн" itself was deliberately NOT
+// weakened in the crisis/SOS intent (safety-critical anchor) -- excluded
+// "зубн"/"стоматолог" from the competing intents instead, which fixes
+// the tie without reducing real-emergency sensitivity.
+// Class 2 (bare optics query UNKNOWN): "оптик" was synonym-only on the
+// lens intent (promoted to primary -- same diminutive/colloquial rule as
+// always). "очк" is a 3-letter stem that containsAnchor()'s word-boundary
+// rule can never match against any real inflected form of "очки" (same
+// root cause as "вод"/"обед" in v39) -- fixed with explicit inflected
+// forms ("очки"/"очков"/"очках"), not by touching the boundary rule.
+// Also removed the lens intent's own "аптека" exclude, which had been
+// silently vetoing itself on any combined "аптека" + lens-product message
+// -- the actual root cause of the "just shows аптека" symptom, arguably
+// more than PHARMACY's overload.
+// Class 3 (Benu/Specsavers): two more entries in the same BRAND_ENTITIES
+// list from v11 (offline-qa-match.js) -- no new mechanism.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -400,22 +430,15 @@ const INTENTS = [
   {
     "q": "Где ближайшая аптека?",
     "primary": [
-      "раствор для линз",
       "аптек",
       "врач",
       "антисептик",
       "маск медицинск",
-      "обезболивающ",
       "пластыр",
       "термометр",
-      "очк",
       "лекарств",
-      "линз",
-      "ибупрофен",
       "бинт",
-      "градусник",
-      "таблетк",
-      "парацетамол"
+      "градусник"
     ],
     "synonyms": [
       "зелён крест",
@@ -426,7 +449,13 @@ const INTENTS = [
       "еда",
       "супермаркет",
       "сигареты",
-      "алкоголь"
+      "алкоголь",
+      "зубн",
+      "стоматолог",
+      "линз",
+      "очк",
+      "обезболив",
+      "таблетк"
     ],
     "a": "«Обычно аптека есть рядом с портом или на главной улице. Ищи зелёный крест. Спроси охрану — они скажут, где ближайшая.»"
   },
@@ -477,18 +506,20 @@ const INTENTS = [
     "primary": [
       "линз",
       "очк",
+      "очки",
+      "очков",
+      "очках",
       "раствор",
-      "зрен"
+      "зрен",
+      "оптик"
     ],
     "synonyms": [
       "контактн",
-      "оптик",
       "для глаз"
     ],
     "exclude": [
       "лекарства",
-      "таблетки",
-      "аптека"
+      "таблетки"
     ],
     "a": "«Раствор для линз продаётся в аптеках и оптиках. Очки (готовые) — в супермаркетах и на рынках.»"
   },
@@ -1418,12 +1449,12 @@ const INTENTS = [
     "q": "А если у меня рецепт на CBD от врача?",
     "primary": [
       "рецепт",
-      "врач",
       "документ",
       "разрешен",
       "ввоз"
     ],
     "synonyms": [
+      "врач",
       "справк",
       "лекарств",
       "обоснован",
@@ -1654,7 +1685,9 @@ const INTENTS = [
       "голод",
       "устал",
       "сон",
-      "хочу есть"
+      "хочу есть",
+      "зубн",
+      "стоматолог"
     ],
     "a": "«Внимание! Я передаю ваш запрос Дежурному офицеру IMWIRSA. Сейчас с вами свяжутся. Оставайтесь на связи. Никуда не уходите.»"
   },
@@ -2320,7 +2353,9 @@ const INTENTS = [
     "synonyms": [],
     "exclude": [
       "такси",
-      "пешком"
+      "пешком",
+      "зубн",
+      "стоматолог"
     ],
     "a": "«Срочно звони на судно (вахтенному) или агенту. Скажи, где ты.»"
   },
@@ -2393,11 +2428,11 @@ const INTENTS = [
     "primary": [
       "похмель",
       "средство",
-      "голова",
       "после пьянк"
     ],
     "synonyms": [
-      "аптека"
+      "аптека",
+      "голова"
     ],
     "exclude": [
       "алкоголь",
@@ -3831,7 +3866,8 @@ const INTENTS = [
       "мыл",
       "мочалк",
       "туалетн бумаг",
-      "зубн",
+      "паст",
+      "щетк",
       "флосс"
     ],
     "synonyms": [

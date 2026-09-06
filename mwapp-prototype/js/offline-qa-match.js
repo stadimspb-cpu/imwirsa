@@ -5,6 +5,11 @@
 // conversation) is flagged independently of intent scoring, letting the
 // caller (app.js) refuse to answer it with a generic category card fact.
 // See the block itself for the full rationale.
+//
+// v12, 06.09.2026 -- Benu (pharmacy) and Specsavers (optics) added to
+// BRAND_ENTITIES per Andrey's "Block 3" live test -- same mechanism,
+// no code change, confirming the list is genuinely extensible as
+// designed.
 // Replaces the 03.09.2026 approach (compare seafarer's message to the
 // QUESTION TEXT itself) with matching against hand-picked ANCHOR WORDS per
 // intent, built by Andrey/Markus/Olga from real field phrasing. This fixes
@@ -211,6 +216,8 @@ const BRAND_ENTITIES = [
   { anchors: ["макдональдс", "макдак", "mcdonald"], category: "food", label: "McDonald's" },
   { anchors: ["kfc", "кфс"], category: "food", label: "KFC" },
   { anchors: ["бургер кинг", "burger king"], category: "food", label: "Burger King" },
+  { anchors: ["benu"], category: "pharmacy", label: "Benu" },
+  { anchors: ["specsavers"], category: "optics", label: "Specsavers" },
 ];
 
 function detectBrandEntity(text) {

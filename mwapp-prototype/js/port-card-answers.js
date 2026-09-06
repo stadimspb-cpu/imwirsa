@@ -5,6 +5,10 @@
 // detectBrandEntity() (offline-qa-match.js) flags a brand/named-entity
 // request, so getPortSpecificAnswer()'s generic first-fact-in-category
 // result is never shown as if it answered a brand-specific question.
+//
+// v4, 06.09.2026 -- BRAND_CATEGORY_FOLLOWUP extended with "pharmacy" and
+// "optics" entries (Benu/Specsavers, see conversation) -- same mechanism
+// as v3, just two more categories.
 // First working version of "the assistant reads the real port card" per
 // Andrey's decision to start this now rather than wait for the offline
 // dialogue system to be fully polished first. Deliberately scoped to a
@@ -173,6 +177,8 @@ function getPortSpecificAnswer(intentQuestion, portId) {
 // field in the JSON first, not assume it looks like any existing field.
 const BRAND_CATEGORY_FOLLOWUP = {
   food: "Могу показать места, где точно можно поесть, по данным карточки этого порта — просто спроси «где поесть».",
+  pharmacy: "Могу показать ближайшую аптеку по данным карточки этого порта — просто спроси «где аптека».",
+  optics: "Могу показать, где купить очки или раствор для линз, по данным карточки этого порта — просто спроси «где оптика».",
 };
 
 function noConfirmedBrandDataAnswer(brand) {

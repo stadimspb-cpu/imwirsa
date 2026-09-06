@@ -131,6 +131,53 @@ for (const [text, category] of CASES_BRAND) {
 console.log(`Block 3 (brand/named-entity, ${typeof SUBDETAILS !== "undefined" ? "with real card data" : "brand-detection only, port-card-answers.js not loaded"}): ${brandOk ? "all passed" : "FAILED"}\n`);
 
 // ---------------------------------------------------------------------
+// Block 4 — pharmacy/dentist/painkiller/optics, 06.09.2026, per Andrey's
+// live test (Block 3 in his terms, "22 questions", 7 FAIL). Root cause
+// across all three "Class 1" cases was the same: the generic PHARMACY
+// intent's primary anchor list had grown to include the exact anchor
+// words of THREE separate specific intents (dentist's "врач", painkiller's
+// "таблетк"/"обезболив", lens's "линз"/"очк"/"раствор для линз"), so any
+// specific request tied or outright outscored the specific intent instead
+// of deferring to it. Fixed by removing those anchors from PHARMACY's
+// primary and excluding them instead (mirrors the FOOD-vs-vegetarian/halal
+// fix from Block 2 -- generic defers to specific via exclude, not by
+// weight tuning). Two more of the SAME "врач"/"голова"/bare-"зубн"/
+// "срочн" broad-anchor pattern turned up as a direct side effect of
+// fixing case #12 alone (see conversation) and are covered by the same
+// mechanism, not hand-patched per phrase. Class 2 (`оптик` was
+// synonym-only so could never independently trigger; `очк` is a 3-letter
+// stem that the containsAnchor() word-boundary rule can never match
+// against any real inflected form of "очки" -- same root cause as
+// "вод"/"обед" in Block 2 -- fixed the same way, with explicit inflected
+// forms, not by touching the boundary rule). Class 3 reuses the
+// BRAND_ENTITIES/detectBrandEntity mechanism from Block 3 unchanged --
+// Benu and Specsavers are just two more entries in that same list.
+const CASES_BLOCK4 = [
+  ["Нужно срочно к зубному врачу", "Что делать, если заболел зуб?"],
+  ["У меня болит голова. Где купить таблетки?", "Можно ли купить обезболивающее без рецепта?"],
+  ["Мне нужен раствор для линз — есть аптека рядом?", "Где купить раствор для контактных линз или очки?"],
+  ["Где здесь оптика?", "Где купить раствор для контактных линз или очки?"],
+  ["Мне нужны очки. Где купить?", "Где купить раствор для контактных линз или очки?"],
+];
+const block4Ok = runCases("Block 4 (pharmacy/dentist/painkiller/optics)", CASES_BLOCK4);
+
+const CASES_BRAND2 = [
+  ["Где аптека Benu?", "pharmacy"],
+  ["Где Specsavers?", "optics"],
+];
+let brand2Ok = true;
+for (const [text, category] of CASES_BRAND2) {
+  const brand = typeof detectBrandEntity === "function" ? detectBrandEntity(text) : null;
+  const reply = typeof SUBDETAILS !== "undefined" ? simulateReply(text, "tallinn-vanasadam") : null;
+  const brandDetectedOk = brand && brand.category === category;
+  const noLeak = reply === null || !reply.startsWith("По данным карточки этого порта");
+  const ok = brandDetectedOk && noLeak;
+  if (!ok) brand2Ok = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(30), "brand:", brand ? brand.label : "NONE", reply ? "| reply: " + reply.slice(0, 70) : "");
+}
+console.log(`Block 4 brand cases (pharmacy/optics): ${brand2Ok ? "all passed" : "FAILED"}\n`);
+
+// ---------------------------------------------------------------------
 // Self-check #1, added 05.09.2026 per Andrey/Markus: every intent's OWN
 // canonical question must produce at least one real (non-generic) primary
 // hit against its OWN anchor list. Catches an anchor cleanup that removed
@@ -188,7 +235,7 @@ const selfMatchCount = INTENTS.filter((i) => {
 }).length;
 console.log(`Self-check #2 (uniquely wins its own match): ${selfMatchCount}/${INTENTS.length} intents\n`);
 
-if (!chargerOk || !block2Ok || !brandOk) {
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");
