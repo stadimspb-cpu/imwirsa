@@ -143,6 +143,15 @@
 // demoted: dentist's bare "больн" (same root collision) -> synonym;
 // vaccination's "медцентр" -> synonym (a bare "где медцентр" is a
 // general facility question, not specifically about a vaccine).
+//
+// v42, 06.09.2026 -- MEDICAL_FACILITY given a stable "id": "medical_facility"
+// field per Andrey's robustness request: app.js and port-card-answers.js
+// were matching this ONE intent by comparing the literal .q text, so
+// rewording the question later would silently break the hospital-card
+// wiring (and the v41 fallback) with no error, just a quietly wrong
+// answer. Deliberately added ONLY to this intent, not as a schema change
+// across all 179 -- every other intent is untouched and still has no
+// "id" field; nothing else reads or requires one.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -534,6 +543,7 @@ const INTENTS = [
     "a": "«Мы не нашли стоматологию в базе этого порта. Обратись в центр моряков — у них часто есть список дежурных зубных врачей для моряков. Или звони в экстренную службу.»"
   },
   {
+    "id": "medical_facility",
     "q": "Мне нужен врач или больница?",
     "primary": [
       "врач",

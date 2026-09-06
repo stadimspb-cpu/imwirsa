@@ -22,6 +22,16 @@
 // categories.emergency.rows (top-level, icon "🩺"), not a subdetail, so
 // the existing SUBDETAILS-only lookup could never see it. See the block
 // itself for the full audit (all 15 ports checked directly).
+//
+// v7, 06.09.2026 -- robustness pass per Andrey: matching switched from
+// the intent's .q TEXT to its stable "id" field (see intents-data.js
+// v42) so rewording that question later can't silently break this
+// wiring; the "🩺" icon lookup pulled into a named HOSPITAL_ROW_ICON
+// constant and documented as an explicit CONTRACT (see the block below)
+// -- regression-charger.js's new Block 8 checks it against all 15 real
+// port files on disk, not a synthetic fixture, so a future icon change
+// anywhere fails loudly instead of silently degrading to the generic
+// fallback text.
 // First working version of "the assistant reads the real port card" per
 // Andrey's decision to start this now rather than wait for the offline
 // dialogue system to be fully polished first. Deliberately scoped to a
@@ -208,18 +218,31 @@ function categoryFallbackAnswer(category, portId) {
 // lives in the TOP-LEVEL categories.emergency.rows array — the exact
 // same data the Port tab's "Emergency Contacts" screen already renders —
 // NOT in a subdetail, so getRealCardFact()/getPortSpecificAnswer() above
-// can never see it (those only ever read SUBDETAILS). Every one of the
-// 15 ports marks its hospital row with icon "🩺", uniquely (never more
-// than one such row per port) — a reliable, already-existing signal, not
-// a new field. categories data is cached per-port in PORT_CONTENT_CACHE
-// (see ensurePortContentLoaded() in app.js), a separate cache from
-// SUBDETAILS, so this needs its own lookup rather than reusing
-// getRawCardFact()'s subdetail-shaped path.
+// can never see it (those only ever read SUBDETAILS). categories data is
+// cached per-port in PORT_CONTENT_CACHE (see ensurePortContentLoaded()
+// in app.js), a separate cache from SUBDETAILS, so this needs its own
+// lookup rather than reusing getRawCardFact()'s subdetail-shaped path.
+//
+// CONTRACT, v6/v7, 06.09.2026: every one of the 15 real ports marks its
+// hospital row with icon HOSPITAL_ROW_ICON below, uniquely (never more
+// than one such row per port) -- checked directly, this is a real,
+// working signal, not a guess. But it is a SILENT contract: nothing
+// enforces it structurally, so if a future edit to any port's
+// data/{portId}.json ever changes or drops that icon, or a future code
+// edit changes the constant below, getHospitalCardFact() doesn't error —
+// it just returns null and MEDICAL_FACILITY quietly falls back to the
+// generic "no confirmed data" text for that port, with nothing in the UI
+// to say why. regression-charger.js's Block 8 loads every port's REAL
+// data/{portId}.json directly off disk and asserts each one still has
+// exactly one row tagged with this exact icon -- run it after any change
+// to either a port's emergency category or this constant.
+const HOSPITAL_ROW_ICON = "🩺";
+
 function getHospitalCardFact(portId) {
   const cache = typeof PORT_CONTENT_CACHE !== "undefined" ? PORT_CONTENT_CACHE[portId] : null;
   const rows = cache && cache.categories && cache.categories.emergency && cache.categories.emergency.rows;
   if (!Array.isArray(rows)) return null;
-  const row = rows.find((r) => r.icon === "🩺");
+  const row = rows.find((r) => r.icon === HOSPITAL_ROW_ICON);
   if (!row || !row.title) return null;
   // Same "this isn't actually confirmed yet" guard as getRealCardFact()
   // above, plus the exact phrasing istanbul-haydarpasa's card uses for
@@ -232,18 +255,19 @@ function getHospitalCardFact(portId) {
 }
 
 // Reply builder for the MEDICAL_FACILITY intent specifically (wired in
-// app.js by matching on that intent's exact .q, the same way brand/
-// category overrides are special-cased rather than forced through the
-// generic getPortSpecificAnswer() path they don't fit). Falls back to the
-// intent's own honest .a text — unchanged from v41 — when the port's
-// hospital row isn't loaded yet or is itself marked unconfirmed
-// (istanbul-haydarpasa today), so that one port keeps getting the
-// correct honest answer instead of a broken lookup.
+// app.js by matching on that intent's stable "id" (v42) — see intents-
+// data.js — the same way brand/category overrides are special-cased
+// rather than forced through the generic getPortSpecificAnswer() path
+// they don't fit). Falls back to the intent's own honest .a text —
+// unchanged from v41 — when the port's hospital row isn't loaded yet or
+// is itself marked unconfirmed (istanbul-haydarpasa today), so that one
+// port keeps getting the correct honest answer instead of a broken
+// lookup.
 function medicalFacilityAnswer(portId) {
   const fact = getHospitalCardFact(portId);
   if (fact) return `«Ближайшая подтверждённая больница по данным карточки порта: ${fact}.»`;
   const intents = typeof INTENTS !== "undefined" ? INTENTS : [];
-  const intent = intents.find((i) => i.q === "Мне нужен врач или больница?");
+  const intent = intents.find((i) => i.id === "medical_facility");
   return intent ? intent.a : null;
 }
 

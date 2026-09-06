@@ -284,14 +284,38 @@ console.log(`Block 5b (category override must NOT fire / must not regress): ${ca
 // root) -> synonym; vaccination's "медцентр" -> synonym (a bare "где
 // медцентр" is about finding a facility in general, not specifically
 // about getting a vaccine -- MEDICAL_FACILITY owns that word now).
+//
+// The MEDICAL_FACILITY-expected cases below check the intent's stable
+// "id" (v42, intents-data.js), not its .q text -- per Andrey's
+// robustness request, app.js/port-card-answers.js route on that id, so
+// this test checks the same thing they actually rely on. If it checked
+// .q instead, renaming that question later would fail this test even
+// though the real routing still works correctly.
+function runIdCases(label, cases) {
+  let pass = 0;
+  for (const [text, expectedId] of cases) {
+    const intent = findOfflineIntent(text);
+    const gotId = intent ? intent.id || "(no id)" : "UNKNOWN";
+    const ok = gotId === expectedId;
+    if (ok) pass++;
+    console.log(ok ? "OK" : "!!", text.padEnd(45), "-> id:", gotId, intent ? "(\"" + intent.q + "\")" : "");
+  }
+  console.log(`${label}: ${pass}/${cases.length} passed\n`);
+  return pass === cases.length;
+}
+
+const CASES_MEDICAL_FACILITY_ID = [
+  ["Я простыл и мне нужно к врачу", "medical_facility"],
+  ["Надо больницу", "medical_facility"],
+  ["Дежурная больница", "medical_facility"],
+  ["Мне нужен врач", "medical_facility"],
+  ["Где больница?", "medical_facility"],
+  ["Где клиника?", "medical_facility"],
+  ["Где медцентр?", "medical_facility"],
+];
+const medicalFacilityIdOk = runIdCases("Block 6a (MEDICAL_FACILITY routes by stable id)", CASES_MEDICAL_FACILITY_ID);
+
 const CASES_MEDICAL_FACILITY = [
-  ["Я простыл и мне нужно к врачу", "Мне нужен врач или больница?"],
-  ["Надо больницу", "Мне нужен врач или больница?"],
-  ["Дежурная больница", "Мне нужен врач или больница?"],
-  ["Мне нужен врач", "Мне нужен врач или больница?"],
-  ["Где больница?", "Мне нужен врач или больница?"],
-  ["Где клиника?", "Мне нужен врач или больница?"],
-  ["Где медцентр?", "Мне нужен врач или больница?"],
   // dentistry stays its own category, not swallowed by the new general one
   ["Нужен зубной врач", "Что делать, если заболел зуб?"],
   // emergency/crisis intents keep priority -- none of these should ever
@@ -308,7 +332,7 @@ const CASES_MEDICAL_FACILITY = [
   ["Где ближайшая аптека?", "Где ближайшая аптека?"],
   ["Можно ли получить прививку в порту?", "Можно ли получить прививку в порту?"],
 ];
-const medicalFacilityOk = runCases("Block 6 (MEDICAL_FACILITY: врач/больница/клиника)", CASES_MEDICAL_FACILITY);
+const medicalFacilityOk = runCases("Block 6b (dentist/emergency/pharmacy still correctly separate)", CASES_MEDICAL_FACILITY) && medicalFacilityIdOk;
 
 // ---------------------------------------------------------------------
 // Block 7 — MEDICAL_FACILITY hospital CARD DATA, 06.09.2026. Andrey
@@ -341,6 +365,58 @@ if (typeof PORT_CONTENT_CACHE !== "undefined" && typeof medicalFacilityAnswer ==
   console.log(`Block 7 (MEDICAL_FACILITY hospital card data): ${medicalFacilityCardOk ? "all passed" : "FAILED"}\n`);
 } else {
   console.log("Block 7 (MEDICAL_FACILITY hospital card data): SKIPPED -- PORT_CONTENT_CACHE not loaded in this run\n");
+}
+
+// ---------------------------------------------------------------------
+// Block 8 — hospital-icon CONTRACT, 06.09.2026, per Andrey's robustness
+// request. getHospitalCardFact() (port-card-answers.js) finds the
+// hospital by icon HOSPITAL_ROW_ICON ("🩺") in categories.emergency.rows.
+// That's a real, working signal (checked across all 15 ports when it was
+// built) but a SILENT one: if a future edit to any port's
+// data/{portId}.json ever changes or drops that icon, getHospitalCardFact()
+// doesn't error — it just returns null and MEDICAL_FACILITY quietly falls
+// back to the generic "no confirmed data" text, with nothing to say why.
+//
+// This block makes that failure LOUD: it reads every port's REAL
+// data/{portId}.json directly off disk -- not a synthetic fixture, so it
+// catches an actual future data edit, not just a hypothetical one -- and
+// asserts each one still has exactly one row tagged with the SAME
+// constant the real code uses (falls back to the literal "🩺" only if
+// port-card-answers.js wasn't loaded in this run, so the check still
+// means something on its own).
+//
+// Reads ../data/*.json relative to the CURRENT WORKING DIRECTORY, not
+// __dirname -- a stdin-piped script has no __dirname. Run this from
+// mwapp-prototype/js/ (where the other files in the `cat ... | node`
+// command already have to live) so ../data/ resolves to the real sibling
+// folder. If it can't be read from wherever this happens to run, the
+// block says so and skips itself rather than failing the whole suite for
+// an environment problem unrelated to the actual contract.
+let hospitalIconContractOk = true;
+try {
+  const fs = require("fs");
+  const path = require("path");
+  const expectedIcon = typeof HOSPITAL_ROW_ICON !== "undefined" ? HOSPITAL_ROW_ICON : "🩺";
+  const dataDir = path.join(process.cwd(), "..", "data");
+  const portFiles = fs.readdirSync(dataDir).filter((f) => f.endsWith(".json") && f !== "manifest.json");
+  if (portFiles.length === 0) throw new Error("no port .json files found in " + dataDir);
+  for (const file of portFiles) {
+    const portId = file.replace(/\.json$/, "");
+    const data = JSON.parse(fs.readFileSync(path.join(dataDir, file), "utf8"));
+    const rows = data.categories && data.categories.emergency && data.categories.emergency.rows;
+    const hospitalRows = Array.isArray(rows) ? rows.filter((r) => r.icon === expectedIcon) : [];
+    const ok = hospitalRows.length === 1;
+    if (!ok) hospitalIconContractOk = false;
+    const detail = hospitalRows.length === 0
+      ? "CONTRACT BROKEN -- no row with icon \"" + expectedIcon + "\" found (hospital row missing or icon changed)"
+      : hospitalRows.length > 1
+      ? "CONTRACT BROKEN -- " + hospitalRows.length + " rows with this icon, ambiguous"
+      : hospitalRows[0].title;
+    console.log(ok ? "OK" : "!!", portId.padEnd(24), "->", detail);
+  }
+  console.log(`Block 8 (hospital-icon contract, ${portFiles.length} real port files on disk, icon "${expectedIcon}"): ${hospitalIconContractOk ? "all passed" : "FAILED"}\n`);
+} catch (e) {
+  console.log(`Block 8 (hospital-icon contract): SKIPPED -- couldn't read ../data/*.json from cwd (${e.message}). Run from mwapp-prototype/js/ to exercise it.\n`);
 }
 
 // ---------------------------------------------------------------------
@@ -401,7 +477,7 @@ const selfMatchCount = INTENTS.filter((i) => {
 }).length;
 console.log(`Self-check #2 (uniquely wins its own match): ${selfMatchCount}/${INTENTS.length} intents\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk) {
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

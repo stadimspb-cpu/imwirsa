@@ -1549,8 +1549,10 @@ function sendAssistantChatMessage() {
           // real data lives in categories.emergency (top-level, icon "🩺"),
           // not a subdetail, so it can't go through the generic
           // getPortSpecificAnswer()/INTENT_CARD_MAP path at all — see
-          // medicalFacilityAnswer() in port-card-answers.js.
-          const cardAnswer = matchedIntent.q === "Мне нужен врач или больница?" && typeof medicalFacilityAnswer === "function"
+          // medicalFacilityAnswer() in port-card-answers.js. Matched by the
+          // intent's stable "id" (v42), not its .q text, so rewording that
+          // question later won't silently break this wiring.
+          const cardAnswer = matchedIntent.id === "medical_facility" && typeof medicalFacilityAnswer === "function"
             ? medicalFacilityAnswer(state.portId)
             : (typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, state.portId) : null);
           offlineAnswer = cardAnswer || matchedIntent.a;
