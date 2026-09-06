@@ -1228,6 +1228,18 @@ function isRedLineTopic(text) {
   return RED_LINE_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
+// Deterministic reply for isMedicalEmergencyTopic() (offline-qa-match.js)
+// per Andrey's explicit requirement, 06.09.2026: no generative text, no
+// dependency on which intent happened to score highest. 112 is the real,
+// confirmed emergency number for police/ambulance/fire on ALL 15 ports
+// currently in this base (checked directly across every port's
+// categories.emergency data, not assumed) -- see the "Какой номер
+// экстренных служб?" intent (intents-data.js, id "medical_emergency" for
+// stable reference) for the same fact, kept in sync with this text
+// deliberately rather than duplicated with different wording.
+const MEDICAL_EMERGENCY_REPLY =
+  "«Звони 112 — это номер экстренной помощи (полиция / скорая / пожарная), работает круглосуточно и бесплатно на всех портах в этом приложении.»";
+
 // Rough proxy for "this reads as an actual question, just about a topic we
 // don't cover" vs "this message is unclear on its own terms" — see the
 // 04.09.2026 note where this is used, next to demoReplies/unclearReplies.
@@ -1446,11 +1458,21 @@ function sendAssistantChatMessage() {
 
   const a = getAssistant(state.assistant) || getAssistant("alex");
   setTimeout(() => {
+    // ---- DIAGNOSTIC LOGGING, temporary per Andrey's request 06.09.2026 --
+    // Remove once the "скорая помощь" investigation is confirmed closed.
+    // Logs the actual decision path for every message so a future report
+    // like this one can be traced without re-deriving it from scratch.
+    const diagNormalized = typeof normalizeText === "function" ? normalizeText(text) : null;
+    console.log("[DIAG] raw query:", JSON.stringify(text));
+    console.log("[DIAG] normalized query:", JSON.stringify(diagNormalized));
+
     if (isRedLineTopic(text)) {
+      console.log("[DIAG] matched rule: RED_LINE_KEYWORDS");
       // Safety takes priority over everything else, including whether this
       // reply was meant to answer "why do you want the coordinator" — a
       // red-line message is a red-line message regardless of context.
       const msg = t("redline.message") || t(`escalation.${a.id}`) || t("escalation.alex");
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
@@ -1459,6 +1481,20 @@ function sendAssistantChatMessage() {
           <button class="esc-btn esc-coordinator" data-detail="emergency">${t("redline.emergencyBtn") || t("settings.talkToCoordinator")}</button>
           <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("redline.talkToPersonBtn") || t("escalationToggle.coordinatorBtn")}</button>
         </div>`);
+    } else if (typeof isMedicalEmergencyTopic === "function" && isMedicalEmergencyTopic(text)) {
+      // Medical emergency (ambulance), 06.09.2026: checked BEFORE
+      // isComplexTopic, companion chat, and the scored intent table --
+      // see isMedicalEmergencyTopic() (offline-qa-match.js) for the full
+      // rationale (a real tie in the scored table was swallowing this
+      // into the "unclear" fallback). Deterministic reply, no intent
+      // scoring involved at all, so it can never again lose a tie to
+      // anything.
+      console.log("[DIAG] matched rule: MEDICAL_EMERGENCY_KEYWORDS");
+      console.log("[DIAG] matched intent: medical_emergency (deterministic, no scoring)");
+      console.log("[DIAG] selected response:", JSON.stringify(MEDICAL_EMERGENCY_REPLY));
+      state.chatMessages.push({ who: "them", text: MEDICAL_EMERGENCY_REPLY });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(MEDICAL_EMERGENCY_REPLY)}</div>`);
     } else if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
       // Explicitly asked for the coordinator, but the reason reads as idle/
       // lonely small talk rather than a real issue — point to Spiritual
@@ -1476,7 +1512,9 @@ function sendAssistantChatMessage() {
       // seafarer explicitly came here via "Talk to Coordinator" and this
       // reply wasn't idle chat, so default to offering the same escalation
       // toggle used everywhere else rather than a generic demo reply.
+      console.log("[DIAG] matched rule:", isCoordinatorReasonReply ? "isCoordinatorReasonReply" : "COMPLEX_TOPIC_KEYWORDS");
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
@@ -1506,6 +1544,8 @@ function sendAssistantChatMessage() {
         ? findCompanionReply(text, getPortLocalHour(state.portId))
         : null;
       let offlineAnswer = companionReply;
+      let diagMatchedRule = companionReply ? "companion chat" : null;
+      let diagMatchedIntent = null;
       if (!offlineAnswer && typeof findOfflineIntent === "function") {
         // Brand/entity check, 06.09.2026: a request naming a SPECIFIC
         // place or chain (McDonald's, KFC, ...) must never be answered
@@ -1531,15 +1571,19 @@ function sendAssistantChatMessage() {
           ? resolveCategoryOverride(text)
           : null;
         const matchedIntent = findOfflineIntent(text);
+        diagMatchedIntent = matchedIntent ? (matchedIntent.id || matchedIntent.q) : null;
         if (brand) {
+          diagMatchedRule = "BRAND_ENTITIES: " + brand.label;
           offlineAnswer = typeof noConfirmedBrandDataAnswer === "function"
             ? noConfirmedBrandDataAnswer(brand)
             : (matchedIntent ? matchedIntent.a : null);
         } else if (categoryOverride) {
+          diagMatchedRule = "CATEGORY_ANCHORS: " + categoryOverride.category.id;
           offlineAnswer = typeof categoryFallbackAnswer === "function"
             ? categoryFallbackAnswer(categoryOverride.category, state.portId)
             : categoryOverride.categoryIntent.a;
         } else if (matchedIntent) {
+          diagMatchedRule = "intent table";
           // Pilot, 04.09.2026: try the CURRENT port's real card data first
           // (see port-card-answers.js) — only a handful of fields are wired
           // up so far, everything else still falls through to the same
@@ -1558,6 +1602,7 @@ function sendAssistantChatMessage() {
           offlineAnswer = cardAnswer || matchedIntent.a;
         } else if (typeof findOfflineAnswer === "function") {
           offlineAnswer = findOfflineAnswer(text); // covers the FOOD/COFFEE combo-override case, which has no single intent to attach card data to
+          if (offlineAnswer) diagMatchedRule = "combo override (FOOD/COFFEE)";
         }
       }
       let replyKey = null;
@@ -1568,8 +1613,12 @@ function sendAssistantChatMessage() {
         if (hasUnresolvedReferent(text)) replyKey = "missingObjectReplies";
         else if (looksLikeAQuestion(text)) replyKey = "demoReplies";
         else replyKey = "unclearReplies";
+        diagMatchedRule = "none -- falling back to " + replyKey;
       }
       const reply = offlineAnswer || t(replyKey)[state.assistantReplyIndex % t(replyKey).length];
+      console.log("[DIAG] matched intent:", diagMatchedIntent);
+      console.log("[DIAG] matched keyword/rule:", diagMatchedRule);
+      console.log("[DIAG] selected response:", JSON.stringify(reply));
       if (!offlineAnswer) state.assistantReplyIndex++;
       state.chatMessages.push({ who: "them", text: reply });
       saveState();

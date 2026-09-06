@@ -19,6 +19,13 @@
 // rationale and why it deliberately reuses each category intent's
 // existing `exclude` list rather than adding a new mechanism for
 // "deliberate vs accidental" deferral.
+//
+// v14, 06.09.2026 -- MEDICAL_EMERGENCY_KEYWORDS + isMedicalEmergencyTopic()
+// added: a dedicated, deterministic, DOM-free ambulance/emergency
+// detector, called from app.js BEFORE the scored intent table at all.
+// Root cause and full rationale in the block itself; lives here (not
+// app.js) specifically so regression-charger.js can test it directly,
+// same reason detectBrandEntity/resolveCategoryOverride live here.
 // Replaces the 03.09.2026 approach (compare seafarer's message to the
 // QUESTION TEXT itself) with matching against hand-picked ANCHOR WORDS per
 // intent, built by Andrey/Markus/Olga from real field phrasing. This fixes
@@ -236,6 +243,60 @@ function detectBrandEntity(text) {
     if (brand.anchors.some((a) => containsAnchor(msg, a))) return brand;
   }
   return null;
+}
+
+// ---- MEDICAL EMERGENCY (ambulance) DETECTION, 06.09.2026 --------------
+// Found live: "Мне нужна скорая помощь" was landing in the generic
+// "unclear" fallback. Root cause, confirmed by running the FULL message
+// pipeline (not just findOfflineIntent() in isolation, which is all prior
+// testing this session had actually exercised): the scored intent "Какой
+// номер экстренных служб?" (primary "скор", synonym "помощь") TIES 4-4
+// with the unrelated "Мне плохо, что делать?" intent (primary "помощь",
+// synonym "скора" -- "скора" is a substring of "скорая", both anchors
+// firing on the same message). A genuine tie under AMBIGUITY_MARGIN
+// returns null, which is exactly the UNKNOWN that fell through to
+// "unclear". This is a PRE-EXISTING collision, not something introduced
+// by any change this session -- neither intent's anchors were touched
+// before now -- it simply hadn't been tested with the literal word
+// "помощь" attached to "скорая" until this report. (The intent-level tie
+// is ALSO fixed directly -- "Мне плохо" now excludes "скорая"/"скорую",
+// intents-data.js v43 -- as defense in depth, but that alone wasn't
+// judged sufficient given the safety stakes; see below.)
+//
+// Given those stakes, this is handled the same way BRAND_ENTITIES/
+// CATEGORY_ANCHORS are: a dedicated, deterministic check, independent of
+// intent SCORING, so a call for an ambulance can never again lose a tie
+// to an unrelated intent no matter what anchors get added to either side
+// in the future. Lives here (not app.js) specifically so it has no DOM
+// dependency and regression-charger.js can test it directly, the same
+// reason detectBrandEntity/resolveCategoryOverride live here. app.js
+// calls this BEFORE isComplexTopic, companion chat, or the intent table
+// -- see the priority order in sendAssistantChatMessage.
+//
+// Plain substring matching on normalizeText()'s output (lowercase,
+// punctuation stripped, whitespace collapsed, ё→е) rather than exact-
+// phrase matching, per Andrey's explicit requirement: this makes every
+// marker robust to case, trailing punctuation, extra spaces, and word
+// order (word order only matters WITHIN a multi-word marker itself, and
+// every multi-word marker here keeps the natural RU/EN word order, so
+// this is not a practical limitation in tested cases). Bare "скорая"/
+// "скорую"/"скорой" already cover every RU ambulance phrase in this list
+// ("вызвать скорую", "нужна скорая", "скорая помощь") as substrings --
+// kept as explicit separate entries anyway so the list stays self-
+// documenting and doesn't silently lose coverage if the bare forms are
+// ever edited without noticing they were load-bearing for the phrases too.
+const MEDICAL_EMERGENCY_KEYWORDS = [
+  "скорая", "скорую", "скорой",
+  "вызвать скорую", "нужна скорая", "скорая помощь",
+  "экстренная помощь", "срочная медицинская помощь",
+  "ambulance", "emergency", "medical emergency",
+  "call an ambulance", "need an ambulance",
+];
+
+function isMedicalEmergencyTopic(text) {
+  const normalized = normalizeText(text);
+  if (!normalized) return false;
+  return MEDICAL_EMERGENCY_KEYWORDS.some((kw) => normalized.includes(kw));
 }
 
 // Returns the matched INTENT OBJECT itself (not just .a) -- needed so a

@@ -152,6 +152,23 @@
 // answer. Deliberately added ONLY to this intent, not as a schema change
 // across all 179 -- every other intent is untouched and still has no
 // "id" field; nothing else reads or requires one.
+//
+// v43, 06.09.2026 -- Andrey's live test found "Мне нужна скорая помощь"
+// landing in the generic "unclear" fallback, TWICE. Root cause: a
+// PRE-EXISTING 4-4 tie between "Какой номер экстренных служб?" (now id
+// "medical_emergency") and "Мне плохо, что делать?" (both anchor on
+// "помощь"/"скор(а)") -- present before this session even started,
+// simply never tested with the literal word "помощь" attached to
+// "скорая" until now. Two changes here: (1) "medical_emergency" id added
+// to "Какой номер экстренных служб?" for the same stable-routing reason
+// as v42's "medical_facility". (2) "скорая"/"скорую" added to "Мне
+// плохо"'s exclude -- an explicit ambulance request is a more specific,
+// more actionable ask than the generic IMWIRSA-duty-office routing, and
+// should win outright rather than tie with it. This is defense in depth
+// only: the actual fix that guarantees this can never tie again is the
+// new isMedicalEmergencyTopic() deterministic check in offline-qa-match.js
+// (v14), called before this scored table runs at all -- see there and
+// app.js's priority order for the full picture.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -949,6 +966,7 @@ const INTENTS = [
     "a": "«У нас нет данных о безопасности этого района. Рекомендую гулять в группах, не носить много наличных и вернуться на судно до наступления темноты.»"
   },
   {
+    "id": "medical_emergency",
     "q": "Какой номер экстренных служб?",
     "primary": [
       "экстренн",
@@ -1752,7 +1770,9 @@ const INTENTS = [
       "сон",
       "хочу есть",
       "зубн",
-      "стоматолог"
+      "стоматолог",
+      "скорая",
+      "скорую"
     ],
     "a": "«Внимание! Я передаю ваш запрос Дежурному офицеру IMWIRSA. Сейчас с вами свяжутся. Оставайтесь на связи. Никуда не уходите.»"
   },

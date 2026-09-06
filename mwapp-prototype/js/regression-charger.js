@@ -196,10 +196,22 @@ console.log(`Block 4 brand cases (pharmacy/optics): ${brand2Ok ? "all passed" : 
 // The corrected version only overrides a genuine UNKNOWN (tie / no
 // candidate), never a clean win by a different intent -- these cases
 // pin that distinction down so it can't quietly regress back.
+//
+// "Где аптека Скорая помощь?" -- the ORIGINAL example used here -- was
+// replaced 06.09.2026: it's now correctly intercepted by the new
+// MEDICAL_EMERGENCY priority check in app.js (isMedicalEmergencyTopic(),
+// checked before category override even runs, see the emergency-priority
+// section below) and answered with the deterministic 112 reply instead.
+// That's the CORRECT behavior per Andrey's explicit priority ordering,
+// not a regression -- but it meant this exact phrase stopped being a
+// valid test of category override specifically, since a real user would
+// never reach that code path with it. "Где аптека Экстренная?" is a
+// clean replacement: it hits the SAME underlying 3-way anchor collision
+// (PHARMACY "аптек" / emergency-numbers "экстренн" / "Мне плохо, что
+// делать?" "экстренн") without containing any MEDICAL_EMERGENCY_KEYWORDS
+// marker, so it still reaches category override in the real pipeline too.
 const CASES_CATEGORY_OVERRIDE_POSITIVE = [
-  // the exact example from the conversation: unknown name must not tie
-  // pharmacy into UNKNOWN via the emergency-services intent's "скор" anchor
-  ["Где аптека Скорая помощь?", "pharmacy"],
+  ["Где аптека Экстренная?", "pharmacy"],
   // constructed collisions proving this isn't pharmacy-only: "обменник"
   // is the currency-exchange intent's own word; "ночной" is the
   // 24-hour-bar intent's word -- both would otherwise tie their category
@@ -232,8 +244,15 @@ const CASES_CATEGORY_OVERRIDE_NEGATIVE = [
   ["У меня болит голова. Где купить таблетки?", "Можно ли купить обезболивающее без рецепта?"],
   ["Мне нужен раствор для линз — есть аптека рядом?", "Где купить раствор для контактных линз или очки?"],
   // must NOT trigger PHARMACY at all -- no category anchor present, this
-  // is a self-contained different topic, not "category + unknown name"
-  ["Мне нужна скорая помощь", "UNKNOWN"],
+  // is a self-contained different topic, not "category + unknown name".
+  // Was "UNKNOWN" until 06.09.2026's medical-emergency fix (v43): this
+  // exact phrase used to tie with "Мне плохо, что делать?" (see Block 9
+  // below and offline-qa-match.js's isMedicalEmergencyTopic() for the
+  // full story) -- now resolves cleanly to "Какой номер экстренных
+  // служб?" even at the data layer alone, which is the CORRECT fixed
+  // behavior, not a regression. Updating this expectation is itself part
+  // of confirming the fix, not a weakening of the test.
+  ["Мне нужна скорая помощь", "Какой номер экстренных служб?"],
   // plain category questions with no trailing name must resolve exactly
   // as before this feature existed
   ["Где ближайшая аптека?", "Где ближайшая аптека?"],
@@ -477,7 +496,65 @@ const selfMatchCount = INTENTS.filter((i) => {
 }).length;
 console.log(`Self-check #2 (uniquely wins its own match): ${selfMatchCount}/${INTENTS.length} intents\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk) {
+// ---------------------------------------------------------------------
+// Block 9 — MEDICAL EMERGENCY (ambulance) priority, 06.09.2026, per
+// Andrey's live test: "Мне нужна скорая помощь" (and variants) landed in
+// the generic "unclear" fallback. Root cause: a PRE-EXISTING 4-4 tie
+// between "Какой номер экстренных служб?" (id "medical_emergency") and
+// "Мне плохо, что делать?" (both anchor on "помощь"/"скор(а)") -- see the
+// full writeup in offline-qa-match.js's isMedicalEmergencyTopic() and
+// intents-data.js v43. Two layers tested here:
+//   9a) isMedicalEmergencyTopic() directly -- the deterministic,
+//       DOM-free detector app.js checks BEFORE the scored intent table
+//       even runs, so this can never again lose a tie to anything.
+//   9b) findOfflineIntent() itself, defense in depth -- confirms the
+//       underlying tie is ALSO fixed at the data layer (the "id" +
+//       exclude changes in intents-data.js v43), for the case where a
+//       phrasing doesn't hit 9a's keyword list but still reaches the
+//       scored table.
+// Every example is exactly one Andrey gave, covering case, punctuation,
+// extra spaces, word order, added words, and EN -- per his explicit
+// robustness requirement, not a single exact-phrase match.
+let medicalEmergencyOk = true;
+if (typeof isMedicalEmergencyTopic === "function") {
+  const CASES_MEDICAL_EMERGENCY_KEYWORD = [
+    "Мне нужна скорая помощь", "мне нужна скорая", "Нужна срочно скорая!",
+    "Как вызвать скорую?", "Вызови скорую помощь", "Мне очень плохо, нужна скорая",
+    "  мне   нужна    скорая  ", "МНЕ НУЖНА СКОРАЯ ПОМОЩЬ",
+    "ambulance please", "I need an ambulance", "call an ambulance now", "medical emergency!",
+  ];
+  for (const text of CASES_MEDICAL_EMERGENCY_KEYWORD) {
+    const ok = isMedicalEmergencyTopic(text);
+    if (!ok) medicalEmergencyOk = false;
+    console.log(ok ? "OK" : "!!", text.padEnd(35), "-> isMedicalEmergencyTopic:", ok);
+  }
+  // must NOT fire for unrelated messages that merely share a word
+  const CASES_MEDICAL_EMERGENCY_NEGATIVE = ["Помогите скорее, пожалуйста", "Нужен зубной врач", "Где больница?"];
+  for (const text of CASES_MEDICAL_EMERGENCY_NEGATIVE) {
+    const ok = !isMedicalEmergencyTopic(text);
+    if (!ok) medicalEmergencyOk = false;
+    console.log(ok ? "OK" : "!!", text.padEnd(35), "-> isMedicalEmergencyTopic:", isMedicalEmergencyTopic(text), "(expected false)");
+  }
+} else {
+  console.log("Block 9a SKIPPED -- isMedicalEmergencyTopic() not loaded in this run");
+}
+console.log(`Block 9a (isMedicalEmergencyTopic direct): ${medicalEmergencyOk ? "all passed" : "FAILED"}\n`);
+
+const CASES_MEDICAL_EMERGENCY_ID = [
+  ["Мне нужна скорая помощь", "medical_emergency"],
+  ["Где ближайшая аптека?", null], // must NOT regress -- plain pharmacy question
+];
+let medicalEmergencyIdOk = true;
+for (const [text, expectedId] of CASES_MEDICAL_EMERGENCY_ID) {
+  const intent = findOfflineIntent(text);
+  const gotId = intent ? intent.id || null : null;
+  const ok = gotId === expectedId;
+  if (!ok) medicalEmergencyIdOk = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(35), "-> id:", gotId, "(expected", expectedId, ")");
+}
+console.log(`Block 9b (findOfflineIntent tie fixed at data layer too): ${medicalEmergencyIdOk ? "all passed" : "FAILED"}\n`);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");
