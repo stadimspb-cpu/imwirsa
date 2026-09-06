@@ -1544,9 +1544,15 @@ function sendAssistantChatMessage() {
           // (see port-card-answers.js) — only a handful of fields are wired
           // up so far, everything else still falls through to the same
           // generic .a text as before this existed.
-          const cardAnswer = typeof getPortSpecificAnswer === "function"
-            ? getPortSpecificAnswer(matchedIntent.q, state.portId)
-            : null;
+          //
+          // MEDICAL_FACILITY (v41/v6, 06.09.2026) is special-cased here: its
+          // real data lives in categories.emergency (top-level, icon "🩺"),
+          // not a subdetail, so it can't go through the generic
+          // getPortSpecificAnswer()/INTENT_CARD_MAP path at all — see
+          // medicalFacilityAnswer() in port-card-answers.js.
+          const cardAnswer = matchedIntent.q === "Мне нужен врач или больница?" && typeof medicalFacilityAnswer === "function"
+            ? medicalFacilityAnswer(state.portId)
+            : (typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, state.portId) : null);
           offlineAnswer = cardAnswer || matchedIntent.a;
         } else if (typeof findOfflineAnswer === "function") {
           offlineAnswer = findOfflineAnswer(text); // covers the FOOD/COFFEE combo-override case, which has no single intent to attach card data to

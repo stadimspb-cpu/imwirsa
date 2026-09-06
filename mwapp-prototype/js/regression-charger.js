@@ -8,6 +8,9 @@
 // superseded by this file and should not be deployed alongside it.
 //
 // Usage: cat intents-data.js offline-qa-match.js port-card-answers.js regression-charger.js | node
+// Block 7 additionally needs a PORT_CONTENT_CACHE global with real
+// categories data (see port-card-answers.js v6) -- skips itself
+// gracefully if that isn't injected, everything else still runs.
 
 // ---------------------------------------------------------------------
 // Block 1 — CHARGER / CABLE / ADAPTER, 05.09.2026
@@ -308,6 +311,39 @@ const CASES_MEDICAL_FACILITY = [
 const medicalFacilityOk = runCases("Block 6 (MEDICAL_FACILITY: врач/больница/клиника)", CASES_MEDICAL_FACILITY);
 
 // ---------------------------------------------------------------------
+// Block 7 — MEDICAL_FACILITY hospital CARD DATA, 06.09.2026. Andrey
+// caught that Block 6's "no confirmed hospital data" fallback was
+// factually wrong -- every port's card DOES have one, it just lives in
+// categories.emergency.rows (top-level, icon "🩺"), not a subdetail. See
+// getHospitalCardFact()/medicalFacilityAnswer() in port-card-answers.js.
+//
+// Needs PORT_CONTENT_CACHE (not just SUBDETAILS) to test the real path --
+// that's a separate cache (see ensurePortContentLoaded() in app.js), so
+// this block is skipped gracefully, not silently "passed", when it isn't
+// loaded (e.g. running the shorter documented pipeline without it).
+let medicalFacilityCardOk = true;
+if (typeof PORT_CONTENT_CACHE !== "undefined" && typeof medicalFacilityAnswer === "function") {
+  const CASES_MEDICAL_FACILITY_CARD = [
+    // confirmed hospital -- must show it, never the v41 generic fallback
+    ["tallinn-vanasadam", "Ida-Tallinna Keskhaigla"],
+    ["tallinn-muuga", "Ida-Tallinna Keskhaigla"],
+    // this ONE port's card itself says the hospital isn't confirmed yet --
+    // must fall back to the honest generic text, not crash or show a
+    // half-broken "Nearest hospital — Not yet confirmed..." sentence
+    ["istanbul-haydarpasa", "нет подтверждённых данных"],
+  ];
+  for (const [portId, expectSubstr] of CASES_MEDICAL_FACILITY_CARD) {
+    const reply = medicalFacilityAnswer(portId);
+    const ok = reply && reply.includes(expectSubstr);
+    if (!ok) medicalFacilityCardOk = false;
+    console.log(ok ? "OK" : "!!", portId.padEnd(22), "-> reply:", (reply || "NULL").slice(0, 80));
+  }
+  console.log(`Block 7 (MEDICAL_FACILITY hospital card data): ${medicalFacilityCardOk ? "all passed" : "FAILED"}\n`);
+} else {
+  console.log("Block 7 (MEDICAL_FACILITY hospital card data): SKIPPED -- PORT_CONTENT_CACHE not loaded in this run\n");
+}
+
+// ---------------------------------------------------------------------
 // Self-check #1, added 05.09.2026 per Andrey/Markus: every intent's OWN
 // canonical question must produce at least one real (non-generic) primary
 // hit against its OWN anchor list. Catches an anchor cleanup that removed
@@ -365,7 +401,7 @@ const selfMatchCount = INTENTS.filter((i) => {
 }).length;
 console.log(`Self-check #2 (uniquely wins its own match): ${selfMatchCount}/${INTENTS.length} intents\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk) {
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

@@ -15,6 +15,13 @@
 // OVERRIDE reply (see offline-qa-match.js) around the same raw fact
 // without duplicating the suffix/prefix lookup. getPortSpecificAnswer()
 // itself is unchanged behavior, just now a thin wrapper.
+//
+// v6, 06.09.2026 -- getHospitalCardFact() + medicalFacilityAnswer() added:
+// the MEDICAL_FACILITY intent's v41 "no confirmed hospital data" fallback
+// was factually wrong — every port DOES have one, it just lives in
+// categories.emergency.rows (top-level, icon "🩺"), not a subdetail, so
+// the existing SUBDETAILS-only lookup could never see it. See the block
+// itself for the full audit (all 15 ports checked directly).
 // First working version of "the assistant reads the real port card" per
 // Andrey's decision to start this now rather than wait for the offline
 // dialogue system to be fully polished first. Deliberately scoped to a
@@ -190,6 +197,53 @@ function categoryFallbackAnswer(category, portId) {
   if (fact) return category.template(fact);
   const intents = typeof INTENTS !== "undefined" ? INTENTS : [];
   const intent = intents.find((i) => i.q === category.intentQ);
+  return intent ? intent.a : null;
+}
+
+// ---- MEDICAL_FACILITY (hospital) CARD DATA, 06.09.2026 ----------------
+// Andrey confirmed every port's card DOES have a confirmed hospital — the
+// v41 "no confirmed data" fallback was wrong not because the mechanism
+// was wrong, but because it was pointed at the wrong data. Checked
+// directly across all 15 real port files (not assumed): the hospital
+// lives in the TOP-LEVEL categories.emergency.rows array — the exact
+// same data the Port tab's "Emergency Contacts" screen already renders —
+// NOT in a subdetail, so getRealCardFact()/getPortSpecificAnswer() above
+// can never see it (those only ever read SUBDETAILS). Every one of the
+// 15 ports marks its hospital row with icon "🩺", uniquely (never more
+// than one such row per port) — a reliable, already-existing signal, not
+// a new field. categories data is cached per-port in PORT_CONTENT_CACHE
+// (see ensurePortContentLoaded() in app.js), a separate cache from
+// SUBDETAILS, so this needs its own lookup rather than reusing
+// getRawCardFact()'s subdetail-shaped path.
+function getHospitalCardFact(portId) {
+  const cache = typeof PORT_CONTENT_CACHE !== "undefined" ? PORT_CONTENT_CACHE[portId] : null;
+  const rows = cache && cache.categories && cache.categories.emergency && cache.categories.emergency.rows;
+  if (!Array.isArray(rows)) return null;
+  const row = rows.find((r) => r.icon === "🩺");
+  if (!row || !row.title) return null;
+  // Same "this isn't actually confirmed yet" guard as getRealCardFact()
+  // above, plus the exact phrasing istanbul-haydarpasa's card uses for
+  // its one still-unconfirmed hospital ("Not yet confirmed for this
+  // terminal — ask your agent") -- checked directly: the shorter
+  // "not confirmed" pattern does NOT match "not YET confirmed", so it's
+  // added explicitly rather than assumed covered.
+  if (/scam|warning|not confirmed|not yet confirmed|tbd|coming soon|stranger/i.test(row.title + " " + (row.sub || ""))) return null;
+  return row.sub ? `${row.title} — ${row.sub}` : row.title;
+}
+
+// Reply builder for the MEDICAL_FACILITY intent specifically (wired in
+// app.js by matching on that intent's exact .q, the same way brand/
+// category overrides are special-cased rather than forced through the
+// generic getPortSpecificAnswer() path they don't fit). Falls back to the
+// intent's own honest .a text — unchanged from v41 — when the port's
+// hospital row isn't loaded yet or is itself marked unconfirmed
+// (istanbul-haydarpasa today), so that one port keeps getting the
+// correct honest answer instead of a broken lookup.
+function medicalFacilityAnswer(portId) {
+  const fact = getHospitalCardFact(portId);
+  if (fact) return `«Ближайшая подтверждённая больница по данным карточки порта: ${fact}.»`;
+  const intents = typeof INTENTS !== "undefined" ? INTENTS : [];
+  const intent = intents.find((i) => i.q === "Мне нужен врач или больница?");
   return intent ? intent.a : null;
 }
 
