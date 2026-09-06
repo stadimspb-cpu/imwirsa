@@ -248,6 +248,66 @@ for (const [text, expected] of CASES_CATEGORY_OVERRIDE_NEGATIVE) {
 console.log(`Block 5b (category override must NOT fire / must not regress): ${categoryOverrideNegativeOk ? "all passed" : "FAILED"}\n`);
 
 // ---------------------------------------------------------------------
+// Block 6 — MEDICAL_FACILITY (врач/больница/клиника), 06.09.2026, per
+// Andrey's report of a systemic gap: no offline category existed for
+// "find a doctor/hospital/clinic" at all, so those messages either got
+// dragged into PHARMACY (bare "врач" was primary there) or fell to
+// UNKNOWN. New dedicated intent added -- NOT by adding "врач"/"больница"
+// to PHARMACY, which Andrey explicitly ruled out (аптека != врач !=
+// больница).
+//
+// Two SAFETY-CRITICAL side effects surfaced while building this, both
+// pinned down here so they can't quietly regress:
+//   1) The crisis "У меня боль в груди" intent's own primary "боль" was
+//      ALSO independently matching bare "больница" (they share the
+//      "боль-" root) -- exactly the same broad-anchor problem fixed
+//      repeatedly this session, but on a genuinely safety-critical
+//      intent, so it was NOT simply removed. "боль" was demoted to
+//      synonym (still boosts score combined with "грудь"/"сердц", never
+//      independently sufficient alone) rather than excluding "больниц"
+//      from the crisis intent -- excluding would have silently killed a
+//      combined real emergency phrasing like "боль в груди, нужна
+//      больница", which is a far worse failure mode than losing a
+//      completely bare, contextless "боль" with no location at all.
+//   2) Demoting "боль" then exposed that the crisis intent's OWN
+//      canonical text ("У меня боль в груди") was passing self-match
+//      ONLY because of "боль" -- "грудь" (primary) never actually
+//      matched "груди" (the real case-inflected form used in the actual
+//      phrasing) due to the same word-boundary rule seen all session.
+//      This was a LATENT bug, invisible until "боль" stopped masking it.
+//      Fixed by adding "груди" as its own exact primary form -- verified
+//      self-match AND "Боль в груди" (without "У меня") both pass now.
+// Also demoted: dentist's bare "больн" (matched "больница" too, same
+// root) -> synonym; vaccination's "медцентр" -> synonym (a bare "где
+// медцентр" is about finding a facility in general, not specifically
+// about getting a vaccine -- MEDICAL_FACILITY owns that word now).
+const CASES_MEDICAL_FACILITY = [
+  ["Я простыл и мне нужно к врачу", "Мне нужен врач или больница?"],
+  ["Надо больницу", "Мне нужен врач или больница?"],
+  ["Дежурная больница", "Мне нужен врач или больница?"],
+  ["Мне нужен врач", "Мне нужен врач или больница?"],
+  ["Где больница?", "Мне нужен врач или больница?"],
+  ["Где клиника?", "Мне нужен врач или больница?"],
+  ["Где медцентр?", "Мне нужен врач или больница?"],
+  // dentistry stays its own category, not swallowed by the new general one
+  ["Нужен зубной врач", "Что делать, если заболел зуб?"],
+  // emergency/crisis intents keep priority -- none of these should ever
+  // resolve to MEDICAL_FACILITY
+  ["Мне очень плохо", "Мне плохо, что делать?"],
+  ["Мне нужна скорая", "Какой номер экстренных служб?"],
+  ["Боль в груди", "У меня боль в груди"],
+  ["У меня боль в груди", "У меня боль в груди"],
+  // must NOT regress -- PHARMACY no longer claims "врач" at all, but
+  // everything that's actually about medicine/the pharmacy itself is fine
+  ["Есть ли аптека с антибиотиками без рецепта?", "Есть ли аптека с антибиотиками без рецепта?"],
+  ["У меня болит голова. Где купить таблетки?", "Можно ли купить обезболивающее без рецепта?"],
+  ["Мне нужен раствор для линз — есть аптека рядом?", "Где купить раствор для контактных линз или очки?"],
+  ["Где ближайшая аптека?", "Где ближайшая аптека?"],
+  ["Можно ли получить прививку в порту?", "Можно ли получить прививку в порту?"],
+];
+const medicalFacilityOk = runCases("Block 6 (MEDICAL_FACILITY: врач/больница/клиника)", CASES_MEDICAL_FACILITY);
+
+// ---------------------------------------------------------------------
 // Self-check #1, added 05.09.2026 per Andrey/Markus: every intent's OWN
 // canonical question must produce at least one real (non-generic) primary
 // hit against its OWN anchor list. Catches an anchor cleanup that removed
@@ -305,7 +365,7 @@ const selfMatchCount = INTENTS.filter((i) => {
 }).length;
 console.log(`Self-check #2 (uniquely wins its own match): ${selfMatchCount}/${INTENTS.length} intents\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk) {
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

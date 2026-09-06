@@ -110,6 +110,39 @@
 // more than PHARMACY's overload.
 // Class 3 (Benu/Specsavers): two more entries in the same BRAND_ENTITIES
 // list from v11 (offline-qa-match.js) -- no new mechanism.
+//
+// v41, 06.09.2026 -- new MEDICAL_FACILITY intent ("Мне нужен врач или
+// больница?") added per Andrey's report of a systemic gap: no offline
+// category existed for doctor/hospital/clinic at all ("врач" was
+// bleeding into PHARMACY's primary, "больница" went straight to UNKNOWN).
+// Explicitly NOT fixed by adding "врач"/"больница" to PHARMACY -- "врач"
+// removed from PHARMACY's primary entirely. New intent's anchors: врач,
+// доктор, больниц, клиник, медцентр, поликлиник, "к врачу" (primary);
+// дежурн/приём/недомогани/простыл (synonym -- "приём" kept out of primary
+// deliberately, too generic/ambiguous across topics on its own, same
+// reasoning as "нормальн"/"срочн" earlier); excludes зубн/стоматолог so
+// "нужен зубной врач" stays DENTAL, not MEDICAL_FACILITY. No
+// INTENT_CARD_MAP entry (port-card-answers.js) -- checked directly, no
+// port's data/{portId}.json has ANY hospital/clinic field -- so this
+// intent always falls to its own honest .a text, which states plainly
+// there's no confirmed nearest hospital/clinic and points to Emergency
+// Contact if genuinely needed, exactly per Andrey's spec; there is no
+// path by which this could accidentally surface a PHARMACY address.
+//
+// Building this surfaced two SAFETY-CRITICAL side effects, both fixed
+// carefully rather than papered over -- full reasoning in
+// regression-charger.js's Block 6 comment, summary here: the crisis
+// "У меня боль в груди" intent's own "боль" anchor was ALSO independently
+// matching bare "больница" (shared root) -- demoted to synonym rather
+// than excluding "больниц" from the crisis intent, since excluding would
+// have silently killed a combined real emergency phrasing like "боль в
+// груди, нужна больница". That demotion then exposed a LATENT self-match
+// bug: the crisis intent's own primary "грудь" never actually matched
+// its own canonical text's "груди" (case-inflected) -- invisible until
+// "боль" stopped masking it. Fixed with an explicit "груди" form. Also
+// demoted: dentist's bare "больн" (same root collision) -> synonym;
+// vaccination's "медцентр" -> synonym (a bare "где медцентр" is a
+// general facility question, not specifically about a vaccine).
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -431,7 +464,6 @@ const INTENTS = [
     "q": "Где ближайшая аптека?",
     "primary": [
       "аптек",
-      "врач",
       "антисептик",
       "маск медицинск",
       "пластыр",
@@ -484,10 +516,10 @@ const INTENTS = [
     "primary": [
       "зуб",
       "стоматолог",
-      "больн",
       "зубн"
     ],
     "synonyms": [
+      "больн",
       "пломб",
       "десн",
       "сверлит",
@@ -500,6 +532,29 @@ const INTENTS = [
       "трава"
     ],
     "a": "«Мы не нашли стоматологию в базе этого порта. Обратись в центр моряков — у них часто есть список дежурных зубных врачей для моряков. Или звони в экстренную службу.»"
+  },
+  {
+    "q": "Мне нужен врач или больница?",
+    "primary": [
+      "врач",
+      "доктор",
+      "больниц",
+      "клиник",
+      "медцентр",
+      "поликлиник",
+      "к врачу"
+    ],
+    "synonyms": [
+      "дежурн",
+      "приём",
+      "недомогани",
+      "простыл"
+    ],
+    "exclude": [
+      "зубн",
+      "стоматолог"
+    ],
+    "a": "«В карточке этого порта нет подтверждённых данных о ближайшей больнице или клинике. Если тебе действительно плохо и нужна срочная помощь — звони в экстренную службу или проси капитана вызвать скорую.»"
   },
   {
     "q": "Где купить раствор для контактных линз или очки?",
@@ -1695,12 +1750,13 @@ const INTENTS = [
     "q": "У меня боль в груди",
     "primary": [
       "грудь",
+      "груди",
       "сердц",
-      "боль",
       "давлен",
       "инфаркт"
     ],
     "synonyms": [
+      "боль",
       "колит",
       "жжёт",
       "сердечн",
@@ -3472,13 +3528,13 @@ const INTENTS = [
     "primary": [
       "прививк",
       "вакцин",
-      "укол",
-      "медцентр"
+      "укол"
     ],
     "synonyms": [
       "сделать прививку",
       "привить",
-      "вакцинация"
+      "вакцинация",
+      "медцентр"
     ],
     "exclude": [
       "лекарства",
