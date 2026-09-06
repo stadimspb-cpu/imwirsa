@@ -57,6 +57,29 @@
 // harassment/massage/price meta-questions that look like documentation-
 // only sub-questions, not real anchor bugs) -- NOT touched, flagged for
 // Andrey/Markus to review separately, not fixed blind.
+//
+// v39, 06.09.2026 -- field-test follow-up after v38: "кафе" alone was
+// still UNKNOWN ("Есть рядом недорогое кафе?", "Где кафе рядом?") because
+// v38 only stopped it hijacking Wi-Fi, without giving it anywhere correct
+// to land. Per Andrey: a bare "кафе" question is an unambiguous "where to
+// eat" question and must not require a reformulation. Fix, still inside
+// the existing anchor mechanism, no new intent, no if/else:
+//   - "кафе" promoted synonym->primary on the generic FOOD intent
+//     ("Где недорого поесть...") -- now food wins outright on "кафе" alone.
+//   - "кафе" stays synonym-only (not primary) on the Wi-Fi-cafe intent, as
+//     it already was after v38 -- unchanged.
+//   - Cafe+Wi-Fi still correctly wins over FOOD when a Wi-Fi word is also
+//     present ("Кафе с Wi-Fi") -- verified empirically: wifi scores
+//     primary(wi-fi)=3 + synonym(кафе)=1 = 4 vs food's primary(кафе)=3,
+//     margin 1 clears AMBIGUITY_MARGIN, no new tie introduced.
+//   - "кофейня" is untouched and still resolves to the separate coffee
+//     intent via that intent's own "кофе" anchors, verified unaffected.
+// Also added: Макдональдс/макдак/KFC as primary anchors on the same FOOD
+// intent -- specific chain-name questions get the same "where to eat"
+// answer as any other food question, no dedicated intent needed for this.
+// All four required phrases plus the fast-food additions are now locked
+// into regression-tests.js (new this session, part 2 "NAMED_CASES") so
+// they can never silently regress again.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -232,7 +255,11 @@ const INTENTS = [
       "обед",
       "пообедат",
       "позавтрак",
-      "поужинат"
+      "поужинат",
+      "кафе",
+      "макдональдс",
+      "макдак",
+      "kfc"
     ],
     "synonyms": [
       "покушат",
@@ -241,7 +268,6 @@ const INTENTS = [
       "закусочн",
       "пожрат",
       "кушат",
-      "кафе",
       "ресторан",
       "фастфуд",
       "дешев",
