@@ -1,4 +1,10 @@
 // ---- OFFLINE INTENT MATCHING (v2, 04.09.2026) -----------------------------
+//
+// v11, 06.09.2026 -- BRAND_ENTITIES + detectBrandEntity() added: a general,
+// extensible mechanism so a request naming a SPECIFIC brand/place (see
+// conversation) is flagged independently of intent scoring, letting the
+// caller (app.js) refuse to answer it with a generic category card fact.
+// See the block itself for the full rationale.
 // Replaces the 03.09.2026 approach (compare seafarer's message to the
 // QUESTION TEXT itself) with matching against hand-picked ANCHOR WORDS per
 // intent, built by Andrey/Markus/Olga from real field phrasing. This fixes
@@ -179,6 +185,39 @@ function findComboOverride(normalizedMessage) {
     const hasA = combo.aAnchors.some((a) => containsAnchor(normalizedMessage, a));
     const hasB = combo.bAnchors.some((a) => containsAnchor(normalizedMessage, a));
     if (hasA && hasB) return combo.answer;
+  }
+  return null;
+}
+
+// ---- SPECIFIC BRAND / NAMED ENTITY DETECTION, 06.09.2026 -------------
+// General principle from Andrey/Markus's live test: a request naming a
+// SPECIFIC place or chain must never be silently answered with a generic
+// category fact from the port card. "макдак"/"KFC" correctly matched the
+// FOOD intent's category (that part is right) but then got handed the
+// FIRST unrelated fact in that port's shops_food card field (a Seamen's
+// Centre canteen) as if it were an answer about McDonald's specifically.
+// This is a genuinely different concern than intent SCORING (which anchor
+// list an intent belongs to) -- it's about what the REPLY is allowed to
+// be once a category is known, so it's checked independently, not as
+// another anchor tier inside scoreIntent().
+//
+// Deliberately a flat, extensible list, not per-brand code: add a brand
+// here and both the FOOD intent match (existing anchors, unchanged) and
+// the "don't fall back to a generic card fact" behavior in app.js cover
+// it automatically. See noConfirmedBrandDataAnswer() in
+// port-card-answers.js for how the honest reply text is built from
+// `category`.
+const BRAND_ENTITIES = [
+  { anchors: ["макдональдс", "макдак", "mcdonald"], category: "food", label: "McDonald's" },
+  { anchors: ["kfc", "кфс"], category: "food", label: "KFC" },
+  { anchors: ["бургер кинг", "burger king"], category: "food", label: "Burger King" },
+];
+
+function detectBrandEntity(text) {
+  const msg = normalizeText(text);
+  if (!msg) return null;
+  for (const brand of BRAND_ENTITIES) {
+    if (brand.anchors.some((a) => containsAnchor(msg, a))) return brand;
   }
   return null;
 }

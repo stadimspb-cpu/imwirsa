@@ -1507,16 +1507,38 @@ function sendAssistantChatMessage() {
         : null;
       let offlineAnswer = companionReply;
       if (!offlineAnswer && typeof findOfflineIntent === "function") {
+        // Brand/entity check, 06.09.2026: a request naming a SPECIFIC
+        // place or chain (McDonald's, KFC, ...) must never be answered
+        // with a generic category fact from the port card, AND must
+        // never fall through to the generic "didn't understand" replies
+        // either -- both were observed live (see conversation). Checked
+        // independently of intent scoring so it applies whether or not
+        // the surrounding phrasing happens to also hit the FOOD intent's
+        // own anchors. See BRAND_ENTITIES (offline-qa-match.js) and
+        // noConfirmedBrandDataAnswer() (port-card-answers.js) -- add a
+        // brand to that one list and it's covered everywhere, no changes
+        // needed here.
+        const brand = typeof detectBrandEntity === "function" ? detectBrandEntity(text) : null;
         const matchedIntent = findOfflineIntent(text);
         if (matchedIntent) {
-          // Pilot, 04.09.2026: try the CURRENT port's real card data first
-          // (see port-card-answers.js) — only a handful of fields are wired
-          // up so far, everything else still falls through to the same
-          // generic .a text as before this existed.
-          const cardAnswer = typeof getPortSpecificAnswer === "function"
-            ? getPortSpecificAnswer(matchedIntent.q, state.portId)
+          if (brand) {
+            offlineAnswer = typeof noConfirmedBrandDataAnswer === "function"
+              ? noConfirmedBrandDataAnswer(brand)
+              : matchedIntent.a;
+          } else {
+            // Pilot, 04.09.2026: try the CURRENT port's real card data first
+            // (see port-card-answers.js) — only a handful of fields are wired
+            // up so far, everything else still falls through to the same
+            // generic .a text as before this existed.
+            const cardAnswer = typeof getPortSpecificAnswer === "function"
+              ? getPortSpecificAnswer(matchedIntent.q, state.portId)
+              : null;
+            offlineAnswer = cardAnswer || matchedIntent.a;
+          }
+        } else if (brand) {
+          offlineAnswer = typeof noConfirmedBrandDataAnswer === "function"
+            ? noConfirmedBrandDataAnswer(brand)
             : null;
-          offlineAnswer = cardAnswer || matchedIntent.a;
         } else if (typeof findOfflineAnswer === "function") {
           offlineAnswer = findOfflineAnswer(text); // covers the FOOD/COFFEE combo-override case, which has no single intent to attach card data to
         }

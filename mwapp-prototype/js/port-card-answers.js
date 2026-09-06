@@ -1,4 +1,10 @@
 // ---- PORT CARD CONNECTION (pilot, 04.09.2026) ------------------------------
+//
+// v3, 06.09.2026 -- noConfirmedBrandDataAnswer() added: the honest "no
+// confirmed data for this specific place" reply used when
+// detectBrandEntity() (offline-qa-match.js) flags a brand/named-entity
+// request, so getPortSpecificAnswer()'s generic first-fact-in-category
+// result is never shown as if it answered a brand-specific question.
 // First working version of "the assistant reads the real port card" per
 // Andrey's decision to start this now rather than wait for the offline
 // dialogue system to be fully polished first. Deliberately scoped to a
@@ -147,4 +153,30 @@ function getPortSpecificAnswer(intentQuestion, portId) {
   // Russian -- a real language mismatch, not an oversight. Flagged to
   // Andrey as a known limitation of this first pass, not fixed here.
   return `По данным карточки этого порта: ${fact}.`;
+}
+
+// ---- SPECIFIC BRAND / NAMED ENTITY HANDLING, 06.09.2026 --------------
+// A request naming a SPECIFIC place or chain (McDonald's, KFC, ...) --
+// see BRAND_ENTITIES in offline-qa-match.js -- must never be answered
+// with getPortSpecificAnswer()'s generic first-fact-in-category result:
+// that's a real fact about the category (e.g. a Seamen's Centre canteen)
+// but not about the brand that was actually asked about, and presenting
+// it as if it answers the brand question would be actively misleading,
+// not just unhelpful.
+//
+// No port's data/{portId}.json currently records brand-level facts at
+// all (checked directly across the real files, not assumed) -- so today
+// this always resolves to the honest "no confirmed data for this place"
+// branch below. If brand-level card data is ever added, wiring an actual
+// lookup here is the one place that needs to change; per the project's
+// standing rule, that lookup must check the REAL structure of that new
+// field in the JSON first, not assume it looks like any existing field.
+const BRAND_CATEGORY_FOLLOWUP = {
+  food: "Могу показать места, где точно можно поесть, по данным карточки этого порта — просто спроси «где поесть».",
+};
+
+function noConfirmedBrandDataAnswer(brand) {
+  const base = `«Подтверждённых данных именно про ${brand.label} в карточке этого порта нет.»`;
+  const followup = BRAND_CATEGORY_FOLLOWUP[brand.category];
+  return followup ? `${base} ${followup}` : base;
 }

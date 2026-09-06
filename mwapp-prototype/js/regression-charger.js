@@ -7,7 +7,7 @@
 // the separate regression-tests.js written earlier the same session is
 // superseded by this file and should not be deployed alongside it.
 //
-// Usage: cat intents-data.js offline-qa-match.js regression-charger.js | node
+// Usage: cat intents-data.js offline-qa-match.js port-card-answers.js regression-charger.js | node
 
 // ---------------------------------------------------------------------
 // Block 1 — CHARGER / CABLE / ADAPTER, 05.09.2026
@@ -83,6 +83,54 @@ const chargerOk = runCases("CHARGER/CABLE/ADAPTER", CASES_CHARGER);
 const block2Ok = runCases("Block 2 (cafe/food/water/vegetarian/halal/wifi)", CASES_BLOCK2);
 
 // ---------------------------------------------------------------------
+// Block 3 — brand/named-entity requests must not fall back to a generic
+// category card fact, 06.09.2026, per Andrey's live test ("макдак"/"KFC"
+// were getting handed an unrelated Port Card fact -- e.g. a canteen --
+// as if it answered the brand question). This mirrors the ACTUAL
+// app.js reply-composition branch (brand check -> honest "no confirmed
+// data" reply, generic card lookup only when no brand is named), not
+// just findOfflineIntent() in isolation, since the bug lived in that
+// composition, not in intent scoring. Uses real Vanasadam data if it's
+// been concatenated in (via the SUBDETAILS global) so the "must not leak
+// the real card fact" assertion is genuine; otherwise (SUBDETAILS
+// undefined) it only checks the brand-detection half, still catching a
+// regression to the old "silently returns the FOOD intent's plain
+// .a text or the card fact" behavior.
+function simulateReply(text, portId) {
+  const brand = typeof detectBrandEntity === "function" ? detectBrandEntity(text) : null;
+  const matchedIntent = findOfflineIntent(text);
+  if (matchedIntent) {
+    if (brand) return typeof noConfirmedBrandDataAnswer === "function" ? noConfirmedBrandDataAnswer(brand) : matchedIntent.a;
+    const cardAnswer = typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, portId) : null;
+    return cardAnswer || matchedIntent.a;
+  }
+  if (brand) return typeof noConfirmedBrandDataAnswer === "function" ? noConfirmedBrandDataAnswer(brand) : null;
+  return "UNKNOWN";
+}
+
+const CASES_BRAND = [
+  // must still classify as FOOD-category (per point 1 of the request)...
+  ["макдак", "food"],
+  ["Есть тут KFC?", "food"],
+  ["Где тут Макдональдс?", "food"],
+  ["Burger King есть?", "food"],
+];
+let brandOk = true;
+for (const [text, category] of CASES_BRAND) {
+  const brand = typeof detectBrandEntity === "function" ? detectBrandEntity(text) : null;
+  const reply = typeof SUBDETAILS !== "undefined" ? simulateReply(text, "tallinn-vanasadam") : null;
+  const brandDetectedOk = brand && brand.category === category;
+  // ...but the actual reply must NEVER be a plain Port Card fact sentence
+  // ("По данным карточки этого порта: ...") when a brand was named --
+  // that's exactly the leak this block exists to catch.
+  const noLeak = reply === null || !reply.startsWith("По данным карточки этого порта");
+  const ok = brandDetectedOk && noLeak;
+  if (!ok) brandOk = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(30), "brand:", brand ? brand.label : "NONE", reply ? "| reply: " + reply.slice(0, 70) : "");
+}
+console.log(`Block 3 (brand/named-entity, ${typeof SUBDETAILS !== "undefined" ? "with real card data" : "brand-detection only, port-card-answers.js not loaded"}): ${brandOk ? "all passed" : "FAILED"}\n`);
+
+// ---------------------------------------------------------------------
 // Self-check #1, added 05.09.2026 per Andrey/Markus: every intent's OWN
 // canonical question must produce at least one real (non-generic) primary
 // hit against its OWN anchor list. Catches an anchor cleanup that removed
@@ -140,7 +188,7 @@ const selfMatchCount = INTENTS.filter((i) => {
 }).length;
 console.log(`Self-check #2 (uniquely wins its own match): ${selfMatchCount}/${INTENTS.length} intents\n`);
 
-if (!chargerOk || !block2Ok) {
+if (!chargerOk || !block2Ok || !brandOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");
