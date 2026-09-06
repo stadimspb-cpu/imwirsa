@@ -648,7 +648,53 @@ if (typeof isMedicalEmergencyTopic === "function") {
 }
 console.log(`Block 11b (emergency priority over dental wording): ${dentalEmergencyPriorityOk ? "all passed" : "FAILED"}\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk) {
+// ---------------------------------------------------------------------
+// Block 12 — DENTAL RU anchor expansion, 06.09.2026, per Markus (Russian
+// only for now, by explicit request -- EN/other languages deferred until
+// this is stable). Tests both the new direct anchors ("дантист",
+// "стоматология", "зубной врач") and the new COMPOUND ANCHORS mechanism
+// (offline-qa-match.js v16): tooth-noun forms combined with a medical
+// action/symptom word, in ANY order, without ever making a bare
+// tooth-noun independently sufficient.
+const CASES_DENTAL_RU = [
+  // previously passing -- must not regress
+  ["Где стоматолог?", "dental"],
+  ["Мне нужен зубной врач", "dental"],
+  ["У меня болит зуб", "dental"],
+  ["Где можно лечить зуб?", "dental"],
+  ["Нужна стоматология", "dental"],
+  // previously failing -- must now resolve to dental
+  ["Есть дантист рядом?", "dental"],
+  ["зубы лечить", "dental"],
+  ["где лечить зубы", "dental"],
+  ["лечить зубы", "dental"],
+];
+let dentalRuOk = true;
+for (const [text, expectedId] of CASES_DENTAL_RU) {
+  const got = findOfflineIntent(text);
+  const gotId = got ? got.id || null : null;
+  const ok = gotId === expectedId;
+  if (!ok) dentalRuOk = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(30), "-> id:", gotId, "(expected", expectedId, ")");
+}
+// must NEVER trigger dental on a bare tooth-noun with no medical action --
+// this is the whole point of compoundAnchors over just adding "зубы" etc.
+// straight to primary
+const CASES_DENTAL_RU_NEGATIVE = [
+  ["Где купить зубную пасту?", "dental"],
+  ["Где купить зубную щётку?", "dental"],
+  ["Просто зубы у меня красивые", "dental"],
+];
+for (const [text, mustNotBeId] of CASES_DENTAL_RU_NEGATIVE) {
+  const got = findOfflineIntent(text);
+  const gotId = got ? got.id || null : null;
+  const ok = gotId !== mustNotBeId;
+  if (!ok) dentalRuOk = false;
+  console.log(ok ? "OK" : "!!", text.padEnd(30), "-> id:", gotId, "(must NOT be", mustNotBeId, ")");
+}
+console.log(`Block 12 (DENTAL RU anchor expansion + compoundAnchors): ${dentalRuOk ? "all passed" : "FAILED"}\n`);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

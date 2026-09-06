@@ -34,6 +34,15 @@
 // (word-boundary aware) per Markus's request, and a conditional
 // "медицинская помощь" + explicit urgency word check was added. Full
 // story in the block itself.
+//
+// v16, 06.09.2026 -- COMPOUND ANCHORS added to scoreIntent(): a general,
+// reusable mechanism (Markus explicitly wants the same shape reused for
+// other languages later) for topics that only make sense when two
+// independent word groups are BOTH present, order-independent -- e.g.
+// DENTAL: a tooth-noun form AND a medical action/symptom word, since a
+// bare tooth-noun must not be a standalone trigger. See the block itself
+// for the full rationale and why this is additive/zero-risk for every
+// other intent.
 // Replaces the 03.09.2026 approach (compare seafarer's message to the
 // QUESTION TEXT itself) with matching against hand-picked ANCHOR WORDS per
 // intent, built by Andrey/Markus/Olga from real field phrasing. This fixes
@@ -169,10 +178,53 @@ function countWeightedPrimaryHits(normalizedMessage, anchors) {
 
 function scoreIntent(normalizedMessage, intent) {
   if (anyExcluded(normalizedMessage, intent.exclude)) return -1;
-  const primaryScore = countWeightedPrimaryHits(normalizedMessage, intent.primary);
+  let primaryScore = countWeightedPrimaryHits(normalizedMessage, intent.primary);
+  if (primaryScore === 0 && hasCompoundAnchorMatch(normalizedMessage, intent.compoundAnchors)) {
+    primaryScore = COMPOUND_ANCHOR_SCORE;
+  }
   if (primaryScore === 0) return 0; // no topic-defining word present -> not a candidate, full stop
   const synonymHits = countHits(normalizedMessage, intent.synonyms, { excludeGeneric: true });
   return primaryScore + synonymHits;
+}
+
+// ---- COMPOUND ANCHORS, 06.09.2026 --------------------------------------
+// Added for DENTAL per Markus, scoped as a genuinely new, general
+// mechanism (not a one-off dental hack) since he explicitly wants the
+// same shape reused for other languages once Russian is stable: some
+// topics are only real when TWO independent word groups are BOTH
+// present, with word ORDER irrelevant ("зубы лечить" / "лечить зубы" /
+// "где лечить зубы" must all resolve the same way) -- a plain PRIMARY
+// list can't express "A AND B", only "A OR B".
+//
+// `intent.compoundAnchors` is an optional array of anchor-groups, e.g.
+// `[["зуб","зубы"], ["болит","лечить"]]` -- ALL groups must have at
+// least one matching anchor SOMEWHERE in the message (any order, any
+// distance apart) for this to count. Deliberately does NOT replace or
+// weaken `primary`: an intent can have both, and compoundAnchors is only
+// even checked when primary alone found nothing (primaryScore === 0) --
+// see scoreIntent above. Every other intent's `compoundAnchors` is
+// simply undefined, so this is a no-op for all 179 other intents;
+// nothing about their scoring changes.
+//
+// Why this exists instead of just adding "зуб"/"зубы"/"зубов" etc.
+// straight to DENTAL's primary list: Markus was explicit that a bare
+// tooth-noun must NOT be a standalone trigger on its own, specifically
+// so a message that only mentions teeth in an unrelated way stays out of
+// dental -- the topic only becomes real once combined with an actual
+// medical action or symptom word. (Separately, and worth noting: the
+// tooth-NOUN family "зуб/зуба/зубы/зубов" and the "зубная паста"/"зубная
+// щётка" ADJECTIVE family both happen to start with visually similar
+// letters but are different stems -- "зуб-" vs "зубн-" -- and were
+// already proven not to collide via containsAnchor's boundary rule
+// before this change; that's not what compoundAnchors is protecting
+// against. It exists for the AND-condition itself.)
+const COMPOUND_ANCHOR_SCORE = 4;
+
+function hasCompoundAnchorMatch(normalizedMessage, compoundAnchors) {
+  if (!Array.isArray(compoundAnchors) || compoundAnchors.length === 0) return false;
+  return compoundAnchors.every((group) =>
+    (group || []).some((a) => !isGeneric(a) && containsAnchor(normalizedMessage, a))
+  );
 }
 
 // Minimum score to accept ANY answer at all (roughly: one real primary hit).

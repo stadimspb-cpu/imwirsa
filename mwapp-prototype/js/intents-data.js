@@ -190,6 +190,22 @@
 // pointing to the nearest CONFIRMED hospital when no dentistry is
 // confirmed on the card, instead of stopping at "no data". No anchor or
 // scoring change here at all -- purely wiring for the new reply logic.
+//
+// v46, 06.09.2026 -- DENTAL RU anchors expanded per Markus (Russian
+// only for now -- EN/other languages deliberately deferred until this is
+// stable). Added: "дантист", "стоматология", "зубной врач" as direct
+// anchors. Added compoundAnchors (offline-qa-match.js v16, a new general
+// engine mechanism, not dental-specific): tooth-noun forms
+// "зуб"/"зуба"/"зубы"/"зубов" now count when combined, in ANY order,
+// with a medical action/symptom word ("болит"/"болят"/"лечить"/
+// "лечени"/"удалить"/"врач"/"помощь") -- covers "лечить зубы", "зубы
+// лечить", "где лечить зубы" identically, without ever making a bare
+// tooth-noun independently sufficient (Markus's explicit requirement, to
+// keep this from becoming a general "зуб" trigger). The tooth-NOUN family
+// ("зуб-") and the "зубная паста/щётка" ADJECTIVE family ("зубн-") are
+// different stems and don't collide via containsAnchor's own boundary
+// rule -- verified directly, not assumed; compoundAnchors solves the
+// AND-condition problem, not a collision that didn't exist.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -564,7 +580,14 @@ const INTENTS = [
     "primary": [
       "зуб",
       "стоматолог",
-      "зубн"
+      "стоматология",
+      "зубн",
+      "дантист",
+      "зубной врач"
+    ],
+    "compoundAnchors": [
+      ["зуб", "зуба", "зубы", "зубов"],
+      ["болит", "болят", "лечить", "лечени", "удалить", "врач", "помощь"]
     ],
     "synonyms": [
       "больн",
