@@ -43,6 +43,12 @@
 // bare tooth-noun must not be a standalone trigger. See the block itself
 // for the full rationale and why this is additive/zero-risk for every
 // other intent.
+//
+// v17, 07.09.2026 -- chest-pain markers ("боль в груди", "инфаркт", ...)
+// added to MEDICAL_EMERGENCY_KEYWORDS per Andrey: chest pain deserves the
+// same un-tie-able 112 priority as an explicit ambulance request, not
+// only the Duty Office callback the scored intent gives. Full rationale
+// in the block itself.
 // Replaces the 03.09.2026 approach (compare seafarer's message to the
 // QUESTION TEXT itself) with matching against hand-picked ANCHOR WORDS per
 // intent, built by Andrey/Markus/Olga from real field phrasing. This fixes
@@ -363,12 +369,27 @@ function detectBrandEntity(text) {
 // 2-word phrase "медицинская помощь" AND a separate urgency word, not
 // just "помощь" alone (which is exactly the kind of bare generic word
 // that caused the original "Мне плохо" tie in the first place).
+//
+// v17, 07.09.2026 -- chest-pain markers added per Andrey's review of the
+// offline-mode restructuring plan: "У меня боль в груди" was previously
+// ONLY a scored intent routing to the IMWIRSA Duty Office callback ("в
+// течение минуты") -- correct as a parallel channel, but chest pain is a
+// classic heart-attack symptom and deserves the SAME immediate,
+// un-tie-able 112 priority as an explicit ambulance request, not a
+// callback that takes a minute. Added here (not just left to the scored
+// intent) for the same reason "скорая" itself is here: this check runs
+// BEFORE the intent table and can never lose a tie or be reworded away
+// by unrelated anchor edits elsewhere. The scored intent (intents-data.js)
+// is kept as a defense-in-depth layer for phrasings that don't hit these
+// exact markers, and its own reply now leads with 112 too -- see there.
 const MEDICAL_EMERGENCY_KEYWORDS = [
   "скорая", "скорую", "скорой",
   "вызвать скорую", "нужна скорая", "скорая помощь",
   "экстренная помощь", "срочная медицинская помощь",
+  "боль в груди", "давит в груди", "жжёт в груди", "боль в сердце",
+  "инфаркт", "сердечный приступ",
   "ambulance", "emergency", "medical emergency",
-  "call an ambulance", "need an ambulance",
+  "call an ambulance", "need an ambulance", "chest pain", "heart attack",
 ];
 
 const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно"];

@@ -792,7 +792,42 @@ const CASES_NOT_WANT_PHRASE = [
 ];
 const notWantPhraseOk = runCases("Block 14 (\"не хочу\" broad-phrase false positive)", CASES_NOT_WANT_PHRASE);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk || !transportGateOk || !notWantPhraseOk) {
+// ---------------------------------------------------------------------
+// Block 15 — CHEST PAIN emergency priority, 07.09.2026, per Andrey's
+// review of the offline-mode restructuring plan: "У меня боль в груди"
+// was ONLY a scored intent routing to the IMWIRSA Duty Office callback
+// ("в течение минуты") -- correct as a parallel channel, but chest pain
+// is a classic heart-attack symptom and deserves the SAME immediate,
+// un-tie-able 112 priority as an explicit ambulance request. Fixed at
+// the detection layer (isMedicalEmergencyTopic, offline-qa-match.js v17)
+// -- checked directly, not just the scored intent (id
+// "chest_pain_emergency", intents-data.js v49), which is kept as
+// defense in depth for phrasings that don't hit the exact markers.
+// Negative cases confirm unrelated pain (headache, leg) and generic
+// distress with no chest mention are NOT swept into this priority route.
+let chestPainOk = true;
+if (typeof isMedicalEmergencyTopic === "function") {
+  const CASES_CHEST_PAIN_POSITIVE = [
+    "У меня боль в груди", "Боль в груди, что делать?", "У меня сильно давит в груди",
+    "Кажется у меня инфаркт", "Мне очень плохо, боль в груди и жжёт",
+  ];
+  for (const text of CASES_CHEST_PAIN_POSITIVE) {
+    const ok = isMedicalEmergencyTopic(text);
+    if (!ok) chestPainOk = false;
+    console.log(ok ? "OK" : "!!", text.padEnd(40), "-> isMedicalEmergencyTopic:", ok);
+  }
+  const CASES_CHEST_PAIN_NEGATIVE = ["У меня болит голова", "Болит нога", "Мне очень плохо"];
+  for (const text of CASES_CHEST_PAIN_NEGATIVE) {
+    const ok = !isMedicalEmergencyTopic(text);
+    if (!ok) chestPainOk = false;
+    console.log(ok ? "OK" : "!!", text.padEnd(40), "-> isMedicalEmergencyTopic:", isMedicalEmergencyTopic(text), "(expected false)");
+  }
+} else {
+  console.log("Block 15 SKIPPED -- isMedicalEmergencyTopic() not loaded in this run");
+}
+console.log(`Block 15 (chest-pain emergency priority): ${chestPainOk ? "all passed" : "FAILED"}\n`);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk || !transportGateOk || !notWantPhraseOk || !chestPainOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

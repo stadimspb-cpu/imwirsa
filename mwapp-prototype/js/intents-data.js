@@ -243,6 +243,16 @@
 // taxi refusal. Demoted to synonym; the intent's own real signal
 // ("судно"/"возвращатьс"/"берег"/"отказ") stays primary. See
 // regression-charger.js Block 14.
+//
+// v49, 07.09.2026 -- chest-pain intent given a stable "id":
+// "chest_pain_emergency" (same reason as medical_facility/medical_emergency/
+// dental: stable routing, not tied to .q wording) and its own reply now
+// leads with "звони 112" instead of only the Duty Office callback --
+// per Andrey's review of the offline-mode restructuring, chest pain is a
+// classic heart-attack symptom and deserves the same immediate priority
+// as an explicit ambulance request. Primary fix is at the detection layer
+// (offline-qa-match.js v17, MEDICAL_EMERGENCY_KEYWORDS) -- this intent is
+// now defense-in-depth for phrasings that don't hit those exact markers.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -1864,6 +1874,7 @@ const INTENTS = [
     "a": "«Внимание! Я передаю ваш запрос Дежурному офицеру IMWIRSA. Сейчас с вами свяжутся. Оставайтесь на связи. Никуда не уходите.»"
   },
   {
+    "id": "chest_pain_emergency",
     "q": "У меня боль в груди",
     "primary": [
       "грудь",
@@ -1886,7 +1897,7 @@ const INTENTS = [
       "ног",
       "спин"
     ],
-    "a": "«Срочно! Передаю в Дежурный офис IMWIRSA. Ничего не предпринимайте самостоятельно. Вам позвонят в течение минуты.»"
+    "a": "«Звони 112 прямо сейчас — это может быть сердечный приступ. Также передаю сигнал в Дежурный офис IMWIRSA на всякий случай. Ничего не предпринимай самостоятельно, кроме звонка.»"
   },
   {
     "q": "Я потерял паспорт или seaman's book",
