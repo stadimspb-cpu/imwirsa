@@ -770,7 +770,29 @@ const CASES_TRANSPORT_GATE = [
 ];
 const transportGateOk = runCases("Block 13 (transport/gate anchor collisions + payment/no-money safety find)", CASES_TRANSPORT_GATE);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk || !transportGateOk) {
+// ---------------------------------------------------------------------
+// Block 14 — "не хочу" broad-phrase false positive, 06.09.2026, per
+// Andrey's follow-up live test (after the v47 upload didn't actually
+// reach GitHub -- see the conversation; this specific bug was found
+// independent of that deployment gap, testing against the CORRECT code).
+// "Я не хочу возвращаться на судно" (a serious intent -- signals possible
+// desertion/refusal to return to the vessel, escalates to the IMWIRSA
+// duty office with a "legal consequences" reply) had bare "не хочу" as a
+// PRIMARY phrase anchor (weight x5, the highest tier). "не хочу" is a
+// completely generic "I don't want [X]" pattern that attaches to
+// anything -- "Такси не хочу" (I don't want a taxi) was firing this
+// serious escalation reply for a simple taxi refusal. Demoted to
+// synonym: the intent's real, specific signal ("судно"/"возвращатьс"/
+// "берег"/"отказ") must already be present for "не хочу" to add anything.
+const CASES_NOT_WANT_PHRASE = [
+  ["Такси не хочу", "Где сесть в такси и сколько это будет стоить?"],
+  ["Не хочу есть", "UNKNOWN"],
+  ["Я не хочу возвращаться на судно", "Я не хочу возвращаться на судно"],
+  ["Не хочу возвращаться на берег", "Я не хочу возвращаться на судно"],
+];
+const notWantPhraseOk = runCases("Block 14 (\"не хочу\" broad-phrase false positive)", CASES_NOT_WANT_PHRASE);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk || !transportGateOk || !notWantPhraseOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

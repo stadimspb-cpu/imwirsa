@@ -206,6 +206,43 @@
 // different stems and don't collide via containsAnchor's own boundary
 // rule -- verified directly, not assumed; compoundAnchors solves the
 // AND-condition problem, not a collision that didn't exist.
+//
+// v47, 06.09.2026 -- TRANSPORT/GATE batch, per Andrey's screenshot test
+// (Markus prepared the phrases, screenshots sent directly, per the new
+// workflow). Same root cause class throughout: a broad word ("такси",
+// "автобус", "ворота", "выход", "пропуск") sitting as an independently-
+// sufficient PRIMARY anchor in 2+ intents at once, tying the message into
+// UNKNOWN. One genuine homonym found too: "терминал" (payment terminal)
+// in the card-payment intent was also matching "терминал" (port terminal
+// building), actively misrouting "Как попасть из терминала в город?" to
+// a Wellness/payment answer -- demoted to synonym there, no intent
+// currently covers "get from the terminal building to town" so this now
+// correctly falls to UNKNOWN instead of a wrong answer.
+//
+// Unprompted safety-adjacent find while investigating: "карт"/"наличн"/
+// bare "нет" were ALSO primary in "У меня совсем нет денег" (escalates
+// to the IMWIRSA duty office) and in "Где ближайший банкомат?" -- an
+// ordinary "can I pay by card" question could have been misrouted into
+// either. Fixed the same way as always: demoted to synonym, kept each
+// intent's own real distinguishing words ("денег"+"пусто" for the
+// no-money escalation, "банкомат" for the ATM intent) as primary.
+//
+// Two self-inflicted regressions caught and fixed in the SAME round:
+// consolidating "ворота" onto the port-gate intent made "Где ворота в
+// старый город?" (a different topic) wrongly resolve there too (fixed
+// with an exclude); demoting "автобус"/"поезд" in the last-bus intent
+// broke ITS OWN self-match against the now-unweakened public-transport
+// intent (fixed by excluding "последн" from public-transport). Full
+// list of every phrase and every touched intent in regression-charger.js
+// Block 13.
+//
+// v48, 06.09.2026 -- follow-up live test found "не хочу" (bare phrase,
+// weight x5) as PRIMARY in the vessel-return-refusal intent, which
+// escalates to the IMWIRSA duty office with a "legal consequences" reply
+// -- "Такси не хочу" was firing that serious escalation for an ordinary
+// taxi refusal. Demoted to synonym; the intent's own real signal
+// ("судно"/"возвращатьс"/"берег"/"отказ") stays primary. See
+// regression-charger.js Block 14.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -809,11 +846,11 @@ const INTENTS = [
     "q": "Где ближайший банкомат?",
     "primary": [
       "банкомат",
-      "карт",
-      "снять",
-      "наличн"
+      "снять"
     ],
     "synonyms": [
+      "карт",
+      "наличн",
       "atm",
       "денег",
       "получить",
@@ -905,7 +942,8 @@ const INTENTS = [
       "цена",
       "такси",
       "uber",
-      "стоимость"
+      "стоимость",
+      "заказать машину"
     ],
     "synonyms": [
       "поймать",
@@ -923,7 +961,8 @@ const INTENTS = [
       "маршрутка",
       "пешком",
       "шаттл",
-      "велосипед"
+      "велосипед",
+      "без такси"
     ],
     "a": "«Такси берут сразу у ворот. Обязательно договорись о цене ДО посадки. Или попроси охрану вызвать официальное такси. В час пик цена может быть выше на 20–50%.»"
   },
@@ -954,7 +993,8 @@ const INTENTS = [
       "цена",
       "счётчик",
       "водитель",
-      "шаттл"
+      "шаттл",
+      "последн"
     ],
     "a": "«Общественный транспорт останавливается рядом с воротами порта. Спроси у водителя или местных, какой автобус идёт в центр.»"
   },
@@ -1920,12 +1960,12 @@ const INTENTS = [
     "q": "У меня совсем нет денег",
     "primary": [
       "денег",
-      "нет",
-      "наличн",
-      "карт",
       "пусто"
     ],
     "synonyms": [
+      "нет",
+      "наличн",
+      "карт",
       "без денег",
       "ни копейк",
       "нечем платить"
@@ -2034,11 +2074,11 @@ const INTENTS = [
     "primary": [
       "возвращатьс",
       "судно",
-      "не хочу",
       "берег",
       "отказ"
     ],
     "synonyms": [
+      "не хочу",
       "остатьс",
       "не пойду",
       "уйти",
@@ -2171,10 +2211,10 @@ const INTENTS = [
       "вход",
       "порт",
       "экипаж",
-      "ворота",
       "территория"
     ],
     "synonyms": [
+      "ворота",
       "кпп",
       "проходн",
       "член экипаж",
@@ -2496,11 +2536,12 @@ const INTENTS = [
     "q": "Как найти судового агента у ворот?",
     "primary": [
       "агент",
-      "ворота",
       "контакт",
       "диспетчер"
     ],
-    "synonyms": [],
+    "synonyms": [
+      "ворота"
+    ],
     "exclude": [
       "такси",
       "карта"
@@ -2510,13 +2551,14 @@ const INTENTS = [
   {
     "q": "Заберут ли пропуск или паспорт на КПП?",
     "primary": [
-      "пропуск",
       "паспорт",
       "кпп",
       "заберут",
       "охрана"
     ],
-    "synonyms": [],
+    "synonyms": [
+      "пропуск"
+    ],
     "exclude": [
       "такси",
       "бар",
@@ -2770,11 +2812,12 @@ const INTENTS = [
     "q": "Где сходить в туалет у ворот?",
     "primary": [
       "туалет",
-      "ворота",
       "бесплатн",
       "азс"
     ],
-    "synonyms": [],
+    "synonyms": [
+      "ворота"
+    ],
     "exclude": [
       "еда",
       "кафе",
@@ -2979,12 +3022,12 @@ const INTENTS = [
     "q": "Последний автобус / поезд (когда ходит)",
     "primary": [
       "последн",
-      "автобус",
-      "поезд",
       "рейс",
       "расписани"
     ],
     "synonyms": [
+      "автобус",
+      "поезд",
       "во сколько",
       "ходит",
       "отправляетс",
@@ -3005,10 +3048,10 @@ const INTENTS = [
       "внутрипортов",
       "шаттл",
       "причал",
-      "ворота",
       "по территории"
     ],
     "synonyms": [
+      "ворота",
       "транспорт внутри порта",
       "довезти до ворот",
       "внутренний"
@@ -3073,12 +3116,12 @@ const INTENTS = [
     "q": "Через какие ворота выйти в город",
     "primary": [
       "ворота",
-      "выход",
       "город",
       "через какие",
       "кпп"
     ],
     "synonyms": [
+      "выход",
       "проходн",
       "выйти",
       "калитк",
@@ -3089,7 +3132,8 @@ const INTENTS = [
       "экипаж",
       "такси",
       "центр",
-      "автобус"
+      "автобус",
+      "старый город"
     ],
     "a": "«Обычно в порту одни главные ворота. Спроси у охраны.»"
   },
@@ -3330,12 +3374,14 @@ const INTENTS = [
     "q": "Можно ли оплатить картой или только наличные?",
     "primary": [
       "оплата",
+      "оплатить",
       "карта",
+      "картой",
       "наличные",
-      "терминал",
       "безнал"
     ],
     "synonyms": [
+      "терминал",
       "расплатиться",
       "visa",
       "mastercard",
@@ -3951,12 +3997,12 @@ const INTENTS = [
   {
     "q": "Какому такси здесь можно доверять?",
     "primary": [
-      "такси",
       "доверять",
       "лицензи",
       "официальн"
     ],
     "synonyms": [
+      "такси",
       "обманут",
       "надёжн",
       "не кинут",
