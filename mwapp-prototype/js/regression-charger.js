@@ -827,7 +827,26 @@ if (typeof isMedicalEmergencyTopic === "function") {
 }
 console.log(`Block 15 (chest-pain emergency priority): ${chestPainOk ? "all passed" : "FAILED"}\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk || !transportGateOk || !notWantPhraseOk || !chestPainOk) {
+// ---------------------------------------------------------------------
+// Block 16 — "Можно выйти пешком?" gate/exit coverage gap, 07.09.2026.
+// Andrey confirmed this reproduces identically on every device (not a
+// cache issue) -- a bare "пешком" mention was tying 3-3 between two
+// unrelated intents, so the actual gate/exit intent never even entered
+// the race, even though it already had the real answer wired ("Pedestrian
+// exit" in Vanasadam's confirmed gate data). Fixed with PRIMARY phrase
+// anchors ("выйти пешком"/"пройти пешком", weight x5) on the gate intent
+// -- outscores the collision without touching either colliding intent's
+// own "пешком" anchor.
+const CASES_EXIT_ON_FOOT = [
+  ["Можно выйти пешком?", "Через какие ворота выйти в город"],
+  ["Можно ли выйти пешком из порта?", "Через какие ворота выйти в город"],
+  // must NOT regress -- both originally-colliding intents keep their own meaning
+  ["Как добраться до центра моряков и сколько это займёт?", "Как добраться до центра моряков и сколько это займёт?"],
+  ["Это район вообще безопасный для пешей прогулки в форме?", "Это район вообще безопасный для пешей прогулки в форме?"],
+];
+const exitOnFootOk = runCases("Block 16 (\"Можно выйти пешком?\" gate/exit coverage)", CASES_EXIT_ON_FOOT);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk || !transportGateOk || !notWantPhraseOk || !chestPainOk || !exitOnFootOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");

@@ -253,6 +253,19 @@
 // as an explicit ambulance request. Primary fix is at the detection layer
 // (offline-qa-match.js v17, MEDICAL_EMERGENCY_KEYWORDS) -- this intent is
 // now defense-in-depth for phrasings that don't hit those exact markers.
+//
+// v50, 07.09.2026 -- "Можно выйти пешком?" found live, consistent across
+// devices (not a cache issue -- checked and confirmed): a bare "пешком"
+// mention ties 3-3 between two unrelated intents ("Как добраться до
+// центра моряков" and "Это район безопасный для прогулки в форме"),
+// neither of which is the right answer, so the actual gate/exit intent
+// never even entered the race. The real answer was already sitting in
+// this intent's own wired card data the whole time -- Vanasadam's
+// confirmed gate row literally says "Pedestrian exit". Fixed by adding
+// "выйти пешком"/"пройти пешком" as PRIMARY phrase anchors (weight x5)
+// on the gate intent -- safely outscores the two colliding intents
+// (weight 3 each) without touching their own "пешком" anchor or
+// reopening that ambiguity for messages that don't mention exiting.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -3129,7 +3142,9 @@ const INTENTS = [
       "ворота",
       "город",
       "через какие",
-      "кпп"
+      "кпп",
+      "выйти пешком",
+      "пройти пешком"
     ],
     "synonyms": [
       "выход",
