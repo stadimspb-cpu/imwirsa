@@ -694,7 +694,83 @@ for (const [text, mustNotBeId] of CASES_DENTAL_RU_NEGATIVE) {
 }
 console.log(`Block 12 (DENTAL RU anchor expansion + compoundAnchors): ${dentalRuOk ? "all passed" : "FAILED"}\n`);
 
-if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk) {
+// ---------------------------------------------------------------------
+// Block 13 — TRANSPORT/GATE anchor collisions, 06.09.2026, per Andrey's
+// live screenshot batch (topic: transport). Same root cause class as
+// every prior block: a broad word ("такси","автобус","ворота","выход",
+// "пропуск","терминал","карт","наличн","нет") sitting as an
+// independently-sufficient PRIMARY anchor in 2+ intents at once, so the
+// message ties and falls to UNKNOWN, or in one case actively resolves to
+// the WRONG intent via a genuine homonym ("терминал" = port building vs
+// payment terminal). Also found, unprompted, while investigating: "карт"/
+// "наличн"/bare "нет" were ALSO primary in the no-money-distress intent,
+// which escalates to the IMWIRSA duty office -- an ordinary "can I pay by
+// card" question could have been misrouted into that escalation. Fixed
+// the same way as always: the broad word demoted to synonym everywhere
+// except the ONE intent that should own it as a genuine default/general
+// case, never by weakening a safety-relevant intent's real signal words.
+//
+// Two self-inflicted regressions caught and fixed in the SAME round, not
+// after: consolidating "ворота" onto the port-gate intent made "Где
+// ворота в старый город?" (a different topic, old-town gates) wrongly
+// resolve there too (fixed with an exclude on "старый город"); demoting
+// "автобус"/"поезд" in the last-bus intent made ITS OWN canonical text
+// score lower than the general public-transport intent, breaking its
+// self-match (fixed by excluding "последн" from public-transport, so the
+// schedule-specific question defers to the schedule-specific intent).
+const CASES_TRANSPORT_GATE = [
+  // taxi -- was tying with the taxi-trust intent on bare "такси"
+  ["Где взять такси?", "Где сесть в такси и сколько это будет стоить?"],
+  ["Мне нужно такси", "Где сесть в такси и сколько это будет стоить?"],
+  ["Хочу заказать машину", "Где сесть в такси и сколько это будет стоить?"],
+  ["Сколько стоит такси до центра?", "Где сесть в такси и сколько это будет стоить?"],
+  ["Какому такси здесь можно доверять?", "Какому такси здесь можно доверять?"],
+  // negation isn't understood generally (bag-of-words), but this one
+  // explicit phrase must not actively give TAXI info for a "without
+  // taxi" question -- UNKNOWN is the honest, safe outcome here
+  ["Как доехать до города без такси?", "UNKNOWN"],
+  // bus/public transport -- was tying with the "last bus" intent on bare
+  // "автобус"/"поезд"
+  ["Где автобус?", "Как доехать до центра на общественном транспорте?"],
+  ["Как доехать на автобусе до центра?", "Как доехать до центра на общественном транспорте?"],
+  ["Есть общественный транспорт?", "Как доехать до центра на общественном транспорте?"],
+  ["Где автобусная остановка?", "Как доехать до центра на общественном транспорте?"],
+  ["Какой автобус идёт в центр?", "Как доехать до центра на общественном транспорте?"],
+  ["Последний автобус / поезд (когда ходит)", "Последний автобус / поезд (когда ходит)"],
+  // gate/exit -- was tying across up to 5 different intents that all
+  // happened to carry bare "ворота"/"выход"/"пропуск" as primary
+  ["Где выход?", "Нужен ли пропуск, чтобы выйти из порта"],
+  ["Как выйти из порта?", "Нужен ли пропуск, чтобы выйти из порта"],
+  ["Можно выйти без пропуска?", "Нужен ли пропуск, чтобы выйти из порта"],
+  ["Как пройти к воротам?", "Через какие ворота выйти в город"],
+  ["Где главные ворота?", "Через какие ворота выйти в город"],
+  ["Через какие ворота выйти в город", "Через какие ворота выйти в город"],
+  ["Как найти судового агента у ворот?", "Как найти судового агента у ворот?"],
+  ["Где сходить в туалет у ворот?", "Где сходить в туалет у ворот?"],
+  ["Заберут ли пропуск или паспорт на КПП?", "Заберут ли пропуск или паспорт на КПП?"],
+  ["Где находится вход на территорию порта для членов экипажа?", "Где находится вход на территорию порта для членов экипажа?"],
+  ["Внутрипортовый транспорт (шаттл от причала до ворот)", "Внутрипортовый транспорт (шаттл от причала до ворот)"],
+  // a DIFFERENT kind of gate (old town, not the port) must NOT be
+  // swallowed by the port-gate intent just because "ворота" is now its
+  // sole owner -- this is the exact regression caught mid-round
+  ["Где ворота в старый город?", "UNKNOWN"],
+  // "терминал" homonym (port building vs payment terminal) -- must not
+  // actively misroute to the payment/Wellness answer any more
+  ["Как попасть из терминала в город?", "UNKNOWN"],
+  // payment -- self-match was broken by inflected forms ("картой" doesn't
+  // match "карта", "оплатить" doesn't match "оплата") even before today;
+  // found and fixed as a side effect of touching this intent
+  ["Можно ли оплатить картой или только наличные?", "Можно ли оплатить картой или только наличные?"],
+  // safety-relevant find, unprompted: an ordinary payment question must
+  // NEVER get redirected to the no-money-distress escalation intent just
+  // because both used to share bare "карт"/"наличн"/"нет"
+  ["Можно расплатиться картой в кафе?", "Можно ли оплатить картой или только наличные?"],
+  ["Где ближайший банкомат?", "Где ближайший банкомат?"],
+  ["У меня совсем нет денег", "У меня совсем нет денег"],
+];
+const transportGateOk = runCases("Block 13 (transport/gate anchor collisions + payment/no-money safety find)", CASES_TRANSPORT_GATE);
+
+if (!chargerOk || !block2Ok || !brandOk || !block4Ok || !brand2Ok || !categoryOverridePositiveOk || !categoryOverrideNegativeOk || !medicalFacilityOk || !medicalFacilityCardOk || !hospitalIconContractOk || !medicalEmergencyOk || !medicalEmergencyIdOk || !rootFalsePositiveOk || !dentalFallbackOk || !dentalEmergencyPriorityOk || !dentalRuOk || !transportGateOk) {
   console.log("❌ REGRESSION: named-case failures above must be fixed before shipping.");
 } else {
   console.log("✅ All named regression cases pass.");
