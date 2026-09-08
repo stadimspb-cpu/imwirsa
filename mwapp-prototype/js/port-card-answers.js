@@ -102,6 +102,14 @@ const INTENT_CARD_MAP = {
   "Внутрипортовый транспорт (шаттл от причала до ворот)": "transport_internal",
   "Как добраться до центра моряков и сколько это займёт?": "centre_location",
   "Есть ли рядом бесплатный Wi-Fi?": "city_free",
+  // 08.09.2026: same underlying question as above ("Кафе с Wi-Fi" is the
+  // cafe-flavoured phrasing) -- mapped to the SAME field so whichever of
+  // the two intents wins the match, a confirmed Wi-Fi spot (e.g. a
+  // Seamen's Centre) is shown identically, never two different answers
+  // for what's really one port fact. See publicTransportAnswer-style
+  // reasoning: don't let two intents for one real-world question diverge
+  // on which one happens to be wired to card data.
+  "Кафе с Wi-Fi": "city_free",
   "Есть ли поблизости церковь, мечеть или храм?": "spiritual_prayer",
   "Что интересного посмотреть рядом, куда сходить погулять?": "city_culture",
   // centre_about uses a different data shape (contacts[]/hours[]) than
