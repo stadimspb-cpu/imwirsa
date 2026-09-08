@@ -1314,6 +1314,42 @@ const COMPLEX_TOPIC_KEYWORDS = [
   // those messages before the better answer ever got a chance to show.
   // Standing rule: once a topic has a good specific intent, remove it from
   // here rather than letting both systems compete for the same message.
+  //
+  // 08.09.2026 — Andrey/Markus live test: several Category 10 situations
+  // (lost passport, robbery, no money, captain mistreatment, harassment,
+  // mental-health crisis, refusing to return to the ship) were ALL still
+  // answered by their own intent-table .a text claiming "Передаю в
+  // Дежурный офис... С вами свяжутся" -- exactly the same dishonesty
+  // already fixed for SHIP_DEPARTED (nothing is actually sent anywhere by
+  // that text). This reverses the 05.09.2026 decision above to keep
+  // robbery out of this list specifically -- that decision assumed the
+  // intent's own text was "better, more actionable" BECAUSE it already
+  // pointed to Дежурный офис; today's finding shows that pointer was a
+  // fabrication, so the reasoning no longer holds. All seven now route
+  // through the same real escalation-toggle UI already proven honest for
+  // visa/immigration (offers a genuine choice, navigates to the real
+  // volunteer-chat screen, never claims an action already happened).
+  // Phrases are deliberately multi-word/specific, not bare topic nouns
+  // (e.g. "паспорт"/"деньги" alone), to avoid the exact false-positive
+  // class already found and fixed elsewhere in this file (a bare noun
+  // shared with unrelated questions). Each situation's OWN intent-table
+  // entry is also being given honest fallback text as a second layer, in
+  // case a real phrasing slips past this list -- see intents-data.js.
+  "потерял паспорт", "потеряла паспорт", "паспорт украли", "украли паспорт",
+  "потерял seaman's book", "потеряла seaman's book", "seaman's book украли",
+  "меня ограбили", "меня обокрали",
+  "нет денег", "остался без денег", "осталась без денег", "совсем нет денег",
+  "капитан плохо", "капитан жестоко", "капитан угрожает", "капитан унижа",
+  "преследуют", "домогают", "домогательств",
+  "тяжело морально", "не справляюсь", "не справляется",
+  "не хочу возвращаться на судно", "не хочу вернуться на судно", "отказываюсь возвращаться на судно",
+  "lost my passport", "passport was stolen", "lost my seaman's book",
+  "i was robbed", "someone robbed me",
+  "no money left", "i have no money",
+  "captain is abusive", "captain threatens", "captain mistreats",
+  "being harassed", "sexual harassment", "someone is harassing me",
+  "i can't cope", "i'm not coping", "mentally struggling",
+  "don't want to return to the ship", "refuse to go back to the ship",
   "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
   "police", "arrest", "arrested", "detained", "deport",
   "deported", "visa problem", "immigration",
