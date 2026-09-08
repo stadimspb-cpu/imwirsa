@@ -1601,10 +1601,23 @@ function sendAssistantChatMessage() {
           // when no confirmed dentistry is on the card, dentalFallbackAnswer()
           // points to the nearest CONFIRMED hospital instead of stopping at
           // "no data" -- see that function in port-card-answers.js.
+          // public_transport_city (08.09.2026): one OFFLINE_CORE bucket covers
+          // several sub-questions (how to get there / which bus number / how
+          // long it takes) but the card only ever confirms a stop location --
+          // check the seafarer's own wording for the "number"/"time" shapes
+          // BEFORE falling back to the generic stop-location fact, see
+          // publicTransportAnswer() in port-card-answers.js for the full
+          // rationale. null (ordinary phrasing) falls through to the normal
+          // card-fact path below, unchanged.
+          const transportSubAnswer = matchedIntent.id === "public_transport_city" && typeof publicTransportAnswer === "function"
+            ? publicTransportAnswer(text, state.portId)
+            : null;
           const cardAnswer = matchedIntent.id === "medical_facility" && typeof medicalFacilityAnswer === "function"
             ? medicalFacilityAnswer(state.portId)
             : matchedIntent.id === "dental" && typeof dentalFallbackAnswer === "function"
             ? dentalFallbackAnswer(state.portId)
+            : transportSubAnswer
+            ? transportSubAnswer
             : (typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, state.portId) : null);
           offlineAnswer = cardAnswer || matchedIntent.a;
         } else if (typeof findOfflineAnswer === "function") {

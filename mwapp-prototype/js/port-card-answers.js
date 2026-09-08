@@ -334,6 +334,43 @@ function dentalFallbackAnswer(portId) {
   return intent ? intent.a : `«${noDentalLine}»`;
 }
 
+// ---- PUBLIC TRANSPORT SUB-QUESTION HONESTY, 08.09.2026 ----------------
+// Found via Markus's control-block screenshots: "public_transport_city"
+// is one OFFLINE_CORE bucket for several genuinely different
+// sub-questions -- "how do I get to the centre", "where's the stop",
+// "which bus number", "how long does it take" -- but every port's card
+// only ever has ONE unstructured transport_public fact (almost always
+// just the confirmed STOP location, never a route number or a travel
+// time). Handing that same stop fact back as if it answered "which bus
+// number?" or "how long does it take?" would be misleading, not just
+// unhelpful -- it reads as an answer to a question the card never
+// actually confirmed.
+//
+// Checks the SEAFARER'S OWN WORDING (the matched intent is identical for
+// all these sub-phrasings, so this can't be told apart at the intent
+// level) for two narrow, high-confidence patterns and answers those
+// honestly instead of silently substituting the stop fact. Anything else
+// (the ordinary "how do I get to the centre" / "where's the stop" shape)
+// falls through to the existing getPortSpecificAnswer() path, unchanged.
+// Wired in app.js by the intent's stable "id" (public_transport_city,
+// intents-data.js), same pattern as medicalFacilityAnswer/dentalFallbackAnswer.
+const BUS_NUMBER_MARKERS = ["какой автобус", "номер автобуса", "номер маршрута", "какой маршрут", "какой номер"];
+const TRAVEL_TIME_MARKERS = ["сколько времени", "сколько времен", "как долго", "за сколько времени", "минут ехать", "минут на автобусе"];
+
+function publicTransportAnswer(text, portId) {
+  const msg = normalizeText(text);
+  if (TRAVEL_TIME_MARKERS.some((m) => containsAnchor(msg, m))) {
+    return "«В карточке порта нет подтверждённых данных о времени поездки до центра.»";
+  }
+  if (BUS_NUMBER_MARKERS.some((m) => containsAnchor(msg, m))) {
+    const stopFact = getRawCardFact("Как доехать до центра на общественном транспорте?", portId);
+    return stopFact
+      ? `«Подтверждённого номера автобусного маршрута в карточке порта нет. Ближайшая остановка по данным карточки: ${stopFact}.»`
+      : "«Подтверждённого номера автобусного маршрута в карточке порта нет.»";
+  }
+  return null; // ordinary "how to get there" phrasing -- let the normal card-fact path answer it
+}
+
 // ---- SPECIFIC BRAND / NAMED ENTITY HANDLING, 06.09.2026 --------------
 // A request naming a SPECIFIC place or chain (McDonald's, KFC, ...) --
 // see BRAND_ENTITIES in offline-qa-match.js -- must never be answered
