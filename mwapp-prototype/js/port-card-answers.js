@@ -304,27 +304,47 @@ function spiritualAnswer(text, portId) {
     : `«В карточке этого порта нет подтверждённых данных о религиозных объектах.»`;
 }
 
-// ---- TAXI PRICE SUB-QUESTION, 08.09.2026 --------------------------------
-// Andrey/Markus: the taxi intent's confirmed card fact is a pickup/app
-// instruction ("Bolt — Set pickup to ..."), never a price -- no port's
-// card records a fare. Handing that same pickup fact back for "how much
-// does it cost?" silently ignores the actual question asked (same shape
-// as the public-transport route-number/travel-time sub-questions above).
-// Checks for a price-shaped question; if the confirmed fact doesn't
-// itself contain a price (crude currency/number-with-currency check --
-// "Gate 1" has a digit but isn't a price), states plainly that cost isn't
-// confirmed and still surfaces the pickup fact so the seafarer can act.
+// ---- TAXI PRICE SUB-QUESTION + OFFLINE-USABLE FALLBACK, 08.09.2026 -----
+// Andrey, live test: the confirmed card fact is app-based pickup
+// instructions ("Bolt — Set pickup to ..."). Andrey pointed out the real
+// gap -- a rideshare app needs internet to actually REQUEST a ride, not
+// just to be installed, so this instruction alone isn't actually
+// actionable for a seafarer who is offline precisely because they're
+// asking Sofia. The intent's own generic .a text (used when nothing is
+// confirmed at all) already had a good internet-free fallback ("ask port
+// security/the agent to call an official taxi"), but the old either/or
+// wiring (card fact OR .a) meant that advice silently disappeared the
+// moment a port had confirmed app-based data -- exactly backwards, since
+// that's the port where the advice is MOST needed. Now: append the
+// security/agent tip whenever the confirmed fact doesn't itself contain
+// something phone-shaped (a coordinator-confirmed taxi phone number would
+// make the tip redundant, so it's skipped in that case; no such field is
+// mapped today, so `hasPhone` will practically always be false until one
+// is -- see the conversation with Andrey on adding a dedicated phone
+// field to the coordinator questionnaire, not done here).
+//
+// Price sub-question detection unchanged from the first pass: check for a
+// price-shaped question; if the confirmed fact doesn't itself contain a
+// price (crude currency/number-with-currency check -- "Gate 1" has a
+// digit but isn't a price), state plainly that cost isn't confirmed.
 const TAXI_PRICE_MARKERS = ["сколько стоит", "стоимост", "почем", "цена такси"];
 const PRICE_SHAPED = /[€$£]\s?\d+|\d+\s?(eur|usd|gbp|€|\$)/i;
+const PHONE_LIKE = /\+?\d[\d\s\-()]{6,}\d/;
 
 function taxiAnswer(text, portId) {
   const msg = normalizeText(text);
-  if (!TAXI_PRICE_MARKERS.some((m) => containsAnchor(msg, m))) return null; // ordinary "where/how" phrasing -- normal card path
   const fact = getRawCardFact("Где сесть в такси и сколько это будет стоить?", portId);
-  if (fact && PRICE_SHAPED.test(fact)) return null; // card genuinely has a price -- let the normal path show it
-  return fact
-    ? `«В карточке этого порта нет подтверждённых данных о стоимости такси. Для заказа: ${fact}.»`
-    : "«В карточке этого порта нет подтверждённых данных о стоимости такси.»";
+  if (!fact) return null; // nothing confirmed -- caller falls back to the intent's own generic .a, which already suggests asking security
+
+  const hasPhone = PHONE_LIKE.test(fact);
+  const securityTip = hasPhone ? "" : " Также можно попросить охрану порта или судового агента вызвать такси.";
+  const asksPrice = TAXI_PRICE_MARKERS.some((m) => containsAnchor(msg, m));
+  const hasPrice = PRICE_SHAPED.test(fact);
+
+  if (asksPrice && !hasPrice) {
+    return `«В карточке этого порта нет подтверждённых данных о стоимости такси. Для заказа: ${fact}.${securityTip}»`;
+  }
+  return `«По данным карточки этого порта: ${fact}.${securityTip}»`;
 }
 
 // ---- CITY SAFETY: TIME-OF-DAY SCOPE + SAFE ZONE, 08.09.2026 -----------
