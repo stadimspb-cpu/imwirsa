@@ -1370,6 +1370,22 @@ const COMPLEX_TOPIC_KEYWORDS = [
   "police", "arrest", "arrested", "detained", "deport",
   "deported", "visa problem", "immigration",
   "поругались", "поругался", "кричит", "накричал", "угрожает", "угрожали",
+  "угрожают", "угрожал", "угрожала",
+  // 08.09.2026 — Andrey, live test on the intimate-services/CBD cluster:
+  // a live coercion/extortion report ("заставляют платить больше, чем
+  // договаривались") wasn't reaching Duty Office at all -- fell through
+  // to NULL -- and a close paraphrase of an existing threat ("угрожают",
+  // they-form) was silently missed because only "угрожает"/"угрожали"
+  // were listed, not this conjugation. Both are the exact scenario the
+  // intimate-services intents' own text already promises escalation for
+  // ("если столкнёшься с обманом по цене или давлением — пиши в
+  // Дежурный офис") -- that promise was not actually being kept for a
+  // live report phrased this way. Phrases below are deliberately scoped
+  // to the coercion/extortion shape (being forced/pressured over money),
+  // not bare "деньги"/"цена" (which would just re-open the same kind of
+  // false-positive collision already fixed elsewhere in this file).
+  "заставляют платить больше", "требуют больше денег", "вымогают", "вымогательство",
+  "обманули с ценой", "давят на меня из-за денег",
   "полиция", "арестовал", "арестовала", "арестован", "задержал", "задержали",
   "депортация", "депортируют", "проблема с визой", "иммиграция",
   "polis", "tutuklandı", "gözaltına", "sınır dışı", "vize sorunu",
