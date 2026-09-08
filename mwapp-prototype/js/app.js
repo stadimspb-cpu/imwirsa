@@ -787,7 +787,7 @@ function goToScreen(name) {
   if (target) target.classList.add("active");
 
   const bottomNav = document.getElementById("bottomNav");
-  if (["home", "volunteer", "settings", "detail", "subdetail", "assistantchat", "ship"].includes(name)) {
+  if (["home", "volunteer", "settings", "detail", "subdetail", "aboutassistant", "assistantchat", "ship"].includes(name)) {
     bottomNav.style.display = "flex";
     document.querySelectorAll(".nav-item[data-nav]").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
   } else {
@@ -797,6 +797,7 @@ function goToScreen(name) {
   if (name === "intro" || name === "name" || name === "home" || name === "settings") updateAssistantUI();
   if (name === "assistantchat") openAssistantChat();
   if (name === "ship") renderShipScreen();
+  if (name === "aboutassistant") renderAboutAssistant();
   if (name === "home") { maybeShowInstallBanner(); maybeShowLocationBanner(); }
 }
 
@@ -1467,6 +1468,30 @@ function renderAssistantChatMessages() {
     `<div class="chat-msg ${m.who === "me" ? "me" : "them"}">${escapeHtml(m.text)}</div>`
   ).join("");
   scrollChatToBottom(body);
+}
+
+// About-the-assistant screen (Settings → "Об ассистенте"): static, persona-
+// agnostic content in index.html — the only per-persona piece is the name
+// shown at the top. Declined form (05.09.2026: confirmed real names/gender
+// via js/i18n.js — Алекс/Омар male, София/Грейс female) is RU-only for now,
+// since the screen's own body text is hardcoded Russian, not wired through
+// I18N — matches "мы пока тестируем русский" scope for this screen. If this
+// screen goes multi-language later, this map and the title need to move
+// into I18N alongside a full EN/TR/FIL translation of the body text, not
+// be extended ad hoc.
+const ABOUT_ASSISTANT_TITLE_RU = {
+  alex: "Об Алексе",
+  omar: "Об Омаре",
+  sophia: "О Софии",
+  grace: "О Грейс",
+};
+
+function renderAboutAssistant() {
+  const a = getAssistant(state.assistant) || getAssistant("alex");
+  const nameEl = document.getElementById("aboutAssistantName");
+  if (nameEl) nameEl.textContent = a.name;
+  const titleEl = document.getElementById("aboutAssistantTitle");
+  if (titleEl) titleEl.textContent = ABOUT_ASSISTANT_TITLE_RU[a.id] || "Об ассистенте MWApp";
 }
 
 function openAssistantChat() {
