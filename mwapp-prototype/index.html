@@ -328,6 +328,74 @@
       <div class="subdetail-list" id="subdetailBody"></div>
     </section>
 
+    <!-- SCREEN 6c — ABOUT THE ASSISTANT (static, persona-agnostic: the same
+         one engine sits behind Sofia/Alex/Omar/Grace, so this content never
+         names a specific persona or uses a gendered pronoun tied to one —
+         the current assistant's own name is inserted at render time by
+         renderAboutAssistant(), nominative case only, so it never needs
+         Russian case-declension logic ("об Алексе" vs "о Софии") that
+         would require the real name strings from js/i18n.js, which this
+         file doesn't have. Ask Andrey for that file before attempting the
+         declined forms in the title itself. -->
+    <section class="screen screen-subdetail screen-about-sofia" data-screen="aboutassistant">
+      <div class="detail-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="settings">←</button>
+          <div class="detail-title" id="aboutAssistantTitle">Об ассистенте MWApp</div>
+        </div>
+      </div>
+      <div class="subdetail-list">
+        <div class="sd-card">
+          <div class="sd-card-title">🤖 Кто это</div>
+          <div class="sd-note">Сейчас с вами — <span id="aboutAssistantName">ассистент MWApp</span>. Один из ассистентов MWApp — все работают на одном движке, просто с разными именем, голосом и образом. Ассистент помогает с информацией о порте, практическими вопросами на берегу — а если хочется, можно просто поговорить.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">🧠 ИИ или человек</div>
+          <div class="sd-note">Это ИИ-ассистент, не живой человек.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">🌐 Онлайн и офлайн — один и тот же ассистент</div>
+          <div class="sd-note">Ассистент работает в обоих режимах. С интернетом — понимает более свободные формулировки вопросов и может вести полноценный разговор. Без интернета — продолжает работать: использует сохранённую карточку порта и ограниченный набор подготовленных ответов на самые частые вопросы. Офлайн-режим — не «урезанная» версия и не другой ассистент. Просто без интернета вопрос приходится узнавать по ключевым словам, а не по смыслу — если ответ не подошёл с первого раза, попробуйте переформулировать вопрос попроще.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">📋 Откуда данные о порте</div>
+          <div class="sd-note">Из карточки MWApp. Карточки проверяются и обновляются координаторами MWApp и Центральным офисом IMWIRSA. Если подтверждённых данных по вопросу нет, ассистент так и скажет — не придумывает и не выдаёт догадку за факт.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">💾 Запоминает ли меня ассистент</div>
+          <div class="sd-note">Разговор сохраняется у вас на телефоне — можно закрыть приложение и вернуться к нему позже. Но это не отправляется на сервер и не используется, чтобы «узнавать» вас между разными обращениями. Кнопка «Новый разговор» стирает историю.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">👁 Видны ли ассистенту мои прошлые сообщения</div>
+          <div class="sd-note">История переписки видна на экране, но при ответе на новый вопрос ассистент не использует более ранние сообщения как контекст — отвечает на каждый вопрос отдельно.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">🗣 На каких языках говорит ассистент</div>
+          <div class="sd-note">Сейчас уверенно работает на русском. Поддержка других языков MWApp пока тестируется.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">✅ Можно ли доверять ответам ассистента</div>
+          <div class="sd-note">Ассистент использует проверенные данные MWApp, но не заменяет официальные службы. В вопросах безопасности, документов, правил порта или экстренной ситуации важное лучше подтверждать у ответственного человека или по официальному контакту.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">⚓ Помогает ли ассистент только с портом</div>
+          <div class="sd-note">Порт и пребывание на берегу — основная практическая задача, но ассистент также помогает пользоваться самим MWApp и может просто поговорить. С интернетом возможности ассистента заметно шире.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">📄 Переводит ли ассистент документы</div>
+          <div class="sd-note">Короткие фразы, меню, вывески — да. Официальные документы — нет. Может прочитать текст вслух, если удобнее послушать, чем читать самому.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">📵 Может ли ассистент позвонить кому-то за меня</div>
+          <div class="sd-note">Нет — звонков ассистент не делает и не обещает передать сообщение позже. Но если в MWApp есть нужный контакт, ассистент покажет его и подскажет, кому лучше позвонить.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title">🧭 Почему слушать ассистента, а не спросить у местных</div>
+          <div class="sd-note">Не обязательно выбирать что-то одно. Ассистент даёт информацию из MWApp, а местный человек может знать то, чего ещё нет в карточке. Если данные расходятся — лучше перепроверить.</div>
+        </div>
+      </div>
+    </section>
+
     <!-- SCREEN 7 — COORDINATOR CHAT -->
     <section class="screen screen-volunteer" data-screen="volunteer">
       <div class="chat-header">
@@ -381,6 +449,7 @@
         <button class="settings-row" id="clearDataRow"><div class="si">🗑</div><div class="st" data-i18n="settings.clearData">Clear my data</div><div class="sv">›</div></button>
         <button class="settings-row" id="resetAppRow"><div class="si">🔄</div><div class="st" data-i18n="settings.startOver">Start over (show first launch again)</div></button>
         <div class="settings-group-label" data-i18n="settings.about">About</div>
+        <button class="settings-row" data-go="aboutassistant"><div class="si">🤖</div><div class="st">Об ассистенте</div><div class="sv">›</div></button>
         <div class="settings-row"><div class="si">ℹ️</div><div class="st" data-i18n="settings.versionLabel">MWApp v0.1 (prototype)</div></div>
         <div class="settings-row"><div class="si">🌐</div><div class="st" data-i18n="settings.website">imwirsa.org</div></div>
       </div>
