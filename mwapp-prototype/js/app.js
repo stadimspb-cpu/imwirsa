@@ -1643,6 +1643,13 @@ function sendAssistantChatMessage() {
           const citySafetySubAnswer = matchedIntent.id === "city_safety" && typeof citySafetyAnswer === "function"
             ? citySafetyAnswer(text, state.portId)
             : null;
+          // taxi_pickup (08.09.2026): the card only ever confirms a pickup
+          // point, never a fare -- see taxiAnswer() for the full rationale.
+          // null (ordinary phrasing, or a fact that actually has a price)
+          // falls through to the normal card-fact path below.
+          const taxiSubAnswer = matchedIntent.id === "taxi_pickup" && typeof taxiAnswer === "function"
+            ? taxiAnswer(text, state.portId)
+            : null;
           const cardAnswer = matchedIntent.id === "medical_facility" && typeof medicalFacilityAnswer === "function"
             ? medicalFacilityAnswer(state.portId)
             : matchedIntent.id === "dental" && typeof dentalFallbackAnswer === "function"
@@ -1655,6 +1662,8 @@ function sendAssistantChatMessage() {
             ? spiritualSubAnswer
             : citySafetySubAnswer
             ? citySafetySubAnswer
+            : taxiSubAnswer
+            ? taxiSubAnswer
             : transportSubAnswer
             ? transportSubAnswer
             : (typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, state.portId) : null);

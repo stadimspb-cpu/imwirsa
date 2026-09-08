@@ -304,6 +304,29 @@ function spiritualAnswer(text, portId) {
     : `«В карточке этого порта нет подтверждённых данных о религиозных объектах.»`;
 }
 
+// ---- TAXI PRICE SUB-QUESTION, 08.09.2026 --------------------------------
+// Andrey/Markus: the taxi intent's confirmed card fact is a pickup/app
+// instruction ("Bolt — Set pickup to ..."), never a price -- no port's
+// card records a fare. Handing that same pickup fact back for "how much
+// does it cost?" silently ignores the actual question asked (same shape
+// as the public-transport route-number/travel-time sub-questions above).
+// Checks for a price-shaped question; if the confirmed fact doesn't
+// itself contain a price (crude currency/number-with-currency check --
+// "Gate 1" has a digit but isn't a price), states plainly that cost isn't
+// confirmed and still surfaces the pickup fact so the seafarer can act.
+const TAXI_PRICE_MARKERS = ["сколько стоит", "стоимост", "почем", "цена такси"];
+const PRICE_SHAPED = /[€$£]\s?\d+|\d+\s?(eur|usd|gbp|€|\$)/i;
+
+function taxiAnswer(text, portId) {
+  const msg = normalizeText(text);
+  if (!TAXI_PRICE_MARKERS.some((m) => containsAnchor(msg, m))) return null; // ordinary "where/how" phrasing -- normal card path
+  const fact = getRawCardFact("Где сесть в такси и сколько это будет стоить?", portId);
+  if (fact && PRICE_SHAPED.test(fact)) return null; // card genuinely has a price -- let the normal path show it
+  return fact
+    ? `«В карточке этого порта нет подтверждённых данных о стоимости такси. Для заказа: ${fact}.»`
+    : "«В карточке этого порта нет подтверждённых данных о стоимости такси.»";
+}
+
 // ---- CITY SAFETY: TIME-OF-DAY SCOPE + SAFE ZONE, 08.09.2026 -----------
 // Andrey/Markus, live test: the confirmed city_safety fact on real port
 // cards is itself DAY-scoped ("Safe but inconvenient by day — Industrial
