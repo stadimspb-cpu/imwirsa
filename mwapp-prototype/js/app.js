@@ -1329,6 +1329,47 @@ function isComplexTopic(text) {
   return COMPLEX_TOPIC_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
+// ---- GUIDE_ME_BACK / SHIP_DEPARTED, 08.09.2026 -------------------------
+// Andrey/Markus, live test: "lost / how do I get back to the ship" and
+// "the ship left without me" are two genuinely different situations that
+// were both landing as plain text answers from the scored intent table
+// (one giving directions the app can't actually verify, the other
+// falsely claiming a request had been sent to the Duty Office). Split
+// into two deterministic priority checks, same tier as RED_LINE/medical-
+// emergency above, so neither can lose a tie to companion chat or an
+// unrelated intent the way a live test caught happening.
+//
+// SHIP_DEPARTED keywords checked as their own list (not folded into
+// COMPLEX_TOPIC_KEYWORDS) specifically so GUIDE_ME_BACK's own keyword
+// list can positively EXCLUDE them: "заблудился" and "судно ушло" must
+// never be treated as the same situation (the locator has nothing useful
+// to route to once the ship has actually left) -- see the exclusion
+// check inside isGuideMeBackTopic() below.
+const SHIP_DEPARTED_KEYWORDS = [
+  "судно ушло", "судно ушёл", "корабль ушел", "корабль ушёл",
+  "отчалил без меня", "опоздал на судно", "опоздала на судно",
+  "ship left without me", "sailed without me", "missed my ship",
+];
+
+function isShipDepartedTopic(text) {
+  const lower = text.toLowerCase();
+  return SHIP_DEPARTED_KEYWORDS.some((kw) => lower.includes(kw));
+}
+
+const GUIDE_ME_BACK_KEYWORDS = [
+  "вернуться на судно", "вернуться на борт", "заблудил", "потерял дорог", "потерялась",
+  "потерялся", "не найду судно", "не найду дорогу", "найти дорогу на борт", "найти судно",
+  "дорогу обратно к судну", "дорогу к судну", "покажи дорогу", "как пройти к судну",
+  "как дойти до судна",
+  "return to the ship", "find my way back", "lost my way", "i'm lost", "find the ship",
+];
+
+function isGuideMeBackTopic(text) {
+  const lower = text.toLowerCase();
+  if (isShipDepartedTopic(text)) return false; // ship already gone -- different situation, never the locator
+  return GUIDE_ME_BACK_KEYWORDS.some((kw) => lower.includes(kw));
+}
+
 // Same prototype-level caveat as above — this is a keyword heuristic, not
 // real intent classification. Used ONLY for the one reply right after the
 // assistant asks "why do you want the coordinator" (see
@@ -1495,6 +1536,79 @@ function sendAssistantChatMessage() {
       state.chatMessages.push({ who: "them", text: MEDICAL_EMERGENCY_REPLY });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(MEDICAL_EMERGENCY_REPLY)}</div>`);
+    } else if (isGuideMeBackTopic(text)) {
+      // GUIDE_ME_BACK, 08.09.2026, per Andrey/Markus: "lost / how do I get
+      // back to the ship" must open the real "Моё судно" locator (built,
+      // working -- state.shipPoint + shipNavigateBack(), Ship tab), not a
+      // text answer -- that's what the locator exists for. Checked BEFORE
+      // isComplexTopic/companion chat specifically because live testing
+      // found this exact phrasing being swallowed by an unrelated
+      // companion topic ("Покажи дорогу обратно к судну" -> a goodnight/
+      // sleep reply) purely by incidental word overlap -- a priority route
+      // like RED_LINE/medical-emergency is the only way to make this
+      // un-loseable the same way those are.
+      //
+      // Two branches, per Markus: a saved shipPoint means the locator can
+      // actually route there, so just send the seafarer to it. No saved
+      // point means the locator has nothing to route to -- say so plainly
+      // (don't imply it'll work) and fall back to the CONFIRMED gate/exit
+      // fact from the Port Card (transport_leaving field, same data
+      // "Через какие ворота выйти в город" already uses) instead of
+      // inventing directions.
+      console.log("[DIAG] matched rule: GUIDE_ME_BACK");
+      const hasShipPoint = !!(state.shipPoint);
+      console.log("[DIAG] shipPoint saved:", hasShipPoint);
+      let msg;
+      if (hasShipPoint) {
+        msg = "«У вас сохранено место стоянки судна. Открываю локатор «Моё судно» — там можно построить маршрут обратно.»";
+      } else {
+        const gateFact = typeof getRawCardFact === "function"
+          ? getRawCardFact("Через какие ворота выйти в город", state.portId)
+          : null;
+        msg = gateFact
+          ? `«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. По данным карточки этого порта: ${gateFact}. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»`
+          : "«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. В карточке этого порта нет подтверждённых данных о воротах/терминале — уточните у охраны порта или судового агента. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»";
+      }
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-go="ship">${hasShipPoint ? "Открыть локатор «Моё судно»" : "Открыть вкладку «Судно»"}</button>
+        </div>`);
+    } else if (isShipDepartedTopic(text)) {
+      // SHIP_DEPARTED, 08.09.2026, per Andrey/Markus: a genuinely serious,
+      // different situation from GUIDE_ME_BACK (the ship having already
+      // left means the locator has nothing useful to offer -- routing
+      // there would be actively misleading). The old .a text in the intent
+      // table claimed "передаю ваш запрос в Дежурный офис" when nothing
+      // was actually sent anywhere -- Markus flagged this as dishonest,
+      // correctly. This now uses the SAME real escalation-toggle mechanism
+      // as RED_LINE/isComplexTopic (esc-coordinator -> goToScreen this
+      // "volunteer", the real IMWIRSA office chat) instead of a fabricated
+      // claim, and drops "это штатная ситуация"/"оставайтесь на месте" --
+      // reassurances this app has no basis to make since it doesn't know
+      // where the seafarer actually is.
+      //
+      // NOTE per the 07.09.2026 master-memo discussion: this button leads
+      // to a real chat that still needs actual connectivity to reach
+      // anyone -- there is no reliable online/offline detection in this
+      // codebase yet (explicitly deferred as a Stage 5 decision, not a
+      // simple navigator.onLine check per that discussion's own technical
+      // caveat). An offline-specific fallback (saved Duty Office phone
+      // number) is NOT implemented here -- flagged back to Andrey/Markus
+      // rather than improvised.
+      console.log("[DIAG] matched rule: SHIP_DEPARTED");
+      const msg = "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»";
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">Связаться с Дежурным офисом IMWIRSA</button>
+        </div>`);
     } else if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
       // Explicitly asked for the coordinator, but the reason reads as idle/
       // lonely small talk rather than a real issue — point to Spiritual
