@@ -1345,6 +1345,20 @@ const COMPLEX_TOPIC_KEYWORDS = [
   "преследуют", "домогают", "домогательств",
   "тяжело морально", "не справляюсь", "не справляется",
   "не хочу возвращаться на судно", "не хочу вернуться на судно", "отказываюсь возвращаться на судно",
+  "боюсь возвращаться на судно", "боюсь вернуться на судно", "страшно возвращаться на судно",
+  // 08.09.2026 — Markus/Andrey, live test: two more phrasings were still
+  // losing to COMPANION on the same "checked first, unconditionally" issue
+  // as everything else in this block, even though the intent table already
+  // had a correct, honest answer waiting for them further down the
+  // priority chain. "плохо психологически" wasn't matching ANYTHING at all
+  // (fell to the generic unclear fallback) -- distinct from "не справляюсь"
+  // above, so added as its own phrase rather than assumed covered.
+  // "тревожно и тяжело" is deliberately the co-occurring PAIR, not bare
+  // "тревожно" alone -- Andrey/Markus's own reasoning was that it's the
+  // COMBINATION of strong anxiety and a hard time that outweighs ordinary
+  // companion chat, not anxiety by itself (which stays companion
+  // territory, same as it already correctly is for a lone "мне тревожно").
+  "плохо психологически", "тревожно и тяжело",
   "lost my passport", "passport was stolen", "lost my seaman's book",
   "i was robbed", "someone robbed me",
   "no money left", "i have no money",
