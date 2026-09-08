@@ -603,6 +603,19 @@ const state = {
   chatMessages: [],       // [{ who: "me" | "them", text }]
   chatStarted: false,
   assistantReplyIndex: 0,
+  // 08.09.2026, Andrey: give a genuinely unclear message a couple of gentle
+  // "try rephrasing" chances before ever suggesting the topic might be out
+  // of scope -- a seafarer using slang/euphemisms this base has no anchor
+  // for will often land on a recognised phrasing within a try or two.
+  // Counts CONSECUTIVE misses; reset to 0 the moment anything real answers
+  // (any priority branch, companion chat, or the intent table) -- see the
+  // reset calls throughout sendAssistantChatMessage() and the gating logic
+  // right before replyKey is chosen. Deliberately NOT unconditional
+  // "always ask to rephrase" forever -- the 04.09.2026 concern (a message
+  // about a topic genuinely not in the table, like "где купить расчёску",
+  // isn't a clarity problem, and endless "try again" would waste the
+  // seafarer's time for nothing) still stands past a couple of attempts.
+  consecutiveUnclear: 0,
   surveyAnswers: [],      // [{ context, portId, q1, q2, q3, free, at }] — local + best-effort emailed, see submitSurvey()
   // "std" | "large" — controls ONLY --content-text-scale (assistant
   // messages, descriptions, card info, Port Card, transport rows,
@@ -1560,6 +1573,7 @@ function startNewAssistantChat() {
   state.chatMessages = [];
   state.chatStarted = false;
   state.assistantReplyIndex = 0;
+  state.consecutiveUnclear = 0;
   awaitingCoordinatorReason = false;
   saveState();
   const toggle = document.getElementById("escalationToggle");
@@ -1601,6 +1615,7 @@ function sendAssistantChatMessage() {
 
     if (isRedLineTopic(text)) {
       console.log("[DIAG] matched rule: RED_LINE_KEYWORDS");
+      state.consecutiveUnclear = 0;
       // Safety takes priority over everything else, including whether this
       // reply was meant to answer "why do you want the coordinator" — a
       // red-line message is a red-line message regardless of context.
@@ -1623,6 +1638,7 @@ function sendAssistantChatMessage() {
       // scoring involved at all, so it can never again lose a tie to
       // anything.
       console.log("[DIAG] matched rule: MEDICAL_EMERGENCY_KEYWORDS");
+      state.consecutiveUnclear = 0;
       console.log("[DIAG] matched intent: medical_emergency (deterministic, no scoring)");
       console.log("[DIAG] selected response:", JSON.stringify(MEDICAL_EMERGENCY_REPLY));
       state.chatMessages.push({ who: "them", text: MEDICAL_EMERGENCY_REPLY });
@@ -1648,6 +1664,7 @@ function sendAssistantChatMessage() {
       // "Через какие ворота выйти в город" already uses) instead of
       // inventing directions.
       console.log("[DIAG] matched rule: GUIDE_ME_BACK");
+      state.consecutiveUnclear = 0;
       const hasShipPoint = !!(state.shipPoint);
       console.log("[DIAG] shipPoint saved:", hasShipPoint);
       let msg;
@@ -1692,6 +1709,7 @@ function sendAssistantChatMessage() {
       // number) is NOT implemented here -- flagged back to Andrey/Markus
       // rather than improvised.
       console.log("[DIAG] matched rule: SHIP_DEPARTED");
+      state.consecutiveUnclear = 0;
       const msg = "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»";
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1706,6 +1724,7 @@ function sendAssistantChatMessage() {
       // lonely small talk rather than a real issue — point to Spiritual
       // Care's "just want to talk" option instead of paging a human.
       const msg = t("coordinator.pointToSpiritual");
+      state.consecutiveUnclear = 0;
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
@@ -1719,6 +1738,7 @@ function sendAssistantChatMessage() {
       // reply wasn't idle chat, so default to offering the same escalation
       // toggle used everywhere else rather than a generic demo reply.
       console.log("[DIAG] matched rule:", isCoordinatorReasonReply ? "isCoordinatorReasonReply" : "COMPLEX_TOPIC_KEYWORDS");
+      state.consecutiveUnclear = 0;
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1884,10 +1904,36 @@ function sendAssistantChatMessage() {
         // MISSING_OBJECT checked first: "где это находится" is neither a
         // clear off-topic question nor plain gibberish, it's a question
         // whose actual subject never got said. See hasUnresolvedReferent().
-        if (hasUnresolvedReferent(text)) replyKey = "missingObjectReplies";
-        else if (looksLikeAQuestion(text)) replyKey = "demoReplies";
-        else replyKey = "unclearReplies";
-        diagMatchedRule = "none -- falling back to " + replyKey;
+        //
+        // 08.09.2026, Andrey: give a couple of gentle "try rephrasing"
+        // chances (unclearReplies) before ever landing on the more
+        // discouraging "this may not be my topic" tone (demoReplies) --
+        // a seafarer using slang/phrasing this base has no anchor for will
+        // often get there within a try or two (this is the whole reason
+        // the intimate-services/CBD cluster now redirects to Wellness Host
+        // uniformly rather than trying to keyword-match every euphemism --
+        // this counter buys the FIRST couple of misses room to self-
+        // correct into a recognised phrasing before we say anything that
+        // might discourage a retry). Still bounded, though -- the
+        // 04.09.2026 concern behind demoReplies existing at all stands
+        // past a couple of attempts: a message about a topic genuinely
+        // NOT in the table ("где купить расчёску") isn't a clarity
+        // problem, and endless "try again" would waste the seafarer's
+        // time for nothing. hasUnresolvedReferent() is exempted from this
+        // gate -- missingObjectReplies is itself already an invitation to
+        // clarify, not a discouraging "not my topic" message, so there's
+        // nothing to delay it for.
+        if (hasUnresolvedReferent(text)) {
+          replyKey = "missingObjectReplies";
+        } else if (looksLikeAQuestion(text) && state.consecutiveUnclear >= 2) {
+          replyKey = "demoReplies";
+        } else {
+          replyKey = "unclearReplies";
+        }
+        diagMatchedRule = "none -- falling back to " + replyKey + " (consecutiveUnclear=" + state.consecutiveUnclear + ")";
+        state.consecutiveUnclear++;
+      } else {
+        state.consecutiveUnclear = 0;
       }
       const reply = offlineAnswer || t(replyKey)[state.assistantReplyIndex % t(replyKey).length];
       console.log("[DIAG] matched intent:", diagMatchedIntent);
