@@ -1635,6 +1635,14 @@ function sendAssistantChatMessage() {
           const spiritualSubAnswer = matchedIntent.id === "spiritual_prayer" && typeof spiritualAnswer === "function"
             ? spiritualAnswer(text, state.portId)
             : null;
+          // city_safety (08.09.2026): the card's own safety fact can be
+          // DAY-scoped or about a Safe Zone specifically -- see
+          // citySafetyAnswer() for the full rationale. null (ordinary
+          // phrasing, or a fact that isn't day-only) falls through to the
+          // normal card-fact path below, same shape as the others here.
+          const citySafetySubAnswer = matchedIntent.id === "city_safety" && typeof citySafetyAnswer === "function"
+            ? citySafetyAnswer(text, state.portId)
+            : null;
           const cardAnswer = matchedIntent.id === "medical_facility" && typeof medicalFacilityAnswer === "function"
             ? medicalFacilityAnswer(state.portId)
             : matchedIntent.id === "dental" && typeof dentalFallbackAnswer === "function"
@@ -1645,6 +1653,8 @@ function sendAssistantChatMessage() {
             ? seafarersShuttleAnswer(state.portId)
             : spiritualSubAnswer
             ? spiritualSubAnswer
+            : citySafetySubAnswer
+            ? citySafetySubAnswer
             : transportSubAnswer
             ? transportSubAnswer
             : (typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, state.portId) : null);

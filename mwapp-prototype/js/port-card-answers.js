@@ -304,6 +304,47 @@ function spiritualAnswer(text, portId) {
     : `«В карточке этого порта нет подтверждённых данных о религиозных объектах.»`;
 }
 
+// ---- CITY SAFETY: TIME-OF-DAY SCOPE + SAFE ZONE, 08.09.2026 -----------
+// Andrey/Markus, live test: the confirmed city_safety fact on real port
+// cards is itself DAY-scoped ("Safe but inconvenient by day — Industrial
+// zone, missing pavements in places") -- Muuga's card text says so
+// explicitly. Handing that same fact back for an evening/night question
+// would silently claim it covers night safety when the card never said
+// that -- the same "a confirmed fact about a narrower scope must never
+// answer a broader/different one" principle as the transport sub-
+// questions and the denomination check above, just running the check
+// against the FACT's own wording instead of a fixed field-shape gap.
+// DAY-scope detection is a plain substring check on the card's own text
+// (English-authored port cards, per the known language-mismatch note on
+// getPortSpecificAnswer above) -- not a guess about what the port is
+// actually like.
+//
+// "Safe Zone" (capitalised term Andrey/Markus use) is a separate check:
+// no port's city_safety field is confirmed to name a formally-designated
+// Safe Zone today, so a "Safe Zone?" question gets its own honest
+// no-data line unless the raw fact text itself happens to say so.
+const DAY_ONLY_MARKERS = /\bby day\b|\bdaytime\b|\bduring the day\b/i;
+const NIGHT_MARKERS = /\bnight\b|\bevening\b|\bafter dark\b/i;
+const EVENING_NIGHT_QUESTION = /вечер|ночь/;
+const SAFE_ZONE_QUESTION = /safe zone/i;
+
+function citySafetyAnswer(text, portId) {
+  const msg = normalizeText(text);
+  const fact = getRawCardFact("Безопасно ли гулять здесь вечером или ночью?", portId);
+
+  if (SAFE_ZONE_QUESTION.test(msg)) {
+    return fact && SAFE_ZONE_QUESTION.test(fact)
+      ? `«По данным карточки этого порта: ${fact}.»`
+      : "«В карточке этого порта нет подтверждённых данных о Safe Zone.»";
+  }
+
+  if (EVENING_NIGHT_QUESTION.test(msg) && fact && DAY_ONLY_MARKERS.test(fact) && !NIGHT_MARKERS.test(fact)) {
+    return "«В карточке этого порта нет подтверждённых данных о безопасности вечером/ночью.»";
+  }
+
+  return null; // ordinary phrasing, or the fact isn't day-only -- normal card-fact path handles it
+}
+
 
 // Builds the reply for resolveCategoryOverride()'s result (see
 // offline-qa-match.js for the full rationale): a known CATEGORY was named
