@@ -1612,10 +1612,39 @@ function sendAssistantChatMessage() {
           const transportSubAnswer = matchedIntent.id === "public_transport_city" && typeof publicTransportAnswer === "function"
             ? publicTransportAnswer(text, state.portId)
             : null;
+          // seafarers_centre_location (08.09.2026): combines centre_about's
+          // name/phone with centre_location's address+distance into one
+          // answer instead of the single-field phone-only result the plain
+          // card-fact path gave -- see seafarersCentreAnswer() in
+          // port-card-answers.js.
+          // seafarers_centre_shuttle (08.09.2026): honest "not confirmed" +
+          // the centre's own phone instead of the old unconfirmed
+          // "centres usually organise their own transfer" generalization --
+          // see seafarersShuttleAnswer().
+          // spiritual_prayer (08.09.2026): a confirmed general place of
+          // worship (e.g. an ecumenical chapel) must never be handed back as
+          // if it confirms a DENOMINATION-specific ask ("православная
+          // церковь") the card never actually answered -- see
+          // spiritualAnswer() for the full rationale.
+          // spiritual_prayer's own answer function only returns non-null when
+          // a DENOMINATION-specific marker was detected (see
+          // spiritualAnswer() rationale above); ordinary "any place to pray"
+          // phrasing must still fall through to the normal confirmed-card
+          // lookup below, not to this intent's own generic .a text -- same
+          // shape as transportSubAnswer just below.
+          const spiritualSubAnswer = matchedIntent.id === "spiritual_prayer" && typeof spiritualAnswer === "function"
+            ? spiritualAnswer(text, state.portId)
+            : null;
           const cardAnswer = matchedIntent.id === "medical_facility" && typeof medicalFacilityAnswer === "function"
             ? medicalFacilityAnswer(state.portId)
             : matchedIntent.id === "dental" && typeof dentalFallbackAnswer === "function"
             ? dentalFallbackAnswer(state.portId)
+            : matchedIntent.id === "seafarers_centre_location" && typeof seafarersCentreAnswer === "function"
+            ? seafarersCentreAnswer(state.portId)
+            : matchedIntent.id === "seafarers_centre_shuttle" && typeof seafarersShuttleAnswer === "function"
+            ? seafarersShuttleAnswer(state.portId)
+            : spiritualSubAnswer
+            ? spiritualSubAnswer
             : transportSubAnswer
             ? transportSubAnswer
             : (typeof getPortSpecificAnswer === "function" ? getPortSpecificAnswer(matchedIntent.q, state.portId) : null);

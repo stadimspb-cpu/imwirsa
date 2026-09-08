@@ -208,7 +208,103 @@ function getPortSpecificAnswer(intentQuestion, portId) {
   return `По данным карточки этого порта: ${fact}.`;
 }
 
-// ---- CATEGORY-ANCHOR OVERRIDE, 06.09.2026 -----------------------------
+// ---- SEAFARERS' CENTRE COMBINED ANSWER, 08.09.2026 ---------------------
+// Found via Andrey/Markus's control-block screenshots: "centre_about"'s
+// {title, hours, contacts, note} shape (documented above, 05.09.2026) has
+// the CENTRE'S OWN NAME in its top-level `title` field -- but
+// getRealCardFact()'s contacts-shape branch never reads that field, it
+// jumps straight to contacts[0], which on the real data is a PHONE entry
+// ("+372 631 8234 — Main line"). So "Где ближайший центр моряков?" was
+// answering with a phone number and nothing else -- never the centre's
+// actual name -- while the separate "Как добраться..." intent already
+// had the real address+distance the whole time (centre_location, a
+// different field, wired and working since 04.09.2026). This combines
+// all three CONFIRMED pieces (name from centre_about.title, address+
+// distance from centre_location, phone from centre_about.contacts) into
+// one answer for the base "where is the seafarers' centre" question, per
+// Andrey: "название, адрес, расстояние... телефон можно добавить".
+//
+// NOTE: relies on centre_about actually having a top-level `title` field
+// on the real port JSON, per the 05.09.2026 audit comment above -- I
+// don't have the real data/{portId}.json files in this session to verify
+// directly (the project's own standing rule is to check the real
+// structure before wiring a new field, not assume) -- confirm against a
+// real port file before shipping; if `title` isn't actually populated,
+// this degrades gracefully to address+distance+phone, still strictly
+// better than the phone-only answer it replaces, never worse.
+function getSeafarersCentreName(portId) {
+  const prefix = PORT_PREFIX[portId];
+  if (!prefix) return null;
+  const sd = typeof SUBDETAILS !== "undefined" ? SUBDETAILS[`${prefix}_centre_about`] : null;
+  return sd && sd.title ? sd.title : null;
+}
+
+function getSeafarersCentrePhone(portId) {
+  return getRawCardFact("Где ближайший центр моряков?", portId); // still the contacts[0] phone extraction, unchanged
+}
+
+function seafarersCentreAnswer(portId) {
+  const name = getSeafarersCentreName(portId);
+  const location = getRawCardFact("Как добраться до центра моряков и сколько это займёт?", portId); // address + distance
+  const phone = getSeafarersCentrePhone(portId);
+  const facts = [name, location].filter(Boolean);
+  if (facts.length === 0 && !phone) return null; // nothing confirmed at all -- caller falls back to intent.a
+  let text = facts.join(" — ");
+  if (phone) text += text ? `. Контакт: ${phone}` : `Контакт: ${phone}`;
+  return `«По данным карточки этого порта: ${text}.»`;
+}
+
+// Shuttle-to-centre fallback (Andrey, 08.09.2026): when no confirmed
+// shuttle data exists, state that plainly -- never the old "Обычно центр
+// моряков сам организует трансфер" (an unconfirmed generalization about
+// how centres behave, not a port fact) -- and add the confirmed centre
+// phone if one exists, so the seafarer still has a way to ask directly.
+function seafarersShuttleAnswer(portId) {
+  const phone = getSeafarersCentrePhone(portId);
+  return phone
+    ? `«В карточке порта нет подтверждённых данных о бесплатном шаттле. Контакт Seafarers' Centre: ${phone}.»`
+    : null; // no phone either -- caller falls back to the intent's own honest .a text
+}
+
+// ---- DENOMINATION-SPECIFIC PRAYER QUESTIONS, 08.09.2026 ----------------
+// Andrey/Markus, live test: "Есть ли рядом православная церковь?" was
+// getting the confirmed ECUMENICAL chapel handed back as if it answered
+// the Orthodox-specific question -- factually wrong (an ecumenical chapel
+// is not a claim of any specific denomination) even though the underlying
+// data (spiritual_prayer) is genuinely confirmed. General principle: a
+// confirmed fact about a BROADER category must never be presented as if
+// it confirms a more SPECIFIC sub-question the card never actually
+// answered -- same shape as BRAND_ENTITIES (a category fact isn't a
+// brand fact) and the public-transport sub-questions above (a stop fact
+// isn't a route-number fact). No port's card currently records
+// denomination-specific data (only the general spiritual_prayer field),
+// so this always states that plainly, then offers the confirmed general
+// option as a next step -- never silently substitutes it as the answer.
+const DENOMINATION_LABELS = [
+  ["православн", "православную церковь"],
+  ["католич", "католическую церковь"],
+  ["протестант", "протестантскую церковь"],
+  ["баптист", "баптистскую церковь"],
+  ["лютеран", "лютеранскую церковь"],
+  ["суннит", "суннитскую мечеть"],
+  ["шиит", "шиитскую мечеть"],
+  ["буддист", "буддийский храм"],
+  ["иудей", "синагогу конкретно"],
+  ["синагог", "синагогу"],
+];
+
+function spiritualAnswer(text, portId) {
+  const msg = normalizeText(text);
+  const match = DENOMINATION_LABELS.find(([marker]) => containsAnchor(msg, marker));
+  if (!match) return null; // ordinary "any place to pray" phrasing -- normal card-fact path handles it
+  const label = match[1];
+  const fact = getRawCardFact("Есть ли поблизости церковь, мечеть или храм?", portId);
+  return fact
+    ? `«В карточке этого порта нет подтверждённых данных именно про ${label}. Ближайшее подтверждённое место для молитвы: ${fact}.»`
+    : `«В карточке этого порта нет подтверждённых данных о религиозных объектах.»`;
+}
+
+
 // Builds the reply for resolveCategoryOverride()'s result (see
 // offline-qa-match.js for the full rationale): a known CATEGORY was named
 // alongside an organization name this base doesn't and won't track. If
