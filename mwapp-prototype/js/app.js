@@ -1438,7 +1438,17 @@ function isShipDepartedTopic(text) {
 }
 
 const GUIDE_ME_BACK_KEYWORDS = [
-  "вернуться на судно", "вернуться на борт", "заблудил", "потерял дорог", "потерялась",
+  // 09.09.2026 — Andrey, live test: a bare "вернуться на судно"/"вернуться
+  // на борт" substring was firing on ANY mention of returning to the ship,
+  // including incidental context in a totally different question ("Можно
+  // выпить водки и потом вернуться на судно?" -> wrongly opened the ship
+  // locator instead of answering the actual alcohol question). Narrowed to
+  // require an actual "how do I" framing so the phrase only fires for a
+  // genuine navigation request, not any sentence that happens to mention
+  // returning to the ship as context.
+  "как вернуться на судно", "как вернуться на борт", "как мне вернуться на судно",
+  "как мне вернуться на борт", "не найду путь на судно", "не могу найти дорогу на судно",
+  "помогите вернуться на судно", "заблудил", "потерял дорог", "потерялась",
   "потерялся", "не найду судно", "не найду дорогу", "найти дорогу на борт", "найти судно",
   "дорогу обратно к судну", "дорогу к судну", "покажи дорогу", "как пройти к судну",
   "как дойти до судна",
