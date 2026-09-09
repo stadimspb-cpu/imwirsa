@@ -44,6 +44,21 @@
 // for the full rationale and why this is additive/zero-risk for every
 // other intent.
 //
+// v18, 09.09.2026 -- sticky Companion Mode support, per Markus's proposal
+// (confirmed live: "какой автобус, я про свой рейс на судне" and
+// "Начальство достало" hijacked by unrelated port intents mid-companion-
+// chat, because findCompanionReply() was a per-message classifier with no
+// persistent mode of its own). Added: findOfflineIntent(text, {strict})
+// for the mode-exit check (raises both confidence bars so only an
+// unambiguous fresh port question breaks the conversation); pickAvoidingRecent()
+// + recentTexts param on pickCompanionReply()/findCompanionReply() so a
+// repeated topic hit doesn't visibly repeat the same line; COMPANION_STAY_REPLIES
+// + findCompanionFallback() as a warm "still listening" fallback instead of
+// falling through to the ordinary demoReplies/unclearReplies pool while a
+// companion conversation is active. The sticky state itself
+// (state.companionActive) lives in app.js -- this file only exposes the
+// pieces app.js's state machine calls.
+//
 // v17, 07.09.2026 -- chest-pain markers ("боль в груди", "инфаркт", ...)
 // added to MEDICAL_EMERGENCY_KEYWORDS per Andrey: chest pain deserves the
 // same un-tie-able 112 priority as an explicit ambulance request, not
@@ -404,12 +419,51 @@ function isMedicalEmergencyTopic(text) {
   return false;
 }
 
+// 09.09.2026 -- found while building the sticky-Companion-Mode exit check
+// below: raw score/margin alone CANNOT tell a genuine topic change
+// ("Ладно, где ближайший супермаркет?") apart from an unrelated word
+// showing up inside an emotional message ("какой автобус, я про свой рейс
+// на судне") -- both score the exact same 4-vs-3 (margin 1) profile in
+// this engine, because scoreIntent() only ever looks at anchor words, not
+// at WHY the seafarer said them. A blunt higher threshold would block
+// both alike. The one real signal available offline is the discourse
+// marker itself -- Andrey's own example already contains it ("Ладно, ...")
+// -- so an explicit switch word is what actually gates a clean exit;
+// without one, the bar stays high enough that stray anchor words inside a
+// sentence about something else basically never win.
+// Note: normalizeText() strips punctuation before this ever runs, so these
+// are bare words/phrases, not "ладно," with a comma -- containsAnchor()'s
+// own word-boundary check is what keeps a short word like "ок" from
+// matching mid-word, not the marker's own punctuation.
+const TOPIC_SWITCH_MARKERS = [
+  "ладно", "окей", "ок", "кстати", "проехали",
+  "короче", "в общем", "забудь", "неважно", "вернемся к",
+  "anyway", "okay",
+];
+
+function hasTopicSwitchMarker(normalizedMessage) {
+  return TOPIC_SWITCH_MARKERS.some((m) => containsAnchor(normalizedMessage, m));
+}
+
 // Returns the matched INTENT OBJECT itself (not just .a) -- needed so a
 // caller can look up port-specific real data for this exact intent (see
 // port-card-answers.js) before falling back to the generic .a text.
 // findOfflineAnswer() below is now a thin wrapper kept for anything that
 // only ever needed the text.
-function findOfflineIntent(text) {
+//
+// 09.09.2026, opts.strict -- added for sticky Companion Mode (see app.js):
+// while a seafarer is inside an ongoing companion conversation, an
+// ordinary port-topic match must NOT be enough on its own to yank him
+// back out of it. With an explicit TOPIC_SWITCH_MARKERS marker present,
+// this behaves exactly like the normal (non-strict) call -- the seafarer
+// clearly signalled he's done with the conversation, no extra bar needed.
+// WITHOUT one, both bars are raised well past anything a single stray
+// anchor word can realistically clear (see the comment above
+// TOPIC_SWITCH_MARKERS for the live example that showed why a moderate
+// bump isn't enough) -- every other caller (the ordinary non-companion
+// path) is unaffected, opts is optional and defaults to non-strict.
+function findOfflineIntent(text, opts) {
+  const strict = !!(opts && opts.strict);
   const msg = normalizeText(text);
   if (!msg) return null;
   if (findComboOverride(msg)) return null; // combo answers have no single backing intent to attach card data to
@@ -424,8 +478,12 @@ function findOfflineIntent(text) {
       secondScore = score;
     }
   }
-  if (!best || bestScore < CONFIDENCE_THRESHOLD) return null;
-  if (bestScore - secondScore < AMBIGUITY_MARGIN) return null;
+  const marked = strict && hasTopicSwitchMarker(msg);
+  const strictNoMarker = strict && !marked;
+  const confidenceFloor = strictNoMarker ? CONFIDENCE_THRESHOLD + 4 : CONFIDENCE_THRESHOLD;
+  const marginFloor = strictNoMarker ? AMBIGUITY_MARGIN + 3 : AMBIGUITY_MARGIN;
+  if (!best || bestScore < confidenceFloor) return null;
+  if (bestScore - secondScore < marginFloor) return null;
   return best;
 }
 
@@ -570,7 +628,18 @@ const DEEP_TALK_LIMIT_REPLIES = [
   "Я не притворяюсь, что офлайн могу говорить об этом бесконечно — возможностей правда немного. Но ты не один: Дежурный офис IMWIRSA на связи прямо сейчас, а когда будет интернет — поговорим уже без этих ограничений.",
 ];
 
-function pickCompanionReply(topic, localHour) {
+// 09.09.2026, recentTexts -- added for sticky Companion Mode: without it,
+// a topic with only 1-2 reply variants (e.g. "Просто хочется поговорить")
+// visibly repeats itself within the same conversation the moment its
+// anchor word ("поговорить") comes up again mid-conversation, which reads
+// as the assistant not tracking what was already said (live example:
+// "Давай. Можешь начать с чего угодно." three times in one chat). When
+// more than one variant exists, this skips whichever one was JUST used as
+// long as an alternative is available -- a topic with a single reply (or a
+// single time-slot) is left as-is, repeating there is unavoidable and
+// harmless (e.g. a plain "Привет! Чем могу помочь?").
+function pickCompanionReply(topic, localHour, recentTexts) {
+  const recent = Array.isArray(recentTexts) ? recentTexts : [];
   if (Array.isArray(topic.timeReplies) && topic.timeReplies.length > 0) {
     if (typeof localHour === "number") {
       for (const slot of topic.timeReplies) {
@@ -580,11 +649,19 @@ function pickCompanionReply(topic, localHour) {
         if (inRange) return slot.text;
       }
     }
-    return topic.timeReplies[Math.floor(Math.random() * topic.timeReplies.length)].text;
+    const pool = topic.timeReplies.map((s) => s.text);
+    return pickAvoidingRecent(pool, recent) || topic.timeReplies[0].text;
   }
   const variants = topic.replies || [];
   if (variants.length === 0) return null;
-  return variants[Math.floor(Math.random() * variants.length)];
+  return pickAvoidingRecent(variants, recent) || variants[0];
+}
+
+function pickAvoidingRecent(pool, recentTexts) {
+  if (pool.length === 0) return null;
+  const fresh = pool.filter((v) => !recentTexts.includes(v));
+  const from = fresh.length > 0 ? fresh : pool;
+  return from[Math.floor(Math.random() * from.length)];
 }
 
 function scoreCompanion(normalizedMessage, topic) {
@@ -597,7 +674,10 @@ function scoreCompanion(normalizedMessage, topic) {
 // DEEP_TALK_TOPICS for the full rationale. Callers that don't pass a count
 // (or pass undefined) simply never cross the threshold, so this stays
 // backward-compatible for anything that doesn't care about the distinction.
-function findCompanionReply(text, localHour, deepTalkCount) {
+// `recentTexts` (09.09.2026, sticky Companion Mode) -- last 1-2 of the
+// assistant's OWN companion replies in this conversation, so a repeated
+// topic hit doesn't visibly repeat itself -- see pickCompanionReply().
+function findCompanionReply(text, localHour, deepTalkCount, recentTexts) {
   const msg = normalizeText(text);
   if (!msg) return null;
   let best = null, bestScore = 0;
@@ -610,5 +690,27 @@ function findCompanionReply(text, localHour, deepTalkCount) {
   if (isDeep && typeof deepTalkCount === "number" && deepTalkCount >= DEEP_TALK_THRESHOLD) {
     return { text: DEEP_TALK_LIMIT_REPLIES[Math.floor(Math.random() * DEEP_TALK_LIMIT_REPLIES.length)], isDeep };
   }
-  return { text: pickCompanionReply(best, localHour), isDeep };
+  return { text: pickCompanionReply(best, localHour, recentTexts), isDeep };
+}
+
+// 09.09.2026 -- sticky Companion Mode "stay" fallback (see app.js). While
+// state.companionActive is true, a message that matches NEITHER a
+// companion topic NOR a strict-confidence port intent must NOT fall
+// through to the ordinary demoReplies/unclearReplies pool -- that pool's
+// wording ("возможно, это не по моей части") reads as leaving the
+// conversation, which is exactly wrong mid-companion-chat (live example:
+// "У всех свои дела. Иногда чувствуешь себя совсем один." matched no
+// topic anchor at all and got the generic "не совсем понял" instead of
+// staying present). This pool stays warm and explicitly invites the
+// seafarer to keep going, without pretending to have understood something
+// specific.
+const COMPANION_STAY_REPLIES = [
+  "Не совсем уловил детали, но я тебя слушаю — продолжай, что на душе.",
+  "Расскажи ещё — не обязательно точными словами, я рядом и слушаю.",
+  "Не так важно, как это сформулировать — просто говори, что думаешь.",
+  "Я здесь. Даже если я не сразу пойму каждое слово — продолжай.",
+];
+
+function findCompanionFallback(recentTexts) {
+  return pickAvoidingRecent(COMPANION_STAY_REPLIES, Array.isArray(recentTexts) ? recentTexts : []);
 }

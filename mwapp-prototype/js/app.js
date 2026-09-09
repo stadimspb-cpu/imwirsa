@@ -626,6 +626,19 @@ const state = {
   // a light companion topic, a priority-route match. Mirrors
   // consecutiveUnclear's shape deliberately.
   consecutiveDeepTalk: 0,
+  // 09.09.2026, per Markus/live testing: sticky Companion Mode. Once a
+  // message matches a companion topic, this flips true and every
+  // SUBSEQUENT message is handled INSIDE the companion conversation first
+  // (see sendAssistantChatMessage()) instead of being re-run through the
+  // ordinary intent table from scratch -- that per-message re-routing was
+  // exactly what let unrelated port intents hijack mid-conversation
+  // emotional messages ("какой автобус, я про свой рейс на судне" ->
+  // bus-schedule intent; "Начальство достало" -> crew-gate intent). Reset
+  // to false wherever consecutiveDeepTalk is already reset (redline,
+  // medical emergency, complex-topic/coordinator escalation -- those
+  // always override companion, see priority order below) AND on an
+  // explicit high-confidence topic change caught by the strict exit check.
+  companionActive: false,
   surveyAnswers: [],      // [{ context, portId, q1, q2, q3, free, at }] — local + best-effort emailed, see submitSurvey()
   // "std" | "large" — controls ONLY --content-text-scale (assistant
   // messages, descriptions, card info, Port Card, transport rows,
@@ -1595,11 +1608,22 @@ function startNewAssistantChat() {
   state.assistantReplyIndex = 0;
   state.consecutiveUnclear = 0;
   state.consecutiveDeepTalk = 0;
+  state.companionActive = false;
   awaitingCoordinatorReason = false;
   saveState();
   const toggle = document.getElementById("escalationToggle");
   if (toggle) toggle.remove();
   openAssistantChat();
+}
+
+// 09.09.2026, sticky Companion Mode helper: the assistant's own last 1-2
+// replies (not the seafarer's messages), used purely to avoid visibly
+// repeating a companion line the seafarer just saw -- see
+// pickCompanionReply()/findCompanionFallback() in offline-qa-match.js.
+function getRecentAssistantTexts(count) {
+  const n = typeof count === "number" ? count : 2;
+  const mine = state.chatMessages.filter((m) => m.who === "them").map((m) => m.text);
+  return mine.slice(-n);
 }
 
 function sendAssistantChatMessage() {
@@ -1638,6 +1662,7 @@ function sendAssistantChatMessage() {
       console.log("[DIAG] matched rule: RED_LINE_KEYWORDS");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
       // Safety takes priority over everything else, including whether this
       // reply was meant to answer "why do you want the coordinator" — a
       // red-line message is a red-line message regardless of context.
@@ -1662,6 +1687,7 @@ function sendAssistantChatMessage() {
       console.log("[DIAG] matched rule: MEDICAL_EMERGENCY_KEYWORDS");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
       console.log("[DIAG] matched intent: medical_emergency (deterministic, no scoring)");
       console.log("[DIAG] selected response:", JSON.stringify(MEDICAL_EMERGENCY_REPLY));
       state.chatMessages.push({ who: "them", text: MEDICAL_EMERGENCY_REPLY });
@@ -1689,6 +1715,7 @@ function sendAssistantChatMessage() {
       console.log("[DIAG] matched rule: GUIDE_ME_BACK");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
       const hasShipPoint = !!(state.shipPoint);
       console.log("[DIAG] shipPoint saved:", hasShipPoint);
       let msg;
@@ -1735,6 +1762,7 @@ function sendAssistantChatMessage() {
       console.log("[DIAG] matched rule: SHIP_DEPARTED");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
       const msg = "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»";
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1751,6 +1779,7 @@ function sendAssistantChatMessage() {
       const msg = t("coordinator.pointToSpiritual");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
@@ -1766,6 +1795,7 @@ function sendAssistantChatMessage() {
       console.log("[DIAG] matched rule:", isCoordinatorReasonReply ? "isCoordinatorReasonReply" : "COMPLEX_TOPIC_KEYWORDS");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1778,8 +1808,21 @@ function sendAssistantChatMessage() {
         </div>`);
     } else {
       // Priority order below RED_LINE_KEYWORDS / COMPLEX_TOPIC_KEYWORDS
-      // (checked earlier in this function, unchanged):
-      //   1. Companion chat (Block 26) — ordinary conversation.
+      // (checked earlier in this function, unchanged — those always
+      // override companion, and already reset state.companionActive, see
+      // the branches above):
+      //   1. Companion chat (Block 26) — ordinary conversation. STICKY as
+      //      of 09.09.2026 (Markus's proposal, confirmed by live testing):
+      //      once state.companionActive is true, later messages are
+      //      handled WITHIN the conversation (companion classifier, then
+      //      companion's own "still listening" fallback) instead of being
+      //      re-run through the general intent table from scratch — that
+      //      re-routing was exactly what let unrelated port intents
+      //      hijack mid-conversation emotional messages. The ONLY way out
+      //      is a STRICT-confidence port-intent match (see
+      //      findOfflineIntent(text, {strict:true}) below) — an
+      //      unambiguous, clearly-a-fresh-question hit, not just anything
+      //      that ties the ordinary CONFIDENCE_THRESHOLD.
       //   2. The intent-anchor Q&A table (offline-qa-match.js).
       //   3. If neither matched: a genuinely unclear message ("расч
       //      уыекуцй") gets a DIFFERENT reply than a clear question about
@@ -1793,9 +1836,38 @@ function sendAssistantChatMessage() {
       //      "the question came through fine, we just don't have this
       //      topic"; its absence is treated as "unclear, ask them to say
       //      it differently".
-      const companionMatch = typeof findCompanionReply === "function"
-        ? findCompanionReply(text, getPortLocalHour(state.portId), state.consecutiveDeepTalk)
-        : null;
+      let companionMatch = null;
+      if (state.companionActive) {
+        // Already inside a companion conversation: try the companion
+        // classifier first, with the assistant's own recent replies so it
+        // doesn't visibly repeat itself.
+        companionMatch = typeof findCompanionReply === "function"
+          ? findCompanionReply(text, getPortLocalHour(state.portId), state.consecutiveDeepTalk, getRecentAssistantTexts(2))
+          : null;
+        if (!companionMatch) {
+          const exitIntent = typeof findOfflineIntent === "function"
+            ? findOfflineIntent(text, { strict: true })
+            : null;
+          if (exitIntent) {
+            // Unambiguous fresh port question — leave companion mode and
+            // fall through to the ordinary intent-table handling below.
+            state.companionActive = false;
+          } else {
+            // Stay in the conversation: a warm "still listening" line,
+            // never the generic demoReplies/unclearReplies pool, which
+            // reads as leaving the conversation mid-talk.
+            const fallbackText = typeof findCompanionFallback === "function"
+              ? findCompanionFallback(getRecentAssistantTexts(2))
+              : null;
+            companionMatch = fallbackText ? { text: fallbackText, isDeep: false } : null;
+          }
+        }
+      } else {
+        companionMatch = typeof findCompanionReply === "function"
+          ? findCompanionReply(text, getPortLocalHour(state.portId), state.consecutiveDeepTalk)
+          : null;
+        if (companionMatch) state.companionActive = true; // entering companion mode
+      }
       if (companionMatch) {
         // See DEEP_TALK_TOPICS in offline-qa-match.js: only the four deep-
         // talk topics move this counter; every other companion topic

@@ -266,6 +266,14 @@
 // on the gate intent -- safely outscores the two colliding intents
 // (weight 3 each) without touching their own "пешком" anchor or
 // reopening that ambiguity for messages that don't mention exiting.
+//
+// v51, 09.09.2026 -- COMPANION_INTENTS "Раздражение на ассистента"
+// (below) expanded per live sticky-Companion-Mode testing: meta-comments
+// about the assistant repeating itself ("Ты опять почти то же самое
+// говоришь", "Или у тебя только готовые ответы?") had no anchor at all
+// and were falling through to the ordinary intent table (one landed on
+// the POST OFFICE intent) -- see offline-qa-match.js v18 / app.js for
+// the sticky-mode rewrite this is part of.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -4601,11 +4609,17 @@ const COMPANION_INTENTS = [
       "ерунда",
       "бесишь",
       "глупость",
-      "опять не то"
+      "опять не то",
+      "то же самое",
+      "одно и то же",
+      "по кругу",
+      "готовые ответы",
+      "заготовк"
     ],
     "replies": [
       "Понял, значит я промахнулся. Скажи другими словами, что именно тебе нужно, и попробуем ещё раз.",
-      "Да, этот ответ не попал в вопрос. Давай уточним."
+      "Да, этот ответ не попал в вопрос. Давай уточним.",
+      "Ты прав, я сейчас повторяюсь — офлайн у меня правда немного вариантов. Расскажи своими словами, что происходит, попробую ответить точнее."
     ]
   },
   {
