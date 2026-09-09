@@ -532,6 +532,44 @@ function resolveCategoryOverride(text) {
 // EXPLICIT time word the seafarer typed ("добрый вечер") still just uses
 // its own flat `replies` list -- say what they said, don't second-guess
 // it with the real clock.
+//
+// 09.09.2026, Andrey: a real emotional conversation (homesickness,
+// anxiety, loneliness, "why am I here") can run much longer than the
+// handful of scripted variants each topic carries -- past roughly 20-30
+// minutes the same few warm replies start visibly cycling, which reads as
+// not-listening rather than as care. Rather than trying to write an
+// unbounded set of variants (impossible to keep genuinely fresh) or
+// dropping offline companion chat for these topics entirely (Andrey
+// considered this, decided against it -- a seafarer who deliberately went
+// offline and writes "мне одиноко" still deserves more than silence or a
+// "try rephrasing" prompt), these four topics specifically get a SHARED,
+// SEPARATE reply pool that activates once state.consecutiveDeepTalk
+// (tracked in app.js, incremented each time one of these topics fires in
+// a row, reset the moment anything else happens) crosses
+// DEEP_TALK_THRESHOLD. That pool is deliberately honest about the ceiling
+// -- it says plainly that offline capacity is limited, rather than
+// pretending the warmth is inexhaustible, and points to Duty Office or
+// waiting for a connection for anyone who genuinely needs to keep
+// talking. Lighter companion topics (greetings, thanks, a joke, "how are
+// you", idle chat) are NOT in this set -- repeating one of THOSE costs
+// nothing, there's no emotional stakes to a repeated "glad to hear it!".
+const DEEP_TALK_TOPICS = new Set([
+  "Жалоба на скуку / Одиночество",
+  "Ностальгия по дому",
+  "Беспричинная тревога / Страх",
+  "Вопрос «Зачем я здесь?» (Смысл)",
+]);
+
+const DEEP_TALK_THRESHOLD = 3;
+
+const DEEP_TALK_LIMIT_REPLIES = [
+  "Честно: офлайн я хожу примерно по одному и тому же кругу тёплых фраз — не хочу повторять одно и то же и делать вид, что это настоящий долгий разговор. Я рядом, но если это по-настоящему тяжело — лучше дождаться связи или написать в Дежурный офис IMWIRSA, там ответит живой человек.",
+  "Тут мои возможности офлайн правда ограничены — я не смогу вести этот разговор так долго, как, может, тебе хочется. Если не отпускает — Дежурный офис IMWIRSA на связи и без интернета у тебя, или дождись сети, и поговорим по-настоящему.",
+  "Не хочу крутить один и тот же набор слов по кругу — офлайн я так устроен. Знай, что я рядом. А если совсем тяжело — это повод написать в Дежурный офис IMWIRSA, не только мне.",
+  "Тема явно не закрыта, но офлайн я быстро упрусь в одни и те же ответы, и это будет только раздражать. Если хочется по-настоящему выговориться — Дежурный офис IMWIRSA работает и без твоего интернета, или дождись связи, и поговорим подробнее.",
+  "Я не притворяюсь, что офлайн могу говорить об этом бесконечно — возможностей правда немного. Но ты не один: Дежурный офис IMWIRSA на связи прямо сейчас, а когда будет интернет — поговорим уже без этих ограничений.",
+];
+
 function pickCompanionReply(topic, localHour) {
   if (Array.isArray(topic.timeReplies) && topic.timeReplies.length > 0) {
     if (typeof localHour === "number") {
@@ -553,7 +591,13 @@ function scoreCompanion(normalizedMessage, topic) {
   return countHits(normalizedMessage, topic.primary, { excludeGeneric: true });
 }
 
-function findCompanionReply(text, localHour) {
+// Returns { text, isDeep } or null. `deepTalkCount` (state.consecutiveDeepTalk
+// from app.js) decides whether a matched DEEP_TALK_TOPICS topic gets its own
+// warm reply or the shared honest-limit pool -- see the comment above
+// DEEP_TALK_TOPICS for the full rationale. Callers that don't pass a count
+// (or pass undefined) simply never cross the threshold, so this stays
+// backward-compatible for anything that doesn't care about the distinction.
+function findCompanionReply(text, localHour, deepTalkCount) {
   const msg = normalizeText(text);
   if (!msg) return null;
   let best = null, bestScore = 0;
@@ -562,5 +606,9 @@ function findCompanionReply(text, localHour) {
     if (score > bestScore) { bestScore = score; best = topic; }
   }
   if (!best || bestScore < 1) return null;
-  return pickCompanionReply(best, localHour);
+  const isDeep = DEEP_TALK_TOPICS.has(best.topic);
+  if (isDeep && typeof deepTalkCount === "number" && deepTalkCount >= DEEP_TALK_THRESHOLD) {
+    return { text: DEEP_TALK_LIMIT_REPLIES[Math.floor(Math.random() * DEEP_TALK_LIMIT_REPLIES.length)], isDeep };
+  }
+  return { text: pickCompanionReply(best, localHour), isDeep };
 }

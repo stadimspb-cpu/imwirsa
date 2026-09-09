@@ -616,6 +616,16 @@ const state = {
   // isn't a clarity problem, and endless "try again" would waste the
   // seafarer's time for nothing) still stands past a couple of attempts.
   consecutiveUnclear: 0,
+  // 09.09.2026, Andrey: counts CONSECUTIVE turns spent in one of the four
+  // "deep talk" companion topics (homesickness, loneliness, anxiety, "why
+  // am I here" -- see DEEP_TALK_TOPICS in offline-qa-match.js). Once this
+  // crosses DEEP_TALK_THRESHOLD, findCompanionReply() switches from that
+  // topic's own warm replies to a shared pool that's honest about the
+  // offline ceiling instead of visibly cycling the same few lines.
+  // Resets to 0 the instant anything else happens -- a real intent match,
+  // a light companion topic, a priority-route match. Mirrors
+  // consecutiveUnclear's shape deliberately.
+  consecutiveDeepTalk: 0,
   surveyAnswers: [],      // [{ context, portId, q1, q2, q3, free, at }] — local + best-effort emailed, see submitSurvey()
   // "std" | "large" — controls ONLY --content-text-scale (assistant
   // messages, descriptions, card info, Port Card, transport rows,
@@ -1584,6 +1594,7 @@ function startNewAssistantChat() {
   state.chatStarted = false;
   state.assistantReplyIndex = 0;
   state.consecutiveUnclear = 0;
+  state.consecutiveDeepTalk = 0;
   awaitingCoordinatorReason = false;
   saveState();
   const toggle = document.getElementById("escalationToggle");
@@ -1626,6 +1637,7 @@ function sendAssistantChatMessage() {
     if (isRedLineTopic(text)) {
       console.log("[DIAG] matched rule: RED_LINE_KEYWORDS");
       state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
       // Safety takes priority over everything else, including whether this
       // reply was meant to answer "why do you want the coordinator" — a
       // red-line message is a red-line message regardless of context.
@@ -1649,6 +1661,7 @@ function sendAssistantChatMessage() {
       // anything.
       console.log("[DIAG] matched rule: MEDICAL_EMERGENCY_KEYWORDS");
       state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
       console.log("[DIAG] matched intent: medical_emergency (deterministic, no scoring)");
       console.log("[DIAG] selected response:", JSON.stringify(MEDICAL_EMERGENCY_REPLY));
       state.chatMessages.push({ who: "them", text: MEDICAL_EMERGENCY_REPLY });
@@ -1675,6 +1688,7 @@ function sendAssistantChatMessage() {
       // inventing directions.
       console.log("[DIAG] matched rule: GUIDE_ME_BACK");
       state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
       const hasShipPoint = !!(state.shipPoint);
       console.log("[DIAG] shipPoint saved:", hasShipPoint);
       let msg;
@@ -1720,6 +1734,7 @@ function sendAssistantChatMessage() {
       // rather than improvised.
       console.log("[DIAG] matched rule: SHIP_DEPARTED");
       state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
       const msg = "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»";
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1735,6 +1750,7 @@ function sendAssistantChatMessage() {
       // Care's "just want to talk" option instead of paging a human.
       const msg = t("coordinator.pointToSpiritual");
       state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
@@ -1749,6 +1765,7 @@ function sendAssistantChatMessage() {
       // toggle used everywhere else rather than a generic demo reply.
       console.log("[DIAG] matched rule:", isCoordinatorReasonReply ? "isCoordinatorReasonReply" : "COMPLEX_TOPIC_KEYWORDS");
       state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1776,9 +1793,16 @@ function sendAssistantChatMessage() {
       //      "the question came through fine, we just don't have this
       //      topic"; its absence is treated as "unclear, ask them to say
       //      it differently".
-      const companionReply = typeof findCompanionReply === "function"
-        ? findCompanionReply(text, getPortLocalHour(state.portId))
+      const companionMatch = typeof findCompanionReply === "function"
+        ? findCompanionReply(text, getPortLocalHour(state.portId), state.consecutiveDeepTalk)
         : null;
+      if (companionMatch) {
+        // See DEEP_TALK_TOPICS in offline-qa-match.js: only the four deep-
+        // talk topics move this counter; every other companion topic
+        // resets it, same as any non-companion match would.
+        state.consecutiveDeepTalk = companionMatch.isDeep ? state.consecutiveDeepTalk + 1 : 0;
+      }
+      const companionReply = companionMatch ? companionMatch.text : null;
       let offlineAnswer = companionReply;
       let diagMatchedRule = companionReply ? "companion chat" : null;
       let diagMatchedIntent = null;
