@@ -44,6 +44,18 @@
 // for the full rationale and why this is additive/zero-risk for every
 // other intent.
 //
+// v19, 10.09.2026 -- findOfflineIntent's {strict} option is now UNUSED by
+// its only caller (app.js's companion exit-check, per Markus's mixed-
+// regression review point 1 -- the raised bar was blocking too many clean
+// informational exits live). Left in place (harmless, callable) rather
+// than deleted, in case a genuinely different future caller needs it --
+// see app.js v52+ for the actual routing change. 11 CBD/drugs/alcohol
+// intents in intents-data.js tagged "protected": true (point 2) so
+// app.js can give them unconditional priority over Companion Mode
+// regardless of dialog state; scoreIntent()/findOfflineIntent() are
+// unchanged by this, the flag is only read by app.js's new
+// findProtectedIntent().
+//
 // v18, 09.09.2026 -- sticky Companion Mode support, per Markus's proposal
 // (confirmed live: "какой автобус, я про свой рейс на судне" and
 // "Начальство достало" hijacked by unrelated port intents mid-companion-

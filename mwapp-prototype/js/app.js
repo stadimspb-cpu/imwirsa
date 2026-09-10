@@ -1626,6 +1626,22 @@ function getRecentAssistantTexts(count) {
   return mine.slice(-n);
 }
 
+// 10.09.2026, Markus's mixed-regression findings (point 2): protected
+// safety topics (CBD/drugs/alcohol -- see the "protected": true flag in
+// intents-data.js) must win over Companion Mode unconditionally, in any
+// dialog state -- not just when the exit-check happens to run. Medical
+// emergency and red-line already have this guarantee structurally (they're
+// checked before the whole companion block, see above); CBD/drugs/alcohol
+// live as ordinary scored intents, so without this check a message that
+// ALSO happens to match a companion topic first (e.g. mixes an emotional
+// phrase with a drug question) would never even reach the intent table.
+// This is checked BEFORE findCompanionReply() runs at all, so nothing
+// about companion's own classification can pre-empt it.
+function findProtectedIntent(text) {
+  const match = typeof findOfflineIntent === "function" ? findOfflineIntent(text) : null;
+  return match && match.protected === true ? match : null;
+}
+
 function sendAssistantChatMessage() {
   const input = document.getElementById("assistantChatInput");
   const text = input.value.trim();
@@ -1811,6 +1827,13 @@ function sendAssistantChatMessage() {
       // (checked earlier in this function, unchanged — those always
       // override companion, and already reset state.companionActive, see
       // the branches above):
+      //   0. Protected safety topics (CBD/drugs/alcohol) — unconditional
+      //      priority over companion in ANY dialog state, per Markus's
+      //      10.09.2026 mixed-regression review (point 2): live testing
+      //      found CBD questions swallowed by companion's "still
+      //      listening" fallback because they never even reached the exit
+      //      check when companion's own classifier ran first. Checked
+      //      before findCompanionReply(), not just before the exit-check.
       //   1. Companion chat (Block 26) — ordinary conversation. STICKY as
       //      of 09.09.2026 (Markus's proposal, confirmed by live testing):
       //      once state.companionActive is true, later messages are
@@ -1818,11 +1841,18 @@ function sendAssistantChatMessage() {
       //      companion's own "still listening" fallback) instead of being
       //      re-run through the general intent table from scratch — that
       //      re-routing was exactly what let unrelated port intents
-      //      hijack mid-conversation emotional messages. The ONLY way out
-      //      is a STRICT-confidence port-intent match (see
-      //      findOfflineIntent(text, {strict:true}) below) — an
-      //      unambiguous, clearly-a-fresh-question hit, not just anything
-      //      that ties the ordinary CONFIDENCE_THRESHOLD.
+      //      hijack mid-conversation emotional messages.
+      //      10.09.2026, Markus's mixed-regression review (point 1): the
+      //      exit check below used to require a raised strict/marker-
+      //      gated bar (see findOfflineIntent's {strict} option) — live
+      //      testing found this blocked a long list of perfectly clean,
+      //      unambiguous informational questions (pharmacy, Wi-Fi,
+      //      Seafarers' Centre, bus times, Wellness, Premium, QR) from
+      //      ever leaving companion mid-conversation. Dropped back to the
+      //      ORDINARY (non-strict) confidence threshold — the same bar
+      //      every other message in the app is held to — trusting the
+      //      scored intent table's own specificity (real anchor words
+      //      required) rather than an extra bar layered on top of it.
       //   2. The intent-anchor Q&A table (offline-qa-match.js).
       //   3. If neither matched: a genuinely unclear message ("расч
       //      уыекуцй") gets a DIFFERENT reply than a clear question about
@@ -1837,7 +1867,10 @@ function sendAssistantChatMessage() {
       //      topic"; its absence is treated as "unclear, ask them to say
       //      it differently".
       let companionMatch = null;
-      if (state.companionActive) {
+      const protectedMatch = typeof findProtectedIntent === "function" ? findProtectedIntent(text) : null;
+      if (protectedMatch) {
+        state.companionActive = false;
+      } else if (state.companionActive) {
         // Already inside a companion conversation: try the companion
         // classifier first, with the assistant's own recent replies so it
         // doesn't visibly repeat itself.
@@ -1846,11 +1879,11 @@ function sendAssistantChatMessage() {
           : null;
         if (!companionMatch) {
           const exitIntent = typeof findOfflineIntent === "function"
-            ? findOfflineIntent(text, { strict: true })
+            ? findOfflineIntent(text)
             : null;
           if (exitIntent) {
-            // Unambiguous fresh port question — leave companion mode and
-            // fall through to the ordinary intent-table handling below.
+            // Clean intent-table match — leave companion mode and fall
+            // through to the ordinary intent-table handling below.
             state.companionActive = false;
           } else {
             // Stay in the conversation: a warm "still listening" line,

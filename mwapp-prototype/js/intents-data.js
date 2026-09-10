@@ -291,6 +291,30 @@
 // and were falling through to the ordinary intent table (one landed on
 // the POST OFFICE intent) -- see offline-qa-match.js v18 / app.js for
 // the sticky-mode rewrite this is part of.
+// v53, 10.09.2026 -- Markus's mixed-regression review after live on-device
+// testing of the whole app together (Premium/Wellness/QR/AI + old content
+// + Companion, mixed in one session -- see the 14-screenshot batch).
+// Fixed all 4 points raised:
+//   1. Companion exit-check dropped from the strict/marker-gated bar back
+//      to the ORDINARY confidence threshold -- the raised bar was
+//      blocking clean, unambiguous informational exits (pharmacy, Wi-Fi,
+//      Seafarers' Centre, bus times, Wellness, Premium, QR all got stuck
+//      in Companion's "still listening" fallback live).
+//   2. New findProtectedIntent() check added, running BEFORE
+//      findCompanionReply() even gets a chance to claim the message --
+//      CBD/drugs/alcohol (11 intents, intents-data.js "protected": true)
+//      now have the same unconditional this-always-wins guarantee medical
+//      emergency already had structurally, instead of depending on
+//      whichever classifier ran first.
+//   3. (Premium/Wellness/QR/AI routing) -- covered by fix 1; the content
+//      itself (73 intents from v52) was already correct, it just couldn't
+//      escape Companion to be reached.
+//   4. "Сколько стоит Wellness?" was answering with taxi-pricing text --
+//      turned out to be a pre-existing COPY-PASTE bug in the Wellness
+//      price intent's own .a field (not a genuine taxi/Wellness anchor
+//      collision as first guessed), fixed at the source.
+// Self-match regression re-run after all four: 16/250 failures, identical
+// list to before this pass -- zero new collisions introduced.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -1447,6 +1471,7 @@ const INTENTS = [
   },
   {
     "q": "Где здесь самый дешёвый алкоголь?",
+    "protected": true,
     "primary": [],
     "compoundAnchors": [
       ["алкогол"],
@@ -1496,6 +1521,7 @@ const INTENTS = [
   },
   {
     "q": "Можно ли здесь купить марихуану или лёгкие наркотики?",
+    "protected": true,
     "primary": [
       "марихуан",
       "трав",
@@ -1579,6 +1605,7 @@ const INTENTS = [
   },
   {
     "q": "Где выпить крепкого алкоголя рядом с портом?",
+    "protected": true,
     "primary": [
       "алкогол",
       "крепк",
@@ -1619,6 +1646,7 @@ const INTENTS = [
   },
   {
     "q": "Можно ли купить CBD в этом порту/стране?",
+    "protected": true,
     "primary": [
       "cbd",
       "купить cbd",
@@ -1648,6 +1676,7 @@ const INTENTS = [
   },
   {
     "q": "Можно ли провезти CBD через границу или на судно?",
+    "protected": true,
     "primary": [],
     "compoundAnchors": [
       ["cbd"],
@@ -1673,6 +1702,7 @@ const INTENTS = [
   },
   {
     "q": "Можно ли использовать CBD на борту судна?",
+    "protected": true,
     "primary": [],
     "compoundAnchors": [
       ["cbd"],
@@ -1693,6 +1723,7 @@ const INTENTS = [
   },
   {
     "q": "Если я куплю CBD в Европе, а судно пойдёт в Азию — что будет?",
+    "protected": true,
     "primary": [],
     "compoundAnchors": [
       ["cbd"],
@@ -1715,6 +1746,7 @@ const INTENTS = [
   },
   {
     "q": "А если у меня рецепт на CBD от врача?",
+    "protected": true,
     "primary": [
       "рецепт",
       "документ",
@@ -1739,6 +1771,7 @@ const INTENTS = [
   },
   {
     "q": "Где в мире CBD категорически запрещён?",
+    "protected": true,
     "primary": [
       "категорически запрещ"
     ],
@@ -1766,6 +1799,7 @@ const INTENTS = [
   },
   {
     "q": "Где CBD относительно легален?",
+    "protected": true,
     "primary": [
       "относительно легал"
     ],
@@ -2263,6 +2297,7 @@ const INTENTS = [
   },
   {
     "q": "Есть ли магазин с нормальным (не туристическим) алкоголем и закуской?",
+    "protected": true,
     "primary": [],
     "compoundAnchors": [
       ["алкогол"],
@@ -3514,7 +3549,7 @@ const INTENTS = [
       "алкоголь",
       "такси"
     ],
-    "a": "«В час пик цена может быть выше на 20–50%. Договаривайся фиксированной суммой до посадки.»"
+    "a": "«Стоимость устанавливает сама Wellness-зона. Если интересует цена — уточни актуальную стоимость у Wellness Host.»"
   },
   {
     "q": "Можно ли оплатить картой или только наличные?",
