@@ -155,13 +155,25 @@ const KNOWN_ADVICE_ROW_TITLES = new Set([
 // centre_services: {groups, note}) — not handled here yet, audit each
 // before wiring it up rather than assuming they behave like this one.
 function getRealCardFact(subdetailKey) {
+  const parts = getRealCardFactParts(subdetailKey);
+  if (!parts) return null;
+  return parts.sub ? `${parts.title} — ${parts.sub}` : parts.title;
+}
+
+// 11.09.2026, Markus's mixed-regression point 12: split out of
+// getRealCardFact() (which still returns the concatenated string, for
+// every existing caller that expects that shape) so getPortSpecificAnswer()
+// below can build an honest Russian sentence with the venue NAME kept
+// as-is and the free-text description clearly marked as untranslated,
+// instead of splicing raw English into what reads as a Russian sentence.
+function getRealCardFactParts(subdetailKey) {
   const sd = typeof SUBDETAILS !== "undefined" ? SUBDETAILS[subdetailKey] : null;
   if (!sd) return null;
 
   if (Array.isArray(sd.contacts)) {
     for (const c of sd.contacts) {
       if (!c.title) continue;
-      return c.sub ? `${c.title} — ${c.sub}` : c.title;
+      return { title: c.title, sub: c.sub || null };
     }
   }
 
@@ -172,7 +184,7 @@ function getRealCardFact(subdetailKey) {
         if (!row.title) continue;
         if (KNOWN_ADVICE_ROW_TITLES.has(row.title)) continue;
         if (/scam|warning|not confirmed|tbd|coming soon|stranger/i.test(row.title + " " + (row.sub || ""))) continue;
-        return row.sub ? `${row.title} — ${row.sub}` : row.title;
+        return { title: row.title, sub: row.sub || null };
       }
     }
   }
@@ -195,17 +207,57 @@ function getRawCardFact(intentQuestion, portId) {
   return getRealCardFact(`${prefix}_${suffix}`);
 }
 
+// 11.09.2026, Markus's mixed-regression point 12: a short Russian opener
+// per field category, so the sentence actually says WHAT KIND of fact
+// this is in the interface language, rather than always the same generic
+// "По данным карточки этого порта" no matter what's being answered. The
+// venue/place NAME itself (row.title, e.g. "Nautica mall") is always kept
+// as-authored -- canonical names aren't translated, per Andrey/Markus.
+// What this does NOT do: translate the free-text description (row.sub,
+// e.g. "ground floor lounge — Free Wi-Fi, comfortable seating, benches
+// with USB charging") -- that's arbitrary English prose written per-port
+// by each coordinator, and reliably machine-translating arbitrary short
+// English fragments into natural Russian isn't something a rule-based
+// offline matcher can do safely (a wrong guess reads as a wrong FACT, not
+// just clumsy phrasing). The honest fix for THAT part is either someone
+// pre-translating the source data/{portId}.json content, or the Online AI
+// (Premium) path once connected -- flagged here, not solved here.
+const SUFFIX_RUSSIAN_OPENER = {
+  transport_taxi: "Такси можно поймать здесь",
+  shops_supermarkets: "Ближайший супермаркет",
+  shops_sim: "SIM-карту можно купить здесь",
+  transport_public: "Общественный транспорт до центра",
+  transport_leaving: "Выход из порта",
+  shops_pharmacies: "Ближайшая аптека",
+  shops_food: "Поесть можно здесь",
+  currency_exchange: "Обменять валюту можно здесь",
+  shops_souvenirs: "Сувениры можно найти здесь",
+  shops_seafarer: "Рабочую одежду и снаряжение можно найти здесь",
+  transport_internal: "Внутрипортовый транспорт",
+  centre_location: "Центр моряков",
+  city_free: "Бесплатный Wi-Fi есть здесь",
+  spiritual_prayer: "Место для молитвы",
+  city_culture: "Рядом можно посмотреть",
+};
+
 // Returns a Russian sentence wrapping the real fact, or null in all the
 // cases getRawCardFact() returns null -- callers fall back to intent.a
 // exactly as before this feature existed.
 function getPortSpecificAnswer(intentQuestion, portId) {
-  const fact = getRawCardFact(intentQuestion, portId);
-  if (!fact) return null;
-  // Note the English/Russian mix here: port card content is authored in
-  // English across every terminal so far, while this sentence wrapper is
-  // Russian -- a real language mismatch, not an oversight. Flagged to
-  // Andrey as a known limitation of this first pass, not fixed here.
-  return `По данным карточки этого порта: ${fact}.`;
+  const suffix = INTENT_CARD_MAP[intentQuestion];
+  const prefix = PORT_PREFIX[portId];
+  if (!suffix || !prefix) return null;
+  const parts = getRealCardFactParts(`${prefix}_${suffix}`);
+  if (!parts) return null;
+  const opener = SUFFIX_RUSSIAN_OPENER[suffix] || "По данным карточки этого порта";
+  // Name kept exactly as authored (canonical place name, not translated).
+  // Free-text description, if any, appended and explicitly marked as the
+  // card's own (English) wording -- see the comment on SUFFIX_RUSSIAN_OPENER
+  // above for why this isn't auto-translated.
+  if (parts.sub) {
+    return `${opener}: ${parts.title} (по карточке порта: «${parts.sub}»).`;
+  }
+  return `${opener}: ${parts.title}.`;
 }
 
 // ---- SEAFARERS' CENTRE COMBINED ANSWER, 08.09.2026 ---------------------
@@ -370,6 +422,15 @@ const DAY_ONLY_MARKERS = /\bby day\b|\bdaytime\b|\bduring the day\b/i;
 const NIGHT_MARKERS = /\bnight\b|\bevening\b|\bafter dark\b/i;
 const EVENING_NIGHT_QUESTION = /вечер|ночь/;
 const SAFE_ZONE_QUESTION = /safe zone/i;
+// 11.09.2026, Markus's mixed-regression point 13: a plain reassurance
+// fact ("Very safe, day and night — Tallinn is one of the safest
+// capitals in the EU") is a general characterization of the whole CITY,
+// not a specific confirmation that THIS route/area/time is
+// incident-free — echoing it as a flat, unconditional guarantee
+// overstates what the card actually confirms. A fact that names an
+// actual concrete risk is different: that IS a specific thing worth
+// passing on directly, at full strength, no softening needed.
+const WARNING_MARKERS = /avoid|unsafe|caution|risk|pickpocket|theft|not recommended|be careful|watch out|dangerous|poorly lit|isolated/i;
 
 function citySafetyAnswer(text, portId) {
   const msg = normalizeText(text);
@@ -385,7 +446,17 @@ function citySafetyAnswer(text, portId) {
     return "«В карточке этого порта нет подтверждённых данных о безопасности вечером/ночью.»";
   }
 
-  return null; // ordinary phrasing, or the fact isn't day-only -- normal card-fact path handles it
+  if (!fact) return null; // no card data at all -- normal fallback (honest "no data") handles this correctly already
+
+  if (WARNING_MARKERS.test(fact)) {
+    // A concrete, specific warning -- pass it through as-is, no softening.
+    return `«По данным карточки этого порта: ${fact}.»`;
+  }
+  // A plain reassurance fact with no named risk -- likely a general
+  // city-level characterization, not a specific guarantee for this exact
+  // route/time. Say so, rather than letting it read as an unconditional
+  // promise.
+  return `«По данным карточки этого порта: ${fact}. Это общая характеристика города из карточки, а не подтверждение конкретно для этого маршрута или времени суток — если сомневаешься, уточни у охраны порта.»`;
 }
 
 
