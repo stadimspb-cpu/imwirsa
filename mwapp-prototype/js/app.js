@@ -1685,6 +1685,22 @@ function findProtectedIntent(text) {
 // consumed after one retry, never sticky). Verified against Markus's
 // full point-17 control-test list end to end; self-match regression on
 // intents-data.js v56 unaffected (this is app.js-side only).
+// v57, 11.09.2026 -- Wellness follow-up chain fix, point 1: the family-
+// context retry (v56, state.lastIntentFamily) used to clear the family
+// unconditionally after ONE retry attempt, win or lose. Live testing
+// found a real multi-turn chain ("Что есть в велнес?" -> "А туда
+// заранее записываются?" -> "И как туда попасть?" -> "Сколько это
+// стоит?") losing context on the 4th topic-less follow-up, because the
+// 3rd turn's SUCCESSFUL retry still wiped the family before the 4th
+// turn got a chance. Fixed: the family now only clears when a retry
+// attempt genuinely finds nothing at all -- a successful retry keeps it
+// alive for the NEXT message too, so a whole run of consecutive
+// follow-ups chains correctly. A different explicit topic/family (the
+// anyMatch branch) still always overrides it immediately, so this still
+// isn't sticky in the sense that matters -- it can't outlive the
+// Wellness thread or survive a genuine topic change. intents-data.js v58
+// has the matching Wellness-family data changes (points 1-2) -- see
+// that file's version note.
 function sendAssistantChatMessage() {
   const input = document.getElementById("assistantChatInput");
   const text = input.value.trim();
@@ -1914,11 +1930,11 @@ function sendAssistantChatMessage() {
       //      family keyword prepended -- this lets the family's own
       //      existing compoundAnchors (which already require e.g.
       //      "wellness"+"записаться") do the matching, with no new
-      //      hardcoded answers. Deliberately NOT sticky beyond one turn:
-      //      state.lastIntentFamily is always cleared right after this
-      //      single attempt, win or lose, so an old topic can never keep
-      //      hijacking unrelated later messages ("но контекст не должен
-      //      быть липким").
+      //      hardcoded answers. Chains across a whole run of consecutive
+      //      successful follow-ups (11.09.2026 fix -- see the detailed
+      //      comment at the actual retry code below), but a different
+      //      explicit topic/family always overrides it immediately, and
+      //      a retry that finds nothing ends the chain right there.
       //   4. If nothing matched at all: a genuinely unclear message gets
       //      a DIFFERENT reply than a clear question about an uncovered
       //      topic -- see the 04.09.2026 discussion this always cites.
@@ -1955,12 +1971,34 @@ function sendAssistantChatMessage() {
       // Only touches state.lastIntentFamily in THIS branch -- when
       // anyMatch was truthy above, a fresh family was just set for the
       // NEXT turn and must survive this one untouched.
+      //
+      // 11.09.2026, Wellness follow-up review point 1: this used to clear
+      // lastIntentFamily unconditionally after ONE retry, win or lose --
+      // live testing showed a real multi-turn chain ("Что есть в
+      // велнес?" -> "А туда заранее записываются?" -> "И как туда
+      // попасть?" -> "Сколько это стоит?") losing context on the 4th
+      // topic-less follow-up, because the 3rd turn's SUCCESSFUL retry
+      // still wiped the family before the 4th turn ever got a chance.
+      // Correct behaviour: keep the family alive across a whole run of
+      // successful follow-ups (each one refreshes it), and only actually
+      // clear it once a retry attempt FAILS to find anything at all --
+      // that's the real "topic exhausted" signal, not "one message has
+      // passed". A different explicit family/topic (anyMatch branch
+      // above) still always overrides it immediately, so this still
+      // isn't sticky in the sense that matters: it can't outlive the
+      // Wellness thread itself or survive a genuine topic change.
       let familyMatch = null;
       if (!anyMatch) {
         if (!companionMatch && state.lastIntentFamily && typeof findOfflineIntent === "function") {
           familyMatch = findOfflineIntent(state.lastIntentFamily + " " + text);
         }
-        state.lastIntentFamily = null; // consumed after one retry, win or lose -- never sticky
+        if (!familyMatch) {
+          state.lastIntentFamily = null; // genuinely nothing found -- chain ends here
+        }
+        // else: leave state.lastIntentFamily as-is so the NEXT message can
+        // also chain off it -- this is what makes multi-turn follow-up
+        // ("А туда записываются?" -> "И как туда попасть?" -> "Сколько
+        // это стоит?") work instead of only the first hop.
       }
       if (familyMatch) {
         state.companionActive = false;

@@ -428,6 +428,39 @@
 // letters in JS regex.
 // Self-match regression: 16/250, identical list. Full point-17 control
 // set re-verified end to end, plus the 6 new follow-up phrasings.
+// v58, 11.09.2026 -- Wellness follow-up chain fix (2 points, scoped
+// narrow per explicit instruction -- "остальную маршрутизацию не
+// менять", re-verified below).
+//   Point 2: "Надо записываться заранее..." used to promise MWApp itself
+//   would "подскажет свободные слоты и забронирует время" -- rewritten
+//   to the honest unified line ("уточни у Wellness Host... MWApp не
+//   отслеживает актуальные свободные слоты и не бронирует время"), and
+//   its access-word coverage broadened ("запис" stem instead of the
+//   exact "запись", plus "без записи"/"свободное время"/"свободные
+//   слоты" via compoundAnchors requiring "wellness"). That broadening
+//   immediately tied with two PRE-EXISTING, more specific sibling
+//   intents ("Где узнать точное расписание и записаться?", "Я
+//   записался, но передумал") that also happen to say "запис*" --
+//   added their own distinguishing words to this intent's exclude list
+//   so the more specific one still wins outright, no tie.
+//   Point 1: the underlying cause of "Сколько это стоит?" losing the
+//   chain was actually a pre-existing bug (already in the 16/250
+//   baseline noise, just never live-evidenced until now): its own
+//   primary phrase "сколько стоит" doesn't even match its OWN canonical
+//   text "Сколько это стоит?" -- "это" sits between the two words,
+//   breaking the phrase substring. Fixed with compoundAnchors using the
+//   literal "сколько это стоит" alongside "сколько стоит"/"какая цена".
+//   Hours intent ("Во сколько работает Wellness-зона?") broadened with
+//   открывается/до скольки for the "Во сколько открывается?"/"До
+//   скольки работает?" phrasings.
+// The actual multi-turn PERSISTENCE fix (a message chain of several
+// consecutive topic-less follow-ups all staying in Wellness, not just
+// the first one) is in app.js's sendAssistantChatMessage(), not here --
+// see that file's version note.
+// Self-match regression: 16/250, identical list to every prior pass.
+// Full point-17 control set + all today's new follow-up chains re-
+// verified end to end; Port Exit/Food/Premium AI/QR/Companion/Emergency
+// all confirmed unchanged.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -3711,8 +3744,18 @@ const INTENTS = [
       "сеанс",
       "стоимость",
       "цена",
-      "оплата",
-      "сколько стоит"
+      "оплата"
+    ],
+    "compoundAnchors": [
+      [
+        "wellness"
+      ],
+      [
+        "сколько это стоит",
+        "сколько стоит",
+        "какая цена",
+        "сколько денег"
+      ]
     ],
     "synonyms": [
       "сколько денег",
@@ -3753,14 +3796,22 @@ const INTENTS = [
     "q": "Надо записываться заранее или можно в любое время?",
     "family": "wellness",
     "primary": [
-      "запись",
+      "запис",
       "бронь",
-      "время",
       "слот",
       "заранее"
     ],
+    "compoundAnchors": [
+      [
+        "wellness"
+      ],
+      [
+        "без записи",
+        "свободное время",
+        "свободные слоты"
+      ]
+    ],
     "synonyms": [
-      "записаться",
       "свободно",
       "расписание",
       "часы пик"
@@ -3768,9 +3819,16 @@ const INTENTS = [
     "exclude": [
       "бар",
       "клуб",
-      "такси"
+      "такси",
+      "расписание",
+      "бронирование",
+      "передумал",
+      "опоздал",
+      "штраф",
+      "перенос",
+      "отмена"
     ],
-    "a": "«Рекомендую написать Wellness Host в приложении — он подскажет свободные слоты и забронирует время.»"
+    "a": "«Порядок посещения и необходимость предварительной записи уточни у Wellness Host — MWApp не отслеживает актуальные свободные слоты и не бронирует время.»"
   },
   {
     "q": "Есть ли скидки для моряков? Что такое Partner Discounts?",
@@ -5068,7 +5126,10 @@ const INTENTS = [
     [
       "во сколько работает",
       "часы работы",
-      "когда работает"
+      "когда работает",
+      "открывается",
+      "до скольки",
+      "во сколько открывается"
     ]
   ],
   "synonyms": [],
