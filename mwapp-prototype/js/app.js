@@ -639,6 +639,12 @@ const state = {
   // always override companion, see priority order below) AND on an
   // explicit high-confidence topic change caught by the strict exit check.
   companionActive: false,
+  // 11.09.2026, Markus's point 5 (family-context follow-up): set to a
+  // family name (currently only "wellness") whenever a real intent-table
+  // match carries that tag, so the VERY NEXT message can resolve a short,
+  // topic-less follow-up ("А записываться надо?") within the same family.
+  // Deliberately not sticky beyond one message -- see sendAssistantChatMessage().
+  lastIntentFamily: null,
   surveyAnswers: [],      // [{ context, portId, q1, q2, q3, free, at }] — local + best-effort emailed, see submitSurvey()
   // "std" | "large" — controls ONLY --content-text-scale (assistant
   // messages, descriptions, card info, Port Card, transport rows,
@@ -1617,6 +1623,7 @@ function startNewAssistantChat() {
   state.consecutiveUnclear = 0;
   state.consecutiveDeepTalk = 0;
   state.companionActive = false;
+  state.lastIntentFamily = null;
   awaitingCoordinatorReason = false;
   saveState();
   const toggle = document.getElementById("escalationToggle");
@@ -1645,11 +1652,39 @@ function getRecentAssistantTexts(count) {
 // phrase with a drug question) would never even reach the intent table.
 // This is checked BEFORE findCompanionReply() runs at all, so nothing
 // about companion's own classification can pre-empt it.
+//
+// 11.09.2026 -- UNUSED as of v56/Markus's fourth mixed-regression review
+// (point 6): the priority rule below was generalized from "protected
+// intents beat companion" to "ANY confident intent-table match beats
+// companion", so this narrower helper is no longer called anywhere.
+// Left in place (harmless, still callable) rather than deleted -- the
+// "protected": true flag it reads is still on the CBD/drugs/alcohol
+// intents in intents-data.js and may be useful again if a future need
+// arises for a narrower check than "any match wins".
 function findProtectedIntent(text) {
   const match = typeof findOfflineIntent === "function" ? findOfflineIntent(text) : null;
   return match && match.protected === true ? match : null;
 }
 
+// v56, 11.09.2026 -- Markus's fourth mixed-regression review (17-point
+// doc, point 6 flagged as one of the most important remaining issues).
+// sendAssistantChatMessage()'s priority block below was restructured:
+// findOfflineIntent(text) is now checked UNCONDITIONALLY FIRST, before
+// Companion's own classifier gets a chance to run at all, in EITHER
+// dialog state. Live testing found that point 7's expanded companion
+// vocabulary ("достали"/"надоели") immediately created the collision
+// point 6 warned about -- "Надоело, где здесь супермаркет?" and "Экипаж
+// надоел, где вход для экипажа?" both matched a real service intent AND
+// a companion topic, and since companion used to be checked first on a
+// fresh turn, the real question never got a chance. This generalizes the
+// old CBD/drugs/alcohol-only "protected" priority (see findProtectedIntent
+// above) to every intent. Also implements point 5 (family-context
+// follow-up: state.lastIntentFamily, set near companionActive above,
+// lets a short topic-less follow-up like "А записываться надо?" resolve
+// within the same family as the immediately preceding real match --
+// consumed after one retry, never sticky). Verified against Markus's
+// full point-17 control-test list end to end; self-match regression on
+// intents-data.js v56 unaffected (this is app.js-side only).
 function sendAssistantChatMessage() {
   const input = document.getElementById("assistantChatInput");
   const text = input.value.trim();
@@ -1687,6 +1722,7 @@ function sendAssistantChatMessage() {
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
+      state.lastIntentFamily = null;
       // Safety takes priority over everything else, including whether this
       // reply was meant to answer "why do you want the coordinator" — a
       // red-line message is a red-line message regardless of context.
@@ -1712,6 +1748,7 @@ function sendAssistantChatMessage() {
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
+      state.lastIntentFamily = null;
       console.log("[DIAG] matched intent: medical_emergency (deterministic, no scoring)");
       console.log("[DIAG] selected response:", JSON.stringify(MEDICAL_EMERGENCY_REPLY));
       state.chatMessages.push({ who: "them", text: MEDICAL_EMERGENCY_REPLY });
@@ -1740,6 +1777,7 @@ function sendAssistantChatMessage() {
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
+      state.lastIntentFamily = null;
       const hasShipPoint = !!(state.shipPoint);
       console.log("[DIAG] shipPoint saved:", hasShipPoint);
       let msg;
@@ -1787,6 +1825,7 @@ function sendAssistantChatMessage() {
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
+      state.lastIntentFamily = null;
       const msg = "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»";
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1804,6 +1843,7 @@ function sendAssistantChatMessage() {
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
+      state.lastIntentFamily = null;
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
@@ -1820,6 +1860,7 @@ function sendAssistantChatMessage() {
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
+      state.lastIntentFamily = null;
       const msg = t(`escalation.${a.id}`) || t("escalation.alex");
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1835,79 +1876,94 @@ function sendAssistantChatMessage() {
       // (checked earlier in this function, unchanged — those always
       // override companion, and already reset state.companionActive, see
       // the branches above):
-      //   0. Protected safety topics (CBD/drugs/alcohol) — unconditional
-      //      priority over companion in ANY dialog state, per Markus's
-      //      10.09.2026 mixed-regression review (point 2): live testing
-      //      found CBD questions swallowed by companion's "still
-      //      listening" fallback because they never even reached the exit
-      //      check when companion's own classifier ran first. Checked
-      //      before findCompanionReply(), not just before the exit-check.
-      //   1. Companion chat (Block 26) — ordinary conversation. STICKY as
-      //      of 09.09.2026 (Markus's proposal, confirmed by live testing):
-      //      once state.companionActive is true, later messages are
-      //      handled WITHIN the conversation (companion classifier, then
-      //      companion's own "still listening" fallback) instead of being
-      //      re-run through the general intent table from scratch — that
-      //      re-routing was exactly what let unrelated port intents
-      //      hijack mid-conversation emotional messages.
-      //      10.09.2026, Markus's mixed-regression review (point 1): the
-      //      exit check below used to require a raised strict/marker-
-      //      gated bar (see findOfflineIntent's {strict} option) — live
-      //      testing found this blocked a long list of perfectly clean,
-      //      unambiguous informational questions (pharmacy, Wi-Fi,
-      //      Seafarers' Centre, bus times, Wellness, Premium, QR) from
-      //      ever leaving companion mid-conversation. Dropped back to the
-      //      ORDINARY (non-strict) confidence threshold — the same bar
-      //      every other message in the app is held to — trusting the
-      //      scored intent table's own specificity (real anchor words
-      //      required) rather than an extra bar layered on top of it.
-      //   2. The intent-anchor Q&A table (offline-qa-match.js).
-      //   3. If neither matched: a genuinely unclear message ("расч
-      //      уыекуцй") gets a DIFFERENT reply than a clear question about
-      //      a topic we simply don't cover ("where can I buy a comb?").
-      //      Telling someone to "try rephrasing" when the real issue is
-      //      that the topic isn't in the table would just have them retry
-      //      forever for nothing — see 04.09.2026 discussion. Distinguishing
-      //      the two isn't exact (no real language understanding here,
-      //      same as everywhere else in this file) — it's a rough proxy:
-      //      the presence of an ordinary question word is treated as
-      //      "the question came through fine, we just don't have this
-      //      topic"; its absence is treated as "unclear, ask them to say
-      //      it differently".
+      //   1. The intent-anchor Q&A table (offline-qa-match.js), checked
+      //      UNCONDITIONALLY FIRST, before Companion's own classifier gets
+      //      a chance to claim the message at all -- in EITHER dialog
+      //      state (already active or not). 11.09.2026, Markus's third
+      //      mixed-regression review (point 6, flagged as one of the most
+      //      important remaining issues): live testing found that adding
+      //      more emotional vocabulary to Companion (point 7 in the same
+      //      review) immediately created new collisions the OTHER way --
+      //      "Надоело, где здесь супермаркет?" and "Экипаж надоел, где
+      //      вход для экипажа?" both matched a real service intent AND a
+      //      companion topic, and since companion was checked first on a
+      //      fresh (non-active) turn, the real question never got a
+      //      chance. The old "protected" flag / findProtectedIntent()
+      //      was a narrower version of this same fix for CBD/drugs/
+      //      alcohol specifically; this generalizes it to ALL intents, so
+      //      a prior emotional turn (or an emotional prefix on the SAME
+      //      message) can never outscore an explicit, sufficiently
+      //      confident service question -- "sufficiently confident" being
+      //      exactly what findOfflineIntent's own CONFIDENCE_THRESHOLD/
+      //      AMBIGUITY_MARGIN already enforces, not a new separate bar.
+      //   2. Companion chat (Block 26) -- ordinary conversation. Only
+      //      reached once step 1 has confirmed there is NO real intent-
+      //      table match on this exact message. STICKY as of 09.09.2026:
+      //      once state.companionActive is true, later messages that
+      //      don't match a real intent stay inside the conversation
+      //      (companion classifier, then companion's own "still
+      //      listening" fallback) instead of falling through to the
+      //      generic demoReplies/unclearReplies pool.
+      //   3. Family-context follow-up (11.09.2026, Markus's point 5):
+      //      "Что есть в Wellness?" -> "А записываться надо?" -- the
+      //      second message has no topic word of its own at all, so step
+      //      1 can't find it directly. If the PREVIOUS turn's real match
+      //      carried a `family` tag (currently only "wellness"; see
+      //      intents-data.js), and this message also found nothing on
+      //      its own (steps 1-2 both empty), retry step 1 once with the
+      //      family keyword prepended -- this lets the family's own
+      //      existing compoundAnchors (which already require e.g.
+      //      "wellness"+"записаться") do the matching, with no new
+      //      hardcoded answers. Deliberately NOT sticky beyond one turn:
+      //      state.lastIntentFamily is always cleared right after this
+      //      single attempt, win or lose, so an old topic can never keep
+      //      hijacking unrelated later messages ("но контекст не должен
+      //      быть липким").
+      //   4. If nothing matched at all: a genuinely unclear message gets
+      //      a DIFFERENT reply than a clear question about an uncovered
+      //      topic -- see the 04.09.2026 discussion this always cites.
       let companionMatch = null;
-      const protectedMatch = typeof findProtectedIntent === "function" ? findProtectedIntent(text) : null;
-      if (protectedMatch) {
+      const anyMatch = typeof findOfflineIntent === "function" ? findOfflineIntent(text) : null;
+      if (anyMatch) {
+        // Explicit, sufficiently-confident service/safety intent always
+        // wins -- exits companion if it was active, never even asks
+        // Companion's own classifier.
         state.companionActive = false;
+        state.lastIntentFamily = anyMatch.family || null;
       } else if (state.companionActive) {
-        // Already inside a companion conversation: try the companion
-        // classifier first, with the assistant's own recent replies so it
-        // doesn't visibly repeat itself.
         companionMatch = typeof findCompanionReply === "function"
           ? findCompanionReply(text, getPortLocalHour(state.portId), state.consecutiveDeepTalk, getRecentAssistantTexts(2))
           : null;
         if (!companionMatch) {
-          const exitIntent = typeof findOfflineIntent === "function"
-            ? findOfflineIntent(text)
+          const fallbackText = typeof findCompanionFallback === "function"
+            ? findCompanionFallback(getRecentAssistantTexts(2))
             : null;
-          if (exitIntent) {
-            // Clean intent-table match — leave companion mode and fall
-            // through to the ordinary intent-table handling below.
-            state.companionActive = false;
-          } else {
-            // Stay in the conversation: a warm "still listening" line,
-            // never the generic demoReplies/unclearReplies pool, which
-            // reads as leaving the conversation mid-talk.
-            const fallbackText = typeof findCompanionFallback === "function"
-              ? findCompanionFallback(getRecentAssistantTexts(2))
-              : null;
-            companionMatch = fallbackText ? { text: fallbackText, isDeep: false } : null;
-          }
+          companionMatch = fallbackText ? { text: fallbackText, isDeep: false } : null;
         }
       } else {
         companionMatch = typeof findCompanionReply === "function"
           ? findCompanionReply(text, getPortLocalHour(state.portId), state.consecutiveDeepTalk)
           : null;
         if (companionMatch) state.companionActive = true; // entering companion mode
+      }
+      // Step 3: family-context follow-up -- only when steps 1-2 both
+      // found nothing (anyMatch null, and companion also declined to
+      // engage -- companionMatch here is only non-null via the "stay in
+      // conversation" fallback branch above, which we don't want to
+      // override, so this only fires when companionMatch is ALSO null,
+      // i.e. we're not and weren't in an active companion conversation).
+      // Only touches state.lastIntentFamily in THIS branch -- when
+      // anyMatch was truthy above, a fresh family was just set for the
+      // NEXT turn and must survive this one untouched.
+      let familyMatch = null;
+      if (!anyMatch) {
+        if (!companionMatch && state.lastIntentFamily && typeof findOfflineIntent === "function") {
+          familyMatch = findOfflineIntent(state.lastIntentFamily + " " + text);
+        }
+        state.lastIntentFamily = null; // consumed after one retry, win or lose -- never sticky
+      }
+      if (familyMatch) {
+        state.companionActive = false;
       }
       if (companionMatch) {
         // See DEEP_TALK_TOPICS in offline-qa-match.js: only the four deep-
@@ -1916,8 +1972,16 @@ function sendAssistantChatMessage() {
         state.consecutiveDeepTalk = companionMatch.isDeep ? state.consecutiveDeepTalk + 1 : 0;
       }
       const companionReply = companionMatch ? companionMatch.text : null;
-      let offlineAnswer = companionReply;
-      let diagMatchedRule = companionReply ? "companion chat" : null;
+      // NOTE: when anyMatch is truthy, offlineAnswer is deliberately left
+      // null here -- companionMatch/familyMatch are both guaranteed null
+      // in that case (see the branches above), so this falls through to
+      // the block below, which re-resolves the SAME message through
+      // findOfflineIntent() again as `matchedIntent` and gets the full
+      // brand-detection / category-override / port-card-first treatment
+      // (point 15) that a bare `anyMatch.a` would skip entirely. anyMatch
+      // itself exists only to gate Companion above, never to answer.
+      let offlineAnswer = companionReply || (familyMatch ? familyMatch.a : null);
+      let diagMatchedRule = companionReply ? "companion chat" : (familyMatch ? "family-context follow-up" : null);
       let diagMatchedIntent = null;
       if (!offlineAnswer && typeof findOfflineIntent === "function") {
         // Brand/entity check, 06.09.2026: a request naming a SPECIFIC
