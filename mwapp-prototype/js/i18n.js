@@ -259,12 +259,14 @@ const I18N = {
     // wasn't clear enough to tell what's being asked at all — a different
     // situation, needs a different, non-misleading reply. See app.js for
     // how the two are told apart (presence of an ordinary question word).
+    // 11.09.2026, see the matching Russian block's comment for the full
+    // rationale (Markus's mixed-regression point 9).
     demoReplies: [
-      "That's not really my area — I'm here to help with the port, your ship, and how you're doing ashore. If you have a signal right now, it's faster to look it up online. Once full online mode is running, I'll be able to help with this myself.",
-      "I'm not the right one to ask here — my job is port info, safety, and practical questions ashore. Right now I'm working offline, so I can't answer this. Maybe ask someone on the crew? Once I'm online, I'll be able to handle this too.",
-      "Honestly, this isn't my department. Without an internet connection right now, I just don't have access to that kind of knowledge. If you've got signal, searching yourself will get you a better answer. Once full online mode kicks in, you'll be able to ask me directly.",
-      "This one's outside what I'm responsible for — I'm here for the port, the ship, and how you're holding up ashore. With no internet right now, I can't help with this. Look it up when you get signal, or better — wait until I'm running in full online mode.",
-      "I've got nothing for you on this one — not my topic. If there's someone on the crew who knows, ask them, it's usually faster. Down the line, once online mode is on, I'll be able to help with this kind of thing too.",
+      "I don't have a solid answer for this in what I know offline. Try rephrasing it — I might understand it better a different way.",
+      "I don't have a precise answer for this one right now. If there's someone from the crew, port security, or the ship's agent nearby, they'd likely know better on the spot.",
+      "I can't give a reliable answer to this right now. If you've got a signal, searching yourself might be faster. Or try asking it a different way.",
+      "I don't have this one on hand offline. Someone from the crew or port security would probably sort this out faster than I can.",
+      "I couldn't find a solid answer for that. Try describing it a bit differently, or ask someone on the spot.",
     ],
     unclearReplies: [
       "I didn't quite catch that — can you tell me a bit more about what you need?",
@@ -552,12 +554,22 @@ const I18N = {
       lockedIntro: "Это услуги для членов профсоюза. Чтобы открыть их, подтвердите статус карты в Настройках → Карта профсоюза/клуба.",
       roleSuffix: "Поддержка профсоюза",
     },
+    // 11.09.2026, Markus's mixed-regression point 9: these used to claim
+    // "not my department" and promise "once online mode is running, I'll
+    // handle this myself" -- both dishonest for a message that's just an
+    // unrecognized PHRASING of something MWApp already covers offline
+    // (Premium, Wellness, the ship locator all fell into this exact pool
+    // live). This function can't tell "genuinely out of scope" apart from
+    // "in scope, anchor just missed it" -- so the honest move is to never
+    // claim either at all: no scope verdict, no online-mode promise, just
+    // "I don't have this one right now" + a concrete alternative
+    // (rephrase, or ask someone on the spot).
     demoReplies: [
-      "Это не совсем моя тема — я больше помогаю с портом, судном и твоим самочувствием на берегу. Если сейчас есть связь, поищи в интернете, так будет быстрее. А когда заработает полный онлайн-режим, я и сам смогу подсказать.",
-      "Тут я не специалист — моя зона ответственности другая: порт, безопасность, практические вопросы на берегу. Пока я работаю без интернета, ответить на это не могу. Может, спросишь кого-то из экипажа? А в онлайн-режиме я и сам разберусь с этим.",
-      "Честно говоря, это не по моей части. Сейчас, без подключения к интернету, у меня просто нет доступа к таким знаниям. Если есть сеть — поищи сам, будет точнее. Позже, когда включится полноценный онлайн-режим, сможешь спросить меня напрямую.",
-      "Это вопрос не в моей зоне ответственности — я здесь для порта, судна и твоего состояния на берегу. Пока нет интернета, тут я не помощник. Как появится связь — поищи там, а лучше всего дождись, когда я заработаю в полном онлайн-режиме.",
-      "Тут мне нечем помочь — не моя тема. Если рядом есть кто-то из экипажа, кто разбирается — спроси у него, это часто быстрее. А со временем, когда включится онлайн-режим, я и сам смогу подсказать по таким вопросам.",
+      "У меня нет точного ответа на это среди того, что я знаю офлайн. Попробуй сформулировать вопрос немного иначе — возможно, я пойму его с другой стороны.",
+      "Такого конкретного ответа у меня сейчас нет. Если рядом есть кто-то из экипажа, охраны порта или судовой агент — они на месте и могут знать точнее.",
+      "Не могу дать точный ответ на это прямо сейчас. Если есть связь, поищи сам — так будет быстрее. Или попробуй спросить по-другому.",
+      "Этого у меня офлайн нет под рукой. Уточни у экипажа или охраны порта — они разберутся быстрее меня.",
+      "Не нашёл точного ответа на это. Попробуй описать вопрос немного по-другому, или спроси у кого-то на месте.",
     ],
     unclearReplies: [
       "Не совсем понял — можешь описать чуть подробнее, что тебе нужно?",
@@ -843,6 +855,13 @@ const I18N = {
     demoReplies: [
       // 04.09.2026 — good-faith translation, NOT verified by a native
       // speaker yet, same caveat as the RED_LINE_KEYWORDS TR/FIL entries.
+      // 11.09.2026 — FLAGGED, NOT FIXED: this has the same honesty problem
+      // as the RU/EN blocks fixed today (Markus's mixed-regression point
+      // 9 — false "not my department"/"once online mode is running"
+      // claim). Needs the same rewrite, but I don't have verified Turkish
+      // and won't guess a safety-adjacent translation without a native
+      // reviewer — see the RU block's comment for what the replacement
+      // should say in substance.
       "Bu benim alanım değil — ben liman, gemi ve karadaki durumun için buradayım. Şu an internet varsa oradan bakman daha hızlı olur. Tam çevrimiçi mod çalışınca ben de yardımcı olabilirim.",
       "Bu konuda uzman değilim — görevim liman ve pratik konular. Şu an internetsiz çalışıyorum, bu yüzden yanıtlayamam. Belki mürettebattan biri bilir? Çevrimiçi olduğumda ben de yardımcı olurum.",
       "Bu konuda elimden bir şey gelmiyor — benim konum değil. Bağlantın varsa kendin ara, daha doğru olur. İleride tam çevrimiçi mod açılınca bunu da sorabilirsin.",
@@ -1131,6 +1150,9 @@ const I18N = {
     demoReplies: [
       // 04.09.2026 — good-faith translation, NOT verified by a native
       // speaker yet, same caveat as the RED_LINE_KEYWORDS TR/FIL entries.
+      // 11.09.2026 — FLAGGED, NOT FIXED: same honesty problem as the
+      // TR block above (see its comment) — needs the same rewrite from
+      // a native Filipino reviewer, not a guess from me.
       "Hindi talaga ito ang larangan ko — nandito ako para tumulong sa daungan, sa barko, at kung kumusta ka sa lupa. Kung may signal ka ngayon, mas mabilis kung doon ka maghahanap. Kapag naka-online na ako nang buo, matutulungan na kita dito.",
       "Hindi ako ang tamang tanungin dito — trabaho ko ay impormasyon sa daungan at praktikal na bagay-bagay. Ngayon, offline ako kaya hindi ko masasagot 'to. Baka may kasamahan kang marunong? Kapag online na ako, kaya ko na rin ito.",
       "Wala akong masabi dito — hindi ito paksa ko. Kung may signal ka, mas mabuting doon ka maghanap. Sa susunod, kapag gumagana na ang buong online mode, pwede mo na akong tanungin nito.",
