@@ -1475,6 +1475,14 @@ const GUIDE_ME_BACK_KEYWORDS = [
   "потерялся", "не найду судно", "не найду дорогу", "найти дорогу на борт", "найти судно",
   "дорогу обратно к судну", "дорогу к судну", "покажи дорогу", "как пройти к судну",
   "как дойти до судна",
+  // 11.09.2026, Markus's mixed-regression point 9: "Куда нажать, чтобы
+  // вернуться на судно?" fell through to the generic "not my topic, wait
+  // for online" pool -- this function is checked BEFORE that pool (same
+  // priority level as RED_LINE), so the real gap was purely missing
+  // phrasing coverage here, not a routing problem. This function
+  // lowercases but does NOT strip punctuation (unlike normalizeText
+  // elsewhere), so comma/no-comma variants are both listed explicitly.
+  "нажать, чтобы вернуться", "нажать чтобы вернуться", "куда нажать чтобы вернуться",
   "return to the ship", "find my way back", "lost my way", "i'm lost", "find the ship",
 ];
 

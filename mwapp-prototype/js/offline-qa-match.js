@@ -44,6 +44,31 @@
 // for the full rationale and why this is additive/zero-risk for every
 // other intent.
 //
+// v21, 11.09.2026 -- Markus's second mixed-regression review (19
+// screenshots, fresh session on top of v53/v19). Fixed, with live-tested
+// evidence for each:
+//   Point 1 (safety-critical, authorized as an exception to "stop
+//   expanding vocabulary"): MEDICAL_EMERGENCY_KEYWORDS was missing the
+//   ADJECTIVE forms of chest pain/breathing distress -- "больно в груди"
+//   (only the noun "боль в груди" was covered) and "трудно
+//   дышать"/"тяжело дышать"/"не могу дышать" entirely. Both phrasings
+//   were caught live falling through to the unclear/companion fallback
+//   instead of 112 -- confirmed fixed against the exact failing text.
+//   Point 4: transport intent's bare "рейс" primary anchor was firing on
+//   "этот рейс меня достал" (an emotional complaint, not a transport
+//   question) -- moved into intents-data.js's compoundAnchors, now
+//   requires an actual transport marker alongside it.
+//   Point 10: "Ты сейчас работаешь через интернет?" was answered with
+//   the port's Wi-Fi hotspot location (matched via bare "интернет") --
+//   the existing online/offline-status intent's compoundAnchors widened
+//   to also catch this self-status phrasing and a self-referential "ты
+//   сейчас"/"ты работаешь" marker, which now reliably outscores the
+//   Wi-Fi intent by the ordinary AMBIGUITY_MARGIN.
+// intents-data.js v54 has the corresponding data changes (crew-entrance
+// anchor, QR/Premium-expiry/AI-expiry coverage, 5 removed {placeholder}
+// templates). Self-match regression after all changes: 16/250, IDENTICAL
+// list to before this pass.
+//
 // v19, 10.09.2026 -- findOfflineIntent's {strict} option is now UNUSED by
 // its only caller (app.js's companion exit-check, per Markus's mixed-
 // regression review point 1 -- the raised bar was blocking too many clean
@@ -409,14 +434,30 @@ function detectBrandEntity(text) {
 // by unrelated anchor edits elsewhere. The scored intent (intents-data.js)
 // is kept as a defense-in-depth layer for phrasings that don't hit these
 // exact markers, and its own reply now leads with 112 too -- see there.
+// v20, 11.09.2026 -- Markus's mixed-regression point 1: live testing found
+// "Мне очень плохо и больно в груди" and "Мне трудно дышать" both fell
+// through to the ordinary unclear/companion fallback -- neither phrasing
+// (adjective "больно"/"трудно" rather than the noun "боль") was covered.
+// Chest pain and breathing difficulty are both textbook emergency
+// symptoms and must reach 112 regardless of exact wording or dialog
+// state -- this list is checked unconditionally before Companion Mode
+// and before the scored intent table (see isMedicalEmergencyTopic() and
+// its caller in app.js), so adding phrasings here is safety-critical
+// coverage, not the kind of "точечная формулировка" expansion Markus
+// asked to stop doing elsewhere in the corpus.
 const MEDICAL_EMERGENCY_KEYWORDS = [
   "скорая", "скорую", "скорой",
   "вызвать скорую", "нужна скорая", "скорая помощь",
   "экстренная помощь", "срочная медицинская помощь",
-  "боль в груди", "давит в груди", "жжёт в груди", "боль в сердце",
+  "боль в груди", "больно в груди", "давит в груди", "давление в груди",
+  "сжимает в груди", "сжатие в груди", "жжёт в груди", "жжет в груди",
+  "боль в сердце",
+  "трудно дышать", "тяжело дышать", "не могу дышать", "нечем дышать",
+  "задыхаюсь",
   "инфаркт", "сердечный приступ",
   "ambulance", "emergency", "medical emergency",
   "call an ambulance", "need an ambulance", "chest pain", "heart attack",
+  "can't breathe", "cant breathe", "hard to breathe", "difficulty breathing",
 ];
 
 const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно"];
