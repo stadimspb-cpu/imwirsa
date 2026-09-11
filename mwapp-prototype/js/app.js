@@ -1506,9 +1506,20 @@ const GUIDE_ME_BACK_KEYWORDS = [
 // unrelated alcohol question must NOT open the ship locator) -- the
 // combo check backs off whenever a drinking word is also present, same
 // as the original narrowing intended.
-const RETURN_VERBS = ["вернуться", "обратно", "попасть назад", "вернуться туда"];
+// 11.09.2026, "architecture" review point 5: rebuilt from two reusable
+// concept groups (return-verb + ship-location-noun) rather than a fixed
+// phrase list, so paraphrases like "Мне надо назад к кораблю" or "Как
+// попасть обратно туда, где пришвартовано судно" are caught without
+// listing every wording. Stems used where safe: "вернут" (6 chars, not
+// the shorter "верн") deliberately avoids also matching "верно"/"верный"
+// (a totally different word, "correct/true") which would have been a
+// real false-positive risk with a 4-letter stem.
+const RETURN_VERBS = [
+  "вернут", "обратно", "назад", "попасть обратно", "добраться обратно",
+];
 const SHIP_LOCATION_MARKERS = [
-  "судно", "корабль", "место стоянки", "где стоит судно", "к причалу", "на борт", "к судну",
+  "судно", "корабл", "борт", "место стоянки", "где стоит судно",
+  "к причалу", "наше судно", "где пришвартовано", "к судну",
 ];
 const GUIDE_ME_BACK_EXCLUDE = ["выпить", "алкогол", "водк", "виски", "пиво", "вина", "ром"];
 

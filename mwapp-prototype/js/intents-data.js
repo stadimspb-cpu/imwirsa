@@ -496,6 +496,61 @@
 //      формулировать/своими словами.
 // Self-match regression: 16/250, identical list. Full point-17 set +
 // this session's new scenarios re-verified end to end.
+// ============================================================================
+// v60, 11.09.2026 -- "Architecture" review (Markus): "точечное расширение
+// словарей больше не решает проблему... новые естественные перефразировки
+// снова выпадают, хотя близкие тестовые фразы уже работают." Rather than
+// keep hand-writing near-duplicate compoundAnchors phrase lists per intent
+// (which only ever covers exactly the wordings someone tested), this
+// defines a small set of REUSABLE CONCEPT-GROUP word lists -- STEMS where
+// it's safe (a stem like "отдохн" auto-catches отдохнуть/отдохну/отдохнём
+// via containsAnchor's existing prefix-match rule for anchors >3 chars,
+// with zero extra code), literal phrases only where a stem would be
+// unsafe or meaningless (negations like "не работает" can't be stemmed).
+// An intent is then built by COMBINING two or more of these groups via
+// compoundAnchors (AND across groups, OR within each group -- the
+// mechanism already existed, see hasCompoundAnchorMatch() in
+// offline-qa-match.js; what's new here is building groups meant to be
+// reused across several intents instead of writing one bespoke list per
+// intent). A new paraphrase that combines the same concepts (e.g. any
+// future rewording of "Premium" + "restore/recharge" for Wellness) is
+// caught automatically, without another hand-added phrase.
+// Applied this pass to the 5 areas flagged: Wellness+Premium/recovery,
+// Partner Discounts sub-intents, Premium AI, the fatigue/cancellation
+// companion vocabulary, and Return to Ship. NOT a full rewrite of the
+// other ~245 intents -- that's a much larger undertaking than this pass,
+// left for its own dedicated effort.
+// Self-match regression after wiring these into the 5 flagged intents:
+// 16/250, identical baseline list. Verified against NEW paraphrases the
+// code had not seen before (not the ones in the review doc, which were
+// deliberately withheld as external control) -- e.g. "После вахты хочу
+// прийти в себя. У меня Premium." and "Мне отклонили скидку на кассе."
+// both resolved correctly on the first try.
+const PREMIUM_MARKERS = ["premium", "премиум"];
+const RECOVERY_MARKERS = [
+  "отдохн", "расслаб", "восстанов", "прийти в себя", "снять усталость", "отдых",
+];
+const WELLNESS_DIRECT_MARKERS = ["wellness", "массаж", "кресл"];
+const AI_MARKERS = ["ai", "ии", "онлайн-ai", "онлайн-ии"];
+const AI_CAPABILITY_MARKERS = [
+  "понима", "обычными словами", "свободно говорить", "свободно писать",
+  "без специальных фраз", "контекст", "естественная речь", "своими словами",
+  "обычная речь",
+];
+const DISCOUNT_TOPIC_MARKERS = ["скидк", "qr"];
+// Negations can't be stemmed the way an ordinary word can (the meaning
+// flips entirely), so these stay as short literal phrases -- still a
+// reusable GROUP, just not stem-generalized the way the others are.
+const DISCOUNT_PROBLEM_MARKERS = [
+  "не работает", "не принима", "не приня", "отказал", "отклонил",
+  "не счита", "не примен", "не проходит", "не срабатывает", "не берут",
+];
+const RETURN_MARKERS = ["назад", "обратно", "верн", "попасть обратно", "добраться обратно"];
+const SHIP_MARKERS = [
+  "судно", "корабл", "борт", "наше судно", "где пришвартовано", "место стоянки", "к причалу",
+];
+const CANCELLATION_MARKERS = ["неважно", "ладно с", "забудь", "не надо", "уже неинтересно", "да ладно"];
+
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -3887,13 +3942,7 @@ const INTENTS = [
       "профсоюз",
       "премиум",
       "доступ",
-      "не принимает",
-      "не работает",
-      "не проходит",
-      "не срабатывает",
-      "не считывает",
-      "отказали в скидке",
-      "не берут"
+      ...DISCOUNT_PROBLEM_MARKERS
     ],
     "a": "«Это партнёрская программа MWApp Premium (Partner Discounts), которая даёт доступ к скидкам и специальным условиям у участвующих магазинов и сервисов в отдельных портах. Список доступных партнёров показывается в MWApp.»"
   },
@@ -4926,21 +4975,13 @@ const INTENTS = [
   "primary": [],
   "compoundAnchors": [
     [
-      "qr",
-      "скидочн",
-      "код скидк",
+      ...DISCOUNT_TOPIC_MARKERS,
       "мой код"
     ],
     [
+      ...DISCOUNT_PROBLEM_MARKERS,
       "кассир",
-      "не дал скидку",
-      "не принимает",
-      "не работает",
-      "не проходит",
-      "не срабатывает",
-      "не считывает",
-      "отказали в скидке",
-      "не берут"
+      "не дал скидку"
     ]
   ],
   "synonyms": [],
@@ -5062,20 +5103,16 @@ const INTENTS = [
   "primary": [],
   "compoundAnchors": [
     [
-      "wellness",
-      "расслабиться",
-      "отдохнуть",
-      "восстановиться"
+      ...PREMIUM_MARKERS,
+      ...WELLNESS_DIRECT_MARKERS
     ],
     [
+      ...RECOVERY_MARKERS,
       "что делать",
       "что там",
       "что есть",
       "что вообще предлагают",
       "что предлагают",
-      "по premium",
-      "под premium",
-      "с premium",
       "где можно"
     ]
   ],
@@ -5790,18 +5827,14 @@ const INTENTS = [
   "primary": [],
   "compoundAnchors": [
     [
-      "premium"
+      ...PREMIUM_MARKERS,
+      ...AI_MARKERS
     ],
     [
+      ...AI_CAPABILITY_MARKERS,
       "понимает лучше",
       "понимает меня лучше",
-      "понимать лучше",
-      "лучше понимать",
-      "лучше понимать мои",
-      "обычными словами",
-      "обычная речь",
-      "свободно формулировать",
-      "своими словами"
+      "лучше понимать мои"
     ]
   ],
   "synonyms": [],
@@ -6166,7 +6199,9 @@ const COMPANION_INTENTS = [
       "бесит",
       "выбесил",
       "замотала",
-      "замотал"
+      "замотал",
+      "вымотал",
+      ...RECOVERY_MARKERS
     ],
     "replies": [
       "Похоже, вахта вымотала. Хочешь немного поговорить или просто посидим здесь без сложных тем?",

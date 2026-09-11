@@ -178,6 +178,13 @@ const SPELLING_VARIANTS = [
   [/\bwellnes\b/gi, "wellness"],
   [/(?<![a-zа-яё])велнес(?![а-яё])/gi, "wellness"],
   [/(?<![a-zа-яё])веллнес(?![а-яё])/gi, "wellness"],
+  // 11.09.2026, "architecture" review point 6: "онлайн-AI" and "онлайн AI"
+  // (hyphen vs space vs nothing) must normalize to ONE form before
+  // scoring, not require every intent's AI_MARKERS group (intents-data.js)
+  // to separately list both variants -- one normalization rule here fixes
+  // it everywhere "онлайн ai"/AI_MARKERS is used.
+  [/онлайн[\s-]?ai/gi, "онлайн-ai"],
+  [/онлайн[\s-]?ии/gi, "онлайн-ии"],
 ];
 
 function normalizeText(text) {
