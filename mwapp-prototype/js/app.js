@@ -1492,10 +1492,34 @@ const GUIDE_ME_BACK_KEYWORDS = [
   "return to the ship", "find my way back", "lost my way", "i'm lost", "find the ship",
 ];
 
+// 11.09.2026, Markus's "blind test" review point 6: "Мне надо вернуться
+// туда, где стоит судно" matched none of the literal phrases above (no
+// "как"-question framing, doesn't say "на судно"/"на борт" at all) and
+// fell through to a fallback that wrongly claimed the ship locator
+// "isn't available offline" -- it is, it just didn't recognize the
+// request. Rather than adding this one more literal phrase, a genuine
+// semantic combo: a RETURN verb together with a SHIP-LOCATION noun,
+// anywhere in the message, matches the same underlying intent as the
+// phrase list above without needing every possible wording spelled out.
+// GUIDE_ME_BACK_EXCLUDE preserves the 09.09.2026 fix this list itself
+// documents above (a bare "вернуться на судно" mention inside an
+// unrelated alcohol question must NOT open the ship locator) -- the
+// combo check backs off whenever a drinking word is also present, same
+// as the original narrowing intended.
+const RETURN_VERBS = ["вернуться", "обратно", "попасть назад", "вернуться туда"];
+const SHIP_LOCATION_MARKERS = [
+  "судно", "корабль", "место стоянки", "где стоит судно", "к причалу", "на борт", "к судну",
+];
+const GUIDE_ME_BACK_EXCLUDE = ["выпить", "алкогол", "водк", "виски", "пиво", "вина", "ром"];
+
 function isGuideMeBackTopic(text) {
   const lower = text.toLowerCase();
   if (isShipDepartedTopic(text)) return false; // ship already gone -- different situation, never the locator
-  return GUIDE_ME_BACK_KEYWORDS.some((kw) => lower.includes(kw));
+  if (GUIDE_ME_BACK_KEYWORDS.some((kw) => lower.includes(kw))) return true;
+  if (GUIDE_ME_BACK_EXCLUDE.some((kw) => lower.includes(kw))) return false;
+  const hasReturnVerb = RETURN_VERBS.some((v) => lower.includes(v));
+  const hasShipMarker = SHIP_LOCATION_MARKERS.some((m) => lower.includes(m));
+  return hasReturnVerb && hasShipMarker;
 }
 
 // Same prototype-level caveat as above — this is a keyword heuristic, not
@@ -1701,6 +1725,23 @@ function findProtectedIntent(text) {
 // Wellness thread or survive a genuine topic change. intents-data.js v58
 // has the matching Wellness-family data changes (points 1-2) -- see
 // that file's version note.
+// v58, 11.09.2026 -- "Blind test" review points 4 and 6.
+//   Point 4: "Да ладно с автобусом, просто день тяжёлый" wasn't
+//   recognized as Companion after a real Transport match -- the fatigue
+//   companion topic's "тяжело" anchor (adverb) doesn't match "тяжёлый"
+//   (adjective, different ending); after ё->е normalization the two
+//   forms diverge at the last letter (тяжело vs тяжелый) so neither is a
+//   substring of the other. Fixed in intents-data.js v59 by widening to
+//   the shared stem "тяжел" (catches both forms as a prefix match).
+//   Point 6: "Мне надо вернуться туда, где стоит судно" matched none of
+//   GUIDE_ME_BACK_KEYWORDS's literal phrases (no "как"-question framing,
+//   no "на судно"/"на борт") and fell through to a fallback claiming the
+//   ship locator "isn't available offline" -- wrong, it is. Added a
+//   semantic combo check (RETURN_VERBS + SHIP_LOCATION_MARKERS, both
+//   anywhere in the message) alongside the existing literal-phrase list,
+//   with GUIDE_ME_BACK_EXCLUDE preserving the original 09.09.2026 fix
+//   this same function documents (a bare "вернуться на судно" inside an
+//   unrelated alcohol question must not open the ship locator).
 function sendAssistantChatMessage() {
   const input = document.getElementById("assistantChatInput");
   const text = input.value.trim();

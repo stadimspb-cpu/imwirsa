@@ -461,6 +461,41 @@
 // Full point-17 control set + all today's new follow-up chains re-
 // verified end to end; Port Exit/Food/Premium AI/QR/Companion/Emergency
 // all confirmed unchanged.
+// v59, 11.09.2026 -- "Blind test" review, 6 points, scoped narrow per
+// explicit instruction ("Уже работающие Port Exit, Food, Supermarket,
+// Wellness booking follow-up, Pharmacy и Transport не менять" --
+// re-verified below, unaffected).
+//   1. Wellness + Premium/recovery: "Я с Premium. Где можно немного
+//      отдохнуть и восстановиться?" was winning on the NIGHTLIFE intent
+//      (bare "отдохнуть"/"отдых", no "wellness"/"premium" exclude) --
+//      added "premium"/"восстанов" to that intent's exclude, and
+//      broadened the Wellness "what's here" intent's own compoundAnchors
+//      with "где можно"/"с premium"/"что вообще предлагают" so it wins
+//      instead. This is the SAME root pattern as the CBD-tie and
+//      массаж-tie fixes earlier this session: a bare word ("отдохнуть")
+//      shared across an unrelated intent family, fixed via exclude +
+//      broadening the correct destination's own anchors, not a new
+//      hardcoded answer.
+//   2. Partner Discount troubleshooting: "Мой код скидки магазин не
+//      принимает" was landing on the generic Partner Discounts
+//      description (bare "скидк") instead of the troubleshooting intent
+//      (which required literal "QR", not present here) -- broadened
+//      that intent's own group1 to accept "код скидк"/"скидочн"/"мой
+//      код" and group2 with не принимает/не работает/не проходит/не
+//      срабатывает/не считывает/отказали в скидке/не берут; added the
+//      same markers to the generic description intent's exclude so it
+//      backs off cleanly instead of tying. Also excluded везде/
+//      постоянно (already the systemic-failure intent's own territory,
+//      added last session) to avoid re-opening that tie.
+//   3. Premium AI: "Если подключится Premium AI, мне можно будет
+//      говорить обычными словами?" was landing on a POLICE-stop intent
+//      via its own bare "говорить" primary word -- added premium/ai to
+//      that police intent's exclude (its own actual territory
+//      untouched), and broadened the Premium-AI-capabilities intent's
+//      group2 with обычными словами/обычная речь/свободно
+//      формулировать/своими словами.
+// Self-match regression: 16/250, identical list. Full point-17 set +
+// this session's new scenarios re-verified end to end.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -1456,7 +1491,9 @@ const INTENTS = [
       "платн",
       "саун",
       "ночь",
-      "wellness"
+      "wellness",
+      "premium",
+      "восстанов"
     ],
     "a": "«Если ты про обычный вечерний отдых — бары и клубы обычно отмечены в разделе «Развлечения», если подтверждены для этого порта. Если вопрос касается более личных или деликатных услуг, я не буду ничего рекомендовать или оценивать. В разделе Wellness можно связаться с Wellness Host — консультантом программы Wellness. Это живой человек, он сможет спокойно объяснить такие вопросы точнее меня. Доступ к разделу Wellness предусмотрен для участников профсоюзной программы.»"
   },
@@ -3019,7 +3056,9 @@ const INTENTS = [
     "exclude": [
       "такси",
       "бар",
-      "драка"
+      "драка",
+      "premium",
+      "ai"
     ],
     "a": "«Не паникуй и не груби. Покажи документы. Если требуют деньги «на месте» — скажи, что вызовешь консула. После инцидента сразу звони в Дежурный офис IMWIRSA.»"
   },
@@ -3847,7 +3886,14 @@ const INTENTS = [
     "exclude": [
       "профсоюз",
       "премиум",
-      "доступ"
+      "доступ",
+      "не принимает",
+      "не работает",
+      "не проходит",
+      "не срабатывает",
+      "не считывает",
+      "отказали в скидке",
+      "не берут"
     ],
     "a": "«Это партнёрская программа MWApp Premium (Partner Discounts), которая даёт доступ к скидкам и специальным условиям у участвующих магазинов и сервисов в отдельных портах. Список доступных партнёров показывается в MWApp.»"
   },
@@ -4880,16 +4926,29 @@ const INTENTS = [
   "primary": [],
   "compoundAnchors": [
     [
-      "qr"
+      "qr",
+      "скидочн",
+      "код скидк",
+      "мой код"
     ],
     [
       "кассир",
-      "не дал скидку"
+      "не дал скидку",
+      "не принимает",
+      "не работает",
+      "не проходит",
+      "не срабатывает",
+      "не считывает",
+      "отказали в скидке",
+      "не берут"
     ]
   ],
   "synonyms": [],
-  "exclude": [],
-  "a": "«Условия и применение скидки определяет партнёр программы. Убедись, что выбран правильный партнёр и код.»"
+  "exclude": [
+    "везде",
+    "постоянно"
+  ],
+  "a": "«Условия и применение скидки определяет партнёр программы. Убедись, что выбран правильный партнёр и код. Если магазин отказывается принимать подтверждённый код — сообщи об этом через Центральный офис IMWIRSA, чтобы уточнить у партнёра программы.»"
 },
 {
   "q": "Могу дать свой QR-код скидки товарищу?",
@@ -5012,8 +5071,12 @@ const INTENTS = [
       "что делать",
       "что там",
       "что есть",
+      "что вообще предлагают",
+      "что предлагают",
       "по premium",
-      "под premium"
+      "под premium",
+      "с premium",
+      "где можно"
     ]
   ],
   "synonyms": [],
@@ -5734,7 +5797,11 @@ const INTENTS = [
       "понимает меня лучше",
       "понимать лучше",
       "лучше понимать",
-      "лучше понимать мои"
+      "лучше понимать мои",
+      "обычными словами",
+      "обычная речь",
+      "свободно формулировать",
+      "своими словами"
     ]
   ],
   "synonyms": [],
@@ -6091,7 +6158,7 @@ const COMPANION_INTENTS = [
       "вахта",
       "сил нет",
       "спать хочу",
-      "тяжело",
+      "тяжел",
       "достал",
       "достали",
       "надоел",

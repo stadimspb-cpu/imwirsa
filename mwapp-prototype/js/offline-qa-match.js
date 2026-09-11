@@ -470,6 +470,14 @@ function detectBrandEntity(text) {
 // its caller in app.js), so adding phrasings here is safety-critical
 // coverage, not the kind of "точечная формулировка" expansion Markus
 // asked to stop doing elsewhere in the corpus.
+// v23, 11.09.2026 -- "Blind test" review point 5 (flagged CRITICAL
+// priority): "Не могу нормально вдохнуть, воздуха не хватает" fell
+// through to the unclear fallback -- the breathing-distress family only
+// had "дышать" phrasings, missing the equally common "вдохнуть" verb and
+// "не хватает воздуха" entirely. Added as more members of the SAME
+// existing family, not a new topic. See intents-data.js v59 for this
+// session's other 5 points (routing/anchor changes; this file only
+// needed the emergency-keyword addition).
 const MEDICAL_EMERGENCY_KEYWORDS = [
   "скорая", "скорую", "скорой",
   "вызвать скорую", "нужна скорая", "скорая помощь",
@@ -479,10 +487,21 @@ const MEDICAL_EMERGENCY_KEYWORDS = [
   "боль в сердце",
   "трудно дышать", "тяжело дышать", "не могу дышать", "нечем дышать",
   "задыхаюсь",
+  // 11.09.2026, Markus's "blind test" review point 5 (flagged as
+  // CRITICAL priority): "Не могу нормально вдохнуть, воздуха не
+  // хватает" fell through to the ordinary unclear fallback -- the
+  // existing breathing markers all used "дышать" as the verb, missing
+  // the equally common "вдохнуть" (to inhale) phrasing and "не хватает
+  // воздуха" (short of air) entirely. This is the same breathing-
+  // distress family as the markers above, not a new topic -- grouped
+  // here rather than off in its own list.
+  "не могу вдохнуть", "трудно вдохнуть", "тяжело вдохнуть",
+  "не хватает воздуха", "воздуха не хватает",
   "инфаркт", "сердечный приступ",
   "ambulance", "emergency", "medical emergency",
   "call an ambulance", "need an ambulance", "chest pain", "heart attack",
   "can't breathe", "cant breathe", "hard to breathe", "difficulty breathing",
+  "can't inhale", "cant inhale", "not enough air",
 ];
 
 const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно"];
