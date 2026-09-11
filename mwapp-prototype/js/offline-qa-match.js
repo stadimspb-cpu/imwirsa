@@ -148,11 +148,36 @@ function isGeneric(anchor) {
 // common tech-term spelling variants (Type-C / Type C / TypeC, USB-C /
 // USB C / USBC) should all collide to one anchor instead of needing every
 // spelling enumerated separately in every intent that mentions them.
+// v22, 11.09.2026 -- Wellness follow-up/access review, point 4: bare
+// "wellness"/"wellnes"/"велнес"/"веллнес" added as normalized spelling
+// variants (see below) so a plain mention is a strong standalone marker
+// everywhere the "wellness" anchor is already used, no code changes
+// needed anywhere else. Found and fixed a real bug while building this:
+// \b does NOT work as a word boundary around Cyrillic letters in JS
+// regex (\bвелнес\b silently matched nothing at all, confirmed live --
+// \b is only ASCII-\w-aware, and Cyrillic letters count as \W on both
+// sides) -- explicit negative lookaround used for the Cyrillic variants
+// instead. intents-data.js v57 has the matching Wellness-family data
+// changes (points 1-3, 5) -- see that file's version note.
 const SPELLING_VARIANTS = [
   [/\btype[\s-]?c\b/gi, "type-c"],
   [/\busb[\s-]?c\b/gi, "usb-c"],
   [/\bmicro[\s-]?usb\b/gi, "micro-usb"],
   [/\bwi[\s-]?fi\b/gi, "wi-fi"],
+  // 11.09.2026, Markus's Wellness follow-up review point 4: a bare
+  // mention of the topic word itself (in any spelling seafarers actually
+  // type) must be a strong standalone Wellness marker on its own, not
+  // require pairing with another word like "услуга"/"расслабиться". This
+  // normalizes every variant to the single "wellness" anchor already used
+  // everywhere in the Wellness family, so no individual intent needs its
+  // own copy of this list.
+  // NOTE: \b does NOT work as a word boundary around Cyrillic letters in
+  // JS regex (\b is only ASCII-\w-aware, and Cyrillic letters count as
+  // \W) -- confirmed live: \bвелнес\b silently never matched anything.
+  // Explicit negative lookaround used instead for the Cyrillic variants.
+  [/\bwellnes\b/gi, "wellness"],
+  [/(?<![a-zа-яё])велнес(?![а-яё])/gi, "wellness"],
+  [/(?<![a-zа-яё])веллнес(?![а-яё])/gi, "wellness"],
 ];
 
 function normalizeText(text) {

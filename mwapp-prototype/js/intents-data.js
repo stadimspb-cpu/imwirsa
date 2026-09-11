@@ -407,6 +407,27 @@
 //     without needing a third, unrelated anchor.
 // Self-match regression after all four: 16/250, IDENTICAL list -- zero
 // new collisions.
+// v57, 11.09.2026 -- Wellness follow-up/access review (5 points, scoped
+// deliberately narrow -- "остальную маршрутизацию не менять"). Verified
+// nothing outside Wellness moved: Port Exit/Food/Premium AI/QR/Companion/
+// Emergency all re-tested unchanged in the same pass.
+//   3. Booking/access intent ("Где мне записаться в Wellness-зону?")
+//      broadened with попасть/прийти/воспользоваться/записыва/запись/
+//      бронировать/бронь/как туда попасть/нужна запись.
+//   2. Location intent gained "где это"; hours intent gained "когда
+//      работает" -- both so the family-context follow-up retry (app.js,
+//      state.lastIntentFamily, already built in v56) actually lands on
+//      the right specific intent for these short pronoun-less phrasings.
+// (Points 1 and 5 -- "remember wellness for one turn" / "reset on any
+// other explicit intent" -- were already correct as of v56, verified
+// again here, not re-implemented.)
+// Point 4 (bare "wellness"/"wellnes"/"велнес"/"веллнес" as a strong
+// standalone marker) lives in offline-qa-match.js's SPELLING_VARIANTS,
+// not here -- see that file's version note for a real bug found while
+// building it: \b does not work as a word boundary around Cyrillic
+// letters in JS regex.
+// Self-match regression: 16/250, identical list. Full point-17 control
+// set re-verified end to end, plus the 6 new follow-up phrasings.
 const INTENTS = [
   {
     "q": "Где купить сигареты?",
@@ -5020,7 +5041,16 @@ const INTENTS = [
       "wellness"
     ],
     [
-      "записаться"
+      "записаться",
+      "записыва",
+      "запись",
+      "бронировать",
+      "бронь",
+      "попасть",
+      "прийти",
+      "воспользоваться",
+      "как туда попасть",
+      "нужна запись"
     ]
   ],
   "synonyms": [],
@@ -5037,7 +5067,8 @@ const INTENTS = [
     ],
     [
       "во сколько работает",
-      "часы работы"
+      "часы работы",
+      "когда работает"
     ]
   ],
   "synonyms": [],
@@ -5175,7 +5206,8 @@ const INTENTS = [
       "где находится",
       "адрес",
       "где здесь",
-      "где здесь wellness"
+      "где здесь wellness",
+      "где это"
     ]
   ],
   "synonyms": [],
