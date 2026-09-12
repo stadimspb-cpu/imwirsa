@@ -274,9 +274,9 @@ const I18N = {
     // >= 2 (08.09.2026 decision, unchanged) -- the first two misses get
     // unclearReplies below, this only shows from the third onward.
     demoReplies: [
-      "I couldn't quite understand that one offline. The regular FAQ here is handled in English — try a short, plain English phrase, or check the MWApp port cards. Emergency help, crisis situations, port exit, and getting back to your ship are always understood in your own language.",
-      "I don't have a precise answer for this offline. Everyday topics (transport, pharmacy, Wi-Fi, and the like) I currently understand in English only — try rephrasing it briefly in English, or open the port cards instead. Emergency, crisis, port exit, and return-to-ship always work in any language.",
-      "I couldn't find a solid answer for that. The main FAQ runs on English offline — a short English phrase might work better, or try the MWApp port cards. Emergency situations, port exit, and returning to the ship are still understood in your language, no matter what.",
+      "I couldn't quite understand that one offline. The regular FAQ here is handled in English — try a short, plain English phrase, or look through the app's other sections for what you need. Emergency help, crisis situations, port exit, and getting back to your ship are always understood in your own language.",
+      "I don't have a precise answer for this offline. Everyday topics (transport, pharmacy, Wi-Fi, and the like) I currently understand in English only — try rephrasing it briefly in English, or check MWApp's other sections instead. Emergency, crisis, port exit, and return-to-ship always work in any language.",
+      "I couldn't find a solid answer for that. The main FAQ runs on English offline — a short English phrase might work better, or browse the app's sections directly. Emergency situations, port exit, and returning to the ship are still understood in your language, no matter what.",
     ],
     unclearReplies: [
       "I didn't quite catch that — can you tell me a bit more about what you need?",
@@ -580,9 +580,9 @@ const I18N = {
     // detection, honest either way, still gated behind consecutiveUnclear
     // >= 2, first two misses still get unclearReplies).
     demoReplies: [
-      "Не смог точно понять этот вопрос офлайн. Обычные вопросы офлайн-ассистент понимает на английском — попробуй сформулировать короче по-английски, или посмотри карточки порта в приложении. Экстренная помощь, кризисные ситуации, выход из порта и возврат на судно понятны на твоём языке всегда.",
-      "У меня нет точного ответа на это офлайн. Обычные темы (например, транспорт, аптека, Wi-Fi) я понимаю только по-английски — можешь попробовать написать короче на английском, или открыть карточки порта. А вот экстренная помощь, выход из порта и возврат на судно работают на любом языке.",
-      "Не нашёл точного ответа. Основную базу вопросов офлайн-ассистент обрабатывает на английском — попробуй короткую фразу по-английски или карточки MWApp. Экстренные ситуации, выход из порта и возврат к судну по-прежнему понятны на твоём языке.",
+      "Не смог точно понять этот вопрос офлайн. Обычные вопросы офлайн-ассистент понимает на английском — попробуй сформулировать короче по-английски, или посмотри нужный раздел в самом приложении. Экстренная помощь, кризисные ситуации, выход из порта и возврат на судно понятны на твоём языке всегда.",
+      "У меня нет точного ответа на это офлайн. Обычные темы (например, транспорт, аптека, Wi-Fi) я понимаю только по-английски — можешь попробовать написать короче на английском, или найти нужное в разделах приложения. А вот экстренная помощь, выход из порта и возврат на судно работают на любом языке.",
+      "Не нашёл точного ответа. Основную базу вопросов офлайн-ассистент обрабатывает на английском — попробуй короткую фразу по-английски или посмотри в разделах MWApp. Экстренные ситуации, выход из порта и возврат к судну по-прежнему понятны на твоём языке.",
     ],
     unclearReplies: [
       "Не совсем понял — можешь описать чуть подробнее, что тебе нужно?",
