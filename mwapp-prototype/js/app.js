@@ -1559,8 +1559,8 @@ const SHIP_DEPARTED_KEYWORDS_EN = [
 // this function only runs on user interaction, after the whole script has
 // already finished loading.
 const SHIP_DEPARTURE_VERBS_RU = [
-  "ушел", "ушёл", "ушла", "отошел", "отошёл", "отошла",
-  "уплыл", "уплыла", "отчалил", "отчалила",
+  "ушел", "ушёл", "ушла", "ушло", "отошел", "отошёл", "отошла", "отошло",
+  "уплыл", "уплыла", "уплыло", "отчалил", "отчалила", "отчалило",
 ];
 const LEFT_BEHIND_MARKERS_RU = [
   "я остался", "я осталась", "без меня", "меня оставили", "оставили без меня", "бросили меня",
@@ -1806,6 +1806,36 @@ const LOST_MARKERS_RU = [
 ];
 const LOST_MARKERS_EN = ["lost my way", "i'm lost", "find my way back"];
 
+// 13.09.2026, Andrey's Return to Ship regression retest, point 2:
+// "Судно скоро уходит, а я ещё в городе." correctly did NOT match Ship
+// Departed (the ship hasn't left yet -- good, that's the right call), but
+// it also didn't reach Return to Ship, landing on the neutral fallback
+// instead. Andrey's read: practically, a seafarer who knows their ship is
+// about to leave while they're still ashore needs the SAME help as
+// someone already lost trying to get back -- the urgency is exactly the
+// reason to open the locator now, before it becomes a Ship Departed
+// situation. Modeled as its own compound: a DEPARTURE-IMMINENT phrase
+// together with a STILL-ASHORE phrase, deliberately NOT reusing
+// SHIP_DEPARTURE_VERBS_RU/EN (those are past-tense "already left" verbs --
+// "уходит"/"leaving" here is present/near-future, a different tense
+// carrying a different, non-overlapping meaning, so there's no risk of
+// this compound competing with the Ship Departed one above).
+const DEPARTURE_IMMINENT_RU = [
+  "скоро уходит", "скоро отходит", "скоро отправляется",
+  "уходит через", "отходит через", "вот-вот уйдет", "вот-вот уйдёт",
+];
+const STILL_ASHORE_RU = [
+  "я ещё в городе", "я еще в городе", "ещё в городе", "еще в городе",
+  "на берегу", "не на борту", "я не на судне", "я не на корабле",
+];
+const DEPARTURE_IMMINENT_EN = [
+  "leaving soon", "about to leave", "leaves soon", "departs soon", "leaving in",
+];
+const STILL_ASHORE_EN = [
+  "still in town", "still ashore", "not on board", "not back on the ship",
+  "still in the city",
+];
+
 // 11.09.2026, Markus's "blind test" review point 6: "Мне надо вернуться
 // туда, где стоит судно" matched none of the literal phrases above (no
 // "как"-question framing, doesn't say "на судно"/"на борт" at all) and
@@ -1828,8 +1858,27 @@ const LOST_MARKERS_EN = ["lost my way", "i'm lost", "find my way back"];
 // the shorter "верн") deliberately avoids also matching "верно"/"верный"
 // (a totally different word, "correct/true") which would have been a
 // real false-positive risk with a 4-letter stem.
+// 13.09.2026, Andrey's Return to Ship regression retest, point 1: "Я у
+// ворот порта. Как мне дойти до корабля?" matched nothing -- "дойти"/
+// "добраться"/"попасть" (get to / reach / make it to) were entirely
+// absent from this list, which previously only covered the RETURN half
+// of the concept ("вернут"/"обратно"/"назад") and required "обратно"
+// even for "добраться"/"попасть". Expanded to the broader "movement
+// TOWARD the ship" family, not just "movement BACK" -- both express the
+// same underlying need (get me to my ship) and both are safe with the
+// same trade-off already accepted here: generic verbs on their own, but
+// only fire combined with a SHIP_LOCATION_MARKERS hit below. Conjugated
+// forms included (дошёл/дошла, добрался/добралась, попал/попала,
+// доехал/доехала, подошёл/подошла) for the same reason every other
+// compound in this project lists multiple tenses -- a bare infinitive
+// stem here would be either unsafe (too short) or miss the past tense.
 const RETURN_VERBS_RU = [
   "вернут", "обратно", "назад", "попасть обратно", "добраться обратно",
+  "дойти", "дойду", "дошел", "дошёл", "дошла",
+  "добраться", "доберусь", "добрался", "добралась",
+  "попасть", "попаду", "попал", "попала",
+  "доехать", "доеду", "доехал", "доехала",
+  "подойти", "подошел", "подошёл", "подошла",
 ];
 const RETURN_VERBS_EN = [
   // 12.09.2026, Layer A audit (Andrey/Markus): this whole combo mechanism
@@ -1840,9 +1889,18 @@ const RETURN_VERBS_EN = [
   // words here (generic on their own, but only fire in combination with a
   // SHIP_LOCATION_MARKERS hit below).
   "get back", "go back", "back to the ship", "back to the vessel", "way back",
+  // 13.09.2026: mirrors the RU "movement toward" expansion above --
+  // "get to"/"reach"/"make it to" combined with a ship marker below.
+  "get to", "reach", "make it to",
 ];
 const SHIP_LOCATION_MARKERS_RU = [
-  "судно", "корабл", "борт", "место стоянки", "где стоит судно",
+  // 13.09.2026, Andrey's Return to Ship regression retest, point 1:
+  // "добраться до судна" failed even after RETURN_VERBS_RU gained
+  // "добраться" -- "судно" (nominative only) doesn't contain "судна"
+  // (genitive, required after "до"). Widened to the "судн" stem, same
+  // convention already used for "корабл"/"борт" below (safe common root
+  // across all six Russian cases: судно/судна/судну/судном/судне).
+  "судн", "корабл", "борт", "место стоянки", "где стоит судно",
   "к причалу", "наше судно", "где пришвартовано", "к судну",
 ];
 const SHIP_LOCATION_MARKERS_EN = [
@@ -1918,6 +1976,14 @@ function detectGuideMeBackLang(text) {
   if (hasLostRu && (hasShipMarkerRu || hasReturnVerbRu)) return "ru";
   const hasLostEn = LOST_MARKERS_EN.some((w) => lower.includes(w));
   if (hasLostEn && (hasShipMarkerEn || hasReturnVerbEn)) return "en";
+  // 13.09.2026, Andrey's regression retest — point 2, see
+  // DEPARTURE_IMMINENT_RU/EN's comment above for the full rationale.
+  if (DEPARTURE_IMMINENT_RU.some((w) => lower.includes(w)) && STILL_ASHORE_RU.some((w) => lower.includes(w))) {
+    return "ru";
+  }
+  if (DEPARTURE_IMMINENT_EN.some((w) => lower.includes(w)) && STILL_ASHORE_EN.some((w) => lower.includes(w))) {
+    return "en";
+  }
   return null;
 }
 
