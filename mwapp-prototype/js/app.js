@@ -1575,7 +1575,13 @@ const LEFT_BEHIND_MARKERS_RU = [
 // "turned left" or "money's all gone" message -- same trade-off shape
 // already accepted for the RU compound.
 const SHIP_DEPARTURE_VERBS_EN = ["left", "departed", "sailed", "gone", "pulled out", "pulled away"];
-const LEFT_BEHIND_MARKERS_EN = ["without me", "left behind", "left me behind", "stranded"];
+// 13.09.2026, Andrey's regression retest — control run: "My ship has
+// already left and I'm ashore" already matched a SHIP marker ("ship") and
+// a DEPARTURE verb ("left") -- the missing piece was the LEFT-BEHIND half
+// of the compound: "ashore" (the seafarer's own status, not phrased as
+// "without me"/"left behind") wasn't covered by any marker here. Added as
+// its own word rather than a new phrase, mirroring RU's "на берегу".
+const LEFT_BEHIND_MARKERS_EN = ["without me", "left behind", "left me behind", "stranded", "ashore"];
 
 function detectShipDepartedLang(text) {
   const lower = text.toLowerCase();
@@ -1823,6 +1829,13 @@ const LOST_MARKERS_EN = ["lost my way", "i'm lost", "find my way back"];
 const DEPARTURE_IMMINENT_RU = [
   "скоро уходит", "скоро отходит", "скоро отправляется",
   "уходит через", "отходит через", "вот-вот уйдет", "вот-вот уйдёт",
+  // 13.09.2026, Andrey's regression retest — control run: "Через полчаса
+  // отход, а я всё ещё на берегу" failed because every entry above is a
+  // VERB construction ("уходит"/"отходит через") -- "отход" is the NOUN
+  // form of the same concept (departure) and wasn't covered at all. Added
+  // as its own marker rather than another verb phrase, since it's a
+  // distinct part of speech, not a new phrasing of an existing one.
+  "отход",
 ];
 const STILL_ASHORE_RU = [
   "я ещё в городе", "я еще в городе", "ещё в городе", "еще в городе",
@@ -2784,7 +2797,27 @@ function sendAssistantChatMessage() {
       } else {
         state.consecutiveUnclear = 0;
       }
-      const reply = offlineAnswer || t(replyKey)[state.assistantReplyIndex % t(replyKey).length];
+      // 13.09.2026, Andrey's regression retest — control run: an
+      // unrecognized ENGLISH message was still getting this fallback in
+      // Russian, because t() here read state.lang (the interface
+      // language) same as every ordinary UI string. Everywhere else in
+      // Layer A, reply language already follows whichever keyword group
+      // matched (see t()'s langOverride param) -- this fallback path has
+      // no matched keyword group to read that from (nothing matched, by
+      // definition), so it needs its own minimal signal. Deliberately NOT
+      // a general language detector (Markus's 12.09.2026 call still
+      // stands for the WORDING of these replies -- see demoReplies'
+      // comment, it never claims to know what language the seafarer
+      // wrote in): this only decides which language's stock phrasing to
+      // display, using the cheapest reliable signal available -- Cyrillic
+      // presence. Latin-script input (English, or anything else) falls
+      // back to English, consistent with every other "unclear language"
+      // default already established in Layer A.
+      const reply = offlineAnswer || (() => {
+        const fallbackLang = /[а-яё]/i.test(text) ? "ru" : "en";
+        const replyPool = t(replyKey, null, fallbackLang);
+        return replyPool[state.assistantReplyIndex % replyPool.length];
+      })();
       console.log("[DIAG] matched intent:", diagMatchedIntent);
       console.log("[DIAG] matched keyword/rule:", diagMatchedRule);
       console.log("[DIAG] selected response:", JSON.stringify(reply));
