@@ -1660,10 +1660,49 @@ const PORT_EXIT_PASS_KEYWORDS_EN = [
   "permit to leave the port", "shore pass", "need a permit to leave",
 ];
 
+// 13.09.2026, Andrey's regression retest — Port Exit semantic routing.
+//
+// Point 1: the literal phrases above all require the word "порт" (or
+// "ворота"/"кпп") spelled out -- a message like "Мне нужно выйти наружу,
+// я на терминале" (exit/outside + terminal context, no "порт" word at
+// all) matched nothing. Built as a compound instead: an EXIT-action word
+// together with a PORT/TERMINAL-context word, anywhere in the message --
+// same shape as every other family fix this project has used.
+//
+// Point 3: this compound must not steal traffic that's actually an
+// internal-transport question ("где выход к автобусу на терминале" --
+// exit word + terminal word, but really asking about the bus stop, not
+// how to leave the port). Andrey's exact spec: Port Exit takes priority
+// UNLESS the message also explicitly names a transport word (автобус/
+// шаттл/транспорт) -- so the compound backs off whenever one of those is
+// present, deferring to the transport intent in the scored table instead.
+//
+// Point 4: "I'm at the terminal. Where is the pedestrian exit?" is the
+// same compound in English -- "pedestrian exit" (EXIT word) + "terminal"
+// (PORT context word).
+const PORT_EXIT_WORDS_RU = ["выход", "выйти", "наружу", "за территорию", "на улицу"];
+const PORT_EXIT_WORDS_EN = ["exit", "get out", "go outside", "pedestrian exit", "outside the port"];
+const PORT_CONTEXT_WORDS_RU = ["порт", "терминал", "кпп", "ворота", "причал"];
+const PORT_CONTEXT_WORDS_EN = ["port", "terminal", "gate", "pier", "dock"];
+const PORT_EXIT_TRANSPORT_WORDS_RU = ["автобус", "шаттл", "транспорт"];
+const PORT_EXIT_TRANSPORT_WORDS_EN = ["bus", "shuttle", "transport"];
+
 function detectPortExitGateLang(text) {
   const lower = text.toLowerCase();
   if (PORT_EXIT_GATE_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
   if (PORT_EXIT_GATE_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
+  const hasTransportRu = PORT_EXIT_TRANSPORT_WORDS_RU.some((w) => lower.includes(w));
+  if (!hasTransportRu
+      && PORT_EXIT_WORDS_RU.some((w) => lower.includes(w))
+      && PORT_CONTEXT_WORDS_RU.some((w) => lower.includes(w))) {
+    return "ru";
+  }
+  const hasTransportEn = PORT_EXIT_TRANSPORT_WORDS_EN.some((w) => lower.includes(w));
+  if (!hasTransportEn
+      && PORT_EXIT_WORDS_EN.some((w) => lower.includes(w))
+      && PORT_CONTEXT_WORDS_EN.some((w) => lower.includes(w))) {
+    return "en";
+  }
   return null;
 }
 function isPortExitGateTopic(text) {
@@ -1692,9 +1731,8 @@ const GUIDE_ME_BACK_KEYWORDS_RU = [
   // returning to the ship as context.
   "как вернуться на судно", "как вернуться на борт", "как мне вернуться на судно",
   "как мне вернуться на борт", "не найду путь на судно", "не могу найти дорогу на судно",
-  "помогите вернуться на судно", "заблудил", "потерял дорог", "потерялась",
-  "потерялся", "не найду судно", "не найду дорогу", "найти дорогу на борт", "найти судно",
-  "дорогу обратно к судну", "дорогу к судну", "покажи дорогу", "как пройти к судну",
+  "помогите вернуться на судно", "не найду судно", "найти дорогу на борт", "найти судно",
+  "дорогу обратно к судну", "дорогу к судну", "как пройти к судну",
   "как дойти до судна",
   // 11.09.2026, Markus's mixed-regression point 9: "Куда нажать, чтобы
   // вернуться на судно?" fell through to the generic "not my topic, wait
@@ -1706,7 +1744,7 @@ const GUIDE_ME_BACK_KEYWORDS_RU = [
   "нажать, чтобы вернуться", "нажать чтобы вернуться", "куда нажать чтобы вернуться",
 ];
 const GUIDE_ME_BACK_KEYWORDS_EN = [
-  "return to the ship", "find my way back", "lost my way", "i'm lost", "find the ship",
+  "return to the ship", "find the ship",
   // 12.09.2026, Layer A audit (Andrey/Markus, English-gap pass): RU has 17
   // phrasings here, EN had 5 -- checked side by side against the RU list
   // above rather than guessing new phrasings from scratch.
@@ -1717,6 +1755,24 @@ const GUIDE_ME_BACK_KEYWORDS_EN = [
   "how do i get to the ship", "how do i get to the vessel",
   "which button to press to get back", "which button do i press to get back",
 ];
+
+// 13.09.2026, Andrey's regression retest — point 2: "заблудился" / "I'm
+// lost" on their OWN were firing Guide Me Back regardless of context --
+// a seafarer lost in town with no ship mention at all ("Я заблудился,
+// помогите" / "I'm lost, help") would wrongly open the ship locator, even
+// though nothing in the message says this is about the SHIP specifically.
+// Moved these generic "lost" words out of the unconditional literal lists
+// above into their own compound: a LOST marker together with either a
+// SHIP marker OR a RETURN-movement verb, exactly Andrey's spec ("явного
+// признака судна/корабля/борта либо движения обратно к судну"). The
+// already-ship-specific phrases left in the lists above (e.g. "не найду
+// путь на судно", "как пройти к судну") already name the ship directly,
+// so they're unaffected and stay standalone.
+const LOST_MARKERS_RU = [
+  "заблудил", "потерялся", "потерялась", "потерял дорог", "потеряла дорог",
+  "не найду дорогу", "покажи дорогу",
+];
+const LOST_MARKERS_EN = ["lost my way", "i'm lost", "find my way back"];
 
 // 11.09.2026, Markus's "blind test" review point 6: "Мне надо вернуться
 // туда, где стоит судно" matched none of the literal phrases above (no
@@ -1823,6 +1879,13 @@ function detectGuideMeBackLang(text) {
   if (hasWhereMarkerRu && hasShipMarkerRu) return "ru";
   const hasWhereMarkerEn = WHERE_MARKERS_EN.some((w) => lower.includes(w));
   if (hasWhereMarkerEn && hasShipMarkerEn) return "en";
+  // 13.09.2026, Andrey's regression retest — point 2, see LOST_MARKERS_RU/
+  // EN's comment above for the full rationale: a bare "lost" word alone
+  // is not enough, needs a ship marker OR a return-movement verb too.
+  const hasLostRu = LOST_MARKERS_RU.some((w) => lower.includes(w));
+  if (hasLostRu && (hasShipMarkerRu || hasReturnVerbRu)) return "ru";
+  const hasLostEn = LOST_MARKERS_EN.some((w) => lower.includes(w));
+  if (hasLostEn && (hasShipMarkerEn || hasReturnVerbEn)) return "en";
   return null;
 }
 
