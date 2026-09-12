@@ -213,7 +213,23 @@ function containsAnchor(normalizedMessage, anchor) {
   // 24 anchors across the base ("нашёл", "дешёв", "счётчик", "тёплая"...),
   // including the meta-question's own "не нашёл" failing to match its own
   // canonical text once "что делать" was removed as a competing anchor.
-  const a = anchor.toLowerCase().replace(/ё/g, "е");
+  //
+  // 12.09.2026, EN Layer A pass: same class of bug, different punctuation.
+  // normalizeText() strips apostrophes (and other punctuation) from the
+  // MESSAGE, turning "can't" into "can t" (space, not letter) -- but this
+  // function was still comparing against the RAW anchor string, which for
+  // an anchor like "can't breathe" still has the apostrophe. Neither
+  // "can't breathe" (has apostrophe, message doesn't after normalizing)
+  // nor "cant breathe" (no space, message has one after normalizing)
+  // matched -- confirmed live: "I can't breathe properly" fell through to
+  // the ordinary unclear fallback instead of reaching 112. Fixed the same
+  // way as the ё case: apply the SAME punctuation-stripping normalizeText()
+  // uses to the anchor too, so both sides go through identical
+  // normalization before comparison.
+  const a = anchor.toLowerCase().replace(/ё/g, "е")
+    .replace(/[«»"'.,!?;:()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   if (a.length > 5) return normalizedMessage.includes(a);
   let from = 0;
   while (true) {
@@ -485,7 +501,10 @@ function detectBrandEntity(text) {
 // existing family, not a new topic. See intents-data.js v59 for this
 // session's other 5 points (routing/anchor changes; this file only
 // needed the emergency-keyword addition).
-const MEDICAL_EMERGENCY_KEYWORDS = [
+// 12.09.2026, EN Layer A pass: split by language, same reason as the
+// app.js Layer A lists -- reply language must follow which language's
+// keywords matched, not the interface language.
+const MEDICAL_EMERGENCY_KEYWORDS_RU = [
   "скорая", "скорую", "скорой",
   "вызвать скорую", "нужна скорая", "скорая помощь",
   "экстренная помощь", "срочная медицинская помощь",
@@ -505,6 +524,8 @@ const MEDICAL_EMERGENCY_KEYWORDS = [
   "не могу вдохнуть", "трудно вдохнуть", "тяжело вдохнуть",
   "не хватает воздуха", "воздуха не хватает",
   "инфаркт", "сердечный приступ",
+];
+const MEDICAL_EMERGENCY_KEYWORDS_EN = [
   "ambulance", "emergency", "medical emergency",
   "call an ambulance", "need an ambulance", "chest pain", "heart attack",
   "can't breathe", "cant breathe", "hard to breathe", "difficulty breathing",
@@ -519,7 +540,8 @@ const MEDICAL_EMERGENCY_KEYWORDS = [
   "heart pain", "cardiac arrest",
 ];
 
-const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно", "urgent", "urgently", "immediately", "right now"];
+const MEDICAL_URGENCY_WORDS_RU = ["срочно", "срочная", "срочный", "экстренно", "немедленно"];
+const MEDICAL_URGENCY_WORDS_EN = ["urgent", "urgently", "immediately", "right now"];
 
 // 12.09.2026, Andrey's on-device RU retest — 5 systemic gaps, fixed as
 // FAMILIES (stem/compound-based), not single exact-match test sentences.
@@ -541,9 +563,11 @@ const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный
 // (they diverge from "большой" by the 5th letter, so no boundary trick is
 // needed). "давит" has one accepted narrow collision ("выдавить", to
 // squeeze out) -- realistically never co-occurs with a chest-location
-// word in the same message, same trade-off class as above.
-const CHEST_LOCATION_MARKERS = ["груд"];
-const CHEST_SYMPTOM_MARKERS = [
+// word in the same message, same trade-off class as above. RU only --
+// not one of the specific EN gaps reported this round, left for a later
+// pass rather than guessed now.
+const CHEST_LOCATION_MARKERS_RU = ["груд"];
+const CHEST_SYMPTOM_MARKERS_RU = [
   "болит", "больно", "боль в", "давит", "давление", "сжимает", "сжатие", "жжет",
 ];
 
@@ -557,32 +581,52 @@ const CHEST_SYMPTOM_MARKERS = [
 // risk: "не отвечает" alone can also mean "isn't replying" to a message/
 // call in an unrelated context; kept anyway, consistent with this layer's
 // standing bias toward escalating rather than missing a real emergency.
-const UNCONSCIOUS_MARKERS = [
+const UNCONSCIOUS_MARKERS_RU = [
   "потерял сознание", "потеряла сознание", "без сознания", "нет сознания",
   "сознание пропало", "не приходит в сознание", "не приходит в себя",
   "не реагирует", "не отвечает",
 ];
+// 12.09.2026, EN Layer A pass — "My friend collapsed and is not
+// responding" fell through: this family was RU-only. "collapsed"/
+// "unconscious"/"passed out"/"fainted" mirror the RU "потерял
+// сознание" phrasings; "is not responding"/"isn't responding"/"not
+// responding"/"won't wake up" mirror "не реагирует"/"не отвечает" --
+// same accepted risk noted above (can also mean "isn't replying to a
+// message" out of context), kept for the same reason.
+const UNCONSCIOUS_MARKERS_EN = [
+  "collapsed", "unconscious", "unresponsive", "passed out", "fainted",
+  "is not responding", "isn't responding", "not responding",
+  "won't wake up", "wont wake up", "can't wake", "cant wake",
+];
 
-function isMedicalEmergencyTopic(text) {
+function detectMedicalEmergencyLang(text) {
   const normalized = normalizeText(text);
-  if (!normalized) return false;
-  if (MEDICAL_EMERGENCY_KEYWORDS.some((kw) => containsAnchor(normalized, kw))) return true;
-  if (CHEST_LOCATION_MARKERS.some((m) => containsAnchor(normalized, m))
-      && CHEST_SYMPTOM_MARKERS.some((s) => containsAnchor(normalized, s))) {
-    return true;
+  if (!normalized) return null;
+  if (MEDICAL_EMERGENCY_KEYWORDS_RU.some((kw) => containsAnchor(normalized, kw))) return "ru";
+  if (MEDICAL_EMERGENCY_KEYWORDS_EN.some((kw) => containsAnchor(normalized, kw))) return "en";
+  if (CHEST_LOCATION_MARKERS_RU.some((m) => containsAnchor(normalized, m))
+      && CHEST_SYMPTOM_MARKERS_RU.some((s) => containsAnchor(normalized, s))) {
+    return "ru";
   }
-  if (UNCONSCIOUS_MARKERS.some((m) => containsAnchor(normalized, m))) return true;
+  if (UNCONSCIOUS_MARKERS_RU.some((m) => containsAnchor(normalized, m))) return "ru";
+  if (UNCONSCIOUS_MARKERS_EN.some((m) => containsAnchor(normalized, m))) return "en";
   // 12.09.2026, Layer A audit: this combo check only recognized the RU
   // phrase "медицинская помощь" as the anchor half -- the EN urgency words
   // just added above (urgent/urgently/immediately/right now) had nothing
   // to combine with, since "medical help" wasn't checked at all. Added so
   // "I need medical help urgently" reaches this combo the same way its RU
   // equivalent does.
-  if ((containsAnchor(normalized, "медицинская помощь") || containsAnchor(normalized, "medical help"))
-      && MEDICAL_URGENCY_WORDS.some((w) => containsAnchor(normalized, w))) {
-    return true;
+  if (containsAnchor(normalized, "медицинская помощь") && MEDICAL_URGENCY_WORDS_RU.some((w) => containsAnchor(normalized, w))) {
+    return "ru";
   }
-  return false;
+  if (containsAnchor(normalized, "medical help") && MEDICAL_URGENCY_WORDS_EN.some((w) => containsAnchor(normalized, w))) {
+    return "en";
+  }
+  return null;
+}
+
+function isMedicalEmergencyTopic(text) {
+  return detectMedicalEmergencyLang(text) !== null;
 }
 
 // 09.09.2026 -- found while building the sticky-Companion-Mode exit check

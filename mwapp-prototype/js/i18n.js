@@ -219,10 +219,10 @@ const I18N = {
       },
     },
     escalation: {
-      alex: "This sounds like something worth talking through with a real person. I can connect you to the IMWIRSA Welfare Coordinator right now, or we can keep talking here — your choice.",
-      omar: "My friend, this is something worth speaking about with a real person, not just with me. I can bring in the IMWIRSA Welfare Coordinator right now — or if you'd rather keep talking to me a little longer, that's alright too.",
-      sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Welfare Coordinator right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
-      grace: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Welfare Coordinator now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
+      alex: "This sounds like something worth talking through with a real person. I can connect you to the IMWIRSA Central Office right now, or we can keep talking here — your choice.",
+      omar: "My friend, this is something worth speaking about with a real person, not just with me. I can bring in the IMWIRSA Central Office right now — or if you'd rather keep talking to me a little longer, that's alright too.",
+      sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Central Office right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
+      grace: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Central Office now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
     },
     // 12.09.2026, Andrey's correction: see the matching RU block's comment
     // — same overclaim fixed here too (not a translation gap, the same
@@ -274,7 +274,30 @@ const I18N = {
       message: "It looks like the ship left without you — this is a serious situation. Contact the IMWIRSA Central Office directly.",
       contactCentralOfficeBtn: "Contact IMWIRSA Central Office",
     },
-    escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Duty Office" },
+    // 12.09.2026, EN Layer A pass -- new keys for the two Port Exit
+    // priority functions (see the rationale comment above
+    // isPortExitGateTopic in app.js). RU wording kept close to the
+    // existing intents-data.js `.a` fields; this is the first EN version.
+    // 12.09.2026, Andrey: reworked into withFact/noFact pairs (same shape
+    // as guideMeBack above) once Port Exit started pulling the confirmed
+    // port-card fact itself instead of just telling the seafarer a card
+    // might exist -- withFact shows the real {gateFact}/{passFact}, noFact
+    // is the honest "MWApp doesn't have confirmed data for this port"
+    // fallback pointing to port security/the ship's agent.
+    portExitGate: {
+      withFact: "According to MWApp data for this port: {gateFact} Pass/document rules for leaving the port are separate — check with port security or your ship's agent.",
+      noFact: "MWApp doesn't have confirmed gate data for this port. Ask port security exactly where it is and how to get there. Separately: pass/document rules for leaving the port vary by port — check with port security or your ship's agent.",
+    },
+    portExitPass: {
+      withFact: "According to MWApp data for this port: {passFact}",
+      noFact: "MWApp doesn't have confirmed pass/permit data for this port. Pass rules vary by port — check on board before going ashore (the chief mate should know), or check with port security or your ship's agent.",
+    },
+    // 12.09.2026, Andrey's correction: EN official term is "IMWIRSA Central
+    // Office" -- "IMWIRSA Welfare Coordinator" (used in escalation.*
+    // above until now) was the old/stale term, replaced. This button
+    // renamed to match for the same reason the RU one was earlier (sits
+    // directly under escalation.* text in the isComplexTopic flow).
+    escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Central Office" },
     categoryPrompts: {
       centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
       transport: "Need help getting around — shuttle times, taxis, buses, or leaving the port? Just ask, I'm right here.",
@@ -614,20 +637,37 @@ const I18N = {
     },
     // 12.09.2026, Andrey's correction: "Дежурный офис" here was inconsistent
     // with the app's official current term "Центральный офис IMWIRSA" —
-    // this block specifically renamed; escalationToggle.coordinatorBtn
-    // elsewhere still says "Дежурный офис" (used by RED_LINE/isComplexTopic/
-    // GUIDE_ME_BACK) and was NOT touched here — flagged separately, not
-    // renamed without confirmation since it's a wider, standing term used
-    // across the whole escalation UI, not just this one screen.
+    // this block specifically renamed. escalationToggle.coordinatorBtn
+    // (used by RED_LINE/isComplexTopic/GUIDE_ME_BACK) was renamed to match
+    // in a follow-up edit the same day — see that key below, no longer
+    // "Дежурный офис".
     shipDeparted: {
       message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Центральным офисом IMWIRSA напрямую.»",
       contactCentralOfficeBtn: "Связаться с Центральным офисом IMWIRSA",
     },
+    // 12.09.2026, EN Layer A pass -- this RU block was missing entirely in
+    // the first version of these keys (an oversight caught while wiring
+    // in the card-fact lookup) -- t()'s English fallback meant a Russian
+    // seafarer asking a Port Exit question was silently getting the
+    // English text this whole time. RU wording is the existing
+    // intents-data.js `.a` field content, reworked into withFact/noFact
+    // to match the new card-fact-first behavior (see app.js).
+    portExitGate: {
+      withFact: "«По данным MWApp для этого порта: {gateFact} Пропускные правила (нужен ли пропуск/документ) уточняй отдельно у охраны или судового агента.»",
+      noFact: "«В MWApp нет подтверждённых данных о воротах для этого порта. Спроси у охраны, где именно они находятся и как до них дойти. Отдельно: пропускные правила (нужен ли пропуск/документ) в каждом порту свои — это уточняется отдельно у охраны или судового агента.»",
+    },
+    portExitPass: {
+      withFact: "«По данным MWApp для этого порта: {passFact}»",
+      noFact: "«В MWApp нет подтверждённых данных о пропускных правилах для этого порта. Пропускные правила в каждом порту свои — проверь на судне перед выходом, старпом должен знать, или уточни у охраны порта/судового агента.»",
+    },
     // 12.09.2026, Andrey's correction: renamed alongside escalation.* above
     // -- this button sits directly under that text (isComplexTopic flow),
     // so leaving it as "Дежурный офис" would have created a fresh
-    // inconsistency in the same screen. EN/TR/FIL left as "Duty Office"
-    // for now, pending the wider rename Andrey flagged as a separate item.
+    // inconsistency in the same screen. EN/FIL renamed too, same day, once
+    // Andrey confirmed "IMWIRSA Central Office" as the official EN term
+    // (see those blocks). TR left as "Nöbetçi Ofis" (Turkish for "Duty
+    // Office") -- unverified TR translation, not touched without a native
+    // reviewer, same standing caveat as the rest of TR.
     escalationToggle: { continueBtn: "Продолжить", coordinatorBtn: "Центральный офис" },
     categoryPrompts: {
       centre: "Есть вопросы о центре моряков — часы работы, услуги, как добраться? Спросите меня, и я подключу команду центра, если это то, в чём могут помочь только они.",
@@ -1217,17 +1257,18 @@ const I18N = {
       },
     },
     escalation: {
-      alex: "Mukhang mas mabuting pag-usapan ito ng tunay na tao. Puwede kitang ikonekta sa IMWIRSA Welfare Coordinator ngayon din, o puwede pa rin tayong magpatuloy dito — desisyon mo.",
-      omar: "Kaibigan, ito ay isang bagay na dapat pag-usapan ng tunay na tao, hindi lang sa akin. Puwede kong ikonekta ang IMWIRSA Welfare Coordinator ngayon din — o kung gusto mong makipag-usap muna sa akin nang kaunti pa, okay lang din iyon.",
-      sophia: "Salamat sa pagsasabi nito sa akin. Mahalaga ito, at gusto kong makausap mo ang taong tunay na makakatulong — puwede kitang ikonekta sa IMWIRSA Welfare Coordinator ngayon din, o manatili dito kasama mo nang kaunti pa kung gugustuhin mo. Kung ano ang komportable para sa iyo.",
-      grace: "Mahalaga ito, at karapat-dapat kang makausap ng taong tunay na makakatulong. Puwede kitang ikonekta sa IMWIRSA Welfare Coordinator ngayon, kung gusto mo — o kung mas gusto mo, puwede tayong magpatuloy dito. Desisyon mo ito.",
+      alex: "Mukhang mas mabuting pag-usapan ito ng tunay na tao. Puwede kitang ikonekta sa IMWIRSA Central Office ngayon din, o puwede pa rin tayong magpatuloy dito — desisyon mo.",
+      omar: "Kaibigan, ito ay isang bagay na dapat pag-usapan ng tunay na tao, hindi lang sa akin. Puwede kong ikonekta ang IMWIRSA Central Office ngayon din — o kung gusto mong makipag-usap muna sa akin nang kaunti pa, okay lang din iyon.",
+      sophia: "Salamat sa pagsasabi nito sa akin. Mahalaga ito, at gusto kong makausap mo ang taong tunay na makakatulong — puwede kitang ikonekta sa IMWIRSA Central Office ngayon din, o manatili dito kasama mo nang kaunti pa kung gugustuhin mo. Kung ano ang komportable para sa iyo.",
+      grace: "Mahalaga ito, at karapat-dapat kang makausap ng taong tunay na makakatulong. Puwede kitang ikonekta sa IMWIRSA Central Office ngayon, kung gusto mo — o kung mas gusto mo, puwede tayong magpatuloy dito. Desisyon mo ito.",
     },
     redline: {
       message: "Nag-aalala ako sa kasasabi mo lang, at ayaw kong harapin mo ito nang mag-isa. Pakitingnan ang mga emergency contact sa ibaba, o ikokonekta kita agad sa tunay na tao — araw man o gabi, may sasagot.",
       emergencyBtn: "🚨 Mga emergency contact",
       talkToPersonBtn: "Kausapin ang isang tao ngayon",
     },
-    escalationToggle: { continueBtn: "Magpatuloy", coordinatorBtn: "Duty Office" },
+    // 12.09.2026: same rename as the EN block -- see its comment.
+    escalationToggle: { continueBtn: "Magpatuloy", coordinatorBtn: "Central Office" },
     categoryPrompts: {
       centre: "May mga tanong ka ba tungkol sa sentro ng mga marino — oras ng operasyon, mga serbisyo, paano makarating? Tanungin mo ako, at kokontakin ko ang sarili nilang team kung isa itong bagay na sila lang ang makakatulong.",
       transport: "Kailangan mo ba ng tulong sa paggalaw — oras ng shuttle, taxi, bus, o pag-alis sa daungan? Tanungin mo lang, nandito ako.",
@@ -1322,8 +1363,15 @@ function getPath(obj, path) {
 // t("home.tapToChat") reads the current language (state.lang), and falls back
 // to English for any language object that's empty or missing that specific
 // key — so partially-translated languages never break.
-function t(path, vars) {
-  const lang = (typeof state !== "undefined" && state.lang) ? state.lang : "en";
+// 12.09.2026, EN Layer A pass (Andrey): added optional langOverride so
+// Layer A callers (RED_LINE/medicalEmergency/guideMeBack/shipDeparted) can
+// force the reply into whichever language's keyword group actually
+// matched, instead of always using the interface language -- an English
+// question must get an English answer even on a Russian UI, and vice
+// versa. Every other caller in the app passes nothing here and keeps the
+// old state.lang behavior unchanged.
+function t(path, vars, langOverride) {
+  const lang = langOverride || ((typeof state !== "undefined" && state.lang) ? state.lang : "en");
   let node = getPath(I18N[lang], path);
   if (node === undefined) node = getPath(I18N.en, path);
   if (typeof node === "string" && vars) {
