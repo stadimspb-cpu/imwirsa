@@ -224,8 +224,11 @@ const I18N = {
       sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Welfare Coordinator right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
       grace: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Welfare Coordinator now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
     },
+    // 12.09.2026, Andrey's correction: see the matching RU block's comment
+    // — same overclaim fixed here too (not a translation gap, the same
+    // substantive issue in English).
     redline: {
-      message: "I'm concerned about what you've just shared, and I don't want you to face this alone. Please see the emergency contacts below, or let me bring in a real person right now — day or night, someone will answer.",
+      message: "I'm concerned about what you've just shared, and I don't want you to face this alone. Please see the emergency contacts below, or contact the IMWIRSA Central Office when you have a connection.",
       emergencyBtn: "🚨 Emergency contacts",
       talkToPersonBtn: "Talk to a person now",
     },
@@ -579,8 +582,20 @@ const I18N = {
       sophia: "Спасибо, что рассказали мне об этом. Это важно, и я хочу, чтобы вы поговорили с тем, кто действительно сможет помочь — я могу прямо сейчас соединить вас с Центральным офисом IMWIRSA, или остаться здесь с вами ещё немного, если вы предпочитаете. Как вам будет комфортнее.",
       grace: "Это важно, и вы заслуживаете поговорить с тем, кто действительно может помочь. Я могу соединить вас с Центральным офисом IMWIRSA прямо сейчас, если хотите — или, если предпочитаете, мы можем продолжить разговор здесь. Выбор за вами.",
     },
+    // 12.09.2026, Andrey's correction: "я прямо сейчас подключу живого
+    // человека — днём или ночью вам обязательно ответят" overclaimed a
+    // guaranteed live connection regardless of whether the seafarer
+    // actually has connectivity right now (offline mode has no way to
+    // verify that) -- same class of dishonesty already fixed elsewhere in
+    // this app (SHIP_DEPARTED's old "передаю в Дежурный офис" claim,
+    // 08.09.2026). Softened to make the Central Office contact
+    // conditional on having a connection, matching how shipDeparted/
+    // guideMeBack already phrase things. The "Связаться с человеком
+    // сейчас" button stays (Andrey confirmed it's fine to keep as long as
+    // it genuinely opens a real contact channel) -- only the promissory
+    // wording in the message itself changed.
     redline: {
-      message: "Меня беспокоит то, что вы сейчас написали, и я не хочу, чтобы вы оставались с этим один на один. Пожалуйста, посмотрите экстренные контакты ниже, или я прямо сейчас подключу живого человека — днём или ночью вам обязательно ответят.",
+      message: "Меня беспокоит то, что вы сейчас написали, и я не хочу, чтобы вы оставались с этим один на один. Пожалуйста, посмотрите экстренные контакты ниже, или свяжитесь с Центральным офисом IMWIRSA, когда будет доступна связь.",
       emergencyBtn: "🚨 Экстренные контакты",
       talkToPersonBtn: "Связаться с человеком сейчас",
     },
