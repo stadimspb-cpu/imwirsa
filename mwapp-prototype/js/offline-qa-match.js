@@ -521,10 +521,57 @@ const MEDICAL_EMERGENCY_KEYWORDS = [
 
 const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно", "urgent", "urgently", "immediately", "right now"];
 
+// 12.09.2026, Andrey's on-device RU retest — 5 systemic gaps, fixed as
+// FAMILIES (stem/compound-based), not single exact-match test sentences.
+//
+// Gap 1: chest-pain family. The existing literal phrases above ("боль в
+// груди", "давит в груди", ...) only match that EXACT word order — a
+// paraphrase like "в груди очень больно и давит" (chest word and symptom
+// word both present, different order/sentence shape) fell through. Built
+// as a compound instead: a CHEST location marker AND a SYMPTOM word,
+// anywhere in the message, order-independent -- same shape as the
+// RETURN_VERBS/SHIP_LOCATION_MARKERS combo in app.js.
+// containsAnchor()'s word-boundary check keeps "груд" (4 chars, start
+// boundary only, no end boundary needed for >3-char anchors) from a bare
+// false hit; the one accepted collision is "грудинка" (a food-menu item,
+// pork brisket) -- combined with a symptom word this is not a realistic
+// real message, so left as an accepted trade-off rather than special-cased.
+// Symptom words chosen to avoid the "боль"/"большой" ("big") substring
+// collision: "больно"/"болит" are used instead of a bare "боль" stem
+// (they diverge from "большой" by the 5th letter, so no boundary trick is
+// needed). "давит" has one accepted narrow collision ("выдавить", to
+// squeeze out) -- realistically never co-occurs with a chest-location
+// word in the same message, same trade-off class as above.
+const CHEST_LOCATION_MARKERS = ["груд"];
+const CHEST_SYMPTOM_MARKERS = [
+  "болит", "больно", "боль в", "давит", "давление", "сжимает", "сжатие", "жжет",
+];
+
+// Gap 2: unconscious/unresponsive family. "потерял сознание"/"без
+// сознания" as literal 2-word phrases already cover the canonical
+// wording; added a few more common shapes (сознание "пропало", "нет
+// сознания") rather than assuming those are covered by the two originals.
+// "не реагирует"/"не отвечает" are checked as their own strong markers
+// (not requiring the "сознание" word at all, since a real report is often
+// just "он не реагирует" with no explicit "сознание" mention) -- accepted
+// risk: "не отвечает" alone can also mean "isn't replying" to a message/
+// call in an unrelated context; kept anyway, consistent with this layer's
+// standing bias toward escalating rather than missing a real emergency.
+const UNCONSCIOUS_MARKERS = [
+  "потерял сознание", "потеряла сознание", "без сознания", "нет сознания",
+  "сознание пропало", "не приходит в сознание", "не приходит в себя",
+  "не реагирует", "не отвечает",
+];
+
 function isMedicalEmergencyTopic(text) {
   const normalized = normalizeText(text);
   if (!normalized) return false;
   if (MEDICAL_EMERGENCY_KEYWORDS.some((kw) => containsAnchor(normalized, kw))) return true;
+  if (CHEST_LOCATION_MARKERS.some((m) => containsAnchor(normalized, m))
+      && CHEST_SYMPTOM_MARKERS.some((s) => containsAnchor(normalized, s))) {
+    return true;
+  }
+  if (UNCONSCIOUS_MARKERS.some((m) => containsAnchor(normalized, m))) return true;
   // 12.09.2026, Layer A audit: this combo check only recognized the RU
   // phrase "медицинская помощь" as the anchor half -- the EN urgency words
   // just added above (urgent/urgently/immediately/right now) had nothing

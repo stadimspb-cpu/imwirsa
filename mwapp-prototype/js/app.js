@@ -1258,6 +1258,27 @@ const RED_LINE_KEYWORDS = [
   "повеситься", "не вижу смысла",
   "intihar", "kendimi öldür", "yaşamak istemiyorum", "kendime zarar",
   "magpakamatay", "papatayin ko ang sarili ko", "ayoko na mabuhay",
+  // 12.09.2026, Andrey's on-device RU retest — gap 3: harassment/threat
+  // family. Previously "преследуют"/"домогают"/"домогательств" lived in
+  // COMPLEX_TOPIC_KEYWORDS (isComplexTopic, checked further down the
+  // chain, softer escalation flow) -- Andrey's live test found these
+  // should route through RED_LINE instead (immediate emergency-contacts
+  // option, not just the general "talk to a person" toggle), since active
+  // harassment/being followed/being touched is a more acute, physically
+  // present threat than the other isComplexTopic situations (visa
+  // problems, labor disputes, etc.) that toggle is built around. Moved
+  // here, removed from COMPLEX_TOPIC_KEYWORDS below to avoid duplicate/
+  // dead entries. RU only this pass -- EN counterparts ("being harassed",
+  // "sexual harassment", "someone is harassing me") deliberately left in
+  // COMPLEX_TOPIC_KEYWORDS for now; migrating them to RED_LINE is planned
+  // for the EN Layer A pass, not done here.
+  // "трогают"/"трогает" accepted risk: can also mean "moves me
+  // emotionally" in a figurative sense ("меня это трогает") -- kept
+  // anyway per this layer's standing bias toward escalating rather than
+  // missing a real physical-contact report.
+  "пристают", "пристаёт", "пристаю", "приставания", "приставал", "приставала",
+  "домога", "домогательств", "преследу", "трогают", "трогает",
+  "мне страшно",
 ];
 // "повеситься"/"не вижу смысла" added 4 сентября from Markus's Block 26
 // companion-chat draft — deliberately did NOT add "конец" or "всё ужасно"
@@ -1386,7 +1407,10 @@ const COMPLEX_TOPIC_KEYWORDS = [
   "нет денег", "остался без денег", "осталась без денег", "совсем нет денег",
   "капитан плохо", "капитан жестоко", "капитан угрожает", "капитан унижа",
   "условия труда", "плохие условия труда", "жалоба на условия",
-  "преследуют", "домогают", "домогательств",
+  // 12.09.2026: "преследуют"/"домогают"/"домогательств" (RU) moved up to
+  // RED_LINE_KEYWORDS -- see the comment there. EN counterparts
+  // ("being harassed", "sexual harassment", "someone is harassing me")
+  // stay here for now, pending the EN Layer A pass.
   "тяжело морально", "не справляюсь", "не справляется",
   "не хочу возвращаться на судно", "не хочу вернуться на судно", "отказываюсь возвращаться на судно",
   "боюсь возвращаться на судно", "боюсь вернуться на судно", "страшно возвращаться на судно",
@@ -1481,9 +1505,33 @@ const SHIP_DEPARTED_KEYWORDS = [
   "the ship already left", "ship departed without me",
 ];
 
+// 12.09.2026, Andrey's on-device RU retest — gap 5: support the
+// combination ship/corabl + departure verb (ушёл/отошёл/уплыл/...) +
+// left-behind marker (я остался/без меня), not just the 4 fixed RU
+// phrasings above. Deliberately a THREE-way AND (not two), per Andrey's
+// exact spec -- a bare "корабль ушёл" alone is often just a neutral
+// factual statement (e.g. "мой корабль уже ушёл в рейс, я на нём"), not a
+// stranded-seafarer report; requiring the left-behind marker too keeps
+// this from firing on that ordinary case. RU only this pass.
+// SHIP_LOCATION_MARKERS is defined further down (GUIDE_ME_BACK section)
+// -- safe forward reference, same as elsewhere in this file: this
+// function only runs on user interaction, after the whole script has
+// already finished loading.
+const SHIP_DEPARTURE_VERBS = [
+  "ушел", "ушёл", "ушла", "отошел", "отошёл", "отошла",
+  "уплыл", "уплыла", "отчалил", "отчалила",
+];
+const LEFT_BEHIND_MARKERS = [
+  "я остался", "я осталась", "без меня", "меня оставили", "оставили без меня", "бросили меня",
+];
+
 function isShipDepartedTopic(text) {
   const lower = text.toLowerCase();
-  return SHIP_DEPARTED_KEYWORDS.some((kw) => lower.includes(kw));
+  if (SHIP_DEPARTED_KEYWORDS.some((kw) => lower.includes(kw))) return true;
+  const hasShipMarker = SHIP_LOCATION_MARKERS.some((m) => lower.includes(m));
+  const hasDepartureVerb = SHIP_DEPARTURE_VERBS.some((v) => lower.includes(v));
+  const hasLeftBehind = LEFT_BEHIND_MARKERS.some((m) => lower.includes(m));
+  return hasShipMarker && hasDepartureVerb && hasLeftBehind;
 }
 
 const GUIDE_ME_BACK_KEYWORDS = [
@@ -1569,6 +1617,9 @@ const GUIDE_ME_BACK_EXCLUDE = [
   // ported to English.
   "drink", "alcohol", "vodka", "whiskey", "whisky", "beer", "wine", "rum",
 ];
+// 12.09.2026, Andrey's on-device RU retest — gap 4, see isGuideMeBackTopic
+// below for the full rationale.
+const WHERE_MARKERS = ["где стоит", "где находится", "где сейчас", "где расположен"];
 
 function isGuideMeBackTopic(text) {
   const lower = text.toLowerCase();
@@ -1588,7 +1639,18 @@ function isGuideMeBackTopic(text) {
   if (GUIDE_ME_BACK_KEYWORDS.some((kw) => lower.includes(kw))) return true;
   const hasReturnVerb = RETURN_VERBS.some((v) => lower.includes(v));
   const hasShipMarker = SHIP_LOCATION_MARKERS.some((m) => lower.includes(m));
-  return hasReturnVerb && hasShipMarker;
+  if (hasReturnVerb && hasShipMarker) return true;
+  // 12.09.2026, Andrey's on-device RU retest — gap 4: "где стоит моё
+  // судно?" / "где сейчас находится корабль?" is a genuine Guide Me Back
+  // question (the seafarer wants to know where the ship is so they can
+  // get back to it), but it's a LOCATION query, not a RETURN-framed one --
+  // no "вернут"/"обратно"/"назад" word ever appears in it, so the combo
+  // above never fired even though "где стоит судно" was oddly already
+  // sitting in SHIP_LOCATION_MARKERS (it just had nothing to combine
+  // with). Added as its own compound: a WHERE marker together with a
+  // SHIP marker, independent of RETURN_VERBS. RU only this pass.
+  const hasWhereMarker = WHERE_MARKERS.some((w) => lower.includes(w));
+  return hasWhereMarker && hasShipMarker;
 }
 
 // Same prototype-level caveat as above — this is a keyword heuristic, not
