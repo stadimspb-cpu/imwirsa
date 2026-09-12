@@ -1968,7 +1968,7 @@ function sendAssistantChatMessage() {
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
-          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("shipDeparted.contactDutyOfficeBtn")}</button>
+          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("shipDeparted.contactCentralOfficeBtn")}</button>
         </div>`);
     } else if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
       // Explicitly asked for the coordinator, but the reason reads as idle/

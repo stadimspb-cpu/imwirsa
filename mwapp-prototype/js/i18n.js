@@ -239,23 +239,37 @@ const I18N = {
     // English text automatically via t()'s existing fallback (same as
     // any other partially-translated key) until a native reviewer
     // covers them -- not yet done, same caveat as demoReplies above.
+    // 12.09.2026, Andrey's correction: the original wording asserted 112
+    // works "at every port in this app" as if that were a standing,
+    // self-maintaining fact. It's currently TRUE (checked directly against
+    // every port's categories.emergency data, all 15 ports use 112) but
+    // only stays true if 112 is re-verified for every future port added --
+    // this text has no port-specific data of its own to check against, so
+    // nothing would catch a future non-112 port silently making this false.
+    // Softened to "ports already added to this app" so it reads as tied to
+    // confirmed, currently-loaded data rather than an evergreen guarantee.
+    // NOT fixed here: making this message actually port-aware (reading the
+    // real number per port, same as the "Какой номер экстренных служб?"
+    // intent already does) -- that's a bigger change than a wording tweak,
+    // flagged for whoever plans the first non-112 port rather than
+    // implemented speculatively now.
     medicalEmergency: {
-      message: "Call 112 — this is the emergency number (police / ambulance / fire), available 24/7 and free of charge at every port in this app.",
+      message: "Call 112 — this is the emergency number (police / ambulance / fire), confirmed to work 24/7 and free of charge in the ports already added to this app.",
     },
     guideMeBack: {
       // withPoint: state.shipPoint was saved, locator can actually route.
       withPoint: "You have a saved ship location. Opening the \"My Ship\" locator — it can build a route back from here.",
       // noPointWithGate: no saved point, but the port card confirms a
       // gate/exit fact ({gateFact}) to fall back on instead of guessing.
-      noPointWithGate: "You didn't mark your ship's location in advance, so the locator can't build a route. According to this port's card: {gateFact}. Next time, mark your ship's location in the app ahead of time — the \"Ship\" tab.",
+      noPointWithGate: "You didn't mark your ship's location in advance, so the locator can't build a route. According to MWApp data for this port: {gateFact}. Next time, mark your ship's location in the app ahead of time — the \"Ship\" tab.",
       // noPointNoGate: no saved point AND no confirmed gate fact either.
       noPointNoGate: "You didn't mark your ship's location in advance, so the locator can't build a route. There's no confirmed gate/terminal data for this port — check with port security or your ship's agent. Next time, mark your ship's location in the app ahead of time — the \"Ship\" tab.",
       openLocatorBtn: "Open the \"My Ship\" locator",
       openShipTabBtn: "Open the \"Ship\" tab",
     },
     shipDeparted: {
-      message: "It looks like the ship left without you — this is a serious situation. Contact the IMWIRSA Duty Office directly.",
-      contactDutyOfficeBtn: "Contact IMWIRSA Duty Office",
+      message: "It looks like the ship left without you — this is a serious situation. Contact the IMWIRSA Central Office directly.",
+      contactCentralOfficeBtn: "Contact IMWIRSA Central Office",
     },
     escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Duty Office" },
     categoryPrompts: {
@@ -569,19 +583,27 @@ const I18N = {
     },
     // 12.09.2026, Layer A audit: RU wording moved here unchanged from the
     // old app.js literals — see the matching EN block's comment for why.
+    // 12.09.2026, Andrey's correction: see the matching EN block's comment.
     medicalEmergency: {
-      message: "«Звони 112 — это номер экстренной помощи (полиция / скорая / пожарная), работает круглосуточно и бесплатно на всех портах в этом приложении.»",
+      message: "«Звони 112 — это номер экстренной помощи (полиция / скорая / пожарная), подтверждён и работает круглосуточно бесплатно в портах, уже добавленных в это приложение.»",
     },
     guideMeBack: {
       withPoint: "«У вас сохранено место стоянки судна. Открываю локатор «Моё судно» — там можно построить маршрут обратно.»",
-      noPointWithGate: "«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. По данным карточки этого порта: {gateFact}. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»",
+      noPointWithGate: "«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. По данным MWApp для этого порта: {gateFact}. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»",
       noPointNoGate: "«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. В карточке этого порта нет подтверждённых данных о воротах/терминале — уточните у охраны порта или судового агента. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»",
       openLocatorBtn: "Открыть локатор «Моё судно»",
       openShipTabBtn: "Открыть вкладку «Судно»",
     },
+    // 12.09.2026, Andrey's correction: "Дежурный офис" here was inconsistent
+    // with the app's official current term "Центральный офис IMWIRSA" —
+    // this block specifically renamed; escalationToggle.coordinatorBtn
+    // elsewhere still says "Дежурный офис" (used by RED_LINE/isComplexTopic/
+    // GUIDE_ME_BACK) and was NOT touched here — flagged separately, not
+    // renamed without confirmation since it's a wider, standing term used
+    // across the whole escalation UI, not just this one screen.
     shipDeparted: {
-      message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»",
-      contactDutyOfficeBtn: "Связаться с Дежурным офисом IMWIRSA",
+      message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Центральным офисом IMWIRSA напрямую.»",
+      contactCentralOfficeBtn: "Связаться с Центральным офисом IMWIRSA",
     },
     escalationToggle: { continueBtn: "Продолжить", coordinatorBtn: "Дежурный офис" },
     categoryPrompts: {
