@@ -1686,21 +1686,53 @@ const PORT_CONTEXT_WORDS_RU = ["порт", "терминал", "кпп", "вор
 const PORT_CONTEXT_WORDS_EN = ["port", "terminal", "gate", "pier", "dock"];
 const PORT_EXIT_TRANSPORT_WORDS_RU = ["автобус", "шаттл", "транспорт"];
 const PORT_EXIT_TRANSPORT_WORDS_EN = ["bus", "shuttle", "transport"];
+// 13.09.2026, Andrey's Port Exit regression retest, point 1: "Как мне
+// отсюда попасть на улицу пешком?" has an EXIT word ("на улицу") but names
+// no port/terminal/gate word at all -- "отсюда" ("from here") leaves the
+// port context implicit rather than naming it, since the seafarer is
+// asking from inside the app while already at the port. Fell through to
+// the scored intent table and lost to an unrelated form/safety intent.
+// Rather than adding this one phrase literally (which wouldn't generalize
+// to the next differently-worded case), added a MANNER word ("пешком"/
+// "on foot") as an alternative to the CONTEXT-word requirement below --
+// "on foot" is specific enough in this app's domain (leaving a port) to
+// stand in for naming the port explicitly, same trade-off shape as every
+// other compound in this file.
+const PORT_EXIT_MANNER_WORDS_RU = ["пешком"];
+const PORT_EXIT_MANNER_WORDS_EN = ["on foot"];
+
+// 13.09.2026, Andrey's Port Exit regression retest, point 2: port-card
+// facts don't reliably end with terminal punctuation (e.g. a raw fact of
+// just "Pedestrian exit", no period) -- spliced directly into a template
+// like "{gateFact} Pass/document rules..." this reads as one run-on
+// sentence with no separator at all ("Pedestrian exit Pass/document
+// rules..."). Rather than trusting every future card fact to be
+// pre-punctuated, guarantee a separator here: append "." only if the fact
+// doesn't already end in terminal punctuation (covers RU »/" closing
+// quotes too, so an already-quoted fact doesn't get a stray period stuck
+// outside its closing mark).
+function withTerminalPunctuation(str) {
+  if (!str) return str;
+  const trimmed = str.trim();
+  return /[.!?…»"']$/.test(trimmed) ? trimmed : trimmed + ".";
+}
 
 function detectPortExitGateLang(text) {
   const lower = text.toLowerCase();
   if (PORT_EXIT_GATE_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
   if (PORT_EXIT_GATE_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
   const hasTransportRu = PORT_EXIT_TRANSPORT_WORDS_RU.some((w) => lower.includes(w));
-  if (!hasTransportRu
-      && PORT_EXIT_WORDS_RU.some((w) => lower.includes(w))
-      && PORT_CONTEXT_WORDS_RU.some((w) => lower.includes(w))) {
+  const hasExitWordRu = PORT_EXIT_WORDS_RU.some((w) => lower.includes(w));
+  const hasContextWordRu = PORT_CONTEXT_WORDS_RU.some((w) => lower.includes(w));
+  const hasMannerWordRu = PORT_EXIT_MANNER_WORDS_RU.some((w) => lower.includes(w));
+  if (!hasTransportRu && hasExitWordRu && (hasContextWordRu || hasMannerWordRu)) {
     return "ru";
   }
   const hasTransportEn = PORT_EXIT_TRANSPORT_WORDS_EN.some((w) => lower.includes(w));
-  if (!hasTransportEn
-      && PORT_EXIT_WORDS_EN.some((w) => lower.includes(w))
-      && PORT_CONTEXT_WORDS_EN.some((w) => lower.includes(w))) {
+  const hasExitWordEn = PORT_EXIT_WORDS_EN.some((w) => lower.includes(w));
+  const hasContextWordEn = PORT_CONTEXT_WORDS_EN.some((w) => lower.includes(w));
+  const hasMannerWordEn = PORT_EXIT_MANNER_WORDS_EN.some((w) => lower.includes(w));
+  if (!hasTransportEn && hasExitWordEn && (hasContextWordEn || hasMannerWordEn)) {
     return "en";
   }
   return null;
@@ -2312,7 +2344,7 @@ function sendAssistantChatMessage() {
       // via {gateFact} below. Port-card content translation is a
       // separate, not-yet-started project.
       const msg = gateFact
-        ? t("portExitGate.withFact", { gateFact }, portExitGateLang)
+        ? t("portExitGate.withFact", { gateFact: withTerminalPunctuation(gateFact) }, portExitGateLang)
         : t("portExitGate.noFact", null, portExitGateLang);
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -2340,7 +2372,7 @@ function sendAssistantChatMessage() {
         ? getRawCardFact("Нужен ли пропуск, чтобы выйти из порта", state.portId)
         : null;
       const msg = passFact
-        ? t("portExitPass.withFact", { passFact }, portExitPassLang)
+        ? t("portExitPass.withFact", { passFact: withTerminalPunctuation(passFact) }, portExitPassLang)
         : t("portExitPass.noFact", null, portExitPassLang);
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
