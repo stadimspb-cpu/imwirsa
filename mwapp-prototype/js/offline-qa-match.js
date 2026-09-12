@@ -509,15 +509,30 @@ const MEDICAL_EMERGENCY_KEYWORDS = [
   "call an ambulance", "need an ambulance", "chest pain", "heart attack",
   "can't breathe", "cant breathe", "hard to breathe", "difficulty breathing",
   "can't inhale", "cant inhale", "not enough air",
+  // 12.09.2026, Layer A audit (Andrey/Markus, English-gap pass): RU has
+  // separate phrasings for pressure/tightness/burning in the chest and for
+  // heart pain specifically ("давит в груди", "сжимает в груди", "жжёт в
+  // груди", "боль в сердце") that had no EN equivalent -- same symptom
+  // family as "chest pain" above, listed explicitly rather than assumed
+  // covered by that one phrase, same reasoning as the RU list itself.
+  "pressure in my chest", "tightness in my chest", "burning in my chest",
+  "heart pain", "cardiac arrest",
 ];
 
-const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно"];
+const MEDICAL_URGENCY_WORDS = ["срочно", "срочная", "срочный", "экстренно", "немедленно", "urgent", "urgently", "immediately", "right now"];
 
 function isMedicalEmergencyTopic(text) {
   const normalized = normalizeText(text);
   if (!normalized) return false;
   if (MEDICAL_EMERGENCY_KEYWORDS.some((kw) => containsAnchor(normalized, kw))) return true;
-  if (containsAnchor(normalized, "медицинская помощь") && MEDICAL_URGENCY_WORDS.some((w) => containsAnchor(normalized, w))) {
+  // 12.09.2026, Layer A audit: this combo check only recognized the RU
+  // phrase "медицинская помощь" as the anchor half -- the EN urgency words
+  // just added above (urgent/urgently/immediately/right now) had nothing
+  // to combine with, since "medical help" wasn't checked at all. Added so
+  // "I need medical help urgently" reaches this combo the same way its RU
+  // equivalent does.
+  if ((containsAnchor(normalized, "медицинская помощь") || containsAnchor(normalized, "medical help"))
+      && MEDICAL_URGENCY_WORDS.some((w) => containsAnchor(normalized, w))) {
     return true;
   }
   return false;

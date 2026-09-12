@@ -1271,17 +1271,19 @@ function isRedLineTopic(text) {
   return RED_LINE_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
-// Deterministic reply for isMedicalEmergencyTopic() (offline-qa-match.js)
-// per Andrey's explicit requirement, 06.09.2026: no generative text, no
-// dependency on which intent happened to score highest. 112 is the real,
-// confirmed emergency number for police/ambulance/fire on ALL 15 ports
-// currently in this base (checked directly across every port's
-// categories.emergency data, not assumed) -- see the "Какой номер
-// экстренных служб?" intent (intents-data.js, id "medical_emergency" for
-// stable reference) for the same fact, kept in sync with this text
-// deliberately rather than duplicated with different wording.
-const MEDICAL_EMERGENCY_REPLY =
-  "«Звони 112 — это номер экстренной помощи (полиция / скорая / пожарная), работает круглосуточно и бесплатно на всех портах в этом приложении.»";
+// 12.09.2026, Layer A audit (Andrey/Markus): this used to be a hardcoded
+// Russian string constant, bypassing t() entirely -- unlike RED_LINE/
+// isComplexTopic (which already used t("redline.message")/t("escalation...")),
+// a seafarer with an English/Turkish/Filipino interface got this reply in
+// Russian regardless. Now read via t("medicalEmergency.message") at the
+// point of use below (see MEDICAL_EMERGENCY_KEYWORDS branch) instead of a
+// module-level constant, since t() depends on state.lang and must be
+// re-evaluated per message, not computed once at load time. 112 is the
+// real, confirmed emergency number for police/ambulance/fire on ALL 15
+// ports currently in this base (checked directly, not assumed) -- kept in
+// sync with the same fact in the "Какой номер экстренных служб?" intent
+// (intents-data.js, id "medical_emergency") deliberately, not duplicated
+// with different wording; if that intent's fact ever changes, update both.
 
 // Rough proxy for "this reads as an actual question, just about a topic we
 // don't cover" vs "this message is unclear on its own terms" — see the
@@ -1402,9 +1404,18 @@ const COMPLEX_TOPIC_KEYWORDS = [
   // territory, same as it already correctly is for a lone "мне тревожно").
   "плохо психологически", "тревожно и тяжело",
   "lost my passport", "passport was stolen", "lost my seaman's book",
+  "my seaman's book was stolen", "seaman's book was stolen",
   "i was robbed", "someone robbed me",
   "no money left", "i have no money",
-  "captain is abusive", "captain threatens", "captain mistreats",
+  "captain is abusive", "captain threatens", "captain mistreats", "captain humiliates",
+  // 12.09.2026, Layer A audit (Andrey/Markus, English-gap pass): the
+  // labor-conditions and fear-of-returning phrasings below had ZERO
+  // English coverage -- checked against the RU list side by side, not a
+  // guess. Same underlying situations as the RU phrases beside them, not
+  // new topics.
+  "working conditions", "bad working conditions", "complaint about conditions",
+  "afraid to return to the ship", "afraid to go back to the ship",
+  "scared to return to the ship", "scared to go back to the ship",
   "being harassed", "sexual harassment", "someone is harassing me",
   "i can't cope", "i'm not coping", "mentally struggling",
   "don't want to return to the ship", "refuse to go back to the ship",
@@ -1428,6 +1439,12 @@ const COMPLEX_TOPIC_KEYWORDS = [
   // false-positive collision already fixed elsewhere in this file).
   "заставляют платить больше", "требуют больше денег", "вымогают", "вымогательство",
   "обманули с ценой", "давят на меня из-за денег",
+  // 12.09.2026, Layer A audit: this whole coercion/extortion cluster had
+  // NO English phrasing at all -- same live-tested scenario as the RU
+  // lines above it, just never translated. An English-speaking seafarer
+  // reporting this would not have reached Duty Office through this path.
+  "forcing me to pay more", "demanding more money", "they want more money than agreed",
+  "being extorted", "extortion", "cheated me on the price", "pressuring me for money",
   "полиция", "арестовал", "арестовала", "арестован", "задержал", "задержали",
   "депортация", "депортируют", "проблема с визой", "иммиграция",
   "polis", "tutuklandı", "gözaltına", "sınır dışı", "vize sorunu",
@@ -1459,6 +1476,9 @@ const SHIP_DEPARTED_KEYWORDS = [
   "судно ушло", "судно ушёл", "корабль ушел", "корабль ушёл",
   "отчалил без меня", "опоздал на судно", "опоздала на судно",
   "ship left without me", "sailed without me", "missed my ship",
+  // 12.09.2026, Layer A audit: two more EN variants for closer parity with
+  // the RU list (4 phrasings) above.
+  "the ship already left", "ship departed without me",
 ];
 
 function isShipDepartedTopic(text) {
@@ -1490,6 +1510,15 @@ const GUIDE_ME_BACK_KEYWORDS = [
   // elsewhere), so comma/no-comma variants are both listed explicitly.
   "нажать, чтобы вернуться", "нажать чтобы вернуться", "куда нажать чтобы вернуться",
   "return to the ship", "find my way back", "lost my way", "i'm lost", "find the ship",
+  // 12.09.2026, Layer A audit (Andrey/Markus, English-gap pass): RU has 17
+  // phrasings here, EN had 5 -- checked side by side against the RU list
+  // above rather than guessing new phrasings from scratch.
+  "how do i get back to the ship", "how do i return to the ship",
+  "can't find the way to the ship", "cant find the way to the ship",
+  "can't find my way to the ship", "cant find my way to the ship",
+  "help me get back to the ship", "which way to the ship", "show me the way back",
+  "how do i get to the ship", "how do i get to the vessel",
+  "which button to press to get back", "which button do i press to get back",
 ];
 
 // 11.09.2026, Markus's "blind test" review point 6: "Мне надо вернуться
@@ -1516,18 +1545,47 @@ const GUIDE_ME_BACK_KEYWORDS = [
 // real false-positive risk with a 4-letter stem.
 const RETURN_VERBS = [
   "вернут", "обратно", "назад", "попасть обратно", "добраться обратно",
+  // 12.09.2026, Layer A audit (Andrey/Markus): this whole combo mechanism
+  // was RU-only -- an English paraphrase outside the literal
+  // GUIDE_ME_BACK_KEYWORDS list above (e.g. "I need to get back to where
+  // the ship is docked") had no fallback at all, unlike the equivalent
+  // Russian paraphrase. Same risk trade-off already accepted for the RU
+  // words here (generic on their own, but only fire in combination with a
+  // SHIP_LOCATION_MARKERS hit below).
+  "get back", "go back", "back to the ship", "back to the vessel", "way back",
 ];
 const SHIP_LOCATION_MARKERS = [
   "судно", "корабл", "борт", "место стоянки", "где стоит судно",
   "к причалу", "наше судно", "где пришвартовано", "к судну",
+  "ship", "vessel", "the boat", "the dock", "the berth", "the pier",
+  "where the ship is", "where the ship is docked", "mooring",
 ];
-const GUIDE_ME_BACK_EXCLUDE = ["выпить", "алкогол", "водк", "виски", "пиво", "вина", "ром"];
+const GUIDE_ME_BACK_EXCLUDE = [
+  "выпить", "алкогол", "водк", "виски", "пиво", "вина", "ром",
+  // 12.09.2026, Layer A audit: EN had no drinking-word exclusion at all --
+  // "Can I drink vodka and then return to the ship?" would have wrongly
+  // opened the ship locator, the exact bug already fixed for Russian on
+  // 09.09.2026 (see the comment above GUIDE_ME_BACK_KEYWORDS) but never
+  // ported to English.
+  "drink", "alcohol", "vodka", "whiskey", "whisky", "beer", "wine", "rum",
+];
 
 function isGuideMeBackTopic(text) {
   const lower = text.toLowerCase();
   if (isShipDepartedTopic(text)) return false; // ship already gone -- different situation, never the locator
-  if (GUIDE_ME_BACK_KEYWORDS.some((kw) => lower.includes(kw))) return true;
+  // 12.09.2026, Layer A audit (Andrey/Markus): moved GUIDE_ME_BACK_EXCLUDE
+  // check BEFORE the literal-keyword check below -- found live during
+  // testing that the pre-existing bare EN phrase "return to the ship" (no
+  // "how do I" framing, unlike the RU phrases in GUIDE_ME_BACK_KEYWORDS,
+  // which were deliberately narrowed on 09.09.2026 for exactly this
+  // reason) was matching "Can I drink vodka and then return to the ship?"
+  // and wrongly opening the ship locator -- the exclude list existed but
+  // never ran, because a literal-keyword match returned true first. This
+  // reorder makes the exclusion apply no matter which check would
+  // otherwise have matched, so a future keyword added to either list
+  // can't reintroduce the same bug silently.
   if (GUIDE_ME_BACK_EXCLUDE.some((kw) => lower.includes(kw))) return false;
+  if (GUIDE_ME_BACK_KEYWORDS.some((kw) => lower.includes(kw))) return true;
   const hasReturnVerb = RETURN_VERBS.some((v) => lower.includes(v));
   const hasShipMarker = SHIP_LOCATION_MARKERS.some((m) => lower.includes(m));
   return hasReturnVerb && hasShipMarker;
@@ -1818,10 +1876,11 @@ function sendAssistantChatMessage() {
       state.companionActive = false;
       state.lastIntentFamily = null;
       console.log("[DIAG] matched intent: medical_emergency (deterministic, no scoring)");
-      console.log("[DIAG] selected response:", JSON.stringify(MEDICAL_EMERGENCY_REPLY));
-      state.chatMessages.push({ who: "them", text: MEDICAL_EMERGENCY_REPLY });
+      const medicalEmergencyMsg = t("medicalEmergency.message");
+      console.log("[DIAG] selected response:", JSON.stringify(medicalEmergencyMsg));
+      state.chatMessages.push({ who: "them", text: medicalEmergencyMsg });
       saveState();
-      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(MEDICAL_EMERGENCY_REPLY)}</div>`);
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(medicalEmergencyMsg)}</div>`);
     } else if (isGuideMeBackTopic(text)) {
       // GUIDE_ME_BACK, 08.09.2026, per Andrey/Markus: "lost / how do I get
       // back to the ship" must open the real "Моё судно" locator (built,
@@ -1850,14 +1909,22 @@ function sendAssistantChatMessage() {
       console.log("[DIAG] shipPoint saved:", hasShipPoint);
       let msg;
       if (hasShipPoint) {
-        msg = "«У вас сохранено место стоянки судна. Открываю локатор «Моё судно» — там можно построить маршрут обратно.»";
+        msg = t("guideMeBack.withPoint");
       } else {
         const gateFact = typeof getRawCardFact === "function"
           ? getRawCardFact("Через какие ворота выйти в город", state.portId)
           : null;
+        // NOTE, 12.09.2026: gateFact itself is raw port-card data, which is
+        // still Russian-only regardless of interface language (port-card
+        // content translation is a separate, not-yet-started project --
+        // out of scope for this Layer A pass). So an English/TR/FIL
+        // interface can still show an English sentence with a Russian
+        // fact spliced into it via {gateFact} below. Flagged, not fixed
+        // here -- fixing it means translating port-card content, not
+        // Layer A routing.
         msg = gateFact
-          ? `«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. По данным карточки этого порта: ${gateFact}. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»`
-          : "«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. В карточке этого порта нет подтверждённых данных о воротах/терминале — уточните у охраны порта или судового агента. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»";
+          ? t("guideMeBack.noPointWithGate", { gateFact })
+          : t("guideMeBack.noPointNoGate");
       }
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
@@ -1865,7 +1932,7 @@ function sendAssistantChatMessage() {
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
-          <button class="esc-btn esc-coordinator" data-go="ship">${hasShipPoint ? "Открыть локатор «Моё судно»" : "Открыть вкладку «Судно»"}</button>
+          <button class="esc-btn esc-coordinator" data-go="ship">${hasShipPoint ? t("guideMeBack.openLocatorBtn") : t("guideMeBack.openShipTabBtn")}</button>
         </div>`);
     } else if (isShipDepartedTopic(text)) {
       // SHIP_DEPARTED, 08.09.2026, per Andrey/Markus: a genuinely serious,
@@ -1894,14 +1961,14 @@ function sendAssistantChatMessage() {
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
       state.lastIntentFamily = null;
-      const msg = "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»";
+      const msg = t("shipDeparted.message");
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
-          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">Связаться с Дежурным офисом IMWIRSA</button>
+          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("shipDeparted.contactDutyOfficeBtn")}</button>
         </div>`);
     } else if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
       // Explicitly asked for the coordinator, but the reason reads as idle/

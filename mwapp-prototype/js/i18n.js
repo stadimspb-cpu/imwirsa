@@ -229,6 +229,34 @@ const I18N = {
       emergencyBtn: "🚨 Emergency contacts",
       talkToPersonBtn: "Talk to a person now",
     },
+    // 12.09.2026, Layer A audit (Andrey/Markus): medicalEmergency/
+    // guideMeBack/shipDeparted used to be hardcoded Russian string
+    // literals in app.js, bypassing t() entirely -- unlike redline/
+    // escalation above, they never showed in the seafarer's actual
+    // interface language. Moved here verbatim (RU wording unchanged,
+    // this is the first EN version) so app.js can read them through
+    // t() like everything else in Layer A. TR/FIL fall back to this
+    // English text automatically via t()'s existing fallback (same as
+    // any other partially-translated key) until a native reviewer
+    // covers them -- not yet done, same caveat as demoReplies above.
+    medicalEmergency: {
+      message: "Call 112 — this is the emergency number (police / ambulance / fire), available 24/7 and free of charge at every port in this app.",
+    },
+    guideMeBack: {
+      // withPoint: state.shipPoint was saved, locator can actually route.
+      withPoint: "You have a saved ship location. Opening the \"My Ship\" locator — it can build a route back from here.",
+      // noPointWithGate: no saved point, but the port card confirms a
+      // gate/exit fact ({gateFact}) to fall back on instead of guessing.
+      noPointWithGate: "You didn't mark your ship's location in advance, so the locator can't build a route. According to this port's card: {gateFact}. Next time, mark your ship's location in the app ahead of time — the \"Ship\" tab.",
+      // noPointNoGate: no saved point AND no confirmed gate fact either.
+      noPointNoGate: "You didn't mark your ship's location in advance, so the locator can't build a route. There's no confirmed gate/terminal data for this port — check with port security or your ship's agent. Next time, mark your ship's location in the app ahead of time — the \"Ship\" tab.",
+      openLocatorBtn: "Open the \"My Ship\" locator",
+      openShipTabBtn: "Open the \"Ship\" tab",
+    },
+    shipDeparted: {
+      message: "It looks like the ship left without you — this is a serious situation. Contact the IMWIRSA Duty Office directly.",
+      contactDutyOfficeBtn: "Contact IMWIRSA Duty Office",
+    },
     escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Duty Office" },
     categoryPrompts: {
       centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
@@ -538,6 +566,22 @@ const I18N = {
       message: "Меня беспокоит то, что вы сейчас написали, и я не хочу, чтобы вы оставались с этим один на один. Пожалуйста, посмотрите экстренные контакты ниже, или я прямо сейчас подключу живого человека — днём или ночью вам обязательно ответят.",
       emergencyBtn: "🚨 Экстренные контакты",
       talkToPersonBtn: "Связаться с человеком сейчас",
+    },
+    // 12.09.2026, Layer A audit: RU wording moved here unchanged from the
+    // old app.js literals — see the matching EN block's comment for why.
+    medicalEmergency: {
+      message: "«Звони 112 — это номер экстренной помощи (полиция / скорая / пожарная), работает круглосуточно и бесплатно на всех портах в этом приложении.»",
+    },
+    guideMeBack: {
+      withPoint: "«У вас сохранено место стоянки судна. Открываю локатор «Моё судно» — там можно построить маршрут обратно.»",
+      noPointWithGate: "«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. По данным карточки этого порта: {gateFact}. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»",
+      noPointNoGate: "«Вы не отмечали место стоянки судна заранее, поэтому локатор не может построить маршрут. В карточке этого порта нет подтверждённых данных о воротах/терминале — уточните у охраны порта или судового агента. В следующий раз отметьте место судна в приложении заранее — вкладка «Судно».»",
+      openLocatorBtn: "Открыть локатор «Моё судно»",
+      openShipTabBtn: "Открыть вкладку «Судно»",
+    },
+    shipDeparted: {
+      message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Дежурным офисом IMWIRSA напрямую.»",
+      contactDutyOfficeBtn: "Связаться с Дежурным офисом IMWIRSA",
     },
     escalationToggle: { continueBtn: "Продолжить", coordinatorBtn: "Дежурный офис" },
     categoryPrompts: {
