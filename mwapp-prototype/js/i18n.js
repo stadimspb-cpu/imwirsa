@@ -261,12 +261,22 @@ const I18N = {
     // how the two are told apart (presence of an ordinary question word).
     // 11.09.2026, see the matching Russian block's comment for the full
     // rationale (Markus's mixed-regression point 9).
+    // 12.09.2026, language-split router (Andrey/Markus): this is the
+    // ONLY place the English-only-offline-FAQ policy is stated -- not a
+    // separate language-detection branch in app.js. Deliberately doesn't
+    // claim to know what language the seafarer wrote in (Markus: guessing
+    // language from a Latin-script message is unreliable, e.g. Filipino/
+    // Turkish) -- the text is honest either way: if they wrote non-English,
+    // it tells them what to do; if they already wrote English but the
+    // anchor just missed it, it's still true (nothing here claims the
+    // message was in the wrong language, only that a shorter/plainer
+    // English phrasing might land). Still gated behind consecutiveUnclear
+    // >= 2 (08.09.2026 decision, unchanged) -- the first two misses get
+    // unclearReplies below, this only shows from the third onward.
     demoReplies: [
-      "I don't have a solid answer for this in what I know offline. Try rephrasing it — I might understand it better a different way.",
-      "I don't have a precise answer for this one right now. If there's someone from the crew, port security, or the ship's agent nearby, they'd likely know better on the spot.",
-      "I can't give a reliable answer to this right now. If you've got a signal, searching yourself might be faster. Or try asking it a different way.",
-      "I don't have this one on hand offline. Someone from the crew or port security would probably sort this out faster than I can.",
-      "I couldn't find a solid answer for that. Try describing it a bit differently, or ask someone on the spot.",
+      "I couldn't quite understand that one offline. The regular FAQ here is handled in English — try a short, plain English phrase, or check the MWApp port cards. Emergency help, crisis situations, port exit, and getting back to your ship are always understood in your own language.",
+      "I don't have a precise answer for this offline. Everyday topics (transport, pharmacy, Wi-Fi, and the like) I currently understand in English only — try rephrasing it briefly in English, or open the port cards instead. Emergency, crisis, port exit, and return-to-ship always work in any language.",
+      "I couldn't find a solid answer for that. The main FAQ runs on English offline — a short English phrase might work better, or try the MWApp port cards. Emergency situations, port exit, and returning to the ship are still understood in your language, no matter what.",
     ],
     unclearReplies: [
       "I didn't quite catch that — can you tell me a bit more about what you need?",
@@ -564,12 +574,15 @@ const I18N = {
     // claim either at all: no scope verdict, no online-mode promise, just
     // "I don't have this one right now" + a concrete alternative
     // (rephrase, or ask someone on the spot).
+    // 12.09.2026, language-split router (Andrey/Markus): superseded by the
+    // English-only-offline-FAQ policy text below -- see the matching
+    // English block's comment for the full rationale (no language
+    // detection, honest either way, still gated behind consecutiveUnclear
+    // >= 2, first two misses still get unclearReplies).
     demoReplies: [
-      "У меня нет точного ответа на это среди того, что я знаю офлайн. Попробуй сформулировать вопрос немного иначе — возможно, я пойму его с другой стороны.",
-      "Такого конкретного ответа у меня сейчас нет. Если рядом есть кто-то из экипажа, охраны порта или судовой агент — они на месте и могут знать точнее.",
-      "Не могу дать точный ответ на это прямо сейчас. Если есть связь, поищи сам — так будет быстрее. Или попробуй спросить по-другому.",
-      "Этого у меня офлайн нет под рукой. Уточни у экипажа или охраны порта — они разберутся быстрее меня.",
-      "Не нашёл точного ответа на это. Попробуй описать вопрос немного по-другому, или спроси у кого-то на месте.",
+      "Не смог точно понять этот вопрос офлайн. Обычные вопросы офлайн-ассистент понимает на английском — попробуй сформулировать короче по-английски, или посмотри карточки порта в приложении. Экстренная помощь, кризисные ситуации, выход из порта и возврат на судно понятны на твоём языке всегда.",
+      "У меня нет точного ответа на это офлайн. Обычные темы (например, транспорт, аптека, Wi-Fi) я понимаю только по-английски — можешь попробовать написать короче на английском, или открыть карточки порта. А вот экстренная помощь, выход из порта и возврат на судно работают на любом языке.",
+      "Не нашёл точного ответа. Основную базу вопросов офлайн-ассистент обрабатывает на английском — попробуй короткую фразу по-английски или карточки MWApp. Экстренные ситуации, выход из порта и возврат к судну по-прежнему понятны на твоём языке.",
     ],
     unclearReplies: [
       "Не совсем понял — можешь описать чуть подробнее, что тебе нужно?",
@@ -862,6 +875,9 @@ const I18N = {
       // and won't guess a safety-adjacent translation without a native
       // reviewer — see the RU block's comment for what the replacement
       // should say in substance.
+      // 12.09.2026 — additionally now needs the English-only-offline-FAQ
+      // router wording (see the EN block's comment) once a native
+      // reviewer is found; not guessed here for the same reason.
       "Bu benim alanım değil — ben liman, gemi ve karadaki durumun için buradayım. Şu an internet varsa oradan bakman daha hızlı olur. Tam çevrimiçi mod çalışınca ben de yardımcı olabilirim.",
       "Bu konuda uzman değilim — görevim liman ve pratik konular. Şu an internetsiz çalışıyorum, bu yüzden yanıtlayamam. Belki mürettebattan biri bilir? Çevrimiçi olduğumda ben de yardımcı olurum.",
       "Bu konuda elimden bir şey gelmiyor — benim konum değil. Bağlantın varsa kendin ara, daha doğru olur. İleride tam çevrimiçi mod açılınca bunu da sorabilirsin.",
@@ -1153,6 +1169,8 @@ const I18N = {
       // 11.09.2026 — FLAGGED, NOT FIXED: same honesty problem as the
       // TR block above (see its comment) — needs the same rewrite from
       // a native Filipino reviewer, not a guess from me.
+      // 12.09.2026 — additionally now needs the English-only-offline-FAQ
+      // router wording (see the EN block's comment), same caveat.
       "Hindi talaga ito ang larangan ko — nandito ako para tumulong sa daungan, sa barko, at kung kumusta ka sa lupa. Kung may signal ka ngayon, mas mabilis kung doon ka maghahanap. Kapag naka-online na ako nang buo, matutulungan na kita dito.",
       "Hindi ako ang tamang tanungin dito — trabaho ko ay impormasyon sa daungan at praktikal na bagay-bagay. Ngayon, offline ako kaya hindi ko masasagot 'to. Baka may kasamahan kang marunong? Kapag online na ako, kaya ko na rin ito.",
       "Wala akong masabi dito — hindi ito paksa ko. Kung may signal ka, mas mabuting doon ka maghanap. Sa susunod, kapag gumagana na ang buong online mode, pwede mo na akong tanungin nito.",
