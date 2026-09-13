@@ -145,10 +145,93 @@ const I18N = {
       clearData: "Clear my data",
       startOver: "Start over (show first launch again)",
       about: "About",
+      // 13.09.2026, Andrey: the "About the assistant" row itself had no
+      // data-i18n at all in index.html -- it stayed Russian regardless of
+      // language setting. New key, wired up alongside the full screen
+      // translation below (aboutAssistant.*).
+      aboutAssistant: "About the assistant",
       versionLabel: "MWApp v0.1 (prototype)",
       website: "imwirsa.org",
     },
     nav: { port: "Port", ship: "Ship", settings: "Settings" },
+    // 13.09.2026, Andrey: this whole screen (Settings -> "About the
+    // assistant") was hardcoded Russian directly in index.html -- title,
+    // all 12 FAQ cards, everything except the assistant's own name. Found
+    // live: switching the UI language left this screen entirely in
+    // Russian. The historical comment above ABOUT_ASSISTANT_TITLE_RU
+    // (app.js) explains why it was RU-only originally ("мы пока тестируем
+    // русский" -- the app itself was RU-only at the time), but that scope
+    // no longer holds now that the UI actually offers a language switch.
+    // card1's body keeps the {name} placeholder (substituted via t()'s
+    // vars param in renderAboutAssistant(), same as elsewhere in this
+    // project) since it names the current assistant; every other card is
+    // plain static text, wired through the standard data-i18n mechanism
+    // in index.html.
+    aboutAssistant: {
+      titleDefault: "About the MWApp Assistant",
+      title: {
+        alex: "About Alex",
+        omar: "About Omar",
+        sophia: "About Sophia",
+        grace: "About Grace",
+      },
+      card1: {
+        title: "🤖 Who this is",
+        // {name} substituted at render time -- see renderAboutAssistant().
+        body: "You're currently talking with {name}. One of the MWApp assistants — they all run on the same engine, just with a different name, voice, and look. The assistant helps with port information and practical questions ashore — and if you'd like, you can just talk.",
+      },
+      card2: {
+        title: "🧠 AI or human",
+        body: "This is an AI assistant, not a real person.",
+      },
+      card3: {
+        title: "🌐 Online and offline — the same assistant",
+        body: "The assistant works in both modes. With internet — it understands more freely phrased questions and can hold a fuller conversation. Without internet — it keeps working: it uses the saved port card and a limited set of prepared answers to the most common questions. Offline mode isn't a \"cut-down\" version or a different assistant. Without internet it just has to recognise your question by keywords rather than meaning — if the first answer doesn't fit, try rephrasing your question more simply.",
+      },
+      card4: {
+        title: "📋 Where the port data comes from",
+        body: "From the MWApp card. Cards are checked and updated by MWApp coordinators and the IMWIRSA Central Office. If there's no confirmed data on a question, the assistant says so — it doesn't make something up or pass off a guess as fact.",
+      },
+      card5: {
+        title: "💾 Does the assistant remember me",
+        body: "The conversation is saved on your phone — you can close the app and come back to it later. But it isn't sent to any server and isn't used to \"recognise\" you between separate visits. The \"New conversation\" button clears the history.",
+      },
+      card6: {
+        title: "👁 Can the assistant see my earlier messages",
+        body: "The conversation history is visible on screen, but when answering a new question the assistant doesn't use earlier messages as context — it answers each question on its own.",
+      },
+      // 13.09.2026, Andrey: content itself updated here, not just
+      // translated -- the RU original said "currently works confidently
+      // in Russian, other-language support is still being tested," which
+      // would be a strange, self-contradicting thing to show on a screen
+      // that's now genuinely rendering in English. Reworded to reflect
+      // where things actually stand (several languages, accuracy still
+      // varies) rather than translating a now-outdated claim as-is.
+      card7: {
+        title: "🗣 What languages the assistant speaks",
+        body: "It can respond in several languages, including Russian and English. Accuracy can still vary a bit by language, especially offline.",
+      },
+      card8: {
+        title: "✅ Can the assistant's answers be trusted",
+        body: "The assistant uses checked MWApp data, but it doesn't replace official services. For anything important involving safety, documents, port rules, or an emergency, it's best to confirm with a responsible person or an official contact.",
+      },
+      card9: {
+        title: "⚓ Does the assistant only help with the port",
+        body: "The port and time ashore are its main practical focus, but the assistant also helps you use MWApp itself and can simply chat. With internet, its abilities are noticeably broader.",
+      },
+      card10: {
+        title: "📄 Does the assistant translate documents",
+        body: "Short phrases, menus, signs — yes. Official documents — no. It can read text aloud, if that's easier than reading it yourself.",
+      },
+      card11: {
+        title: "📵 Can the assistant call someone for me",
+        body: "No — the assistant doesn't make calls and doesn't promise to pass on a message later. But if MWApp has the right contact, the assistant will show it and tell you who's best to call.",
+      },
+      card12: {
+        title: "🧭 Why listen to the assistant instead of asking locals",
+        body: "It doesn't have to be one or the other. The assistant gives you information from MWApp, while a local person may know things not yet in the card. If the two disagree, it's worth double-checking.",
+      },
+    },
     modals: {
       lang: { title: "Choose your language" },
       assistant: { title: "Choose your assistant" },
@@ -556,10 +639,77 @@ const I18N = {
       clearData: "Удалить мои данные",
       startOver: "Начать заново (показать первый запуск снова)",
       about: "О приложении",
+      aboutAssistant: "Об ассистенте",
       versionLabel: "MWApp v0.1 (прототип)",
       website: "imwirsa.org",
     },
     nav: { port: "Порт", ship: "Судно", settings: "Настройки" },
+    // 13.09.2026, Andrey: см. комментарий к EN-блоку. RU-текст перенесён
+    // сюда практически без изменений из старой статичной разметки
+    // index.html — кроме card7 (про языки), см. отдельный комментарий там.
+    aboutAssistant: {
+      titleDefault: "Об ассистенте MWApp",
+      title: {
+        alex: "Об Алексе",
+        omar: "Об Омаре",
+        sophia: "О Софии",
+        grace: "О Грейс",
+      },
+      card1: {
+        title: "🤖 Кто это",
+        body: "Сейчас с вами — {name}. Один из ассистентов MWApp — все работают на одном движке, просто с разными именем, голосом и образом. Ассистент помогает с информацией о порте, практическими вопросами на берегу — а если хочется, можно просто поговорить.",
+      },
+      card2: {
+        title: "🧠 ИИ или человек",
+        body: "Это ИИ-ассистент, не живой человек.",
+      },
+      card3: {
+        title: "🌐 Онлайн и офлайн — один и тот же ассистент",
+        body: "Ассистент работает в обоих режимах. С интернетом — понимает более свободные формулировки вопросов и может вести полноценный разговор. Без интернета — продолжает работать: использует сохранённую карточку порта и ограниченный набор подготовленных ответов на самые частые вопросы. Офлайн-режим — не «урезанная» версия и не другой ассистент. Просто без интернета вопрос приходится узнавать по ключевым словам, а не по смыслу — если ответ не подошёл с первого раза, попробуйте переформулировать вопрос попроще.",
+      },
+      card4: {
+        title: "📋 Откуда данные о порте",
+        body: "Из карточки MWApp. Карточки проверяются и обновляются координаторами MWApp и Центральным офисом IMWIRSA. Если подтверждённых данных по вопросу нет, ассистент так и скажет — не придумывает и не выдаёт догадку за факт.",
+      },
+      card5: {
+        title: "💾 Запоминает ли меня ассистент",
+        body: "Разговор сохраняется у вас на телефоне — можно закрыть приложение и вернуться к нему позже. Но это не отправляется на сервер и не используется, чтобы «узнавать» вас между разными обращениями. Кнопка «Новый разговор» стирает историю.",
+      },
+      card6: {
+        title: "👁 Видны ли ассистенту мои прошлые сообщения",
+        body: "История переписки видна на экране, но при ответе на новый вопрос ассистент не использует более ранние сообщения как контекст — отвечает на каждый вопрос отдельно.",
+      },
+      // 13.09.2026, Andrey: старый текст утверждал "уверенно работает
+      // только на русском, остальное тестируется" — на экране, который
+      // сейчас реально переключается на английский, это было бы странно
+      // показывать без изменений. Переформулировано под текущее
+      // состояние (несколько языков, точность может отличаться), а не
+      // просто оставлено как устаревшее заявление.
+      card7: {
+        title: "🗣 На каких языках говорит ассистент",
+        body: "Может отвечать на нескольких языках, включая русский и английский. Точность пока может немного отличаться в зависимости от языка, особенно офлайн.",
+      },
+      card8: {
+        title: "✅ Можно ли доверять ответам ассистента",
+        body: "Ассистент использует проверенные данные MWApp, но не заменяет официальные службы. В вопросах безопасности, документов, правил порта или экстренной ситуации важное лучше подтверждать у ответственного человека или по официальному контакту.",
+      },
+      card9: {
+        title: "⚓ Помогает ли ассистент только с портом",
+        body: "Порт и пребывание на берегу — основная практическая задача, но ассистент также помогает пользоваться самим MWApp и может просто поговорить. С интернетом возможности ассистента заметно шире.",
+      },
+      card10: {
+        title: "📄 Переводит ли ассистент документы",
+        body: "Короткие фразы, меню, вывески — да. Официальные документы — нет. Может прочитать текст вслух, если удобнее послушать, чем читать самому.",
+      },
+      card11: {
+        title: "📵 Может ли ассистент позвонить кому-то за меня",
+        body: "Нет — звонков ассистент не делает и не обещает передать сообщение позже. Но если в MWApp есть нужный контакт, ассистент покажет его и подскажет, кому лучше позвонить.",
+      },
+      card12: {
+        title: "🧭 Почему слушать ассистента, а не спросить у местных",
+        body: "Не обязательно выбирать что-то одно. Ассистент даёт информацию из MWApp, а местный человек может знать то, чего ещё нет в карточке. Если данные расходятся — лучше перепроверить.",
+      },
+    },
     modals: {
       lang: { title: "Выберите язык" },
       assistant: { title: "Выберите ассистента" },

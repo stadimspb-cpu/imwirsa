@@ -2163,28 +2163,22 @@ function renderAssistantChatMessages() {
   scrollChatToBottom(body);
 }
 
-// About-the-assistant screen (Settings → "Об ассистенте"): static, persona-
-// agnostic content in index.html — the only per-persona piece is the name
-// shown at the top. Declined form (05.09.2026: confirmed real names/gender
-// via js/i18n.js — Алекс/Омар male, София/Грейс female) is RU-only for now,
-// since the screen's own body text is hardcoded Russian, not wired through
-// I18N — matches "мы пока тестируем русский" scope for this screen. If this
-// screen goes multi-language later, this map and the title need to move
-// into I18N alongside a full EN/TR/FIL translation of the body text, not
-// be extended ad hoc.
-const ABOUT_ASSISTANT_TITLE_RU = {
-  alex: "Об Алексе",
-  omar: "Об Омаре",
-  sophia: "О Софии",
-  grace: "О Грейс",
-};
-
+// About-the-assistant screen (Settings → "About the assistant"): title and
+// card1's body are persona-specific (need the assistant's name), so they're
+// still set here via JS rather than plain data-i18n. Every other card on
+// this screen is now static per-language text handled by the standard
+// data-i18n mechanism in index.html (applyStaticI18n(), i18n.js) --
+// 13.09.2026, Andrey: found live that this whole screen stayed Russian
+// after switching the UI language, because it was hardcoded directly in
+// index.html with no data-i18n at all. Moved into I18N.aboutAssistant.*
+// (RU/EN — see i18n.js's comment there for the one line whose CONTENT
+// also changed, not just its language).
 function renderAboutAssistant() {
   const a = getAssistant(state.assistant) || getAssistant("alex");
-  const nameEl = document.getElementById("aboutAssistantName");
-  if (nameEl) nameEl.textContent = a.name;
   const titleEl = document.getElementById("aboutAssistantTitle");
-  if (titleEl) titleEl.textContent = ABOUT_ASSISTANT_TITLE_RU[a.id] || "Об ассистенте MWApp";
+  if (titleEl) titleEl.textContent = t(`aboutAssistant.title.${a.id}`) || t("aboutAssistant.titleDefault");
+  const bodyEl = document.getElementById("aboutAssistantCard1Body");
+  if (bodyEl) bodyEl.textContent = t("aboutAssistant.card1.body", { name: a.name });
 }
 
 function openAssistantChat() {
