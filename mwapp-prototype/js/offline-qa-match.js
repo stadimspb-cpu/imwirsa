@@ -188,7 +188,14 @@ const SPELLING_VARIANTS = [
 ];
 
 function normalizeText(text) {
-  let t = text.toLowerCase().replace(/ё/g, "е");
+  // 13.09.2026, Andrey: explicit Unicode NFC normalization added first --
+  // guards against a message arriving with combining-character sequences
+  // (e.g. "ё" as е + a combining diaeresis, U+0435 U+0308, instead of the
+  // single precomposed U+0451) from some keyboards/input methods/paste
+  // sources. Without this, two strings that display identically as "ё"
+  // could fail a plain string comparison even after the ё→е replacement
+  // below, since that replacement targets the precomposed character only.
+  let t = text.normalize("NFC").toLowerCase().replace(/ё/g, "е");
   for (const [pattern, replacement] of SPELLING_VARIANTS) {
     t = t.replace(pattern, replacement);
   }

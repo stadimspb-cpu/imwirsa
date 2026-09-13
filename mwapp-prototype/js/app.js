@@ -1261,6 +1261,33 @@ function sendChatMessage() {
 // person might decline. This does not replace real crisis-detection (see
 // isComplexTopic's own prototype caveat) — same limitation applies here,
 // even more so given the stakes.
+// 13.09.2026, Andrey: found live -- "Ко мне пристаёт мужчина" (ё) and "Ко
+// мне пристает мужчина" (е) gave different Red Line results, because
+// every Layer A function below did its own ad-hoc `text.toLowerCase()`
+// instead of going through normalizeText() (offline-qa-match.js), which
+// already handles ё->е folding (plus punctuation stripping, whitespace
+// collapse, and Unicode NFC normalization) for Medical Emergency and the
+// scored intent table. Andrey's instruction: fix this centrally in
+// normalizeText() itself (done there -- see its Unicode-NFC addition),
+// not by listing both spellings of every affected word here.
+//
+// This helper is the other half of that fix: normalizeText() only helps
+// if BOTH sides of a comparison go through it. Message text is normalized
+// once per detect function below (`const normalized = normalizeText(text)`
+// replaces the old `const lower = text.toLowerCase()`); this helper
+// normalizes each STORED KEYWORD the same way at comparison time, so a
+// keyword written with "е" still matches a message typed with "ё" and
+// vice versa, without needing both spellings listed anywhere. Same
+// principle as the fix already applied to containsAnchor() in
+// offline-qa-match.js for the EN apostrophe bug (12.09.2026) -- normalize
+// both sides, not just the incoming message.
+//
+// Replaces every `KEYWORD_LIST.some((kw) => lower.includes(kw))` call in
+// this file's Layer A section below.
+function hasNormalizedMatch(normalizedText, keywords) {
+  return keywords.some((kw) => normalizedText.includes(normalizeText(kw)));
+}
+
 // 12.09.2026, EN Layer A pass (Andrey): reply language must follow which
 // LANGUAGE GROUP matched, not the interface language (state.lang) -- an
 // English question must get an English Layer A answer even on a Russian
@@ -1323,10 +1350,10 @@ const RED_LINE_KEYWORDS_OTHER = [
 // the two new additions are a good-faith translation, not verified by a
 // native speaker — same caveat as the rest of this list.
 function detectRedLineLang(text) {
-  const lower = text.toLowerCase();
-  if (RED_LINE_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
-  if (RED_LINE_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
-  if (RED_LINE_KEYWORDS_OTHER.some((kw) => lower.includes(kw))) return "other";
+  const normalized = normalizeText(text);
+  if (hasNormalizedMatch(normalized, RED_LINE_KEYWORDS_RU)) return "ru";
+  if (hasNormalizedMatch(normalized, RED_LINE_KEYWORDS_EN)) return "en";
+  if (hasNormalizedMatch(normalized, RED_LINE_KEYWORDS_OTHER)) return "other";
   return null;
 }
 function isRedLineTopic(text) {
@@ -1525,13 +1552,13 @@ const DOCUMENT_THEFT_MARKERS_EN = ["passport", "seaman's book", "seaman book", "
 const THEFT_VERBS_EN = ["stole", "stolen", "took my", "taken", "robbed me of"];
 
 function detectComplexTopicLang(text) {
-  const lower = text.toLowerCase();
-  if (COMPLEX_TOPIC_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
-  if (COMPLEX_TOPIC_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
-  if (DOCUMENT_THEFT_MARKERS_EN.some((m) => lower.includes(m)) && THEFT_VERBS_EN.some((v) => lower.includes(v))) {
+  const normalized = normalizeText(text);
+  if (hasNormalizedMatch(normalized, COMPLEX_TOPIC_KEYWORDS_RU)) return "ru";
+  if (hasNormalizedMatch(normalized, COMPLEX_TOPIC_KEYWORDS_EN)) return "en";
+  if (hasNormalizedMatch(normalized, DOCUMENT_THEFT_MARKERS_EN) && hasNormalizedMatch(normalized, THEFT_VERBS_EN)) {
     return "en";
   }
-  if (COMPLEX_TOPIC_KEYWORDS_OTHER.some((kw) => lower.includes(kw))) return "other";
+  if (hasNormalizedMatch(normalized, COMPLEX_TOPIC_KEYWORDS_OTHER)) return "other";
   return null;
 }
 
@@ -1604,16 +1631,16 @@ const SHIP_DEPARTURE_VERBS_EN = ["left", "departed", "sailed", "gone", "pulled o
 const LEFT_BEHIND_MARKERS_EN = ["without me", "left behind", "left me behind", "stranded", "ashore"];
 
 function detectShipDepartedLang(text) {
-  const lower = text.toLowerCase();
-  if (SHIP_DEPARTED_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
-  if (SHIP_DEPARTED_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
-  const hasShipMarkerRu = SHIP_LOCATION_MARKERS_RU.some((m) => lower.includes(m));
-  const hasDepartureVerbRu = SHIP_DEPARTURE_VERBS_RU.some((v) => lower.includes(v));
-  const hasLeftBehindRu = LEFT_BEHIND_MARKERS_RU.some((m) => lower.includes(m));
+  const normalized = normalizeText(text);
+  if (hasNormalizedMatch(normalized, SHIP_DEPARTED_KEYWORDS_RU)) return "ru";
+  if (hasNormalizedMatch(normalized, SHIP_DEPARTED_KEYWORDS_EN)) return "en";
+  const hasShipMarkerRu = hasNormalizedMatch(normalized, SHIP_LOCATION_MARKERS_RU);
+  const hasDepartureVerbRu = hasNormalizedMatch(normalized, SHIP_DEPARTURE_VERBS_RU);
+  const hasLeftBehindRu = hasNormalizedMatch(normalized, LEFT_BEHIND_MARKERS_RU);
   if (hasShipMarkerRu && hasDepartureVerbRu && hasLeftBehindRu) return "ru";
-  const hasShipMarkerEn = SHIP_LOCATION_MARKERS_EN.some((m) => lower.includes(m));
-  const hasDepartureVerbEn = SHIP_DEPARTURE_VERBS_EN.some((v) => lower.includes(v));
-  const hasLeftBehindEn = LEFT_BEHIND_MARKERS_EN.some((m) => lower.includes(m));
+  const hasShipMarkerEn = hasNormalizedMatch(normalized, SHIP_LOCATION_MARKERS_EN);
+  const hasDepartureVerbEn = hasNormalizedMatch(normalized, SHIP_DEPARTURE_VERBS_EN);
+  const hasLeftBehindEn = hasNormalizedMatch(normalized, LEFT_BEHIND_MARKERS_EN);
   if (hasShipMarkerEn && hasDepartureVerbEn && hasLeftBehindEn) return "en";
   return null;
 }
@@ -1744,20 +1771,20 @@ function withTerminalPunctuation(str) {
 }
 
 function detectPortExitGateLang(text) {
-  const lower = text.toLowerCase();
-  if (PORT_EXIT_GATE_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
-  if (PORT_EXIT_GATE_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
-  const hasTransportRu = PORT_EXIT_TRANSPORT_WORDS_RU.some((w) => lower.includes(w));
-  const hasExitWordRu = PORT_EXIT_WORDS_RU.some((w) => lower.includes(w));
-  const hasContextWordRu = PORT_CONTEXT_WORDS_RU.some((w) => lower.includes(w));
-  const hasMannerWordRu = PORT_EXIT_MANNER_WORDS_RU.some((w) => lower.includes(w));
+  const normalized = normalizeText(text);
+  if (hasNormalizedMatch(normalized, PORT_EXIT_GATE_KEYWORDS_RU)) return "ru";
+  if (hasNormalizedMatch(normalized, PORT_EXIT_GATE_KEYWORDS_EN)) return "en";
+  const hasTransportRu = hasNormalizedMatch(normalized, PORT_EXIT_TRANSPORT_WORDS_RU);
+  const hasExitWordRu = hasNormalizedMatch(normalized, PORT_EXIT_WORDS_RU);
+  const hasContextWordRu = hasNormalizedMatch(normalized, PORT_CONTEXT_WORDS_RU);
+  const hasMannerWordRu = hasNormalizedMatch(normalized, PORT_EXIT_MANNER_WORDS_RU);
   if (!hasTransportRu && hasExitWordRu && (hasContextWordRu || hasMannerWordRu)) {
     return "ru";
   }
-  const hasTransportEn = PORT_EXIT_TRANSPORT_WORDS_EN.some((w) => lower.includes(w));
-  const hasExitWordEn = PORT_EXIT_WORDS_EN.some((w) => lower.includes(w));
-  const hasContextWordEn = PORT_CONTEXT_WORDS_EN.some((w) => lower.includes(w));
-  const hasMannerWordEn = PORT_EXIT_MANNER_WORDS_EN.some((w) => lower.includes(w));
+  const hasTransportEn = hasNormalizedMatch(normalized, PORT_EXIT_TRANSPORT_WORDS_EN);
+  const hasExitWordEn = hasNormalizedMatch(normalized, PORT_EXIT_WORDS_EN);
+  const hasContextWordEn = hasNormalizedMatch(normalized, PORT_CONTEXT_WORDS_EN);
+  const hasMannerWordEn = hasNormalizedMatch(normalized, PORT_EXIT_MANNER_WORDS_EN);
   if (!hasTransportEn && hasExitWordEn && (hasContextWordEn || hasMannerWordEn)) {
     return "en";
   }
@@ -1767,9 +1794,9 @@ function isPortExitGateTopic(text) {
   return detectPortExitGateLang(text) !== null;
 }
 function detectPortExitPassLang(text) {
-  const lower = text.toLowerCase();
-  if (PORT_EXIT_PASS_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
-  if (PORT_EXIT_PASS_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
+  const normalized = normalizeText(text);
+  if (hasNormalizedMatch(normalized, PORT_EXIT_PASS_KEYWORDS_RU)) return "ru";
+  if (hasNormalizedMatch(normalized, PORT_EXIT_PASS_KEYWORDS_EN)) return "en";
   return null;
 }
 function isPortExitPassTopic(text) {
@@ -1966,7 +1993,7 @@ const WHERE_MARKERS_RU = ["где стоит", "где находится", "г�
 const WHERE_MARKERS_EN = ["where is", "where's", "where can i find"];
 
 function detectGuideMeBackLang(text) {
-  const lower = text.toLowerCase();
+  const normalized = normalizeText(text);
   if (isShipDepartedTopic(text)) return null; // ship already gone -- different situation, never the locator
   // 12.09.2026, Layer A audit (Andrey/Markus): GUIDE_ME_BACK_EXCLUDE check
   // runs BEFORE the literal-keyword check below -- found live during
@@ -1980,14 +2007,14 @@ function detectGuideMeBackLang(text) {
   // otherwise have matched, so a future keyword added to either list
   // can't reintroduce the same bug silently. Applies regardless of
   // language -- the exclude list itself is language-agnostic.
-  if (GUIDE_ME_BACK_EXCLUDE.some((kw) => lower.includes(kw))) return null;
-  if (GUIDE_ME_BACK_KEYWORDS_RU.some((kw) => lower.includes(kw))) return "ru";
-  if (GUIDE_ME_BACK_KEYWORDS_EN.some((kw) => lower.includes(kw))) return "en";
-  const hasReturnVerbRu = RETURN_VERBS_RU.some((v) => lower.includes(v));
-  const hasShipMarkerRu = SHIP_LOCATION_MARKERS_RU.some((m) => lower.includes(m));
+  if (hasNormalizedMatch(normalized, GUIDE_ME_BACK_EXCLUDE)) return null;
+  if (hasNormalizedMatch(normalized, GUIDE_ME_BACK_KEYWORDS_RU)) return "ru";
+  if (hasNormalizedMatch(normalized, GUIDE_ME_BACK_KEYWORDS_EN)) return "en";
+  const hasReturnVerbRu = hasNormalizedMatch(normalized, RETURN_VERBS_RU);
+  const hasShipMarkerRu = hasNormalizedMatch(normalized, SHIP_LOCATION_MARKERS_RU);
   if (hasReturnVerbRu && hasShipMarkerRu) return "ru";
-  const hasReturnVerbEn = RETURN_VERBS_EN.some((v) => lower.includes(v));
-  const hasShipMarkerEn = SHIP_LOCATION_MARKERS_EN.some((m) => lower.includes(m));
+  const hasReturnVerbEn = hasNormalizedMatch(normalized, RETURN_VERBS_EN);
+  const hasShipMarkerEn = hasNormalizedMatch(normalized, SHIP_LOCATION_MARKERS_EN);
   if (hasReturnVerbEn && hasShipMarkerEn) return "en";
   // 12.09.2026, Andrey's on-device RU retest — gap 4: "где стоит моё
   // судно?" / "где сейчас находится корабль?" is a genuine Guide Me Back
@@ -1998,23 +2025,23 @@ function detectGuideMeBackLang(text) {
   // sitting in SHIP_LOCATION_MARKERS (it just had nothing to combine
   // with). Added as its own compound: a WHERE marker together with a
   // SHIP marker, independent of RETURN_VERBS. Mirrored for EN below.
-  const hasWhereMarkerRu = WHERE_MARKERS_RU.some((w) => lower.includes(w));
+  const hasWhereMarkerRu = hasNormalizedMatch(normalized, WHERE_MARKERS_RU);
   if (hasWhereMarkerRu && hasShipMarkerRu) return "ru";
-  const hasWhereMarkerEn = WHERE_MARKERS_EN.some((w) => lower.includes(w));
+  const hasWhereMarkerEn = hasNormalizedMatch(normalized, WHERE_MARKERS_EN);
   if (hasWhereMarkerEn && hasShipMarkerEn) return "en";
   // 13.09.2026, Andrey's regression retest — point 2, see LOST_MARKERS_RU/
   // EN's comment above for the full rationale: a bare "lost" word alone
   // is not enough, needs a ship marker OR a return-movement verb too.
-  const hasLostRu = LOST_MARKERS_RU.some((w) => lower.includes(w));
+  const hasLostRu = hasNormalizedMatch(normalized, LOST_MARKERS_RU);
   if (hasLostRu && (hasShipMarkerRu || hasReturnVerbRu)) return "ru";
-  const hasLostEn = LOST_MARKERS_EN.some((w) => lower.includes(w));
+  const hasLostEn = hasNormalizedMatch(normalized, LOST_MARKERS_EN);
   if (hasLostEn && (hasShipMarkerEn || hasReturnVerbEn)) return "en";
   // 13.09.2026, Andrey's regression retest — point 2, see
   // DEPARTURE_IMMINENT_RU/EN's comment above for the full rationale.
-  if (DEPARTURE_IMMINENT_RU.some((w) => lower.includes(w)) && STILL_ASHORE_RU.some((w) => lower.includes(w))) {
+  if (hasNormalizedMatch(normalized, DEPARTURE_IMMINENT_RU) && hasNormalizedMatch(normalized, STILL_ASHORE_RU)) {
     return "ru";
   }
-  if (DEPARTURE_IMMINENT_EN.some((w) => lower.includes(w)) && STILL_ASHORE_EN.some((w) => lower.includes(w))) {
+  if (hasNormalizedMatch(normalized, DEPARTURE_IMMINENT_EN) && hasNormalizedMatch(normalized, STILL_ASHORE_EN)) {
     return "en";
   }
   return null;
@@ -2029,6 +2056,12 @@ function isGuideMeBackTopic(text) {
 // assistant asks "why do you want the coordinator" (see
 // awaitingCoordinatorReason below), to tell genuine idle/lonely small talk
 // apart from an actual reason to reach a human.
+// 13.09.2026, Andrey: "ни о чём"/"ни о чем" being listed side by side
+// right below was exactly the manual workaround pattern Andrey's fix
+// eliminates -- normalizeText() now folds ё->е centrally, so listing
+// both spellings is no longer necessary (left as-is rather than removed,
+// since the duplicate is harmless, but no future word here needs its own
+// ё/е pair).
 const IDLE_CHAT_KEYWORDS = [
   "just want to talk", "just wanted to chat", "how are you", "how's it going",
   "nothing much", "bored", "weather", "small talk", "just chatting", "just saying hi",
@@ -2038,8 +2071,8 @@ const IDLE_CHAT_KEYWORDS = [
 ];
 
 function isIdleChatTopic(text) {
-  const lower = text.toLowerCase();
-  return IDLE_CHAT_KEYWORDS.some((kw) => lower.includes(kw));
+  const normalized = normalizeText(text);
+  return hasNormalizedMatch(normalized, IDLE_CHAT_KEYWORDS);
 }
 
 // Remembers which screen the seafarer was on right before opening the
