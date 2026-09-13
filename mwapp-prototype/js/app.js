@@ -1290,6 +1290,16 @@ const RED_LINE_KEYWORDS_EN = [
   // their RU counterparts (more acute than the other isComplexTopic
   // situations).
   "being harassed", "sexual harassment", "someone is harassing me",
+  // 13.09.2026, Andrey's Layer A regression retest: "A man is following
+  // me and I'm scared" wasn't recognized -- the RU side already covers
+  // this exact concept via the "преследу" stem (following/stalking),
+  // moved into RED_LINE alongside harassment on 12.09.2026, but the EN
+  // side never got its own stalking/being-followed markers at all.
+  // Several tenses of "follow" + "me" plus the two standalone nouns
+  // ("stalking"/"stalker") are unambiguous enough in this app's domain to
+  // stand alone, same trade-off already accepted for "мне страшно" above.
+  "following me", "been following me", "keeps following me", "follows me",
+  "being followed", "stalking", "stalker",
 ];
 const RED_LINE_KEYWORDS_OTHER = [
   "intihar", "kendimi öldür", "yaşamak istemiyorum", "kendime zarar",
@@ -2296,7 +2306,15 @@ function sendAssistantChatMessage() {
       state.companionActive = false;
       state.lastIntentFamily = null;
       console.log("[DIAG] matched intent: medical_emergency (deterministic, no scoring)");
-      const medicalEmergencyMsg = t("medicalEmergency.message");
+      // 13.09.2026, Andrey's Layer A regression retest: this call was
+      // missed when langOverride was wired into RED_LINE/COMPLEX_TOPIC/
+      // GUIDE_ME_BACK/SHIP_DEPARTED (12.09.2026) -- an English medical
+      // emergency was correctly RECOGNIZED (detectMedicalEmergencyLang
+      // already existed and worked) but the reply text still read
+      // state.lang instead of the detected match language. Same fix as
+      // the other four, just applied here too.
+      const medicalEmergencyLang = detectMedicalEmergencyLang(text);
+      const medicalEmergencyMsg = t("medicalEmergency.message", null, medicalEmergencyLang);
       console.log("[DIAG] selected response:", JSON.stringify(medicalEmergencyMsg));
       state.chatMessages.push({ who: "them", text: medicalEmergencyMsg });
       saveState();
