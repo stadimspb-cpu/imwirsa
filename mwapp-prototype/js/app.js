@@ -930,9 +930,12 @@ async function openDetail(key) {
     // opening anything — added for Emergency Contacts, where the number
     // itself IS the destination, not a screen to navigate to. Mirrors the
     // existing `data-map` pattern (see the global click handler) rather
-    // than inventing a new mechanism.
-    const rowClickable = (!!r.sd || !!r.go || !!r.tel) && !locked;
-    const attrs = locked ? "" : (r.sd ? `data-sd="${r.sd}"` : (r.go ? `data-go="${r.go}"` : (r.tel ? `data-tel="${r.tel}"` : "")));
+    // than inventing a new mechanism. `whatsapp` is the same idea for a
+    // WhatsApp deep link (added same day, for ISWAN) -- a row has at most
+    // one of tel/whatsapp, never both, so there's no ambiguity about which
+    // action a tap performs.
+    const rowClickable = (!!r.sd || !!r.go || !!r.tel || !!r.whatsapp) && !locked;
+    const attrs = locked ? "" : (r.sd ? `data-sd="${r.sd}"` : (r.go ? `data-go="${r.go}"` : (r.tel ? `data-tel="${r.tel}"` : (r.whatsapp ? `data-whatsapp="${r.whatsapp}"` : ""))));
     return `
     <div class="d-row ${rowClickable ? 'clickable' : ''}" ${attrs}>
       <div class="d-icon">${r.icon}</div>
@@ -965,8 +968,10 @@ function openSubDetail(sdKey) {
   // sec.rows inside sd.sections, so fixing it here covers all of those at
   // once (chaplain numbers, ISWAN, taxi companies, spiritual-care
   // contacts, etc.) rather than needing a separate fix per section type.
+  // 13.09.2026: `whatsapp` support added alongside `tel`, same reasoning
+  // as rowsHtml above.
   const contactRows = (list) => list.map((c) => `
-    <div class="contact-row${c.tel ? " clickable" : ""}"${c.tel ? ` data-tel="${c.tel}"` : ""}>
+    <div class="contact-row${(c.tel || c.whatsapp) ? " clickable" : ""}"${c.tel ? ` data-tel="${c.tel}"` : (c.whatsapp ? ` data-whatsapp="${c.whatsapp}"` : "")}>
       <div class="c-icon">${c.icon}</div>
       <div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>
       ${c.action ? `<div class="c-action">${c.action}</div>` : ""}
@@ -1287,6 +1292,38 @@ function sendChatMessage() {
 function hasNormalizedMatch(normalizedText, keywords) {
   return keywords.some((kw) => normalizedText.includes(normalizeText(kw)));
 }
+
+// 13.09.2026, Andrey: real, independently verified ISWAN (SeafarerHelp)
+// contact details -- confirmed directly against iswan.org.uk/seafarerhelp,
+// not carried over from any earlier, unverified port-card entry (that
+// entry had a different, wrong number: +44 20 7283 2922). Call and
+// WhatsApp are two DIFFERENT numbers, not the same one reformatted --
+// keep them separate, never merge into one "tel" field.
+const ISWAN_CALL_TEL = "+442073232737";
+const ISWAN_WHATSAPP = "4407909470732"; // wa.me wants a bare international number, no "+"
+
+// 13.09.2026, Andrey: Ship Departed is a port-logistics emergency, not a
+// welfare/crisis conversation -- routes to the PORT'S OWN duty dispatcher
+// where one is already confirmed in that port's emergency-contacts data,
+// falling back to ISWAN WhatsApp only where no such contact exists yet.
+// Verified by hand against each port's own data/*.json (not guessed):
+// Hamburg's four terminals have no port-administration/dispatcher contact
+// confirmed at all as of this writing -- omitted here on purpose rather
+// than pointing at a made-up number, so they fall through to the ISWAN
+// fallback below like any other unconfirmed case.
+const PORT_DISPATCHER_TEL = {
+  "tallinn-vanasadam": "+3726318008",
+  "tallinn-muuga": "+3726318008",
+  "constanta-south": "+40241602114",
+  "constanta-north": "+40241602114",
+  "istanbul-haydarpasa": "+902122512500",
+  "istanbul-ambarli": "+902122512500",
+  "istanbul-galataport": "+902122512500",
+  "batumi-main": "+995422276015",
+  "poti-main": "+995493277777",
+  "klaipeda-passenger": "+37046499799",
+  "klaipeda-kn-energies": "+37046499799",
+};
 
 // 12.09.2026, EN Layer A pass (Andrey): reply language must follow which
 // LANGUAGE GROUP matched, not the interface language (state.lang) -- an
@@ -2333,7 +2370,7 @@ function sendAssistantChatMessage() {
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
           <button class="esc-btn esc-coordinator" data-detail="emergency">${t("redline.emergencyBtn", null, langOverride) || t("settings.talkToCoordinator", null, langOverride)}</button>
-          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("redline.talkToPersonBtn", null, langOverride) || t("escalationToggle.coordinatorBtn", null, langOverride)}</button>
+          <button class="esc-btn esc-coordinator" data-whatsapp="${ISWAN_WHATSAPP}">${t("redline.talkToPersonBtn", null, langOverride) || t("escalationToggle.coordinatorBtn", null, langOverride)}</button>
         </div>`);
     } else if (typeof isMedicalEmergencyTopic === "function" && isMedicalEmergencyTopic(text)) {
       // Medical emergency (ambulance), 06.09.2026: checked BEFORE
@@ -2425,21 +2462,23 @@ function sendAssistantChatMessage() {
       // there would be actively misleading). The old .a text in the intent
       // table claimed "передаю ваш запрос в Дежурный офис" when nothing
       // was actually sent anywhere -- Markus flagged this as dishonest,
-      // correctly. This now uses the SAME real escalation-toggle mechanism
-      // as RED_LINE/isComplexTopic (esc-coordinator -> goToScreen this
-      // "volunteer", the real IMWIRSA office chat) instead of a fabricated
-      // claim, and drops "это штатная ситуация"/"оставайтесь на месте" --
-      // reassurances this app has no basis to make since it doesn't know
-      // where the seafarer actually is.
+      // correctly. This drops "это штатная ситуация"/"оставайтесь на
+      // месте" -- reassurances this app has no basis to make since it
+      // doesn't know where the seafarer actually is.
       //
-      // NOTE per the 07.09.2026 master-memo discussion: this button leads
-      // to a real chat that still needs actual connectivity to reach
-      // anyone -- there is no reliable online/offline detection in this
-      // codebase yet (explicitly deferred as a Stage 5 decision, not a
-      // simple navigator.onLine check per that discussion's own technical
-      // caveat). An offline-specific fallback (saved Duty Office phone
-      // number) is NOT implemented here -- flagged back to Andrey/Markus
-      // rather than improvised.
+      // 13.09.2026, Andrey: the escalation button used to open the same
+      // internal "volunteer" chat as RED_LINE/isComplexTopic -- that
+      // screen had no real backend (nothing typed there went anywhere),
+      // and per the 07.09.2026 master-memo discussion, there was also no
+      // reliable online/offline detection to fall back to a saved phone
+      // number when offline. Both problems are resolved the same way now:
+      // a `tel:`/`data-tel` link works fully offline (it's a phone call,
+      // not a network request) and needs no connectivity check at all --
+      // see PORT_DISPATCHER_TEL above for the real, per-port confirmed
+      // number, with ISWAN WhatsApp as the fallback where no port
+      // dispatcher contact is confirmed yet -- that fallback path still
+      // needs an actual connection to reach anyone (WhatsApp, not a phone
+      // call), same caveat as before for those specific ports.
       console.log("[DIAG] matched rule: SHIP_DEPARTED");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
@@ -2453,9 +2492,20 @@ function sendAssistantChatMessage() {
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      // 13.09.2026, Andrey: dial the current port's own confirmed duty
+      // dispatcher (PORT_DISPATCHER_TEL) where one exists -- this is a
+      // logistics emergency, and the port's own dispatcher knows the
+      // actual situation at that terminal, unlike a generic international
+      // line. Falls back to ISWAN WhatsApp for the ports where no such
+      // contact is confirmed yet (see PORT_DISPATCHER_TEL's comment).
+      const dispatcherTel = PORT_DISPATCHER_TEL[state.portId];
+      const shipDepartedActionAttrs = dispatcherTel ? `data-tel="${dispatcherTel}"` : `data-whatsapp="${ISWAN_WHATSAPP}"`;
+      const shipDepartedActionLabel = dispatcherTel
+        ? t("shipDeparted.contactDispatcherBtn", null, shipDepartedLang)
+        : t("escalationToggle.coordinatorBtn", null, shipDepartedLang);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
-          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("shipDeparted.contactCentralOfficeBtn", null, shipDepartedLang)}</button>
+          <button class="esc-btn esc-coordinator" ${shipDepartedActionAttrs}>${shipDepartedActionLabel}</button>
         </div>`);
     } else if (isPortExitGateTopic(text)) {
       // Port Exit (gate direction), 12.09.2026, EN Layer A pass -- see the
@@ -2559,7 +2609,7 @@ function sendAssistantChatMessage() {
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
           <button class="esc-btn esc-continue" id="escContinueBtn">${t("escalationToggle.continueBtn", null, langOverride)}</button>
-          <button class="esc-btn esc-coordinator" id="escCoordinatorBtn">${t("escalationToggle.coordinatorBtn", null, langOverride)}</button>
+          <button class="esc-btn esc-coordinator" data-whatsapp="${ISWAN_WHATSAPP}">${t("escalationToggle.coordinatorBtn", null, langOverride)}</button>
         </div>`);
     } else {
       // Priority order below RED_LINE_KEYWORDS / COMPLEX_TOPIC_KEYWORDS
@@ -2992,6 +3042,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // silently dialing emergency services.
     const telEl = e.target.closest("[data-tel]");
     if (telEl) window.location.href = "tel:" + telEl.dataset.tel;
+
+    // 13.09.2026, Andrey: same principle as data-tel above, for WhatsApp.
+    // wa.me accepts a bare international number (no "+", no spaces) --
+    // dataset.whatsapp is stored that way already (see PORT_DISPATCHER_TEL
+    // and the ISWAN row/button wiring below). Opens in a new tab/the
+    // WhatsApp app, same as the existing data-map handler's window.open.
+    const waEl = e.target.closest("[data-whatsapp]");
+    if (waEl) window.open("https://wa.me/" + waEl.dataset.whatsapp, "_blank");
 
     const goEl = e.target.closest("[data-go]");
     if (goEl) {

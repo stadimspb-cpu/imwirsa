@@ -219,18 +219,31 @@ const I18N = {
       },
     },
     escalation: {
-      alex: "This sounds like something worth talking through with a real person. I can connect you to the IMWIRSA Central Office right now, or we can keep talking here — your choice.",
-      omar: "My friend, this is something worth speaking about with a real person, not just with me. I can bring in the IMWIRSA Central Office right now — or if you'd rather keep talking to me a little longer, that's alright too.",
-      sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can connect you with the IMWIRSA Central Office right now, or stay here with you a little longer if you'd rather. Whatever feels right.",
-      grace: "This is important, and you deserve to speak with someone who can properly help. I can connect you with the IMWIRSA Central Office now, if you wish — or, if you prefer, we can continue speaking here. The choice is yours.",
+      alex: "This sounds like something worth talking through with a real person. I can open WhatsApp to ISWAN right now — a free, confidential seafarer helpline, always a real person, not a bot — or we can keep talking here — your choice.",
+      omar: "My friend, this is something worth speaking about with a real person, not just with me. I can open WhatsApp to ISWAN right now — a free helpline, always a real person on the other end — or if you'd rather keep talking to me a little longer, that's alright too.",
+      sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can open WhatsApp to ISWAN right now, a free confidential helpline with a real person, or stay here with you a little longer if you'd rather. Whatever feels right.",
+      grace: "This is important, and you deserve to speak with someone who can properly help. I can open WhatsApp to ISWAN now, if you wish — a free, confidential helpline, always a real person — or, if you prefer, we can continue speaking here. The choice is yours.",
     },
     // 12.09.2026, Andrey's correction: see the matching RU block's comment
     // — same overclaim fixed here too (not a translation gap, the same
     // substantive issue in English).
+    // 13.09.2026, Andrey: "IMWIRSA Central Office" replaced with ISWAN
+    // (SeafarerHelp) throughout this cluster -- the internal "volunteer"
+    // chat screen this used to open had no real backend behind it (any
+    // message typed there went nowhere), so the text was promising a
+    // connection that didn't exist. ISWAN is a real, independently
+    // verified 24/7/365 multilingual helpline (confirmed directly against
+    // iswan.org.uk/seafarerhelp: "you will always speak to a trained
+    // helpline officer, not artificial intelligence (AI) or a chatbot"),
+    // and Andrey's own reasoning is that the actual duty of care for
+    // advice given in a crisis conversation belongs with ISWAN, not with
+    // an app-simulated chat. Real numbers verified directly from that
+    // page: call +44 20 7323 2737, WhatsApp +44 7909 470732 (two
+    // different numbers, not the same one in two formats).
     redline: {
-      message: "I'm concerned about what you've just shared, and I don't want you to face this alone. Please see the emergency contacts below, or contact the IMWIRSA Central Office when you have a connection.",
+      message: "I'm concerned about what you've just shared, and I don't want you to face this alone. Please see the emergency contacts below, or message ISWAN on WhatsApp when you have a connection — a free, confidential helpline where you'll always reach a real person, not a bot.",
       emergencyBtn: "🚨 Emergency contacts",
-      talkToPersonBtn: "Talk to a person now",
+      talkToPersonBtn: "WhatsApp ISWAN now",
     },
     // 12.09.2026, Layer A audit (Andrey/Markus): medicalEmergency/
     // guideMeBack/shipDeparted used to be hardcoded Russian string
@@ -270,9 +283,20 @@ const I18N = {
       openLocatorBtn: "Open the \"My Ship\" locator",
       openShipTabBtn: "Open the \"Ship\" tab",
     },
+    // 13.09.2026, Andrey: "Contact the IMWIRSA Central Office directly"
+    // replaced -- the button below no longer opens that (see redline's
+    // comment for why). Ship Departed is a logistics emergency, not a
+    // welfare/crisis conversation, so it routes to the PORT's own duty
+    // dispatcher contact first (already confirmed, real, port-specific
+    // data already in each port's emergency-contacts card) rather than
+    // ISWAN -- ISWAN is the fallback only for the handful of ports where
+    // no port administration/dispatcher contact is confirmed yet (see
+    // PORT_DISPATCHER_TEL in app.js). Message reworded to stay accurate
+    // either way, rather than naming a specific office that may not be
+    // the one actually reached.
     shipDeparted: {
-      message: "It looks like the ship left without you — this is a serious situation. Contact the IMWIRSA Central Office directly.",
-      contactCentralOfficeBtn: "Contact IMWIRSA Central Office",
+      message: "It looks like the ship left without you — this is a serious situation. Contact the port or ISWAN right now using the button below.",
+      contactDispatcherBtn: "Contact Port Duty Dispatcher",
     },
     // 12.09.2026, EN Layer A pass -- new keys for the two Port Exit
     // priority functions (see the rationale comment above
@@ -297,7 +321,11 @@ const I18N = {
     // above until now) was the old/stale term, replaced. This button
     // renamed to match for the same reason the RU one was earlier (sits
     // directly under escalation.* text in the isComplexTopic flow).
-    escalationToggle: { continueBtn: "Continue", coordinatorBtn: "Central Office" },
+    // 13.09.2026, Andrey: renamed from "Central Office" -- this button is
+    // now the same ISWAN WhatsApp destination as redline.talkToPersonBtn,
+    // used by isComplexTopic's escalation toggle. See redline.message's
+    // comment above for the full rationale.
+    escalationToggle: { continueBtn: "Continue", coordinatorBtn: "WhatsApp ISWAN" },
     categoryPrompts: {
       centre: "Any questions about the seafarers' centre — opening hours, services, how to get there? Ask me, and I'll bring in the centre's own team if it's something only they can help with.",
       transport: "Need help getting around — shuttle times, taxis, buses, or leaving the port? Just ask, I'm right here.",
@@ -600,10 +628,10 @@ const I18N = {
       // 12.09.2026, Andrey's correction: "координатор(ом) IMWIRSA" here
       // unified to the app's official current term "Центральный офис
       // IMWIRSA" (same rename already applied to shipDeparted above).
-      alex: "Похоже, об этом стоит поговорить с реальным человеком. Я могу прямо сейчас соединить вас с Центральным офисом IMWIRSA, или мы можем продолжить разговор здесь — выбор за вами.",
-      omar: "Друг мой, об этом стоит поговорить с реальным человеком, а не только со мной. Я могу прямо сейчас подключить Центральный офис IMWIRSA — или, если вы предпочитаете ещё немного поговорить со мной, это тоже нормально.",
-      sophia: "Спасибо, что рассказали мне об этом. Это важно, и я хочу, чтобы вы поговорили с тем, кто действительно сможет помочь — я могу прямо сейчас соединить вас с Центральным офисом IMWIRSA, или остаться здесь с вами ещё немного, если вы предпочитаете. Как вам будет комфортнее.",
-      grace: "Это важно, и вы заслуживаете поговорить с тем, кто действительно может помочь. Я могу соединить вас с Центральным офисом IMWIRSA прямо сейчас, если хотите — или, если предпочитаете, мы можем продолжить разговор здесь. Выбор за вами.",
+      alex: "Похоже, об этом стоит поговорить с реальным человеком. Я могу прямо сейчас открыть WhatsApp с ISWAN — это бесплатная и конфиденциальная линия поддержки моряков, там всегда живой человек, не бот, — или мы можем продолжить разговор здесь — выбор за вами.",
+      omar: "Друг мой, об этом стоит поговорить с реальным человеком, а не только со мной. Я могу прямо сейчас открыть WhatsApp с ISWAN — бесплатная линия, там всегда живой человек, — или, если вы предпочитаете ещё немного поговорить со мной, это тоже нормально.",
+      sophia: "Спасибо, что рассказали мне об этом. Это важно, и я хочу, чтобы вы поговорили с тем, кто действительно сможет помочь — я могу прямо сейчас открыть WhatsApp с ISWAN, это бесплатная конфиденциальная линия с живым человеком, или остаться здесь с вами ещё немного, если вы предпочитаете. Как вам будет комфортнее.",
+      grace: "Это важно, и вы заслуживаете поговорить с тем, кто действительно может помочь. Я могу открыть WhatsApp с ISWAN прямо сейчас, если хотите — бесплатная конфиденциальная линия, там всегда живой человек, — или, если предпочитаете, мы можем продолжить разговор здесь. Выбор за вами.",
     },
     // 12.09.2026, Andrey's correction: "я прямо сейчас подключу живого
     // человека — днём или ночью вам обязательно ответят" overclaimed a
@@ -617,10 +645,15 @@ const I18N = {
     // сейчас" button stays (Andrey confirmed it's fine to keep as long as
     // it genuinely opens a real contact channel) -- only the promissory
     // wording in the message itself changed.
+    // 13.09.2026, Andrey: see EN block's comment for full rationale --
+    // "Центральный офис IMWIRSA" replaced with ISWAN (реальная,
+    // независимо проверенная линия 24/7/365, живой человек, не бот).
+    // Номера проверены напрямую на iswan.org.uk/seafarerhelp: звонок
+    // +44 20 7323 2737, WhatsApp +44 7909 470732 — это два разных номера.
     redline: {
-      message: "Меня беспокоит то, что вы сейчас написали, и я не хочу, чтобы вы оставались с этим один на один. Пожалуйста, посмотрите экстренные контакты ниже, или свяжитесь с Центральным офисом IMWIRSA, когда будет доступна связь.",
+      message: "Меня беспокоит то, что вы сейчас написали, и я не хочу, чтобы вы оставались с этим один на один. Пожалуйста, посмотрите экстренные контакты ниже, или напишите в WhatsApp ISWAN, когда будет доступна связь — это бесплатная конфиденциальная линия, там всегда отвечает живой человек, а не бот.",
       emergencyBtn: "🚨 Экстренные контакты",
-      talkToPersonBtn: "Связаться с человеком сейчас",
+      talkToPersonBtn: "Написать в ISWAN сейчас",
     },
     // 12.09.2026, Layer A audit: RU wording moved here unchanged from the
     // old app.js literals — see the matching EN block's comment for why.
@@ -641,9 +674,14 @@ const I18N = {
     // (used by RED_LINE/isComplexTopic/GUIDE_ME_BACK) was renamed to match
     // in a follow-up edit the same day — see that key below, no longer
     // "Дежурный офис".
+    // 13.09.2026, Andrey: см. комментарий к EN-блоку. Ship Departed — это
+    // логистическая, а не welfare-ситуация, поэтому ведём на диспетчера
+    // именно этого порта (уже подтверждённые контакты по каждому порту),
+    // ISWAN — только запасной вариант там, где диспетчера пока нет
+    // подтверждённого (см. PORT_DISPATCHER_TEL в app.js).
     shipDeparted: {
-      message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с Центральным офисом IMWIRSA напрямую.»",
-      contactCentralOfficeBtn: "Связаться с Центральным офисом IMWIRSA",
+      message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с портом или ISWAN прямо сейчас — кнопка ниже.»",
+      contactDispatcherBtn: "Связаться с диспетчером порта",
     },
     // 12.09.2026, EN Layer A pass -- this RU block was missing entirely in
     // the first version of these keys (an oversight caught while wiring
@@ -668,7 +706,9 @@ const I18N = {
     // (see those blocks). TR left as "Nöbetçi Ofis" (Turkish for "Duty
     // Office") -- unverified TR translation, not touched without a native
     // reviewer, same standing caveat as the rest of TR.
-    escalationToggle: { continueBtn: "Продолжить", coordinatorBtn: "Центральный офис" },
+    // 13.09.2026, Andrey: переименовано с "Центральный офис" — теперь та
+    // же самая точка входа в WhatsApp ISWAN, что и redline.talkToPersonBtn.
+    escalationToggle: { continueBtn: "Продолжить", coordinatorBtn: "WhatsApp ISWAN" },
     categoryPrompts: {
       centre: "Есть вопросы о центре моряков — часы работы, услуги, как добраться? Спросите меня, и я подключу команду центра, если это то, в чём могут помочь только они.",
       transport: "Нужна помощь с передвижением — расписание шаттлов, такси, автобусы или выход из порта? Просто спросите, я рядом.",
