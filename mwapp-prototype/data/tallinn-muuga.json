@@ -207,7 +207,8 @@
           "icon": "🚨",
           "title": "Police / Ambulance",
           "sub": "112 · Free, 24/7",
-          "action": "📞"
+          "action": "📞",
+          "tel": "112"
         },
         {
           "icon": "🩺",
@@ -225,31 +226,36 @@
           "icon": "🏛",
           "title": "Seamen's Mission chaplain",
           "sub": "+372 56 462 825 · also +372 631 8234",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+37256462825"
         },
         {
           "icon": "🌐",
           "title": "ISWAN 24/7 Helpline",
           "sub": "+44 20 7283 2922 · Multilingual",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+442072832922"
         },
         {
           "icon": "⚖️",
           "title": "ITF Inspector — Jaanus Kuiv",
           "sub": "+372 50 63 908 · free basic advice on wages, contracts & seafarers' rights",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+3725063908"
         },
         {
           "icon": "🤝",
           "title": "EMSA — Estonian Seafarers' Independent Union",
           "sub": "+372 661 2406 · Mon–Fri 09:00–17:00",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+3726612406"
         },
         {
           "icon": "📡",
           "title": "Port duty dispatcher",
           "sub": "+372 631 8008 · 24/7",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+3726318008"
         }
       ]
     },
@@ -304,13 +310,15 @@
           "icon": "📞",
           "title": "+372 631 8234",
           "sub": "Main line",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+3726318234"
         },
         {
           "icon": "📞",
           "title": "+372 56 462 825",
           "sub": "Chaplain's direct line · also WhatsApp",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+37256462825"
         },
         {
           "icon": "🧑‍💼",
@@ -361,7 +369,8 @@
           "icon": "🕑",
           "title": "Runs on call, 14:00 – 20:30",
           "sub": "Call or WhatsApp the chaplain: +372 56 462 825",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+37256462825"
         },
         {
           "icon": "🚐",
@@ -520,7 +529,8 @@
               "icon": "📞",
               "title": "Forus Taxi",
               "sub": "+372 612 0000",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+3726120000"
             }
           ]
         },
@@ -1059,13 +1069,15 @@
               "icon": "🚨",
               "title": "112",
               "sub": "Police and ambulance · free · 24/7",
-              "action": "📞"
+              "action": "📞",
+              "tel": "112"
             },
             {
               "icon": "🏛",
               "title": "Seamen's Mission chaplain",
               "sub": "+372 56 462 825",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+37256462825"
             }
           ]
         }
@@ -1119,7 +1131,8 @@
           "icon": "📞",
           "title": "+372 56 462 825",
           "sub": "Also WhatsApp",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+37256462825"
         }
       ],
       "updated": "5 August 2026"
@@ -1155,7 +1168,8 @@
           "icon": "📞",
           "title": "+372 644 6367",
           "sub": "Stella Maris Estonia chaplaincy / parish line",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+3726446367"
         }
       ],
       "note": "This one's a real trip out from Muuga — for anything less than a scheduled visit, the chaplain at the centre here can usually pass a message along.",
@@ -1209,7 +1223,8 @@
           "icon": "📞",
           "title": "+372 606 0842",
           "sub": "Duty priest, Maardu",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+3726060842"
         }
       ],
       "updated": "5 August 2026"
@@ -1251,7 +1266,8 @@
           "icon": "📞",
           "title": "+372 614 3086",
           "sub": "Islamic Centre reception",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+3726143086"
         }
       ],
       "updated": "5 August 2026"

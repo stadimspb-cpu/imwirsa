@@ -178,7 +178,8 @@
           "icon": "🚨",
           "title": "Police / Ambulance / Fire",
           "sub": "112 · Free, 24/7, no SIM needed",
-          "action": "📞"
+          "action": "📞",
+          "tel": "112"
         },
         {
           "icon": "🩺",
@@ -190,31 +191,36 @@
           "icon": "🇬🇧",
           "title": "Regina Maria / RMN Diagnostice",
           "sub": "English-speaking private clinic · +40 21 9268",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+40219268"
         },
         {
           "icon": "🏛",
           "title": "Seamen's Club Constanța (Stella Maris / ITF)",
           "sub": "+40 241 611 114",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+40241611114"
         },
         {
           "icon": "🌐",
           "title": "ISWAN 24/7 Helpline",
           "sub": "+44 20 7283 2922 · Multilingual",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+442072832922"
         },
         {
           "icon": "⚓",
           "title": "APMC — Constanța Port Administration",
           "sub": "+40 241 602 114 / +40 241 602 115",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+40241602114"
         },
         {
           "icon": "⚖️",
           "title": "ITF Inspector — Adrian Mihălcioiu (SLN)",
           "sub": "+40 722 242 888 / +40 241 618 587",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+40722242888"
         }
       ]
     },
@@ -269,7 +275,8 @@
           "icon": "📞",
           "title": "+40 241 611 114",
           "sub": "Main line",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+40241611114"
         },
         {
           "icon": "✉️",
@@ -475,13 +482,15 @@
               "icon": "📞",
               "title": "Taxi Rompetrol",
               "sub": "+40 241 630 000",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+40241630000"
             },
             {
               "icon": "📞",
               "title": "Taxi Sageata",
               "sub": "+40 241 638 888",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+40241638888"
             }
           ]
         },
@@ -712,7 +721,8 @@
           "icon": "📞",
           "title": "Lucian Gheorghiu — chaplain / director",
           "sub": "+40 241 611 114 · Romanian, English",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+40241611114"
         }
       ],
       "updated": "9 August 2026"
@@ -743,7 +753,8 @@
           "icon": "📞",
           "title": "Adrian Mihălcioiu",
           "sub": "+40 722 242 888 / +40 241 618 587 · Romanian, English",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+40722242888"
         }
       ],
       "note": "Available by appointment.",
@@ -981,7 +992,8 @@
               "icon": "🚨",
               "title": "112",
               "sub": "Police, ambulance, fire — free, works with any SIM or none",
-              "action": "📞"
+              "action": "📞",
+              "tel": "112"
             }
           ]
         }

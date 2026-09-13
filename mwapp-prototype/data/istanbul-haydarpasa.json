@@ -46,12 +46,12 @@
     "emergency": {
       "title": "Emergency Contacts",
       "rows": [
-        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞" },
-        { "icon": "⚓", "title": "Coast Guard (Sahil Güvenlik)", "sub": "158", "action": "📞" },
+        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞", "tel": "112" },
+        { "icon": "⚓", "title": "Coast Guard (Sahil Güvenlik)", "sub": "158", "action": "📞", "tel": "158" },
         { "icon": "🩺", "title": "Nearest hospital", "sub": "Not yet confirmed for this terminal — ask your agent", "pending": true },
-        { "icon": "📡", "title": "Port administration", "sub": "+90 212 251 25 00", "action": "📞" },
-        { "icon": "⚖️", "title": "ITF Türkiye Inspectorate (DADDER)", "sub": "+90 212 252 50 11 · wage, injury and rights disputes", "action": "📞" },
-        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞" }
+        { "icon": "📡", "title": "Port administration", "sub": "+90 212 251 25 00", "action": "📞", "tel": "+902122512500" },
+        { "icon": "⚖️", "title": "ITF Türkiye Inspectorate (DADDER)", "sub": "+90 212 252 50 11 · wage, injury and rights disputes", "action": "📞", "tel": "+902122525011" },
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞", "tel": "+442072832922" }
       ]
     },
     "wellness": { "title": "Premium Welfare Services", "gated": true, "rows": [ { "icon": "ℹ️", "title": "Details coming soon from the port curator", "sub": "Trade Union partner services pending confirmation for this terminal", "pending": true } ] }

@@ -157,13 +157,15 @@
           "icon": "🚨",
           "title": "Police / Ambulance / Fire",
           "sub": "112 · Free, 24/7",
-          "action": "📞"
+          "action": "📞",
+          "tel": "112"
         },
         {
           "icon": "⚓",
           "title": "Coast Guard (Sahil Güvenlik)",
           "sub": "158",
-          "action": "📞"
+          "action": "📞",
+          "tel": "158"
         },
         {
           "icon": "🩺",
@@ -175,25 +177,29 @@
           "icon": "🇬🇧",
           "title": "Medicana International Beylikdüzü",
           "sub": "+90 850 460 63 34 · English-speaking private clinic",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+908504606334"
         },
         {
           "icon": "📡",
           "title": "Port administration",
           "sub": "+90 212 251 25 00",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+902122512500"
         },
         {
           "icon": "⚖️",
           "title": "ITF Türkiye Inspectorate (DADDER)",
           "sub": "+90 212 252 50 11 · wage, injury and rights disputes",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+902122525011"
         },
         {
           "icon": "🌐",
           "title": "ISWAN 24/7 Helpline",
           "sub": "+44 20 7283 2922 · Multilingual",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+442072832922"
         }
       ]
     },
@@ -326,7 +332,8 @@
               "icon": "🟡",
               "title": "BiTaksi (main)",
               "sub": "+90 212 444 55 55",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+902124445555"
             },
             {
               "icon": "⚫",

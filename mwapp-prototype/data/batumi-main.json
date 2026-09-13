@@ -171,7 +171,8 @@
           "icon": "🚨",
           "title": "Police / Ambulance / Fire",
           "sub": "112 · Free, 24/7 · English-speaking operators available",
-          "action": "📞"
+          "action": "📞",
+          "tel": "112"
         },
         {
           "icon": "🩺",
@@ -189,25 +190,29 @@
           "icon": "🏛",
           "title": "Batumi Seafarers' Centre",
           "sub": "+995 422 27 40 00 · currently closed for renovation, phone still active",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+995422274000"
         },
         {
           "icon": "🌐",
           "title": "ISWAN 24/7 Helpline",
           "sub": "+44 20 7283 2922 · Multilingual",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+442072832922"
         },
         {
           "icon": "⚖️",
           "title": "Maritime Transport Agency of Georgia",
           "sub": "+995 422 27 49 25 · info@mta.gov.ge",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+995422274925"
         },
         {
           "icon": "📡",
           "title": "Port duty dispatcher",
           "sub": "+995 422 27 60 15",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+995422276015"
         }
       ]
     },
@@ -266,13 +271,15 @@
           "icon": "📞",
           "title": "+995 422 27 40 00",
           "sub": "Main line",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+995422274000"
         },
         {
           "icon": "📞",
           "title": "+995 599 12 34 56",
           "sub": "WhatsApp",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+995599123456"
         }
       ],
       "note": "Run by Sailors' Society Batumi with the local seafarers' rights council. Closed 1–2 Jan, 7 Jan, 24 Apr, 26 May — on top of the current renovation. Hours above are what applies once it reopens."
@@ -452,7 +459,8 @@
               "icon": "📞",
               "title": "Maxim Batumi",
               "sub": "+995 422 24 00 00",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+995422240000"
             }
           ]
         },
@@ -980,7 +988,8 @@
               "icon": "🚨",
               "title": "112",
               "sub": "Police, ambulance, fire · English-speaking operators",
-              "action": "📞"
+              "action": "📞",
+              "tel": "112"
             }
           ]
         }
@@ -1019,7 +1028,8 @@
           "icon": "📞",
           "title": "+995 599 12 34 56",
           "sub": "Georgian, English, Russian",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+995599123456"
         }
       ],
       "updated": "7 August 2026"

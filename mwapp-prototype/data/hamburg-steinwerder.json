@@ -177,13 +177,15 @@
           "icon": "🚨",
           "title": "Police / Ambulance / Fire",
           "sub": "112 · Free, 24/7, English-speaking operator available",
-          "action": "📞"
+          "action": "📞",
+          "tel": "112"
         },
         {
           "icon": "🚔",
           "title": "Police (non-emergency)",
           "sub": "110",
-          "action": "📞"
+          "action": "📞",
+          "tel": "110"
         },
         {
           "icon": "🩺",
@@ -195,13 +197,15 @@
           "icon": "🏛",
           "title": "Duckdalben Seemannsclub",
           "sub": "+49 40 740 1660",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+49407401660"
         },
         {
           "icon": "🌐",
           "title": "ISWAN 24/7 Helpline",
           "sub": "+44 20 7283 2922 · Multilingual",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+442072832922"
         }
       ]
     },
@@ -425,13 +429,15 @@
               "icon": "📞",
               "title": "Hansa-Taxi",
               "sub": "+49 40 211121",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+4940211121"
             },
             {
               "icon": "📞",
               "title": "Taxi Hamburg",
               "sub": "+49 40 666666",
-              "action": "📞"
+              "action": "📞",
+              "tel": "+4940666666"
             }
           ]
         },
@@ -892,7 +898,8 @@
           "icon": "📞",
           "title": "+49 40 740 1660",
           "sub": "Daily 10:00–22:00 · German, English",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+49407401660"
         }
       ],
       "updated": "7 August 2026"
@@ -923,7 +930,8 @@
           "icon": "📞",
           "title": "+49 40 365825",
           "sub": "German, English, Spanish, Polish",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+4940365825"
         },
         {
           "icon": "💬",

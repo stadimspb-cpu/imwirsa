@@ -167,7 +167,8 @@
           "icon": "🚨",
           "title": "Police / Ambulance / Fire",
           "sub": "112 · Free, 24/7",
-          "action": "📞"
+          "action": "📞",
+          "tel": "112"
         },
         {
           "icon": "🩺",
@@ -185,13 +186,15 @@
           "icon": "📡",
           "title": "Port administration",
           "sub": "+370 46 499 799",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+37046499799"
         },
         {
           "icon": "🌐",
           "title": "ISWAN 24/7 Helpline",
           "sub": "+44 20 7283 2922 · Multilingual",
-          "action": "📞"
+          "action": "📞",
+          "tel": "+442072832922"
         },
         {
           "icon": "🤝",

@@ -50,11 +50,11 @@
     "emergency": {
       "title": "Emergency Contacts",
       "rows": [
-        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞" },
+        { "icon": "🚨", "title": "Police / Ambulance / Fire", "sub": "112 · Free, 24/7", "action": "📞", "tel": "112" },
         { "icon": "🩺", "title": "Klaipėda University Hospital", "sub": "Liepojos g. 41 · +370 46 396 500", "action": "🧭" },
         { "icon": "🇬🇧", "title": "English- and Russian-speaking care", "sub": "Available at the hospital above", "action": "" },
-        { "icon": "📡", "title": "Port administration", "sub": "+370 46 499 799", "action": "📞" },
-        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞" },
+        { "icon": "📡", "title": "Port administration", "sub": "+370 46 499 799", "action": "📞", "tel": "+37046499799" },
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞", "tel": "+442072832922" },
         { "icon": "🤝", "title": "Local union office", "sub": "J. Janonio g. 24, Klaipėda", "action": "🧭" }
       ]
     },
