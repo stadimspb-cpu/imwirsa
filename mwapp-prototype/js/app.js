@@ -926,8 +926,13 @@ async function openDetail(key) {
     // hand straight off to a screen (`go`) — used for the neutral "I'd just
     // like to talk" entry in Spiritual Care, which belongs in that list but
     // has no reference page behind it, only the assistant.
-    const rowClickable = (!!r.sd || !!r.go) && !locked;
-    const attrs = locked ? "" : (r.sd ? `data-sd="${r.sd}"` : (r.go ? `data-go="${r.go}"` : ""));
+    // 13.09.2026, Andrey: a `tel` row dials directly (tel: link) instead of
+    // opening anything — added for Emergency Contacts, where the number
+    // itself IS the destination, not a screen to navigate to. Mirrors the
+    // existing `data-map` pattern (see the global click handler) rather
+    // than inventing a new mechanism.
+    const rowClickable = (!!r.sd || !!r.go || !!r.tel) && !locked;
+    const attrs = locked ? "" : (r.sd ? `data-sd="${r.sd}"` : (r.go ? `data-go="${r.go}"` : (r.tel ? `data-tel="${r.tel}"` : "")));
     return `
     <div class="d-row ${rowClickable ? 'clickable' : ''}" ${attrs}>
       <div class="d-icon">${r.icon}</div>
@@ -955,8 +960,13 @@ function openSubDetail(sdKey) {
   document.getElementById("subdetailCrumbPort").textContent = port.meta.terminal;
   document.getElementById("subdetailTitle").textContent = sd.title;
 
+  // 13.09.2026, Andrey: same `tel` support as openDetail's rows above --
+  // this one helper renders sd.contacts, sd.directions, AND every
+  // sec.rows inside sd.sections, so fixing it here covers all of those at
+  // once (chaplain numbers, ISWAN, taxi companies, spiritual-care
+  // contacts, etc.) rather than needing a separate fix per section type.
   const contactRows = (list) => list.map((c) => `
-    <div class="contact-row">
+    <div class="contact-row${c.tel ? " clickable" : ""}"${c.tel ? ` data-tel="${c.tel}"` : ""}>
       <div class="c-icon">${c.icon}</div>
       <div class="c-body"><div class="c-title">${c.title}</div><div class="c-sub">${c.sub}</div></div>
       ${c.action ? `<div class="c-action">${c.action}</div>` : ""}
@@ -2937,6 +2947,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const [la, ln] = mapEl.dataset.map.split(",");
       window.open(mapsUrl(la, ln), "_blank");
     }
+
+    // 13.09.2026, Andrey: tapping an Emergency Contacts row (or any other
+    // contact row with a `tel` field) now opens the phone's dialer with
+    // the number pre-filled, instead of just displaying the number as
+    // text on a screen the seafarer had to read and dial manually. This
+    // is a standard tel: link — the OS still requires one more tap to
+    // actually place the call (true on both iOS and Android, not
+    // something this app can or should bypass), which is a good thing
+    // here: it's a real safety backstop against an accidental tap
+    // silently dialing emergency services.
+    const telEl = e.target.closest("[data-tel]");
+    if (telEl) window.location.href = "tel:" + telEl.dataset.tel;
 
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
