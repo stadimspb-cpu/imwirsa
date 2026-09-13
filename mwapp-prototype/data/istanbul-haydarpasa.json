@@ -51,7 +51,8 @@
         { "icon": "🩺", "title": "Nearest hospital", "sub": "Not yet confirmed for this terminal — ask your agent", "pending": true },
         { "icon": "📡", "title": "Port administration", "sub": "+90 212 251 25 00", "action": "📞", "tel": "+902122512500" },
         { "icon": "⚖️", "title": "ITF Türkiye Inspectorate (DADDER)", "sub": "+90 212 252 50 11 · wage, injury and rights disputes", "action": "📞", "tel": "+902122525011" },
-        { "icon": "🌐", "title": "ISWAN 24/7 Helpline", "sub": "+44 20 7283 2922 · Multilingual", "action": "📞", "tel": "+442072832922" }
+        { "icon": "🌐", "title": "ISWAN 24/7 Helpline — Call", "sub": "+44 20 7323 2737 · Multilingual", "action": "📞", "tel": "+442073232737" },
+        { "icon": "💬", "title": "ISWAN 24/7 Helpline — WhatsApp", "sub": "Free, confidential, multilingual — real person, not AI", "action": "💬", "whatsapp": "4407909470732" }
       ]
     },
     "wellness": { "title": "Premium Welfare Services", "gated": true, "rows": [ { "icon": "ℹ️", "title": "Details coming soon from the port curator", "sub": "Trade Union partner services pending confirmation for this terminal", "pending": true } ] }

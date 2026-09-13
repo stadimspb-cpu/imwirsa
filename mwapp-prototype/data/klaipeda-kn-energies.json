@@ -191,10 +191,17 @@
         },
         {
           "icon": "🌐",
-          "title": "ISWAN 24/7 Helpline",
-          "sub": "+44 20 7283 2922 · Multilingual",
+          "title": "ISWAN 24/7 Helpline — Call",
+          "sub": "+44 20 7323 2737 · Multilingual",
           "action": "📞",
-          "tel": "+442072832922"
+          "tel": "+442073232737"
+        },
+        {
+          "icon": "💬",
+          "title": "ISWAN 24/7 Helpline — WhatsApp",
+          "sub": "Free, confidential, multilingual — real person, not AI",
+          "action": "💬",
+          "whatsapp": "4407909470732"
         },
         {
           "icon": "🤝",
