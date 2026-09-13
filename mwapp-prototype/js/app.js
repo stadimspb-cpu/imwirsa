@@ -2234,6 +2234,34 @@ function startNewAssistantChat() {
   openAssistantChat();
 }
 
+// 13.09.2026, Andrey: found live -- relying on "the very next message counts
+// as the coordinator reason" broke as soon as the seafarer didn't start from
+// a clean chat. If yesterday's conversation was still open, or they tapped
+// "Talk to Central Office" more than once, or sent more than one message in
+// a row, the askReason question could pile up repeatedly, or an unrelated
+// message ("как пройти в магазин") could get treated as the coordinator
+// reason instead. A seafarer has no way to know they need to tap 🔄 first --
+// the app shouldn't require that. Fix: every tap of "Talk to Central Office"
+// now ALWAYS starts a guaranteed-fresh assistant conversation itself (same
+// reset as startNewAssistantChat above), so there's never old history to
+// collide with, and the very next message the seafarer sends is reliably
+// their answer to "why do you want the coordinator" -- no reset button, no
+// remembering, no ambiguity.
+function startCoordinatorChat() {
+  state.chatMessages = [];
+  state.chatStarted = false;
+  state.assistantReplyIndex = 0;
+  state.consecutiveUnclear = 0;
+  state.consecutiveDeepTalk = 0;
+  state.companionActive = false;
+  state.lastIntentFamily = null;
+  saveState();
+  const toggle = document.getElementById("escalationToggle");
+  if (toggle) toggle.remove();
+  awaitingCoordinatorReason = true;
+  goToScreen("assistantchat");
+}
+
 // 09.09.2026, sticky Companion Mode helper: the assistant's own last 1-2
 // replies (not the seafarer's messages), used purely to avoid visibly
 // repeating a companion line the seafarer just saw -- see
@@ -3091,9 +3119,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // everywhere else), but idle small talk gets pointed to Spiritual
       // Care instead of quietly becoming a second, unofficial "chat with
       // AI for company" channel that bypasses the human coordinator's time.
+      // 13.09.2026: always starts a fresh conversation (startCoordinatorChat)
+      // -- see its comment above for why leftover chat history broke this.
       if (target === "__coordinatorViaAssistant") {
-        awaitingCoordinatorReason = true;
-        goToScreen("assistantchat");
+        startCoordinatorChat();
         return;
       }
 
