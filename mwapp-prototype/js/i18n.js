@@ -99,6 +99,13 @@ const I18N = {
       askReason: "Of course — before I connect you, could you tell me briefly what this is about? That way I can make sure you reach the right place.",
       pointToSpiritual: "It sounds like you'd just like someone to talk to — that's exactly what Spiritual Care is here for. You'll find caring people ready to talk, no topic too small.",
       openSpiritualBtn: "Open Spiritual Care →",
+      // 13.09.2026, Andrey: new pair for the isCoordinatorReasonReply
+      // branch split out in app.js -- an explicit "Talk to Central
+      // Office" ask (e.g. reporting inaccurate port-card data) now gets
+      // its own confirmation and its own button, instead of sharing
+      // Complex Topic's ISWAN-branded escalation.* text.
+      confirmReason: "Got it — opening WhatsApp to the IMWIRSA Central Office. Describe your situation there and a member of the IMWIRSA team will get back to you.",
+      contactCentralOfficeBtn: "WhatsApp IMWIRSA Central Office",
       demoReplies: [
         "Thank you for sharing that. I'm listening — take your time.",
         "That sounds difficult. You're not alone in this, and I'm here with you right now.",
@@ -505,6 +512,11 @@ const I18N = {
       askReason: "Конечно — прежде чем соединить вас, расскажите коротко, в чём дело? Так я смогу быть уверен, что направляю вас в нужное место.",
       pointToSpiritual: "Похоже, вам просто хочется с кем-то поговорить — как раз для этого есть раздел «Духовная поддержка». Там есть неравнодушные люди, готовые выслушать, тема неважна.",
       openSpiritualBtn: "Открыть Духовную поддержку →",
+      // 13.09.2026, Andrey: см. комментарий к EN-блоку — явный запрос
+      // «Связаться с Центральным офисом» из настроек теперь ведёт на
+      // реальный WhatsApp IMWIRSA, а не делит текст/кнопку с ISWAN.
+      confirmReason: "Понял — открываю WhatsApp Центрального офиса IMWIRSA. Опишите там вашу ситуацию, сотрудник IMWIRSA свяжется с вами.",
+      contactCentralOfficeBtn: "WhatsApp Центральный офис IMWIRSA",
       demoReplies: [
         "Спасибо, что рассказали об этом. Я слушаю — не торопитесь.",
         "Похоже, это непросто. Вы не одиноки, и я сейчас рядом с вами.",

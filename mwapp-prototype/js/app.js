@@ -1301,6 +1301,13 @@ function hasNormalizedMatch(normalizedText, keywords) {
 // keep them separate, never merge into one "tel" field.
 const ISWAN_CALL_TEL = "+442073232737";
 const ISWAN_WHATSAPP = "4407909470732"; // wa.me wants a bare international number, no "+"
+// 13.09.2026, Andrey: real, working IMWIRSA Central Office WhatsApp number
+// (Andrey confirmed this is live and connected to IMWIRSA directly, not a
+// third-party line). Used for the "Talk to Central Office" entry point in
+// Settings -- distinct from ISWAN_WHATSAPP above, which is for the
+// welfare-crisis escalation routes (Red Line, Complex Topic). Same "no +,
+// no spaces" format wa.me expects.
+const IMWIRSA_CENTRAL_OFFICE_WHATSAPP = "37255613815";
 
 // 13.09.2026, Andrey: Ship Departed is a port-logistics emergency, not a
 // welfare/crisis conversation -- routes to the PORT'S OWN duty dispatcher
@@ -2584,22 +2591,44 @@ function sendAssistantChatMessage() {
         <div class="escalation-toggle" id="escalationToggle">
           <button class="esc-btn esc-coordinator" data-detail="spiritual">${t("coordinator.openSpiritualBtn")}</button>
         </div>`);
-    } else if (isComplexTopic(text) || isCoordinatorReasonReply) {
-      // Genuine reason — either the usual keyword check flagged it, or the
-      // seafarer explicitly came here via "Talk to Coordinator" and this
-      // reply wasn't idle chat, so default to offering the same escalation
-      // toggle used everywhere else rather than a generic demo reply.
-      console.log("[DIAG] matched rule:", isCoordinatorReasonReply ? "isCoordinatorReasonReply" : "COMPLEX_TOPIC_KEYWORDS");
+    } else if (isCoordinatorReasonReply) {
+      // 13.09.2026, Andrey: found live -- this used to be merged with the
+      // isComplexTopic branch below, so ANY reason typed after "Talk to
+      // Central Office" in Settings (e.g. "неправильная информация в
+      // карточке порта", "хочу сообщить об ошибке в MWApp") got the SAME
+      // ISWAN-branded message and button as a Complex Topic match. That's
+      // wrong: the seafarer explicitly asked for Central Office
+      // specifically -- often for something ISWAN has no reason to
+      // handle at all, like reporting inaccurate port-card data -- and
+      // was being silently redirected to ISWAN instead. This is now its
+      // own branch: an explicit ask via Settings always reaches the real
+      // IMWIRSA Central Office WhatsApp, regardless of what the stated
+      // reason says, even if that reason also happens to match a Complex
+      // Topic keyword.
+      console.log("[DIAG] matched rule: isCoordinatorReasonReply (explicit Settings ask)");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
       state.lastIntentFamily = null;
-      // 12.09.2026, EN Layer A pass: only override language when this came
-      // from an actual text match (detectComplexTopicLang) -- if it's a
-      // isCoordinatorReasonReply-only trigger (a button click, not text),
-      // there's no matched language to follow, so it keeps using the
-      // normal interface-language lookup, same as before.
-      const complexLang = isComplexTopic(text) ? detectComplexTopicLang(text) : null;
+      const msg = t("coordinator.confirmReason");
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-whatsapp="${IMWIRSA_CENTRAL_OFFICE_WHATSAPP}">${t("coordinator.contactCentralOfficeBtn")}</button>
+        </div>`);
+    } else if (isComplexTopic(text)) {
+      // Genuine reason, flagged by the usual keyword check -- default to
+      // offering the same ISWAN escalation toggle used everywhere else
+      // rather than a generic demo reply.
+      console.log("[DIAG] matched rule: COMPLEX_TOPIC_KEYWORDS");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const complexLang = detectComplexTopicLang(text);
       const langOverride = complexLang === "other" ? undefined : complexLang;
       const msg = t(`escalation.${a.id}`, null, langOverride) || t("escalation.alex", null, langOverride);
       console.log("[DIAG] selected response:", JSON.stringify(msg));
@@ -3238,9 +3267,23 @@ document.addEventListener("DOMContentLoaded", () => {
       if (toggle) toggle.remove();
     }
     if (e.target.id === "escCoordinatorBtn") {
+      // 13.09.2026, Andrey: this was the last remaining place still
+      // opening the internal "volunteer" chat screen, which has no real
+      // backend (see redline.message's comment in i18n.js for the full
+      // history -- Red Line/Complex Topic/Ship Departed all moved off
+      // this id already, to ISWAN or the port dispatcher). This id is no
+      // longer used by anything generated in this file; if Settings'
+      // "Talk to Central Office" entry point still targets it, it now
+      // opens WhatsApp to the real, confirmed IMWIRSA Central Office
+      // number instead. Flagged to Andrey: I don't have the Settings
+      // screen's own markup in this session, so I can't directly verify
+      // this id is actually what that button uses -- this fixes the
+      // mechanism on the assumption that it is, since it's the only
+      // surviving code path tied to "Central Office"/volunteer left in
+      // this file.
       const toggle = document.getElementById("escalationToggle");
       if (toggle) toggle.remove();
-      goToScreen("volunteer");
+      window.open("https://wa.me/" + IMWIRSA_CENTRAL_OFFICE_WHATSAPP, "_blank");
     }
   });
 
