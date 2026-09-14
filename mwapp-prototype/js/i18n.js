@@ -309,10 +309,17 @@ const I18N = {
       },
     },
     escalation: {
-      alex: "This sounds like something worth talking through with a real person. I can open WhatsApp to ISWAN right now — a free, confidential seafarer helpline, always a real person, not a bot — or we can keep talking here — your choice.",
-      omar: "My friend, this is something worth speaking about with a real person, not just with me. I can open WhatsApp to ISWAN right now — a free helpline, always a real person on the other end — or if you'd rather keep talking to me a little longer, that's alright too.",
-      sophia: "Thank you for telling me this. It matters, and I want you to talk to someone who can really help — I can open WhatsApp to ISWAN right now, a free confidential helpline with a real person, or stay here with you a little longer if you'd rather. Whatever feels right.",
-      grace: "This is important, and you deserve to speak with someone who can properly help. I can open WhatsApp to ISWAN now, if you wish — a free, confidential helpline, always a real person — or, if you prefer, we can continue speaking here. The choice is yours.",
+      // 13.09.2026, Markus (relayed by Andrey): the previous per-persona
+      // texts ("Thank you for telling me this... it matters... I want you
+      // to talk to someone... whatever feels right") read too much like a
+      // crisis counselor's script -- already the direction Andrey/Markus
+      // agreed to move away from. Replaced with one short, neutral text
+      // used for all four personas -- states the fact and the destination,
+      // no reassurance-heavy framing.
+      alex: "In this situation, it's best to talk to a real specialist. You can contact ISWAN SeafarerHelp — WhatsApp or a call are available via the button below.",
+      omar: "In this situation, it's best to talk to a real specialist. You can contact ISWAN SeafarerHelp — WhatsApp or a call are available via the button below.",
+      sophia: "In this situation, it's best to talk to a real specialist. You can contact ISWAN SeafarerHelp — WhatsApp or a call are available via the button below.",
+      grace: "In this situation, it's best to talk to a real specialist. You can contact ISWAN SeafarerHelp — WhatsApp or a call are available via the button below.",
     },
     // 12.09.2026, Andrey's correction: see the matching RU block's comment
     // — same overclaim fixed here too (not a translation gap, the same
@@ -330,8 +337,13 @@ const I18N = {
     // an app-simulated chat. Real numbers verified directly from that
     // page: call +44 20 7323 2737, WhatsApp +44 7909 470732 (two
     // different numbers, not the same one in two formats).
+    // 13.09.2026, Markus (relayed by Andrey): shortened and made more
+    // neutral -- the previous version, while already softened once
+    // (12.09.2026, dropping the "someone will definitely answer"
+    // overclaim), still read as reassurance-heavy. States the situation
+    // and the destination plainly.
     redline: {
-      message: "I'm concerned about what you've just shared, and I don't want you to face this alone. Please see the emergency contacts below, or message ISWAN on WhatsApp when you have a connection — a free, confidential helpline where you'll always reach a real person, not a bot.",
+      message: "In this situation, it's best to contact emergency services or reach ISWAN SeafarerHelp. Contacts below.",
       emergencyBtn: "🚨 Emergency contacts",
       talkToPersonBtn: "WhatsApp ISWAN now",
     },
@@ -384,8 +396,12 @@ const I18N = {
     // PORT_DISPATCHER_TEL in app.js). Message reworded to stay accurate
     // either way, rather than naming a specific office that may not be
     // the one actually reached.
+    // 13.09.2026, Markus (relayed by Andrey): ISWAN removed from this
+    // message too -- see the app.js comment above the Ship Departed
+    // branch for the full rationale (this is a port-logistics emergency,
+    // ISWAN has no role here per the agreed decision).
     shipDeparted: {
-      message: "It looks like the ship left without you — this is a serious situation. Contact the port or ISWAN right now using the button below.",
+      message: "It looks like the ship left without you — this is a serious situation. Contact the port right now using the button below.",
       contactDispatcherBtn: "Contact Port Duty Dispatcher",
     },
     // 12.09.2026, EN Layer A pass -- new keys for the two Port Exit
@@ -790,10 +806,14 @@ const I18N = {
       // 12.09.2026, Andrey's correction: "координатор(ом) IMWIRSA" here
       // unified to the app's official current term "Центральный офис
       // IMWIRSA" (same rename already applied to shipDeparted above).
-      alex: "Похоже, об этом стоит поговорить с реальным человеком. Я могу прямо сейчас открыть WhatsApp с ISWAN — это бесплатная и конфиденциальная линия поддержки моряков, там всегда живой человек, не бот, — или мы можем продолжить разговор здесь — выбор за вами.",
-      omar: "Друг мой, об этом стоит поговорить с реальным человеком, а не только со мной. Я могу прямо сейчас открыть WhatsApp с ISWAN — бесплатная линия, там всегда живой человек, — или, если вы предпочитаете ещё немного поговорить со мной, это тоже нормально.",
-      sophia: "Спасибо, что рассказали мне об этом. Это важно, и я хочу, чтобы вы поговорили с тем, кто действительно сможет помочь — я могу прямо сейчас открыть WhatsApp с ISWAN, это бесплатная конфиденциальная линия с живым человеком, или остаться здесь с вами ещё немного, если вы предпочитаете. Как вам будет комфортнее.",
-      grace: "Это важно, и вы заслуживаете поговорить с тем, кто действительно может помочь. Я могу открыть WhatsApp с ISWAN прямо сейчас, если хотите — бесплатная конфиденциальная линия, там всегда живой человек, — или, если предпочитаете, мы можем продолжить разговор здесь. Выбор за вами.",
+      // 13.09.2026, Markus (relayed by Andrey): см. комментарий к EN-блоку.
+      // Один короткий нейтральный текст на все 4 персоны вместо тёплого
+      // «кризисного консультанта» — факт и куда обратиться, без лишних
+      // заверений.
+      alex: "В этой ситуации лучше поговорить с живым специалистом. Можно связаться с ISWAN SeafarerHelp — WhatsApp или звонок доступны по кнопке ниже.",
+      omar: "В этой ситуации лучше поговорить с живым специалистом. Можно связаться с ISWAN SeafarerHelp — WhatsApp или звонок доступны по кнопке ниже.",
+      sophia: "В этой ситуации лучше поговорить с живым специалистом. Можно связаться с ISWAN SeafarerHelp — WhatsApp или звонок доступны по кнопке ниже.",
+      grace: "В этой ситуации лучше поговорить с живым специалистом. Можно связаться с ISWAN SeafarerHelp — WhatsApp или звонок доступны по кнопке ниже.",
     },
     // 12.09.2026, Andrey's correction: "я прямо сейчас подключу живого
     // человека — днём или ночью вам обязательно ответят" overclaimed a
@@ -812,8 +832,10 @@ const I18N = {
     // независимо проверенная линия 24/7/365, живой человек, не бот).
     // Номера проверены напрямую на iswan.org.uk/seafarerhelp: звонок
     // +44 20 7323 2737, WhatsApp +44 7909 470732 — это два разных номера.
+    // 13.09.2026, Markus (relayed by Andrey): см. EN-комментарий выше —
+    // короче и нейтральнее, факт и куда обратиться.
     redline: {
-      message: "Меня беспокоит то, что вы сейчас написали, и я не хочу, чтобы вы оставались с этим один на один. Пожалуйста, посмотрите экстренные контакты ниже, или напишите в WhatsApp ISWAN, когда будет доступна связь — это бесплатная конфиденциальная линия, там всегда отвечает живой человек, а не бот.",
+      message: "В этой ситуации лучше обратиться к экстренной службе или связаться с ISWAN SeafarerHelp. Контакты ниже.",
       emergencyBtn: "🚨 Экстренные контакты",
       talkToPersonBtn: "Написать в ISWAN сейчас",
     },
@@ -841,8 +863,10 @@ const I18N = {
     // именно этого порта (уже подтверждённые контакты по каждому порту),
     // ISWAN — только запасной вариант там, где диспетчера пока нет
     // подтверждённого (см. PORT_DISPATCHER_TEL в app.js).
+    // 13.09.2026, Markus (relayed by Andrey): ISWAN убран и из текста —
+    // см. комментарий в app.js над веткой Ship Departed.
     shipDeparted: {
-      message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с портом или ISWAN прямо сейчас — кнопка ниже.»",
+      message: "«Похоже, судно ушло без вас — это серьёзная ситуация. Свяжитесь с портом прямо сейчас — кнопка ниже.»",
       contactDispatcherBtn: "Связаться с диспетчером порта",
     },
     // 12.09.2026, EN Layer A pass -- this RU block was missing entirely in

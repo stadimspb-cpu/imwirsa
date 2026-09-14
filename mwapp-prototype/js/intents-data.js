@@ -4303,11 +4303,21 @@ const INTENTS = [
   },
   {
     "q": "Ты ИИ или живой человек?",
+    // 13.09.2026, Markus (relayed by Andrey): bare "человек"/"живой" as
+    // single-word primary anchors were scoring this intent for ANY
+    // message that happened to mention a person at all -- "Сегодня один
+    // человек меня раздражал, но сейчас всё нормально" (a completely
+    // unrelated complaint) was winning this intent purely off the word
+    // "человек". Compound phrases only from here on -- the bare word on
+    // its own means nothing for this intent.
     "primary": [
       "ии",
-      "живой",
-      "человек",
       "робот",
+      "ты ии",
+      "ты бот",
+      "ты человек",
+      "живой человек",
+      "ты настоящий",
       "живой ли"
     ],
     "synonyms": [],

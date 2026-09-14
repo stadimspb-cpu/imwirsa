@@ -1309,6 +1309,42 @@ const ISWAN_WHATSAPP = "4407909470732"; // wa.me wants a bare international numb
 // no spaces" format wa.me expects.
 const IMWIRSA_CENTRAL_OFFICE_WHATSAPP = "37255613815";
 
+// 13.09.2026, Markus (relayed by Andrey): "В карточке порта указан
+// неправильный телефон" was landing on a Shops/Payment intent (it saw
+// "карточка"/"телефон" and matched a bank-card-adjacent FAQ answer) --
+// and "Адрес Seafarers' Centre в MWApp устарел" showed the Centre's own
+// data instead of recognizing this as a REPORT about that data being
+// wrong. Both are the same underlying situation: the seafarer is telling
+// us something in the app itself is wrong, not asking a normal question.
+// Compound per Markus's exact spec: an ERROR word together with an
+// MWAPP/DATA-SUBJECT word, anywhere in the message. Deliberately checked
+// very early in the priority chain (right after Ship Departed, before
+// Complex Topic, port navigation, and the scored intent table) so it
+// can't lose to a literal keyword match on "карточка"/"телефон"/etc.
+// elsewhere in the app -- reuses the same Central Office WhatsApp
+// destination and confirmation text as the explicit Settings ask
+// (coordinator.confirmReason/contactCentralOfficeBtn), since this is the
+// same request in substance, just typed directly instead of via the
+// "why do you want Central Office" flow.
+const DATA_ISSUE_ERROR_WORDS_RU = ["ошибк", "неверн", "неправильн", "устаре", "неточн", "неактуальн"];
+const DATA_ISSUE_SUBJECT_WORDS_RU = ["mwapp", "карточ", "данные", "адрес", "телефон", "контакт", "время работы"];
+const DATA_ISSUE_ERROR_WORDS_EN = ["error", "mistake", "incorrect", "wrong", "outdated", "inaccurate", "not accurate", "not up to date"];
+const DATA_ISSUE_SUBJECT_WORDS_EN = ["mwapp", "port card", "the card", "data", "address", "phone number", "contact", "opening hours", "hours"];
+
+function detectMwappDataIssueLang(text) {
+  const normalized = normalizeText(text);
+  if (hasNormalizedMatch(normalized, DATA_ISSUE_ERROR_WORDS_RU) && hasNormalizedMatch(normalized, DATA_ISSUE_SUBJECT_WORDS_RU)) {
+    return "ru";
+  }
+  if (hasNormalizedMatch(normalized, DATA_ISSUE_ERROR_WORDS_EN) && hasNormalizedMatch(normalized, DATA_ISSUE_SUBJECT_WORDS_EN)) {
+    return "en";
+  }
+  return null;
+}
+function isMwappDataIssueTopic(text) {
+  return detectMwappDataIssueLang(text) !== null;
+}
+
 // 13.09.2026, Andrey: Ship Departed is a port-logistics emergency, not a
 // welfare/crisis conversation -- routes to the PORT'S OWN duty dispatcher
 // where one is already confirmed in that port's emergency-contacts data,
@@ -1595,11 +1631,30 @@ const COMPLEX_TOPIC_KEYWORDS_OTHER = [
 const DOCUMENT_THEFT_MARKERS_EN = ["passport", "seaman's book", "seaman book", "id card", "documents"];
 const THEFT_VERBS_EN = ["stole", "stolen", "took my", "taken", "robbed me of"];
 
+// 13.09.2026, Markus (relayed by Andrey): "У меня серьёзный конфликт с
+// капитаном…" fell through to the generic fallback -- none of the
+// COMPLEX_TOPIC_KEYWORDS_RU captain phrases above ("капитан плохо",
+// "капитан угрожает", etc.) matched this specific wording. Markus's own
+// instruction: don't add this one sentence -- build a compound instead,
+// so the whole CLASS of "trouble with the captain" is caught regardless
+// of which word describes the trouble. A CAPTAIN word together with an
+// ISSUE word, anywhere in the message, order-independent.
+const CAPTAIN_WORDS_RU = ["капитан", "мастер"];
+const CAPTAIN_ISSUE_WORDS_RU = ["конфликт", "проблема", "давление", "жалоба"];
+const CAPTAIN_WORDS_EN = ["captain", "master"];
+const CAPTAIN_ISSUE_WORDS_EN = ["conflict", "problem", "pressure", "complaint"];
+
 function detectComplexTopicLang(text) {
   const normalized = normalizeText(text);
   if (hasNormalizedMatch(normalized, COMPLEX_TOPIC_KEYWORDS_RU)) return "ru";
   if (hasNormalizedMatch(normalized, COMPLEX_TOPIC_KEYWORDS_EN)) return "en";
   if (hasNormalizedMatch(normalized, DOCUMENT_THEFT_MARKERS_EN) && hasNormalizedMatch(normalized, THEFT_VERBS_EN)) {
+    return "en";
+  }
+  if (hasNormalizedMatch(normalized, CAPTAIN_WORDS_RU) && hasNormalizedMatch(normalized, CAPTAIN_ISSUE_WORDS_RU)) {
+    return "ru";
+  }
+  if (hasNormalizedMatch(normalized, CAPTAIN_WORDS_EN) && hasNormalizedMatch(normalized, CAPTAIN_ISSUE_WORDS_EN)) {
     return "en";
   }
   if (hasNormalizedMatch(normalized, COMPLEX_TOPIC_KEYWORDS_OTHER)) return "other";
@@ -2428,62 +2483,6 @@ function sendAssistantChatMessage() {
       state.chatMessages.push({ who: "them", text: medicalEmergencyMsg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(medicalEmergencyMsg)}</div>`);
-    } else if (isGuideMeBackTopic(text)) {
-      // GUIDE_ME_BACK, 08.09.2026, per Andrey/Markus: "lost / how do I get
-      // back to the ship" must open the real "Моё судно" locator (built,
-      // working -- state.shipPoint + shipNavigateBack(), Ship tab), not a
-      // text answer -- that's what the locator exists for. Checked BEFORE
-      // isComplexTopic/companion chat specifically because live testing
-      // found this exact phrasing being swallowed by an unrelated
-      // companion topic ("Покажи дорогу обратно к судну" -> a goodnight/
-      // sleep reply) purely by incidental word overlap -- a priority route
-      // like RED_LINE/medical-emergency is the only way to make this
-      // un-loseable the same way those are.
-      //
-      // Two branches, per Markus: a saved shipPoint means the locator can
-      // actually route there, so just send the seafarer to it. No saved
-      // point means the locator has nothing to route to -- say so plainly
-      // (don't imply it'll work) and fall back to the CONFIRMED gate/exit
-      // fact from the Port Card (transport_leaving field, same data
-      // "Через какие ворота выйти в город" already uses) instead of
-      // inventing directions.
-      console.log("[DIAG] matched rule: GUIDE_ME_BACK");
-      state.consecutiveUnclear = 0;
-      state.consecutiveDeepTalk = 0;
-      state.companionActive = false;
-      state.lastIntentFamily = null;
-      // 12.09.2026, EN Layer A pass: reply language follows which keyword
-      // group matched (detectGuideMeBackLang), not the interface language.
-      const guideLang = detectGuideMeBackLang(text);
-      const hasShipPoint = !!(state.shipPoint);
-      console.log("[DIAG] shipPoint saved:", hasShipPoint);
-      let msg;
-      if (hasShipPoint) {
-        msg = t("guideMeBack.withPoint", null, guideLang);
-      } else {
-        const gateFact = typeof getRawCardFact === "function"
-          ? getRawCardFact("Через какие ворота выйти в город", state.portId)
-          : null;
-        // NOTE, 12.09.2026: gateFact itself is raw port-card data, which is
-        // still Russian-only regardless of interface/reply language
-        // (port-card content translation is a separate, not-yet-started
-        // project -- out of scope for this Layer A pass). So an English
-        // reply can still show an English sentence with a Russian fact
-        // spliced into it via {gateFact} below. Flagged, not fixed
-        // here -- fixing it means translating port-card content, not
-        // Layer A routing.
-        msg = gateFact
-          ? t("guideMeBack.noPointWithGate", { gateFact }, guideLang)
-          : t("guideMeBack.noPointNoGate", null, guideLang);
-      }
-      console.log("[DIAG] selected response:", JSON.stringify(msg));
-      state.chatMessages.push({ who: "them", text: msg });
-      saveState();
-      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
-      body.insertAdjacentHTML("beforeend", `
-        <div class="escalation-toggle" id="escalationToggle">
-          <button class="esc-btn esc-coordinator" data-go="ship">${hasShipPoint ? t("guideMeBack.openLocatorBtn", null, guideLang) : t("guideMeBack.openShipTabBtn", null, guideLang)}</button>
-        </div>`);
     } else if (isShipDepartedTopic(text)) {
       // SHIP_DEPARTED, 08.09.2026, per Andrey/Markus: a genuinely serious,
       // different situation from GUIDE_ME_BACK (the ship having already
@@ -2497,17 +2496,17 @@ function sendAssistantChatMessage() {
       //
       // 13.09.2026, Andrey: the escalation button used to open the same
       // internal "volunteer" chat as RED_LINE/isComplexTopic -- that
-      // screen had no real backend (nothing typed there went anywhere),
-      // and per the 07.09.2026 master-memo discussion, there was also no
-      // reliable online/offline detection to fall back to a saved phone
-      // number when offline. Both problems are resolved the same way now:
-      // a `tel:`/`data-tel` link works fully offline (it's a phone call,
+      // screen had no real backend (nothing typed there went anywhere).
+      // A `tel:`/`data-tel` link works fully offline (it's a phone call,
       // not a network request) and needs no connectivity check at all --
       // see PORT_DISPATCHER_TEL above for the real, per-port confirmed
-      // number, with ISWAN WhatsApp as the fallback where no port
-      // dispatcher contact is confirmed yet -- that fallback path still
-      // needs an actual connection to reach anyone (WhatsApp, not a phone
-      // call), same caveat as before for those specific ports.
+      // number. 13.09.2026, Markus (relayed by Andrey): ISWAN removed
+      // from this branch entirely -- Ship Departed is a port-logistics
+      // emergency, not a welfare/crisis conversation, and ISWAN has no
+      // reason to be routed here at all per the agreed decision. Where no
+      // port dispatcher contact is confirmed yet, falls back to the same
+      // real Emergency Contacts card RED_LINE already uses (real,
+      // port-specific data), not a generic international line.
       console.log("[DIAG] matched rule: SHIP_DEPARTED");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
@@ -2528,75 +2527,42 @@ function sendAssistantChatMessage() {
       // line. Falls back to ISWAN WhatsApp for the ports where no such
       // contact is confirmed yet (see PORT_DISPATCHER_TEL's comment).
       const dispatcherTel = PORT_DISPATCHER_TEL[state.portId];
-      const shipDepartedActionAttrs = dispatcherTel ? `data-tel="${dispatcherTel}"` : `data-whatsapp="${ISWAN_WHATSAPP}"`;
+      const shipDepartedActionAttrs = dispatcherTel ? `data-tel="${dispatcherTel}"` : `data-detail="emergency"`;
       const shipDepartedActionLabel = dispatcherTel
         ? t("shipDeparted.contactDispatcherBtn", null, shipDepartedLang)
-        : t("escalationToggle.coordinatorBtn", null, shipDepartedLang);
+        : t("redline.emergencyBtn", null, shipDepartedLang);
       body.insertAdjacentHTML("beforeend", `
         <div class="escalation-toggle" id="escalationToggle">
           <button class="esc-btn esc-coordinator" ${shipDepartedActionAttrs}>${shipDepartedActionLabel}</button>
         </div>`);
-    } else if (isPortExitGateTopic(text)) {
-      // Port Exit (gate direction), 12.09.2026, EN Layer A pass -- see the
-      // rationale comment above isPortExitGateTopic's definition.
-      console.log("[DIAG] matched rule: PORT_EXIT_GATE");
+    } else if (isMwappDataIssueTopic(text)) {
+      // 13.09.2026, Markus (relayed by Andrey): MWApp Data Issue -- see
+      // detectMwappDataIssueLang's comment above for the full rationale
+      // ("В карточке порта указан неправильный телефон" was landing on a
+      // Shops/Payment intent; "Адрес Seafarers' Centre в MWApp устарел"
+      // showed the Centre's own data instead of recognizing this as a
+      // REPORT that the data is wrong). Checked early -- right after Ship
+      // Departed, before Complex Topic, port navigation, and the scored
+      // intent table -- specifically so it can't lose to a literal
+      // keyword match elsewhere in the app. Reuses the same Central
+      // Office WhatsApp destination and confirmation text as the explicit
+      // Settings ask below (isCoordinatorReasonReply), since this is the
+      // same request in substance, just typed directly.
+      console.log("[DIAG] matched rule: MWAPP_DATA_ISSUE");
       state.consecutiveUnclear = 0;
       state.consecutiveDeepTalk = 0;
       state.companionActive = false;
       state.lastIntentFamily = null;
-      const portExitGateLang = detectPortExitGateLang(text);
-      // 12.09.2026, Andrey: Port Exit must pull the confirmed port-card
-      // fact itself, same principle as guideMeBack.noPointWithGate --
-      // the seafarer shouldn't have to go find the card manually. Reuses
-      // the EXACT same lookup key ("Через какие ворота выйти в город")
-      // already proven to work for that Guide Me Back branch -- this is
-      // the same underlying question, just asked directly instead of via
-      // "I'm lost". Scoped deliberately to gate/pedestrian-exit data only,
-      // not any other field on the port's card.
-      const gateFact = typeof getRawCardFact === "function"
-        ? getRawCardFact("Через какие ворота выйти в город", state.portId)
-        : null;
-      // NOTE, 12.09.2026: same flagged limitation as guideMeBack's
-      // noPointWithGate -- gateFact is raw port-card data, still
-      // Russian-only regardless of reply language, so an English reply
-      // can still show an English sentence with a Russian fact spliced in
-      // via {gateFact} below. Port-card content translation is a
-      // separate, not-yet-started project.
-      const msg = gateFact
-        ? t("portExitGate.withFact", { gateFact: withTerminalPunctuation(gateFact) }, portExitGateLang)
-        : t("portExitGate.noFact", null, portExitGateLang);
+      const dataIssueLang = detectMwappDataIssueLang(text);
+      const msg = t("coordinator.confirmReason", null, dataIssueLang);
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
       body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
-    } else if (isPortExitPassTopic(text)) {
-      // Port Exit (pass/permit needed), 12.09.2026, EN Layer A pass -- same
-      // rationale as PORT_EXIT_GATE above.
-      console.log("[DIAG] matched rule: PORT_EXIT_PASS");
-      state.consecutiveUnclear = 0;
-      state.consecutiveDeepTalk = 0;
-      state.companionActive = false;
-      state.lastIntentFamily = null;
-      const portExitPassLang = detectPortExitPassLang(text);
-      // 12.09.2026, Andrey: same card-fact-first principle as
-      // PORT_EXIT_GATE above, scoped to pass/permit-rule data only. Uses
-      // the pass intent's own `q` text as the lookup key, matching the
-      // established convention (gate question above uses its own `q` text
-      // the same way) -- this specific key hasn't been previously proven
-      // to have real port-card data behind it the way the gate one has,
-      // so it may just always fall through to the honest "no confirmed
-      // data" branch below until a port actually has this fact filled
-      // in; flagging that rather than assuming it's populated.
-      const passFact = typeof getRawCardFact === "function"
-        ? getRawCardFact("Нужен ли пропуск, чтобы выйти из порта", state.portId)
-        : null;
-      const msg = passFact
-        ? t("portExitPass.withFact", { passFact: withTerminalPunctuation(passFact) }, portExitPassLang)
-        : t("portExitPass.noFact", null, portExitPassLang);
-      console.log("[DIAG] selected response:", JSON.stringify(msg));
-      state.chatMessages.push({ who: "them", text: msg });
-      saveState();
-      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-whatsapp="${IMWIRSA_CENTRAL_OFFICE_WHATSAPP}">${t("coordinator.contactCentralOfficeBtn", null, dataIssueLang)}</button>
+        </div>`);
     } else if (isCoordinatorReasonReply && isIdleChatTopic(text)) {
       // Explicitly asked for the coordinator, but the reason reads as idle/
       // lonely small talk rather than a real issue — point to Spiritual
@@ -2662,6 +2628,123 @@ function sendAssistantChatMessage() {
           <button class="esc-btn esc-continue" id="escContinueBtn">${t("escalationToggle.continueBtn", null, langOverride)}</button>
           <button class="esc-btn esc-coordinator" data-whatsapp="${ISWAN_WHATSAPP}">${t("escalationToggle.coordinatorBtn", null, langOverride)}</button>
         </div>`);
+    } else if (isGuideMeBackTopic(text)) {
+      // GUIDE_ME_BACK, 08.09.2026, per Andrey/Markus: "lost / how do I get
+      // back to the ship" must open the real "Моё судно" locator (built,
+      // working -- state.shipPoint + shipNavigateBack(), Ship tab), not a
+      // text answer -- that's what the locator exists for. Checked BEFORE
+      // isComplexTopic/companion chat specifically because live testing
+      // found this exact phrasing being swallowed by an unrelated
+      // companion topic ("Покажи дорогу обратно к судну" -> a goodnight/
+      // sleep reply) purely by incidental word overlap -- a priority route
+      // like RED_LINE/medical-emergency is the only way to make this
+      // un-loseable the same way those are.
+      //
+      // Two branches, per Markus: a saved shipPoint means the locator can
+      // actually route there, so just send the seafarer to it. No saved
+      // point means the locator has nothing to route to -- say so plainly
+      // (don't imply it'll work) and fall back to the CONFIRMED gate/exit
+      // fact from the Port Card (transport_leaving field, same data
+      // "Через какие ворота выйти в город" already uses) instead of
+      // inventing directions.
+      console.log("[DIAG] matched rule: GUIDE_ME_BACK");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      // 12.09.2026, EN Layer A pass: reply language follows which keyword
+      // group matched (detectGuideMeBackLang), not the interface language.
+      const guideLang = detectGuideMeBackLang(text);
+      const hasShipPoint = !!(state.shipPoint);
+      console.log("[DIAG] shipPoint saved:", hasShipPoint);
+      let msg;
+      if (hasShipPoint) {
+        msg = t("guideMeBack.withPoint", null, guideLang);
+      } else {
+        const gateFact = typeof getRawCardFact === "function"
+          ? getRawCardFact("Через какие ворота выйти в город", state.portId)
+          : null;
+        // NOTE, 12.09.2026: gateFact itself is raw port-card data, which is
+        // still Russian-only regardless of interface/reply language
+        // (port-card content translation is a separate, not-yet-started
+        // project -- out of scope for this Layer A pass). So an English
+        // reply can still show an English sentence with a Russian fact
+        // spliced into it via {gateFact} below. Flagged, not fixed
+        // here -- fixing it means translating port-card content, not
+        // Layer A routing.
+        msg = gateFact
+          ? t("guideMeBack.noPointWithGate", { gateFact }, guideLang)
+          : t("guideMeBack.noPointNoGate", null, guideLang);
+      }
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-go="ship">${hasShipPoint ? t("guideMeBack.openLocatorBtn", null, guideLang) : t("guideMeBack.openShipTabBtn", null, guideLang)}</button>
+        </div>`);
+    } else if (isPortExitGateTopic(text)) {
+      // Port Exit (gate direction), 12.09.2026, EN Layer A pass -- see the
+      // rationale comment above isPortExitGateTopic's definition.
+      console.log("[DIAG] matched rule: PORT_EXIT_GATE");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const portExitGateLang = detectPortExitGateLang(text);
+      // 12.09.2026, Andrey: Port Exit must pull the confirmed port-card
+      // fact itself, same principle as guideMeBack.noPointWithGate --
+      // the seafarer shouldn't have to go find the card manually. Reuses
+      // the EXACT same lookup key ("Через какие ворота выйти в город")
+      // already proven to work for that Guide Me Back branch -- this is
+      // the same underlying question, just asked directly instead of via
+      // "I'm lost". Scoped deliberately to gate/pedestrian-exit data only,
+      // not any other field on the port's card.
+      const gateFact = typeof getRawCardFact === "function"
+        ? getRawCardFact("Через какие ворота выйти в город", state.portId)
+        : null;
+      // NOTE, 12.09.2026: same flagged limitation as guideMeBack's
+      // noPointWithGate -- gateFact is raw port-card data, still
+      // Russian-only regardless of reply language, so an English reply
+      // can still show an English sentence with a Russian fact spliced in
+      // via {gateFact} below. Port-card content translation is a
+      // separate, not-yet-started project.
+      const msg = gateFact
+        ? t("portExitGate.withFact", { gateFact: withTerminalPunctuation(gateFact) }, portExitGateLang)
+        : t("portExitGate.noFact", null, portExitGateLang);
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+    } else if (isPortExitPassTopic(text)) {
+      // Port Exit (pass/permit needed), 12.09.2026, EN Layer A pass -- same
+      // rationale as PORT_EXIT_GATE above.
+      console.log("[DIAG] matched rule: PORT_EXIT_PASS");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const portExitPassLang = detectPortExitPassLang(text);
+      // 12.09.2026, Andrey: same card-fact-first principle as
+      // PORT_EXIT_GATE above, scoped to pass/permit-rule data only. Uses
+      // the pass intent's own `q` text as the lookup key, matching the
+      // established convention (gate question above uses its own `q` text
+      // the same way) -- this specific key hasn't been previously proven
+      // to have real port-card data behind it the way the gate one has,
+      // so it may just always fall through to the honest "no confirmed
+      // data" branch below until a port actually has this fact filled
+      // in; flagging that rather than assuming it's populated.
+      const passFact = typeof getRawCardFact === "function"
+        ? getRawCardFact("Нужен ли пропуск, чтобы выйти из порта", state.portId)
+        : null;
+      const msg = passFact
+        ? t("portExitPass.withFact", { passFact: withTerminalPunctuation(passFact) }, portExitPassLang)
+        : t("portExitPass.noFact", null, portExitPassLang);
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
     } else {
       // Priority order below RED_LINE_KEYWORDS / COMPLEX_TOPIC_KEYWORDS
       // (checked earlier in this function, unchanged — those always
