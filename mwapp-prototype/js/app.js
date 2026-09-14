@@ -1576,6 +1576,20 @@ const COMPLEX_TOPIC_KEYWORDS_RU = [
   // companion chat, not anxiety by itself (which stays companion
   // territory, same as it already correctly is for a lone "мне тревожно").
   "плохо психологически", "тревожно и тяжело",
+  // 14.09.2026, Andrey: "Сегодня один человек меня раздражал, но сейчас
+  // всё нормально" fell to the generic fallback -- correctly NOT caught
+  // by the AI-capability false positive anymore (13.09.2026 fix), but
+  // also not recognized as what it is: someone sharing a personal
+  // emotional experience with another person, which is the same category
+  // as "тяжело морально"/"плохо психологически" above, just a milder
+  // case. Andrey's reasoning: even when the person says it already
+  // resolved itself, this is the kind of thing where a trained person
+  // (ISWAN), not the app, is the right source of support -- so it routes
+  // the same way as the rest of this cluster, not left as an unclear
+  // fallback. Stems, not the one example sentence: covers the verb
+  // regardless of tense/gender.
+  "раздража", "расстро", "разозл", "обидел", "обидела",
+  "бесит", "бесил", "бесила", "бесило", "нервировал", "нервировала",
   "поругались", "поругался", "кричит", "накричал", "угрожает", "угрожали",
   "угрожают", "угрожал", "угрожала",
   // 08.09.2026 — Andrey, live test on the intimate-services/CBD cluster:
@@ -1609,6 +1623,11 @@ const COMPLEX_TOPIC_KEYWORDS_EN = [
   // me" moved up to RED_LINE_KEYWORDS_EN -- completes the migration
   // deferred from the RU pass, see RED_LINE_KEYWORDS_EN's comment.
   "i can't cope", "i'm not coping", "mentally struggling",
+  // 14.09.2026, Andrey: EN mirror of the RU addition above -- same class
+  // (milder personal/interpersonal upset, still routed to ISWAN rather
+  // than left as an unclear fallback).
+  "annoyed me", "upset me", "bothered me", "irritated me",
+  "made me angry", "made me upset", "frustrated me",
   "don't want to return to the ship", "refuse to go back to the ship",
   "argue", "argued", "fight", "shouted", "yelled", "threat", "threatened",
   "police", "arrest", "arrested", "detained", "deport",
