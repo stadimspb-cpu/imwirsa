@@ -346,6 +346,12 @@ const I18N = {
       message: "In this situation, it's best to contact emergency services or reach ISWAN SeafarerHelp. Contacts below.",
       emergencyBtn: "🚨 Emergency contacts",
       talkToPersonBtn: "WhatsApp ISWAN now",
+      // 14.09.2026, Andrey: second button alongside WhatsApp -- a phone
+      // call works over voice signal even when data/WiFi doesn't, which
+      // matters specifically at a port with poor WiFi. See ISWAN_CALL_TEL's
+      // comment in app.js for the full reasoning (why this isn't a
+      // replacement for the WhatsApp button, just a second option).
+      callIswanBtn: "Call ISWAN",
     },
     // 12.09.2026, Layer A audit (Andrey/Markus): medicalEmergency/
     // guideMeBack/shipDeparted used to be hardcoded Russian string
@@ -838,6 +844,10 @@ const I18N = {
       message: "В этой ситуации лучше обратиться к экстренной службе или связаться с ISWAN SeafarerHelp. Контакты ниже.",
       emergencyBtn: "🚨 Экстренные контакты",
       talkToPersonBtn: "Написать в ISWAN сейчас",
+      // 14.09.2026, Andrey: вторая кнопка рядом с WhatsApp — звонок идёт
+      // по голосовой сети, а не по данным, и может работать там, где
+      // WiFi порта не тянет. См. комментарий к ISWAN_CALL_TEL в app.js.
+      callIswanBtn: "Позвонить в ISWAN",
     },
     // 12.09.2026, Layer A audit: RU wording moved here unchanged from the
     // old app.js literals — see the matching EN block's comment for why.

@@ -1299,6 +1299,17 @@ function hasNormalizedMatch(normalizedText, keywords) {
 // entry had a different, wrong number: +44 20 7283 2922). Call and
 // WhatsApp are two DIFFERENT numbers, not the same one reformatted --
 // keep them separate, never merge into one "tel" field.
+// 14.09.2026, Andrey: both channels are now offered side by side as two
+// buttons in the escalation toggle (Red Line, Complex Topic), not just
+// WhatsApp -- found live that a seafarer relying only on the WhatsApp
+// button, with genuinely no connectivity (patchy port WiFi), had no
+// working option at all. A phone call goes over the voice network, not
+// data, so it can work when WhatsApp can't. Deliberately NOT replacing
+// WhatsApp with the call button, or vice versa -- an international call
+// to a UK number can be costly depending on the seafarer's plan/roaming,
+// while WhatsApp is free once there's any connectivity at all. Andrey's
+// call: let the seafarer choose based on their own situation, since only
+// they know whether they have signal, data, or neither right now.
 const ISWAN_CALL_TEL = "+442073232737";
 const ISWAN_WHATSAPP = "4407909470732"; // wa.me wants a bare international number, no "+"
 // 13.09.2026, Andrey: real, working IMWIRSA Central Office WhatsApp number
@@ -2474,6 +2485,7 @@ function sendAssistantChatMessage() {
         <div class="escalation-toggle" id="escalationToggle">
           <button class="esc-btn esc-coordinator" data-detail="emergency">${t("redline.emergencyBtn", null, langOverride) || t("settings.talkToCoordinator", null, langOverride)}</button>
           <button class="esc-btn esc-coordinator" data-whatsapp="${ISWAN_WHATSAPP}">${t("redline.talkToPersonBtn", null, langOverride) || t("escalationToggle.coordinatorBtn", null, langOverride)}</button>
+          <button class="esc-btn esc-coordinator" data-tel="${ISWAN_CALL_TEL}">${t("redline.callIswanBtn", null, langOverride)}</button>
         </div>`);
     } else if (typeof isMedicalEmergencyTopic === "function" && isMedicalEmergencyTopic(text)) {
       // Medical emergency (ambulance), 06.09.2026: checked BEFORE
@@ -2646,6 +2658,7 @@ function sendAssistantChatMessage() {
         <div class="escalation-toggle" id="escalationToggle">
           <button class="esc-btn esc-continue" id="escContinueBtn">${t("escalationToggle.continueBtn", null, langOverride)}</button>
           <button class="esc-btn esc-coordinator" data-whatsapp="${ISWAN_WHATSAPP}">${t("escalationToggle.coordinatorBtn", null, langOverride)}</button>
+          <button class="esc-btn esc-coordinator" data-tel="${ISWAN_CALL_TEL}">${t("redline.callIswanBtn", null, langOverride)}</button>
         </div>`);
     } else if (isGuideMeBackTopic(text)) {
       // GUIDE_ME_BACK, 08.09.2026, per Andrey/Markus: "lost / how do I get
