@@ -115,6 +115,15 @@
         <div class="section-label" data-i18n="onboard.chooseLanguage">Choose your language</div>
         <div class="lang-grid" id="langGrid"></div>
 
+        <!-- 14.09.2026, Andrey: explains that online/offline language
+        support are different things -- the language picker above sets the
+        app's interface, not a hard limit on what language you can type to
+        the assistant in. Wording deliberately describes TODAY's actual
+        state (RU+EN offline) rather than the planned language-pack
+        feature, which doesn't exist in the app yet -- same "don't promise
+        what isn't built" rule already applied everywhere else in Layer A. -->
+        <div class="ob-lang-note" data-i18n="onboard.langNote">Online, the assistant can respond in any language. Offline, only Russian and English are fully supported right now — support for more languages is coming.</div>
+
         <button class="btn-onboard-continue" id="onboardContinue" disabled data-go="intro">
           <span class="btn-wave" id="btnWave"></span>
           <span data-i18n="onboard.continueBtn">Continue</span>
