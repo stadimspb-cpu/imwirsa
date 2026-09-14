@@ -32,6 +32,12 @@ const I18N = {
       title: "Choose your assistant",
       sub: "We're here to support you every step of the way.",
       chooseLanguage: "Choose your language",
+      // 14.09.2026, Andrey: explains that this picker sets the app's
+      // interface language, not a hard limit on what language you can
+      // talk to the assistant in when online. Describes today's actual
+      // offline capability (RU+EN) rather than the planned language-pack
+      // feature, which isn't built yet.
+      langNote: "Online, the assistant can respond in any language. Offline, only Russian and English are fully supported right now — support for more languages is coming.",
       continueBtn: "Continue",
     },
     intro: {
@@ -550,6 +556,10 @@ const I18N = {
       title: "Выберите своего ассистента",
       sub: "Мы рядом на каждом шаге вашего пути.",
       chooseLanguage: "Выберите язык",
+      // 14.09.2026, Andrey: см. комментарий к EN-ключу — описывает
+      // сегодняшнюю реальность (RU+EN офлайн), а не ещё не построенную
+      // функцию языковых пакетов.
+      langNote: "Онлайн ассистент может отвечать на любом языке. Офлайн пока полноценно работают только русский и английский — поддержка других языков появится позже.",
       continueBtn: "Продолжить",
     },
     intro: {
@@ -1233,19 +1243,21 @@ const I18N = {
     demoReplies: [
       // 04.09.2026 — good-faith translation, NOT verified by a native
       // speaker yet, same caveat as the RED_LINE_KEYWORDS TR/FIL entries.
-      // 11.09.2026 — FLAGGED, NOT FIXED: this has the same honesty problem
-      // as the RU/EN blocks fixed today (Markus's mixed-regression point
-      // 9 — false "not my department"/"once online mode is running"
-      // claim). Needs the same rewrite, but I don't have verified Turkish
-      // and won't guess a safety-adjacent translation without a native
-      // reviewer — see the RU block's comment for what the replacement
-      // should say in substance.
-      // 12.09.2026 — additionally now needs the English-only-offline-FAQ
-      // router wording (see the EN block's comment) once a native
-      // reviewer is found; not guessed here for the same reason.
-      "Bu benim alanım değil — ben liman, gemi ve karadaki durumun için buradayım. Şu an internet varsa oradan bakman daha hızlı olur. Tam çevrimiçi mod çalışınca ben de yardımcı olabilirim.",
-      "Bu konuda uzman değilim — görevim liman ve pratik konular. Şu an internetsiz çalışıyorum, bu yüzden yanıtlayamam. Belki mürettebattan biri bilir? Çevrimiçi olduğumda ben de yardımcı olurum.",
-      "Bu konuda elimden bir şey gelmiyor — benim konum değil. Bağlantın varsa kendin ara, daha doğru olur. İleride tam çevrimiçi mod açılınca bunu da sorabilirsin.",
+      // 14.09.2026, Andrey: replaced the old flagged/dishonest text with
+      // the English-only-offline-FAQ policy wording (same substance as
+      // the RU/EN blocks, translated) -- Andrey's product decision:
+      // offline currently only really supports RU + EN (Layer A critical
+      // topics have some TR/FIL keyword coverage, but it's thin and
+      // unverified; the big FAQ is English-only). Rather than continue
+      // showing the old broken claim while waiting indefinitely for a
+      // native reviewer, this is a short, low-risk instructional
+      // sentence ("try English") -- much lower translation risk than the
+      // nuanced text it replaces. Still flagged as good-faith, not
+      // verified -- a native pass would still improve it, just no longer
+      // blocking on one for basic honesty.
+      "Bunu tam olarak anlayamadım. Genel soruları şu an sadece İngilizce anlıyorum — kısa bir İngilizce cümle dener misin, ya da uygulamanın ilgili bölümüne bakabilirsin. Acil durum, kriz, limandan çıkış ve gemiye dönüş her zaman kendi dilinde anlaşılır.",
+      "Bu konuda kesin bir cevabım yok. Günlük konuları (ulaşım, eczane, Wi-Fi gibi) şu an sadece İngilizce anlıyorum — kısaca İngilizce yazmayı deneyebilir, ya da uygulamanın bölümlerine bakabilirsin. Acil durum, kriz, limandan çıkış ve gemiye dönüş yine kendi dilinde çalışır.",
+      "Tam bir cevap bulamadım. Ana soru tabanı şu an İngilizce çalışıyor — kısa bir İngilizce cümle veya MWApp'ın bölümlerini deneyebilirsin. Acil durumlar, limandan çıkış ve gemiye dönüş yine kendi dilinde anlaşılır.",
     ],
     unclearReplies: [
       // same translation caveat as above
@@ -1532,14 +1544,13 @@ const I18N = {
     demoReplies: [
       // 04.09.2026 — good-faith translation, NOT verified by a native
       // speaker yet, same caveat as the RED_LINE_KEYWORDS TR/FIL entries.
-      // 11.09.2026 — FLAGGED, NOT FIXED: same honesty problem as the
-      // TR block above (see its comment) — needs the same rewrite from
-      // a native Filipino reviewer, not a guess from me.
-      // 12.09.2026 — additionally now needs the English-only-offline-FAQ
-      // router wording (see the EN block's comment), same caveat.
-      "Hindi talaga ito ang larangan ko — nandito ako para tumulong sa daungan, sa barko, at kung kumusta ka sa lupa. Kung may signal ka ngayon, mas mabilis kung doon ka maghahanap. Kapag naka-online na ako nang buo, matutulungan na kita dito.",
-      "Hindi ako ang tamang tanungin dito — trabaho ko ay impormasyon sa daungan at praktikal na bagay-bagay. Ngayon, offline ako kaya hindi ko masasagot 'to. Baka may kasamahan kang marunong? Kapag online na ako, kaya ko na rin ito.",
-      "Wala akong masabi dito — hindi ito paksa ko. Kung may signal ka, mas mabuting doon ka maghanap. Sa susunod, kapag gumagana na ang buong online mode, pwede mo na akong tanungin nito.",
+      // 14.09.2026, Andrey: same fix as the TR block above -- see its
+      // comment for the full rationale. Short, low-risk instructional
+      // text ("try English"), still good-faith/unverified, no longer
+      // blocked on a native reviewer for basic honesty.
+      "Hindi ko lubos na naintindihan ito. Ang mga karaniwang tanong ay naiintindihan ko lang sa Ingles ngayon — subukan mo bang gumamit ng maikling pangungusap sa Ingles, o tingnan ang kaukulang bahagi ng app. Ang emergency, krisis, paglabas sa daungan, at pagbalik sa barko ay palaging naiintindihan sa sarili mong wika.",
+      "Wala akong eksaktong sagot dito. Ang mga pang-araw-araw na tanong (transportasyon, parmasya, Wi-Fi) ay naiintindihan ko lang sa Ingles ngayon — subukang gumamit ng maikling Ingles, o tingnan ang mga bahagi ng app. Ang emergency, krisis, paglabas sa daungan, at pagbalik sa barko ay gumagana pa rin sa sarili mong wika.",
+      "Hindi ako nakahanap ng eksaktong sagot. Ang pangunahing FAQ ay Ingles ang ginagamit ngayon — subukan ang maikling pangungusap sa Ingles o ang mga bahagi ng MWApp. Ang emergency, paglabas sa daungan, at pagbalik sa barko ay naiintindihan pa rin sa sarili mong wika.",
     ],
     unclearReplies: [
       // same translation caveat as above
