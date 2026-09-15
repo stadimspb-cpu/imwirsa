@@ -279,8 +279,9 @@
         {
           "icon": "🌊",
           "title": "Wellness Recovery Zone",
-          "sub": "Pending confirmation for this terminal",
-          "pending": true
+          "sub": "Private spaces to relax, recharge, and reduce stress during your port call.",
+          "action": "›",
+          "sd": "wellness_zone_muuga"
         },
         {
           "icon": "🤖",
@@ -1320,6 +1321,33 @@
       ],
       "note": "Unlike Vanasadam, the prayer room is genuinely close here — it's part of the same building as the centre itself.",
       "updated": "5 August 2026"
+    },
+    "wellness_zone_muuga": {
+      "gated": true,
+      "title": "Wellness Recovery Zone — Muuga",
+      "note": "Your quiet harbor to rest, recover, and reset. A comfortable space offering massage, soothing scents, and deep relaxation for body and mind — everything you need to recharge your physical and emotional strength between watches.",
+      "contacts": [
+        {
+          "icon": "🧑‍💼",
+          "title": "Kadri Saar — Wellness Host",
+          "sub": "09:00–22:00 daily · All Wellness zone questions go through WhatsApp. If there's no internet, a standby phone number is available (roaming rates apply).",
+          "action": ""
+        },
+        {
+          "icon": "💬",
+          "title": "Message on WhatsApp",
+          "sub": "+372 5560 3281",
+          "action": "💬",
+          "whatsapp": "37255603281"
+        },
+        {
+          "icon": "📞",
+          "title": "Call (roaming rates apply without internet)",
+          "sub": "+372 5560 3281",
+          "action": "📞",
+          "tel": "+37255603281"
+        }
+      ]
     }
   }
 }

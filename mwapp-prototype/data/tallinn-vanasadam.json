@@ -1474,9 +1474,23 @@
       "contacts": [
         {
           "icon": "🧑‍💼",
-          "title": "Kadri Saar — Your Wellness Host",
-          "sub": "Book a session via WhatsApp",
-          "action": "💬"
+          "title": "Kadri Saar — Wellness Host",
+          "sub": "09:00–22:00 daily · All Wellness zone questions go through WhatsApp. If there's no internet, a standby phone number is available (roaming rates apply).",
+          "action": ""
+        },
+        {
+          "icon": "💬",
+          "title": "Message on WhatsApp",
+          "sub": "+372 5560 3281",
+          "action": "💬",
+          "whatsapp": "37255603281"
+        },
+        {
+          "icon": "📞",
+          "title": "Call (roaming rates apply without internet)",
+          "sub": "+372 5560 3281",
+          "action": "📞",
+          "tel": "+37255603281"
         }
       ],
       "directions": [
