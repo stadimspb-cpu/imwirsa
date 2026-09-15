@@ -278,16 +278,9 @@
       "gated": true,
       "rows": [
         {
-          "icon": "🔳",
-          "title": "Your Premium QR Code",
-          "sub": "Your digital ID for partner discounts, wellness entry, and union benefits.",
-          "action": "›",
-          "sd": "premium_qr"
-        },
-        {
-          "icon": "🏷",
-          "title": "City Discounts & Privileges",
-          "sub": "Show your QR code at partner venues in town for exclusive member discounts.",
+          "icon": "🏷️",
+          "title": "Partner Discounts",
+          "sub": "Discounts at shops and services that have signed a partner agreement with IMWIRSA or your union.",
           "action": "›",
           "sd": "port_discounts"
         },
@@ -297,6 +290,11 @@
           "sub": "Private spaces to relax, recharge, and reduce stress during your port call.",
           "action": "›",
           "sd": "wellness_zone_vanasadam"
+        },
+        {
+          "icon": "🤖",
+          "title": "AI Assistant — expanded capabilities",
+          "sub": "At the Premium level, when connected to the internet, the assistant understands natural speech and conversation context — you don't need to match your wording to ready-made phrases like in offline mode. It only draws on MWApp's own trusted sources (port cards and IMWIRSA data), not open internet search. It can hold a relaxed, simple conversation in multiple languages."
         }
       ]
     }
@@ -1444,34 +1442,28 @@
       "note": "The formal prayer room is at the centre building in Muuga, not here — but Vanasadam sits right in the Old Town, so a quiet church is a short walk away either way.",
       "updated": "5 August 2026"
     },
-    "premium_qr": {
-      "type": "qr_code",
-      "gated": true,
-      "title": "Your Premium QR Code",
-      "note": "Show this code to partner staff for verification — supermarkets, cafés and transport partners near the centre. Demo mode: this is a static illustrative code. Live rotating verification, tied to your real MWA-ID and checked against IMWIRSA's server, will connect once the backend is ready."
-    },
     "port_discounts": {
       "gated": true,
-      "title": "City Discounts & Privileges",
-      "note": "When paying at any of these partners, show your Premium QR code from the app at checkout to receive the discount included in the partner program.",
-      "contacts": [
+      "title": "Partner Discounts",
+      "note": "Tap a partner below to open their code. Each partner uses whatever code format their own till reads. Codes load in advance and work without internet.",
+      "partners": [
         {
           "icon": "🛍",
           "title": "Rimi Supermarket",
           "sub": "Sadama tn 21, Tallinn",
-          "action": "🧭"
+          "sd": "tallinn_partner_rimi"
         },
         {
           "icon": "☕",
           "title": "Seafarers' Centre café",
           "sub": "Sadama tn 25, Tallinn",
-          "action": "🧭"
+          "sd": "tallinn_partner_cafe"
         },
         {
           "icon": "🚕",
           "title": "Partner taxi service",
           "sub": "Pickup point at the centre — ask staff",
-          "action": "🧭"
+          "sd": "tallinn_partner_taxi"
         }
       ]
     },
@@ -1495,6 +1487,27 @@
           "action": "🧭"
         }
       ]
+    },
+    "tallinn_partner_rimi": {
+      "type": "qr_code",
+      "gated": true,
+      "title": "Rimi Supermarket",
+      "codeValue": "",
+      "codeFormat": "qr"
+    },
+    "tallinn_partner_cafe": {
+      "type": "qr_code",
+      "gated": true,
+      "title": "Seafarers' Centre café",
+      "codeValue": "",
+      "codeFormat": "qr"
+    },
+    "tallinn_partner_taxi": {
+      "type": "qr_code",
+      "gated": true,
+      "title": "Partner taxi service",
+      "codeValue": "",
+      "codeFormat": "qr"
     }
   }
 }

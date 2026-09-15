@@ -214,10 +214,21 @@
       "gated": true,
       "rows": [
         {
-          "icon": "ℹ️",
-          "title": "Details coming soon from the port curator",
-          "sub": "Trade Union partner services pending confirmation for this terminal",
+          "icon": "🏷️",
+          "title": "Partner Discounts",
+          "sub": "Pending confirmation for this terminal",
           "pending": true
+        },
+        {
+          "icon": "🌊",
+          "title": "Wellness Recovery Zone",
+          "sub": "Pending confirmation for this terminal",
+          "pending": true
+        },
+        {
+          "icon": "🤖",
+          "title": "AI Assistant — expanded capabilities",
+          "sub": "At the Premium level, when connected to the internet, the assistant understands natural speech and conversation context — you don't need to match your wording to ready-made phrases like in offline mode. It only draws on MWApp's own trusted sources (port cards and IMWIRSA data), not open internet search. It can hold a relaxed, simple conversation in multiple languages."
         }
       ]
     }
