@@ -405,6 +405,146 @@
       </div>
     </section>
 
+    <!-- SCREEN 6d — ABOUT PREMIUM (static, port- and persona-independent:
+         subscription mechanics don't change between ports or assistants,
+         so unlike aboutassistant this needs no JS render function at all --
+         every card is plain data-i18n. 14.09.2026, Andrey: same reasoning
+         as About the Assistant -- these facts already existed as 21
+         separate offline intents that got removed in the category-3
+         revision (see the facts-draft doc, section 1) because they have no
+         location/urgency dependency; rather than leaving seafarers with
+         "this needs internet, try later" (isOnlineOnlyTopic's generic
+         message), the actual static answer is given right here, same as
+         it always could have been. -->
+    <section class="screen screen-subdetail screen-about-premium" data-screen="premiuminfo">
+      <div class="detail-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="settings">←</button>
+          <div class="detail-title" data-i18n="aboutPremium.title">About Premium</div>
+        </div>
+      </div>
+      <div class="subdetail-list">
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card1.title">💎 What's the difference between Standard and Premium</div>
+          <div class="sd-note" data-i18n="aboutPremium.card1.body">Standard is available to every seafarer, with no restrictions on port cards or the regular reference sections. Premium adds three things on top: the Wellness zone, Partner Discounts (QR codes), and a wider range of assistant capabilities.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card2.title">🤝 Who provides and pays for Premium</div>
+          <div class="sd-note" data-i18n="aboutPremium.card2.body">MWApp doesn't sell Premium to seafarers directly. Access is provided and paid for by a participating organisation — your trade union, a welfare or charitable organisation, or a seafarers' mission.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card3.title">🚫 Can I or my family pay for it ourselves</div>
+          <div class="sd-note" data-i18n="aboutPremium.card3.body">No — Premium can't be bought directly by you or paid for by relatives. It only comes through a participating organisation. If you'd like to explore options, ask the IMWIRSA Central Office.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card4.title">📅 How long does it last, does it renew on its own</div>
+          <div class="sd-note" data-i18n="aboutPremium.card4.body">Premium is activated for one month at a time and does not renew automatically. It needs to be confirmed again for each following month, and a new activation code is issued each time.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card5.title">🔒 Can I share my access with another seafarer</div>
+          <div class="sd-note" data-i18n="aboutPremium.card5.body">No, under any circumstances. Premium is tied to your personal MWA-ID and can't be transferred, lent, or shared with anyone else, even temporarily.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card6.title">⬇️ What happens when Premium ends</div>
+          <div class="sd-note" data-i18n="aboutPremium.card6.body">MWApp doesn't lock you out. It simply drops back to Standard — port cards and the core features stay available, you just lose Wellness, Partner Discounts, and the wider assistant capabilities until Premium is confirmed again.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card7.title">🔄 I changed unions — what happens to my Premium</div>
+          <div class="sd-note" data-i18n="aboutPremium.card7.body">Changing your trade union can affect Premium — access typically needs to be reconfirmed through the new organisation rather than carrying over automatically.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutPremium.card8.title">✅ Who decides whether I get Premium</div>
+          <div class="sd-note" data-i18n="aboutPremium.card8.body">The participating organisation — your union, welfare body, or mission — makes that decision. MWApp and IMWIRSA don't grant Premium directly; the app only activates access that's already been approved.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6e — ABOUT QR / PARTNER DISCOUNTS (static mechanics only --
+         14.09.2026, Andrey: unlike Premium, which is 100% static, the
+         ACTUAL partners/discounts at a given port are port-specific data,
+         not covered by this screen. There's no existing screen in this
+         file to send someone to for that (qr.js is loaded in this file but
+         has no visible UI section here) -- flagged to Andrey rather than
+         inventing a link to something that may not exist yet. This screen
+         only explains how the QR/discount system works in general. -->
+    <section class="screen screen-subdetail screen-about-qr" data-screen="qrinfo">
+      <div class="detail-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="settings">←</button>
+          <div class="detail-title" data-i18n="aboutQr.title">About QR / Partner Discounts</div>
+        </div>
+      </div>
+      <div class="subdetail-list">
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutQr.card1.title">🏷️ What the QR code actually is</div>
+          <div class="sd-note" data-i18n="aboutQr.card1.body">It's a discount code for a specific Partner Discounts partner — not your personal ID in MWApp (that's your separate MWA-ID). It only gets you a discount at participating shops and services, nothing else.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutQr.card2.title">🎫 Why some partners use a barcode instead of a QR code</div>
+          <div class="sd-note" data-i18n="aboutQr.card2.body">Each partner uses whatever code format their own till system supports — MWApp doesn't control this, it just displays whichever code that partner has provided.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutQr.card3.title">📍 Where exactly the code works</div>
+          <div class="sd-note" data-i18n="aboutQr.card3.body">Only at the partners explicitly listed for that port or city under Partner Discounts — not automatically across every location of a chain, and not guaranteed to exist in every port at all. New partners are added gradually, port by port.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutQr.card4.title">📶 Does it work without internet</div>
+          <div class="sd-note" data-i18n="aboutQr.card4.body">Once a code is already loaded into MWApp, it's designed to work offline — you shouldn't need a connection at the till to show it.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutQr.card5.title">🚫 Can I share my code with another seafarer</div>
+          <div class="sd-note" data-i18n="aboutQr.card5.body">No — like Premium itself, the discount code is personal and tied to your own access. It isn't meant to be passed to someone else.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutQr.card6.title">🏗️ There are no partners in my port</div>
+          <div class="sd-note" data-i18n="aboutQr.card6.body">That means the programme hasn't reached this port yet, not that something is broken. Partners are added port by port over time.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutQr.card7.title">❗ A cashier won't honour it, or the code won't scan</div>
+          <div class="sd-note" data-i18n="aboutQr.card7.body">The discount itself and how it's applied are set by the partner, not MWApp. If a partner refuses a valid code or something seems wrong, check with that partner directly, or let the IMWIRSA Central Office know.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6f — ABOUT THE WELLNESS ZONE (static mechanics only -- same
+         caveat as QR above: whether a given port even HAS a Wellness zone,
+         and its specific services/hours/pricing, is port-specific data
+         answered by that port's own card, not this screen. -->
+    <section class="screen screen-subdetail screen-about-wellness" data-screen="wellnessinfo">
+      <div class="detail-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="settings">←</button>
+          <div class="detail-title" data-i18n="aboutWellness.title">About the Wellness zone</div>
+        </div>
+      </div>
+      <div class="subdetail-list">
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutWellness.card1.title">🧖 What the Wellness zone is, and who runs it</div>
+          <div class="sd-note" data-i18n="aboutWellness.card1.body">MWApp doesn't provide Wellness services itself — it only shows information and contact details. The zone is run by a local operator, the Wellness Host, at ports where one exists.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutWellness.card2.title">📋 Services, pricing, payment, and hours</div>
+          <div class="sd-note" data-i18n="aboutWellness.card2.body">The exact services on offer (massage, sauna, pool, VR, etc.), price, accepted payment methods, opening hours, and cancellation rules are all set by that specific Wellness zone, not by MWApp — the assistant shouldn't guess at any of these.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutWellness.card3.title">🚫 It is not for dating or intimate services</div>
+          <div class="sd-note" data-i18n="aboutWellness.card3.body">The Wellness zone is explicitly a professional recovery space, not a place to meet people or arrange intimate services. Questions like that get redirected either to the Wellness Host directly, or — if it's really about emotional support — to seafarers' centres, chaplains, or the IMWIRSA Central Office.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutWellness.card4.title">📅 Booking, and changing your mind</div>
+          <div class="sd-note" data-i18n="aboutWellness.card4.body">Booking and the real-time schedule go through the Wellness Host inside the app (Wellness → "Contact Host") — the assistant can't see live availability or book anything on your behalf.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutWellness.card5.title">💬 Complaints, refunds, or broken equipment</div>
+          <div class="sd-note" data-i18n="aboutWellness.card5.body">Only the Wellness Host / local operator can resolve these — MWApp can show you their contact, but it doesn't handle payments for these services and can't issue refunds itself.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutWellness.card6.title">📍 Does this port have a Wellness zone at all</div>
+          <div class="sd-note" data-i18n="aboutWellness.card6.body">That depends entirely on the port — check this port's own card rather than assuming. If nothing is confirmed there, the assistant shouldn't point you to a place that isn't verified.</div>
+        </div>
+      </div>
+    </section>
+
     <!-- SCREEN 7 — COORDINATOR CHAT -->
     <section class="screen screen-volunteer" data-screen="volunteer">
       <div class="chat-header">
@@ -459,6 +599,19 @@
         <button class="settings-row" id="resetAppRow"><div class="si">🔄</div><div class="st" data-i18n="settings.startOver">Start over (show first launch again)</div></button>
         <div class="settings-group-label" data-i18n="settings.about">About</div>
         <button class="settings-row" data-go="aboutassistant"><div class="si">🤖</div><div class="st" data-i18n="settings.aboutAssistant">Об ассистенте</div><div class="sv">›</div></button>
+        <!-- 14.09.2026, Andrey: new row, same pattern as "About the
+        assistant" above -- fully static content (Premium/Standard
+        mechanics don't depend on port or persona), so no JS render
+        function is needed, unlike aboutassistant's per-persona name. -->
+        <button class="settings-row" data-go="premiuminfo"><div class="si">💎</div><div class="st" data-i18n="settings.aboutPremium">About Premium</div><div class="sv">›</div></button>
+        <!-- 14.09.2026, Andrey: QR and Wellness, same pattern as Premium
+        above -- BUT these cover general mechanics only. Which partners/
+        discounts or Wellness services actually exist at a given port is
+        port-specific data, not covered here (no such screen exists in
+        this file to link to yet -- qr.js is loaded but has no visible UI
+        section in this index.html; flagged to Andrey rather than guessed). -->
+        <button class="settings-row" data-go="qrinfo"><div class="si">🏷️</div><div class="st" data-i18n="settings.aboutQr">About QR / Partner Discounts</div><div class="sv">›</div></button>
+        <button class="settings-row" data-go="wellnessinfo"><div class="si">🧖</div><div class="st" data-i18n="settings.aboutWellness">About the Wellness zone</div><div class="sv">›</div></button>
         <div class="settings-row"><div class="si">ℹ️</div><div class="st" data-i18n="settings.versionLabel">MWApp v0.1 (prototype)</div></div>
         <div class="settings-row"><div class="si">🌐</div><div class="st" data-i18n="settings.website">imwirsa.org</div></div>
       </div>
