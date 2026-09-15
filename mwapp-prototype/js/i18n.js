@@ -118,6 +118,33 @@ const I18N = {
         "Would it help to talk through what's on your mind, or would you prefer some practical suggestions?",
       ],
     },
+    // 14.09.2026, Andrey: new keys for the two near-fallback branches in
+    // app.js -- see isAssistantSelfRefTopic/isOnlineOnlyTopic's comments
+    // there for the full rationale.
+    assistantSelfRef: {
+      message: "That's answered in Settings → \"About the assistant\" — there's a full explanation there.",
+      openScreenBtn: "Open \"About the assistant\"",
+    },
+    // 14.09.2026, Andrey: Premium now has a real static screen, see
+    // isPremiumTopic's comment in app.js.
+    premiumTopic: {
+      message: "That's answered in Settings → \"About Premium\" — there's a full explanation there.",
+      openScreenBtn: "Open \"About Premium\"",
+    },
+    // QR and Wellness also got real static screens -- but explicitly say
+    // this only covers general mechanics, not what's available at this
+    // specific port (still answered by that port's own card).
+    qrTopic: {
+      message: "How the discount system works in general is explained in Settings → \"About QR / Partner Discounts\". For which partners and discounts exist at this specific port, check the port's own card.",
+      openScreenBtn: "Open \"About QR / Partner Discounts\"",
+    },
+    wellnessTopic: {
+      message: "How the Wellness zone works in general is explained in Settings → \"About the Wellness zone\". Whether this specific port has one, and its actual services, is answered by that port's own card.",
+      openScreenBtn: "Open \"About the Wellness zone\"",
+    },
+    onlineOnly: {
+      message: "This kind of question isn't available offline yet — it needs an internet connection. Please try again once you're online, or check with the IMWIRSA Central Office.",
+    },
     settings: {
       title: "Settings",
       subtitleRole: "Your Maritime Welfare Assistant",
@@ -156,6 +183,11 @@ const I18N = {
       // language setting. New key, wired up alongside the full screen
       // translation below (aboutAssistant.*).
       aboutAssistant: "About the assistant",
+      // 14.09.2026, Andrey: same pattern, new Settings row for the
+      // Premium info screen (aboutPremium.*).
+      aboutPremium: "About Premium",
+      aboutQr: "About QR / Partner Discounts",
+      aboutWellness: "About the Wellness zone",
       versionLabel: "MWApp v0.1 (prototype)",
       website: "imwirsa.org",
     },
@@ -236,6 +268,112 @@ const I18N = {
       card12: {
         title: "🧭 Why listen to the assistant instead of asking locals",
         body: "It doesn't have to be one or the other. The assistant gives you information from MWApp, while a local person may know things not yet in the card. If the two disagree, it's worth double-checking.",
+      },
+    },
+    // 14.09.2026, Andrey: new screen, same reasoning as aboutAssistant --
+    // see index.html's comment above the premiuminfo section. Fully
+    // static and port-independent (subscription mechanics, not port data),
+    // so no per-render JS logic is needed here at all.
+    aboutPremium: {
+      title: "About Premium",
+      card1: {
+        title: "💎 What's the difference between Standard and Premium",
+        body: "Standard is available to every seafarer, with no restrictions on port cards or the regular reference sections. Premium adds three things on top: the Wellness zone, Partner Discounts (QR codes), and a wider range of assistant capabilities.",
+      },
+      card2: {
+        title: "🤝 Who provides and pays for Premium",
+        body: "MWApp doesn't sell Premium to seafarers directly. Access is provided and paid for by a participating organisation — your trade union, a welfare or charitable organisation, or a seafarers' mission.",
+      },
+      card3: {
+        title: "🚫 Can I or my family pay for it ourselves",
+        body: "No — Premium can't be bought directly by you or paid for by relatives. It only comes through a participating organisation. If you'd like to explore options, ask the IMWIRSA Central Office.",
+      },
+      card4: {
+        title: "📅 How long does it last, does it renew on its own",
+        body: "Premium is activated for one month at a time and does not renew automatically. It needs to be confirmed again for each following month, and a new activation code is issued each time.",
+      },
+      card5: {
+        title: "🔒 Can I share my access with another seafarer",
+        body: "No, under any circumstances. Premium is tied to your personal MWA-ID and can't be transferred, lent, or shared with anyone else, even temporarily.",
+      },
+      card6: {
+        title: "⬇️ What happens when Premium ends",
+        body: "MWApp doesn't lock you out. It simply drops back to Standard — port cards and the core features stay available, you just lose Wellness, Partner Discounts, and the wider assistant capabilities until Premium is confirmed again.",
+      },
+      card7: {
+        title: "🔄 I changed unions — what happens to my Premium",
+        body: "Changing your trade union can affect Premium — access typically needs to be reconfirmed through the new organisation rather than carrying over automatically.",
+      },
+      card8: {
+        title: "✅ Who decides whether I get Premium",
+        body: "The participating organisation — your union, welfare body, or mission — makes that decision. MWApp and IMWIRSA don't grant Premium directly; the app only activates access that's already been approved.",
+      },
+    },
+    // 14.09.2026, Andrey: general mechanics only -- unlike aboutPremium,
+    // which sale mechanics is uniform for every seafarer, WHICH partners
+    // actually exist at a given port is port-specific and NOT covered
+    // here (no such screen exists yet in this app to point to -- flagged,
+    // not guessed). Content from the facts-draft doc, section 3.
+    aboutQr: {
+      title: "About QR / Partner Discounts",
+      card1: {
+        title: "🏷️ What the QR code actually is",
+        body: "It's a discount code for a specific Partner Discounts partner — not your personal ID in MWApp (that's your separate MWA-ID). It only gets you a discount at participating shops and services, nothing else.",
+      },
+      card2: {
+        title: "🎫 Why some partners use a barcode instead of a QR code",
+        body: "Each partner uses whatever code format their own till system supports — MWApp doesn't control this, it just displays whichever code that partner has provided.",
+      },
+      card3: {
+        title: "📍 Where exactly the code works",
+        body: "Only at the partners explicitly listed for that port or city under Partner Discounts — not automatically across every location of a chain, and not guaranteed to exist in every port at all. New partners are added gradually, port by port.",
+      },
+      card4: {
+        title: "📶 Does it work without internet",
+        body: "Once a code is already loaded into MWApp, it's designed to work offline — you shouldn't need a connection at the till to show it.",
+      },
+      card5: {
+        title: "🚫 Can I share my code with another seafarer",
+        body: "No — like Premium itself, the discount code is personal and tied to your own access. It isn't meant to be passed to someone else.",
+      },
+      card6: {
+        title: "🏗️ There are no partners in my port",
+        body: "That means the programme hasn't reached this port yet, not that something is broken. Partners are added port by port over time.",
+      },
+      card7: {
+        title: "❗ A cashier won't honour it, or the code won't scan",
+        body: "The discount itself and how it's applied are set by the partner, not MWApp. If a partner refuses a valid code or something seems wrong, check with that partner directly, or let the IMWIRSA Central Office know.",
+      },
+    },
+    // 14.09.2026, Andrey: same caveat as aboutQr -- whether a given port
+    // even HAS a Wellness zone, and its specific services/pricing/hours,
+    // is port-specific, answered by that port's own card, not here.
+    // Content from the facts-draft doc, section 4.
+    aboutWellness: {
+      title: "About the Wellness zone",
+      card1: {
+        title: "🧖 What the Wellness zone is, and who runs it",
+        body: "MWApp doesn't provide Wellness services itself — it only shows information and contact details. The zone is run by a local operator, the Wellness Host, at ports where one exists.",
+      },
+      card2: {
+        title: "📋 Services, pricing, payment, and hours",
+        body: "The exact services on offer (massage, sauna, pool, VR, etc.), price, accepted payment methods, opening hours, and cancellation rules are all set by that specific Wellness zone, not by MWApp — the assistant shouldn't guess at any of these.",
+      },
+      card3: {
+        title: "🚫 It is not for dating or intimate services",
+        body: "The Wellness zone is explicitly a professional recovery space, not a place to meet people or arrange intimate services. Questions like that get redirected either to the Wellness Host directly, or — if it's really about emotional support — to seafarers' centres, chaplains, or the IMWIRSA Central Office.",
+      },
+      card4: {
+        title: "📅 Booking, and changing your mind",
+        body: "Booking and the real-time schedule go through the Wellness Host inside the app (Wellness → \"Contact Host\") — the assistant can't see live availability or book anything on your behalf.",
+      },
+      card5: {
+        title: "💬 Complaints, refunds, or broken equipment",
+        body: "Only the Wellness Host / local operator can resolve these — MWApp can show you their contact, but it doesn't handle payments for these services and can't issue refunds itself.",
+      },
+      card6: {
+        title: "📍 Does this port have a Wellness zone at all",
+        body: "That depends entirely on the port — check this port's own card rather than assuming. If nothing is confirmed there, the assistant shouldn't point you to a place that isn't verified.",
       },
     },
     modals: {
@@ -638,6 +776,32 @@ const I18N = {
         "Вам помогло бы обсудить то, что вас беспокоит, или вы предпочли бы практические советы?",
       ],
     },
+    // 14.09.2026, Andrey: см. комментарий к EN-блоку — новые ключи для
+    // isAssistantSelfRefTopic/isOnlineOnlyTopic в app.js.
+    assistantSelfRef: {
+      message: "Ответ на это есть в Настройках → «Об ассистенте» — там всё подробно расписано.",
+      openScreenBtn: "Открыть «Об ассистенте»",
+    },
+    // 14.09.2026, Andrey: у Premium теперь свой реальный статичный экран,
+    // см. комментарий к isPremiumTopic в app.js.
+    premiumTopic: {
+      message: "Ответ на это есть в Настройках → «О Premium» — там всё подробно расписано.",
+      openScreenBtn: "Открыть «О Premium»",
+    },
+    // У QR и Wellness тоже свои статичные экраны — но текст честно
+    // говорит, что там только общая механика, а не то, что доступно
+    // именно в этом порту (это по-прежнему карточка порта).
+    qrTopic: {
+      message: "Как в целом работает система скидок — в Настройках → «О QR-кодах и скидках партнёров». А какие партнёры и скидки есть именно в этом порту — смотри карточку порта.",
+      openScreenBtn: "Открыть «О QR-кодах и скидках партнёров»",
+    },
+    wellnessTopic: {
+      message: "Как в целом работает Wellness-зона — в Настройках → «О Wellness-зоне». А есть ли она именно в этом порту и какие там условия — смотри карточку порта.",
+      openScreenBtn: "Открыть «О Wellness-зоне»",
+    },
+    onlineOnly: {
+      message: "Такие вопросы пока не работают офлайн — нужно подключение к интернету. Попробуйте спросить ещё раз, когда будет связь, или уточните в Центральном офисе IMWIRSA.",
+    },
     settings: {
       title: "Настройки",
       subtitleRole: "Ваш ассистент по благосостоянию моряков",
@@ -672,6 +836,9 @@ const I18N = {
       startOver: "Начать заново (показать первый запуск снова)",
       about: "О приложении",
       aboutAssistant: "Об ассистенте",
+      aboutPremium: "О Premium",
+      aboutQr: "О QR-кодах и скидках партнёров",
+      aboutWellness: "О Wellness-зоне",
       versionLabel: "MWApp v0.1 (прототип)",
       website: "imwirsa.org",
     },
@@ -740,6 +907,110 @@ const I18N = {
       card12: {
         title: "🧭 Почему слушать ассистента, а не спросить у местных",
         body: "Не обязательно выбирать что-то одно. Ассистент даёт информацию из MWApp, а местный человек может знать то, чего ещё нет в карточке. Если данные расходятся — лучше перепроверить.",
+      },
+    },
+    // 14.09.2026, Andrey: см. комментарий к EN-блоку. Содержание взято из
+    // раздела 1 документа-свода фактов (Premium/Standard — механика
+    // подписки) — 21 вопрос свёлся к 8 фактам, дублирующихся вопросов
+    // почти не было отдельных, только вариации одной и той же механики.
+    aboutPremium: {
+      title: "О Premium",
+      card1: {
+        title: "💎 В чём разница между Standard и Premium",
+        body: "Standard доступен каждому моряку, без ограничений на карточки портов и обычные справочные разделы. Premium добавляет сверху три вещи: Wellness-зону, партнёрские скидки (QR-коды) и расширенные возможности ассистента.",
+      },
+      card2: {
+        title: "🤝 Кто предоставляет и оплачивает Premium",
+        body: "MWApp не продаёт Premium морякам напрямую. Доступ предоставляет и оплачивает участвующая организация — ваш профсоюз, welfare- или благотворительная организация, морская миссия.",
+      },
+      card3: {
+        title: "🚫 Могу ли я или моя семья оплатить это сами",
+        body: "Нет — Premium нельзя купить напрямую самому или оплатить через родственников. Доступ идёт только через участвующую организацию. Если хотите узнать про варианты — обратитесь в Центральный офис IMWIRSA.",
+      },
+      card4: {
+        title: "📅 На сколько это даётся, продлевается ли само",
+        body: "Premium активируется на один месяц и не продлевается автоматически. Каждый следующий месяц нужно подтверждать заново, и каждый раз выпускается новый код активации.",
+      },
+      card5: {
+        title: "🔒 Могу ли я передать свой доступ другому моряку",
+        body: "Нет, ни при каких условиях. Premium привязан к вашему личному MWA-ID и не может быть передан, одолжен или разделён с кем-либо ещё, даже временно.",
+      },
+      card6: {
+        title: "⬇️ Что будет, когда действие Premium закончится",
+        body: "MWApp не блокируется. Приложение просто откатывается на Standard — карточки портов и основные функции остаются доступны, пропадают только Wellness, партнёрские скидки и расширенные возможности ассистента, пока Premium не подтвердят снова.",
+      },
+      card7: {
+        title: "🔄 Я сменил профсоюз — что будет с моим Premium",
+        body: "Смена профсоюза может повлиять на Premium — доступ обычно нужно подтверждать заново через новую организацию, а не переносится автоматически.",
+      },
+      card8: {
+        title: "✅ Кто решает, дадут ли мне Premium",
+        body: "Решение принимает участвующая организация — профсоюз, welfare-организация или миссия. MWApp и IMWIRSA не предоставляют Premium напрямую — приложение только активирует уже одобренный доступ.",
+      },
+    },
+    // 14.09.2026, Andrey: только общая механика — в отличие от Premium,
+    // КАКИЕ именно партнёры есть в конкретном порту, это данные порта,
+    // здесь не покрыто (такого экрана в приложении пока нет вообще —
+    // помечено, не выдумано). Контент из раздела 3 свода фактов.
+    aboutQr: {
+      title: "О QR-кодах и скидках партнёров",
+      card1: {
+        title: "🏷️ Что такое QR-код на самом деле",
+        body: "Это код скидки у конкретного партнёра программы Partner Discounts — не ваш личный ID в MWApp (для этого отдельно есть MWA-ID). Он даёт скидку только у участвующих магазинов и сервисов, больше ничего.",
+      },
+      card2: {
+        title: "🎫 Почему у одних партнёров QR-код, а у других штрихкод",
+        body: "Каждый партнёр использует тот формат кода, который поддерживает его собственная кассовая система — MWApp это не определяет, а просто показывает тот код, который предоставил партнёр.",
+      },
+      card3: {
+        title: "📍 Где именно действует код",
+        body: "Только у партнёров, явно указанных для этого порта или города в разделе Partner Discounts — не автоматически во всей сети партнёра, и не гарантированно в каждом порту вообще. Партнёры добавляются постепенно, порт за портом.",
+      },
+      card4: {
+        title: "📶 Работает ли это без интернета",
+        body: "Если код уже загружен в MWApp, он должен работать офлайн — подключение на кассе для его показа не нужно.",
+      },
+      card5: {
+        title: "🚫 Могу ли я поделиться кодом с другим моряком",
+        body: "Нет — как и сам Premium, код скидки персональный и привязан к вашему доступу. Передавать его кому-то другому не предполагается.",
+      },
+      card6: {
+        title: "🏗️ В моём порту нет партнёров",
+        body: "Значит программа пока не дошла до этого порта, а не что-то сломалось. Партнёры добавляются постепенно, порт за портом.",
+      },
+      card7: {
+        title: "❗ Кассир не принимает скидку, или код не сканируется",
+        body: "Саму скидку и то, как она применяется, определяет партнёр, а не MWApp. Если партнёр отказывается принять действующий код или что-то выглядит не так — уточните у самого партнёра, либо сообщите в Центральный офис IMWIRSA.",
+      },
+    },
+    // 14.09.2026, Andrey: та же оговорка, что и у QR — есть ли Wellness в
+    // конкретном порту и какие там условия, это данные порта, отвечает
+    // карточка порта, не этот экран. Контент из раздела 4 свода фактов.
+    aboutWellness: {
+      title: "О Wellness-зоне",
+      card1: {
+        title: "🧖 Что такое Wellness-зона и кто её оказывает",
+        body: "MWApp сам не оказывает Wellness-услуги — только показывает информацию и контакты. Зону ведёт местный оператор, Wellness Host, в тех портах, где она есть.",
+      },
+      card2: {
+        title: "📋 Услуги, цена, оплата и часы работы",
+        body: "Конкретные услуги (массаж, сауна, бассейн, VR и т.д.), цену, способ оплаты, часы работы и правило отмены брони определяет именно эта Wellness-зона, а не MWApp — ассистент не должен это угадывать.",
+      },
+      card3: {
+        title: "🚫 Это не про знакомства и не про интимные услуги",
+        body: "Wellness-зона — это явно зона профессионального восстановления, не место для знакомств и не про интимные услуги. Такие вопросы перенаправляются либо напрямую к Wellness Host, либо — если речь про эмоциональную поддержку — в центры моряков, к капелланам или в Центральный офис IMWIRSA.",
+      },
+      card4: {
+        title: "📅 Запись и отмена брони",
+        body: "Запись и расписание в реальном времени — только через Wellness Host внутри приложения (раздел Wellness → «Связаться с Host»). Ассистент не видит актуальное расписание и не бронирует сам.",
+      },
+      card5: {
+        title: "💬 Жалобы, возврат денег, неисправное оборудование",
+        body: "Это решает только Wellness Host / местный оператор — MWApp может показать его контакт, но сам не принимает оплату за эти услуги и не может вернуть деньги.",
+      },
+      card6: {
+        title: "📍 Есть ли Wellness-зона в этом порту вообще",
+        body: "Это зависит от конкретного порта — проверяйте карточку именно этого порта, а не считайте само собой разумеющимся. Если там ничего не подтверждено, ассистент не должен направлять в непроверенное место.",
       },
     },
     modals: {

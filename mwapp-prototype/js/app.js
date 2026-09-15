@@ -829,7 +829,7 @@ function goToScreen(name) {
   if (target) target.classList.add("active");
 
   const bottomNav = document.getElementById("bottomNav");
-  if (["home", "volunteer", "settings", "detail", "subdetail", "aboutassistant", "assistantchat", "ship"].includes(name)) {
+  if (["home", "volunteer", "settings", "detail", "subdetail", "aboutassistant", "premiuminfo", "qrinfo", "wellnessinfo", "assistantchat", "ship"].includes(name)) {
     bottomNav.style.display = "flex";
     document.querySelectorAll(".nav-item[data-nav]").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
   } else {
@@ -1354,6 +1354,137 @@ function detectMwappDataIssueLang(text) {
 }
 function isMwappDataIssueTopic(text) {
   return detectMwappDataIssueLang(text) !== null;
+}
+
+// 14.09.2026, Andrey: "what does a seafarer get offline if they ask one of
+// the 134 category-3 questions we just removed (or something similar)?"
+// Before these two, the honest answer was "the same generic 'I don't
+// understand' as anything else unmatched" -- which silently treats "I
+// know exactly what this is about, the answer just isn't here right now"
+// the same as "I have no idea what you're asking." Two different real
+// situations get two different honest responses below:
+//
+// isAssistantSelfRefTopic: questions ABOUT the assistant itself (who are
+// you, do you remember me, can I trust your advice, etc.) -- these
+// already have a full, already-translated answer sitting in Settings ->
+// "About the assistant" (see the facts-draft doc's section 6 for why:
+// the original RU intents for this exact cluster literally ended with
+// "Подробнее — в Настройках → «Об ассистенте»" before removal). Redirects
+// there instead of claiming there's no answer at all.
+//
+// isOnlineOnlyTopic: Premium/Standard subscription mechanics, QR/Partner
+// Discounts, and the extended Wellness-zone FAQ -- these have no offline
+// answer to redirect to (that's exactly why they were removed -- no
+// location/urgency dependency, belongs in online conversation once that
+// exists). Says so plainly instead of pretending nothing was asked.
+//
+// Keyword choice: mostly bare brand/feature terms ("Premium", "QR",
+// "Wellness", "Trade Union") rather than compounds -- these are specific
+// enough on their own in this app's domain that the collision risk is low,
+// unlike generic words used elsewhere in this file.
+const ASSISTANT_SELF_REF_RU = [
+  "кто ты", "ты ии", "живой человек", "ты бот", "ты робот", "ты настоящий",
+  "твои данные", "откуда ты знаешь порт", "запоминаешь ли ты", "ты меня запоминаешь",
+  "мои прошлые вопросы", "доверять твоим советам", "слушать тебя, а не",
+  "советы только по порту", "переводишь тексты", "переводишь документы",
+  "позвонить за меня", "поговорить со мной",
+];
+const ASSISTANT_SELF_REF_EN = [
+  "who are you", "are you ai", "are you human", "are you a bot", "are you real",
+  "where does your data come from", "do you remember me", "my past questions",
+  "trust your advice", "listen to you instead", "only about the port",
+  "translate documents", "translate texts", "call someone for me", "just talk to you",
+];
+// 14.09.2026, Andrey: Premium split out of ONLINE_ONLY_TOPIC_WORDS below --
+// it now has a real, fully static Settings screen (index.html's
+// "premiuminfo" section) instead of a "this needs internet" message, since
+// subscription mechanics don't depend on port or moment (see the
+// facts-draft doc, section 1).
+const PREMIUM_TOPIC_WORDS_RU = ["premium", "премиум"];
+const PREMIUM_TOPIC_WORDS_EN = ["premium"];
+
+// 14.09.2026, Andrey: QR and Wellness now ALSO get real static screens
+// (index.html's "qrinfo"/"wellnessinfo" sections) -- but unlike Premium,
+// these only cover GENERAL mechanics (how the discount system works, what
+// the Wellness zone is and isn't). WHICH partners exist, or WHETHER a
+// given port even has a Wellness zone, is port-specific data that these
+// screens deliberately don't claim to answer -- the reply text for both
+// says so explicitly, pointing to the port's own card for that part.
+const QR_TOPIC_WORDS_RU = ["qr-код", "qr код", "кьюар", "куар-код", "партнёрск"];
+const QR_TOPIC_WORDS_EN = ["qr code", "partner discount"];
+const WELLNESS_TOPIC_WORDS_RU = ["wellness", "велнес"];
+const WELLNESS_TOPIC_WORDS_EN = ["wellness"];
+
+// What's left with no dedicated screen: the standalone Trade Union card
+// question (#153 in the original offline FAQ, "Что значит карточка в
+// приложении Trade Union?") -- a one-off, not worth a whole screen for a
+// single question; still genuinely needs online/Central Office for now.
+const ONLINE_ONLY_TOPIC_WORDS_RU = ["trade union", "профсоюзная карточка"];
+const ONLINE_ONLY_TOPIC_WORDS_EN = ["trade union"];
+
+function detectAssistantSelfRefLang(text) {
+  const normalized = normalizeText(text);
+  if (hasNormalizedMatch(normalized, ASSISTANT_SELF_REF_RU)) return "ru";
+  if (hasNormalizedMatch(normalized, ASSISTANT_SELF_REF_EN)) return "en";
+  return null;
+}
+function isAssistantSelfRefTopic(text) {
+  return detectAssistantSelfRefLang(text) !== null;
+}
+function detectPremiumTopicLang(text) {
+  const normalized = normalizeText(text);
+  const matchesRu = hasNormalizedMatch(normalized, PREMIUM_TOPIC_WORDS_RU);
+  const matchesEn = hasNormalizedMatch(normalized, PREMIUM_TOPIC_WORDS_EN);
+  if (!matchesRu && !matchesEn) return null;
+  // "premium" itself is the same brand word in both lists -- same
+  // Cyrillic-presence tiebreaker as detectOnlineOnlyLang below, for the
+  // same reason.
+  return /[а-яё]/i.test(text) ? "ru" : "en";
+}
+function isPremiumTopic(text) {
+  return detectPremiumTopicLang(text) !== null;
+}
+function detectQrTopicLang(text) {
+  const normalized = normalizeText(text);
+  const matchesRu = hasNormalizedMatch(normalized, QR_TOPIC_WORDS_RU);
+  const matchesEn = hasNormalizedMatch(normalized, QR_TOPIC_WORDS_EN);
+  if (!matchesRu && !matchesEn) return null;
+  // "QR code"/"partner discount" don't actually overlap between the RU/EN
+  // lists here the way "premium"/"wellness" do, but keeping the same
+  // Cyrillic tiebreaker for consistency and safety if that ever changes.
+  return /[а-яё]/i.test(text) ? "ru" : "en";
+}
+function isQrTopic(text) {
+  return detectQrTopicLang(text) !== null;
+}
+function detectWellnessTopicLang(text) {
+  const normalized = normalizeText(text);
+  const matchesRu = hasNormalizedMatch(normalized, WELLNESS_TOPIC_WORDS_RU);
+  const matchesEn = hasNormalizedMatch(normalized, WELLNESS_TOPIC_WORDS_EN);
+  if (!matchesRu && !matchesEn) return null;
+  // "wellness" is a shared brand term in both lists -- same tiebreaker as
+  // detectPremiumTopicLang above, same reason.
+  return /[а-яё]/i.test(text) ? "ru" : "en";
+}
+function isWellnessTopic(text) {
+  return detectWellnessTopicLang(text) !== null;
+}
+function detectOnlineOnlyLang(text) {
+  const normalized = normalizeText(text);
+  const matchesRu = hasNormalizedMatch(normalized, ONLINE_ONLY_TOPIC_WORDS_RU);
+  const matchesEn = hasNormalizedMatch(normalized, ONLINE_ONLY_TOPIC_WORDS_EN);
+  if (!matchesRu && !matchesEn) return null;
+  // 14.09.2026, found live (originally against "Premium", moved out above
+  // -- same issue still applies to "QR"/"Wellness"/"Trade Union"): these
+  // are shared brand terms that appear identically in both lists above, so
+  // a match alone doesn't tell us which language the message is in.
+  // Same tiebreaker already used for the general demoReplies fallback and
+  // detectPremiumTopicLang above: Cyrillic presence decides, not which
+  // list happened to match.
+  return /[а-яё]/i.test(text) ? "ru" : "en";
+}
+function isOnlineOnlyTopic(text) {
+  return detectOnlineOnlyLang(text) !== null;
 }
 
 // 13.09.2026, Andrey: Ship Departed is a port-logistics emergency, not a
@@ -2773,6 +2904,119 @@ function sendAssistantChatMessage() {
       const msg = passFact
         ? t("portExitPass.withFact", { passFact: withTerminalPunctuation(passFact) }, portExitPassLang)
         : t("portExitPass.noFact", null, portExitPassLang);
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+    } else if (isAssistantSelfRefTopic(text)) {
+      // 14.09.2026, Andrey: "if a seafarer offline asks one of the 134
+      // category-3 questions we just removed, what do they get?" -- before
+      // this branch, nothing: they'd land on the same generic "I don't
+      // understand" fallback as any unrelated unmatched message, which is
+      // dishonest by omission (we DO know what this is about, we just
+      // moved the answer). This specific sub-class -- questions about the
+      // assistant itself ("who are you", "do you remember me", "can I
+      // trust your advice", etc.) -- already has a real, already-localized
+      // answer sitting in Settings -> "About the assistant" (12 cards,
+      // translated to EN this session). The original RU intents for this
+      // exact cluster literally ended with "Подробнее — в Настройках →
+      // «Об ассистенте»" before they were removed -- so redirecting there
+      // is not a downgrade, it's pointing at the SAME answer that already
+      // existed, just not duplicating it a third time (see the facts-draft
+      // doc's section 6 for the full reasoning). Deliberately does NOT
+      // suggest waiting for online mode -- this content is fully answered
+      // offline already, just on a dedicated screen instead of in chat.
+      console.log("[DIAG] matched rule: ASSISTANT_SELF_REF");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const selfRefLang = detectAssistantSelfRefLang(text);
+      const msg = t("assistantSelfRef.message", null, selfRefLang);
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-go="aboutassistant">${t("assistantSelfRef.openScreenBtn", null, selfRefLang)}</button>
+        </div>`);
+    } else if (isPremiumTopic(text)) {
+      // 14.09.2026, Andrey: Premium questions now get the real static
+      // answer (Settings -> "About Premium") instead of isOnlineOnlyTopic's
+      // "this needs internet" message -- see PREMIUM_TOPIC_WORDS_RU's
+      // comment above and the facts-draft doc, section 1. Same pattern as
+      // ASSISTANT_SELF_REF just above: this content is fully answered
+      // offline already, just on its own screen instead of in chat.
+      console.log("[DIAG] matched rule: PREMIUM_TOPIC");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const premiumLang = detectPremiumTopicLang(text);
+      const msg = t("premiumTopic.message", null, premiumLang);
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-go="premiuminfo">${t("premiumTopic.openScreenBtn", null, premiumLang)}</button>
+        </div>`);
+    } else if (isQrTopic(text)) {
+      // 14.09.2026, Andrey: same idea as Premium, but the message is
+      // explicit that this screen only covers GENERAL mechanics -- WHICH
+      // partners exist at this specific port is still port-specific data,
+      // answered by that port's own card, not this screen. See
+      // QR_TOPIC_WORDS_RU's comment above.
+      console.log("[DIAG] matched rule: QR_TOPIC");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const qrLang = detectQrTopicLang(text);
+      const msg = t("qrTopic.message", null, qrLang);
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-go="qrinfo">${t("qrTopic.openScreenBtn", null, qrLang)}</button>
+        </div>`);
+    } else if (isWellnessTopic(text)) {
+      // 14.09.2026, Andrey: same pattern as QR above -- general mechanics
+      // only, port-specific availability/pricing/hours still lives on
+      // that port's own card, not this screen.
+      console.log("[DIAG] matched rule: WELLNESS_TOPIC");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const wellnessLang = detectWellnessTopicLang(text);
+      const msg = t("wellnessTopic.message", null, wellnessLang);
+      console.log("[DIAG] selected response:", JSON.stringify(msg));
+      state.chatMessages.push({ who: "them", text: msg });
+      saveState();
+      body.insertAdjacentHTML("beforeend", `<div class="chat-msg them">${escapeHtml(msg)}</div>`);
+      body.insertAdjacentHTML("beforeend", `
+        <div class="escalation-toggle" id="escalationToggle">
+          <button class="esc-btn esc-coordinator" data-go="wellnessinfo">${t("wellnessTopic.openScreenBtn", null, wellnessLang)}</button>
+        </div>`);
+    } else if (isOnlineOnlyTopic(text)) {
+      // 14.09.2026, Andrey: what's left after Premium/QR/Wellness all got
+      // their own screens above -- just the standalone Trade Union card
+      // question, not worth a whole screen for one item. Same honest
+      // principle as before: no made-up offline answer, no silent "I
+      // don't understand" -- plainly says this needs internet/Central
+      // Office, distinct from a truly unrecognized message.
+      console.log("[DIAG] matched rule: ONLINE_ONLY_TOPIC");
+      state.consecutiveUnclear = 0;
+      state.consecutiveDeepTalk = 0;
+      state.companionActive = false;
+      state.lastIntentFamily = null;
+      const onlineOnlyLang = detectOnlineOnlyLang(text);
+      const msg = t("onlineOnly.message", null, onlineOnlyLang);
       console.log("[DIAG] selected response:", JSON.stringify(msg));
       state.chatMessages.push({ who: "them", text: msg });
       saveState();
