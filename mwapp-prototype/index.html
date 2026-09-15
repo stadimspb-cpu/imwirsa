@@ -203,8 +203,8 @@
             <svg class="toggle-rim" xmlns="http://www.w3.org/2000/svg">
               <rect x="1" y="1" width="100%" height="100%" rx="16" ry="16" pathLength="300"></rect>
             </svg>
-            <button class="toggle-btn" id="btnAccessStd" data-access="std">⚓ Standard</button>
-            <button class="toggle-btn" id="btnAccessVip" data-access="vip">★ Trade Union</button>
+            <button class="toggle-btn" id="btnAccessStd" data-access="std" data-i18n="home.accessToggleStd">⚓ Standard</button>
+            <button class="toggle-btn" id="btnAccessVip" data-access="vip" data-i18n="home.accessTogglePremium">★ Premium</button>
           </div>
         </div>
         <div class="home-hero" id="homeHero">
@@ -506,6 +506,47 @@
       </div>
     </section>
 
+    <!-- SCREEN 6g — ABOUT MWA-ID (static, 15.09.2026 per Andrey — same
+         pattern as premiuminfo/qrinfo/wellnessinfo above: a static info
+         screen linked from Settings, not a live/gated feature. Content is
+         Andrey's draft with two claims cut as not technically grounded in
+         this app today: (1) "service messages without a name" — no
+         messaging system tied to MWA-ID exists anywhere in this codebase;
+         (2) "recovery after losing your phone" — MWA-ID is generated
+         locally on first install (see app.js) with no server record yet, so
+         a reinstall produces a NEW MWA-ID; nothing today could "recover"
+         the old one. Both can be added back once/if those are real. -->
+    <section class="screen screen-subdetail screen-about-mwaid" data-screen="mwaidinfo">
+      <div class="detail-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="back-btn" data-go="settings">←</button>
+          <div class="detail-title" data-i18n="aboutMwaId.title">What is MWA-ID</div>
+        </div>
+      </div>
+      <div class="subdetail-list">
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutMwaId.card1.title">🆔 What MWA-ID is</div>
+          <div class="sd-note" data-i18n="aboutMwaId.card1.body">MWA-ID is your unique identifier in MWApp. It lets you use the app's features without giving your name or other personal details where that isn't needed.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutMwaId.card2.title">⭐ Premium activation</div>
+          <div class="sd-note" data-i18n="aboutMwaId.card2.body">Your MWApp Premium access is tied to your MWA-ID — each month's access code is confirmed against this same ID.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutMwaId.card3.title">📞 Contacting support</div>
+          <div class="sd-note" data-i18n="aboutMwaId.card3.body">If you contact IMWIRSA or the organisation that gave you Premium, your MWA-ID helps them find your app quickly — without you needing to give your name.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutMwaId.card4.title">👥 Telling users apart</div>
+          <div class="sd-note" data-i18n="aboutMwaId.card4.body">MWA-ID also lets MWApp tell users apart in everyday operation, without storing your name to do it.</div>
+        </div>
+        <div class="sd-card">
+          <div class="sd-card-title" data-i18n="aboutMwaId.card5.title">🚫 What it is not</div>
+          <div class="sd-note" data-i18n="aboutMwaId.card5.body">MWA-ID is not your name, your passport number, or your union membership number. It's a technical identifier used only by MWApp.</div>
+        </div>
+      </div>
+    </section>
+
     <!-- SCREEN 6f — ABOUT THE WELLNESS ZONE (static mechanics only -- same
          caveat as QR above: whether a given port even HAS a Wellness zone,
          and its specific services/hours/pricing, is port-specific data
@@ -587,8 +628,8 @@
           </div>
         </div>
         <div class="settings-group-label" data-i18n="settings.membership">Membership</div>
-        <button class="settings-row"><div class="si">🆔</div><div class="st" data-i18n="settings.yourMwaId">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button>
-        <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st" data-i18n="settings.unionCard">Union / Club Card</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
+        <button class="settings-row" data-go="mwaidinfo"><div class="si">🆔</div><div class="st" data-i18n="settings.yourMwaId">Your MWA-ID</div><div class="sv" id="settingsMwaId"></div></button>
+        <button class="settings-row" id="unionRow"><div class="si">🪪</div><div class="st" data-i18n="settings.unionCard">Premium Status</div><div class="sv" id="unionStatusVal">Not activated ›</div></button>
         <div class="settings-group-label" data-i18n="settings.portLocationDev">Port &amp; Location (dev preview)</div>
         <button class="settings-row" id="detectLocationRow"><div class="si">📍</div><div class="st" data-i18n="settings.detectLocation">Detect port by location</div><div class="sv" id="detectLocationVal">›</div></button>
         <button class="settings-row" data-modal="portModal"><div class="si">🌍</div><div class="st" data-i18n="settings.testPort">Test port</div><div class="sv" id="settingsPortVal">›</div></button>
@@ -670,7 +711,7 @@
         <div style="font-size:40px; margin-bottom:12px;">🔒</div>
         <div class="modal-title" data-i18n="modals.unionDenied.title">Premium Welfare Services unavailable</div>
         <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:14px;" data-i18n-html="modals.unionDenied.text1">
-          Your Trade Union / club card isn't currently active, so this level isn't available right now. You can keep using everything under <strong>Standard</strong>.
+          Your Premium access isn't currently active, so this level isn't available right now. You can keep using everything under <strong>Standard</strong>.
         </p>
         <p style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:20px;" data-i18n="modals.unionDenied.text2">
           To get or renew a card, contact IMWIRSA support:
