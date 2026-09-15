@@ -796,7 +796,7 @@ function updateAssistantUI() {
   }
 
   const mwaIdVal = document.getElementById("settingsMwaId");
-  if (mwaIdVal) mwaIdVal.textContent = state.mwaId || "";
+  if (mwaIdVal) mwaIdVal.textContent = state.mwaId ? `${state.mwaId} ›` : ""; // 15.09.2026: row now opens "mwaidinfo" (About MWA-ID), added chevron so that's discoverable
 
   document.getElementById("btnAccessStd").classList.toggle("active", state.accessView !== "vip");
   document.getElementById("btnAccessVip").classList.toggle("active", state.accessView === "vip");
@@ -829,7 +829,7 @@ function goToScreen(name) {
   if (target) target.classList.add("active");
 
   const bottomNav = document.getElementById("bottomNav");
-  if (["home", "volunteer", "settings", "detail", "subdetail", "aboutassistant", "premiuminfo", "qrinfo", "wellnessinfo", "assistantchat", "ship"].includes(name)) {
+  if (["home", "volunteer", "settings", "detail", "subdetail", "aboutassistant", "premiuminfo", "qrinfo", "wellnessinfo", "mwaidinfo", "assistantchat", "ship"].includes(name)) {
     bottomNav.style.display = "flex";
     document.querySelectorAll(".nav-item[data-nav]").forEach((n) => n.classList.toggle("active", n.dataset.nav === name));
   } else {
@@ -1036,15 +1036,35 @@ function openSubDetail(sdKey) {
   }
 
   if (sd.type === "qr_code") {
-    // Код рисуется на самом устройстве (js/qr.js). Раньше это делал сторонний
-    // сервис, то есть MWA-ID моряка уходил на чужой сервер, а без интернета
-    // экран оставался пустым. Теперь ни того, ни другого.
-    const svg = qrSvg(state.mwaId || "MWA-DEMO", 180);
+    // 15.09.2026, Andrey: personal MWA-ID no longer shows as a QR anywhere —
+    // it's plain text in Settings → Membership, with its own static
+    // explanation screen (see "mwaidinfo"). This "qr_code" subdetail type is
+    // now reserved exclusively for a Partner Discounts partner's OWN code:
+    // each partner's port-data entry must carry codeValue (the string/number
+    // their till actually reads) and codeFormat ("qr" — the only format this
+    // renderer can draw right now; "barcode" support is NOT implemented, see
+    // note below). state.mwaId is intentionally no longer used as a fallback
+    // here — a missing codeValue is a data problem to fix in that port's
+    // entry, not something to silently paper over with the seafarer's own ID.
+    const codeValue = sd.codeValue || "";
+    const codeFormat = sd.codeFormat || "qr";
+    let codeMarkup;
+    if (!codeValue) {
+      codeMarkup = `<div class="sd-note">⚠️ No code on file for this partner yet — coordinator needs to add codeValue to this port's data.</div>`;
+    } else if (codeFormat === "barcode") {
+      // TODO(Andrey): no barcode renderer exists yet (qr.js only draws QR).
+      // Rather than hand-roll an unreliable Code128/39 generator that might
+      // *look* right but fail to scan at a real till, this falls back to
+      // showing the raw code as text until a real barcode library is wired
+      // in (e.g. JsBarcode) — flagging this, not pretending it's solved.
+      codeMarkup = `<div class="qr-id" style="font-size:22px;letter-spacing:2px;">${codeValue}</div>
+        <div class="sd-note">Barcode rendering isn't built yet — show this number to staff, or ask them to type it in.</div>`;
+    } else {
+      codeMarkup = `<div class="qr-id">${codeValue}</div><div class="qr-image-wrap">${qrSvg(codeValue, 180)}</div>`;
+    }
     inner += `<div class="sd-card qr-card">
       <div class="sd-card-title" style="justify-content:center;">🔳 ${sd.title}</div>
-      <div class="qr-id">${state.mwaId || ""}</div>
-      <div class="qr-image-wrap">${svg}</div>
-      <div class="qr-countdown" id="qrCountdown"></div>
+      ${codeMarkup}
     </div>`;
   }
 
@@ -1056,24 +1076,44 @@ function openSubDetail(sdKey) {
 
   document.getElementById("subdetailBody").innerHTML = wrapGate(inner, locked, sd);
   clearInterval(qrCountdownTimer);
-  if (sd.type === "qr_code" && !locked) startQrCountdown();
+  // 15.09.2026: the 60s countdown was built for a rotating, server-verified
+  // personal code — that concept is gone now that this screen only shows a
+  // partner's own static discount code (loaded once, works offline, never
+  // rotates per QR-код.docx). Dropped rather than left running for no reason.
+  releaseScreenWakeLock();
+  if (sd.type === "qr_code" && !locked && sd.codeValue) requestScreenWakeLock();
   goToScreen("subdetail");
 }
 
-function startQrCountdown() {
-  let seconds = 60;
-  const paint = (s) => {
-    const el = document.getElementById("qrCountdown");
-    if (!el) { clearInterval(qrCountdownTimer); return false; }
-    el.textContent = t("common.qrRefresh", { s });
-    return true;
-  };
-  if (!paint(seconds)) return;
-  qrCountdownTimer = setInterval(() => {
-    seconds -= 1;
-    if (seconds <= 0) seconds = 60; // demo loop — real rotation happens server-side once backend is live
-    paint(seconds);
-  }, 1000);
+// startQrCountdown() removed 15.09.2026 — was for a rotating personal code
+// that no longer exists on this screen type (see openSubdetail). qrCountdownTimer
+// and the "qrCountdown" element in index.html's qr_code markup are now dead
+// unless something else starts using them; left in place, not deleted, since
+// removing the timer var/DOM hook isn't this pass's job.
+
+// 15.09.2026, Andrey (QR-код.docx): a partner's till scans the phone screen —
+// it must not dim or lock while the code is up. This is the Screen Wake Lock
+// API, which IS available in modern mobile browsers (incl. iOS Safari 16.4+).
+// What it does NOT do, and what no web API can do: force the screen's
+// BRIGHTNESS up. There is no standard browser API that lets a webpage read or
+// change hardware display brightness — that's deliberately locked down by
+// every mobile OS. If a cashier can't read the code because the phone is
+// dim, the fix has to be "ask the seafarer to raise brightness manually" (a
+// one-line note in the UI), not something MWApp can do for them.
+let _wakeLockSentinel = null;
+async function requestScreenWakeLock() {
+  if (!("wakeLock" in navigator)) return; // unsupported browser — fails silently, screen just behaves normally
+  try {
+    _wakeLockSentinel = await navigator.wakeLock.request("screen");
+  } catch (e) {
+    _wakeLockSentinel = null; // e.g. tab not visible, permission denied — non-fatal
+  }
+}
+function releaseScreenWakeLock() {
+  if (_wakeLockSentinel) {
+    _wakeLockSentinel.release().catch(() => {});
+    _wakeLockSentinel = null;
+  }
 }
 
 function wrapGate(innerHtml, locked, sd) {
@@ -3464,6 +3504,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const goEl = e.target.closest("[data-go]");
     if (goEl) {
       const target = goEl.dataset.go;
+      // Release any partner-code wake lock the moment the seafarer navigates
+      // anywhere else (back button included, since it's data-go too) — a
+      // held wake lock on a screen that's no longer showing a code would
+      // just drain the battery for nothing.
+      if (target !== "subdetail") releaseScreenWakeLock();
 
       // "Talk to IMWIRSA Welfare Coordinator" in Settings no longer jumps
       // straight to the human coordinator chat. It goes through the

@@ -56,6 +56,13 @@ const I18N = {
     home: {
       tapToChat: "Tap to chat →",
       heroGreeting: "Welcome to {port}. Choose a category below for local help, or just ask me.",
+      // 15.09.2026, Andrey: home-screen toggle renamed from "Trade Union" to
+      // "Premium" everywhere — this button had no i18n key at all before
+      // (hardcoded in index.html, so RU/TR/FIL never actually translated it
+      // either). Adding the key now so it's at least structurally correct;
+      // TR/FIL strings still need to be filled in below (see those blocks).
+      accessToggleStd: "⚓ Standard",
+      accessTogglePremium: "★ Premium",
       emergencyContacts: "Emergency contacts",
       categories: {
         centre: "Seafarers'<br>Centre",
@@ -159,7 +166,7 @@ const I18N = {
       textSizeLarge: "Large",
       membership: "Membership",
       yourMwaId: "Your MWApp-ID",
-      unionCard: "Union / Club Card",
+      unionCard: "Premium Status", // 15.09.2026: renamed from "Union / Club Card" per Andrey
       unionActive: "Active this month ✓",
       unionActiveUntil: "Premium until",
       unionNeedsReconfirm: "Needs reconfirmation ›",
@@ -345,6 +352,35 @@ const I18N = {
         body: "The discount itself and how it's applied are set by the partner, not MWApp. If a partner refuses a valid code or something seems wrong, check with that partner directly, or let the IMWIRSA Central Office know.",
       },
     },
+    // 15.09.2026, Andrey: static explanation for the MWA-ID row in Settings
+    // → Membership. Andrey's draft had 5 use-cases; two are cut here as not
+    // technically real in this app today (no messaging system tied to
+    // MWA-ID exists; MWA-ID is generated locally per install with no server
+    // record, so a lost/replaced phone gets a NEW MWA-ID, not a recovered
+    // one) -- see the comment on this screen in index.html.
+    aboutMwaId: {
+      title: "What is MWA-ID",
+      card1: {
+        title: "🆔 What MWA-ID is",
+        body: "MWA-ID is your unique identifier in MWApp. It lets you use the app's features without giving your name or other personal details where that isn't needed.",
+      },
+      card2: {
+        title: "⭐ Premium activation",
+        body: "Your MWApp Premium access is tied to your MWA-ID — each month's access code is confirmed against this same ID.",
+      },
+      card3: {
+        title: "📞 Contacting support",
+        body: "If you contact IMWIRSA or the organisation that gave you Premium, your MWA-ID helps them find your app quickly — without you needing to give your name.",
+      },
+      card4: {
+        title: "👥 Telling users apart",
+        body: "MWA-ID also lets MWApp tell users apart in everyday operation, without storing your name to do it.",
+      },
+      card5: {
+        title: "🚫 What it is not",
+        body: "MWA-ID is not your name, your passport number, or your union membership number. It's a technical identifier used only by MWApp.",
+      },
+    },
     // 14.09.2026, Andrey: same caveat as aboutQr -- whether a given port
     // even HAS a Wellness zone, and its specific services/pricing/hours,
     // is port-specific, answered by that port's own card, not here.
@@ -393,7 +429,7 @@ const I18N = {
       },
       unionDenied: {
         title: "Premium Welfare Services unavailable",
-        text1: "Your Trade Union / club card isn't currently active, so this level isn't available right now. You can keep using everything under <strong>Standard</strong>.",
+        text1: "Your Premium access isn't currently active, so this level isn't available right now. You can keep using everything under <strong>Standard</strong>.",
         text2: "To get or renew a card, contact IMWIRSA support:",
         whatsapp: "💬 WhatsApp +372 5561 3815",
         close: "Close",
@@ -419,8 +455,8 @@ const I18N = {
         gotIt: "Got it",
       },
       gate: {
-        msg: "Available to Trade Union card holders",
-        sub: "Contacts and booking unlock once your active Trade Union card is confirmed.",
+        msg: "Available with Premium",
+        sub: "Contacts and booking unlock once your active Premium status is confirmed.",
         confirm: "Confirm card",
       },
       newChat: {
@@ -602,9 +638,9 @@ const I18N = {
       default: "Not sure? Ask me →",
     },
     wellness: {
-      unlockedIntro: "Welcome back — your Trade Union card is confirmed for this month. Here's what's available to you.",
-      lockedIntro: "These are Trade Union member services. To unlock them, please confirm your card status in Settings → Union / Trade Card.",
-      roleSuffix: "Trade Union Support",
+      unlockedIntro: "Welcome — your MWApp Premium access is active. Here's what's available to you.",
+      lockedIntro: "These are Premium member services. To unlock them, please confirm your Premium status in Settings → Premium Status.",
+      roleSuffix: "Premium Support",
     },
     // demoReplies = the question is clear, just not a topic covered here
     // (see 04.09.2026 change log). unclearReplies = the message itself
@@ -717,6 +753,8 @@ const I18N = {
     home: {
       tapToChat: "Нажмите, чтобы начать чат →",
       heroGreeting: "Добро пожаловать в {port}. Выберите категорию ниже, чтобы получить помощь на месте, или просто спросите меня.",
+      accessToggleStd: "⚓ Standard",
+      accessTogglePremium: "★ Premium",
       emergencyContacts: "Экстренные контакты",
       categories: {
         centre: "Центр<br>моряков",
@@ -816,7 +854,7 @@ const I18N = {
       textSizeLarge: "Крупный",
       membership: "Членство",
       yourMwaId: "Ваш MWApp-ID",
-      unionCard: "Карта профсоюза / клуба",
+      unionCard: "Премиум уровень", // 15.09.2026: renamed from "Карта профсоюза / клуба" per Andrey
       unionActive: "Активна в этом месяце ✓",
       unionActiveUntil: "Premium до",
       unionNeedsReconfirm: "Требуется подтверждение ›",
@@ -983,6 +1021,35 @@ const I18N = {
         body: "Саму скидку и то, как она применяется, определяет партнёр, а не MWApp. Если партнёр отказывается принять действующий код или что-то выглядит не так — уточните у самого партнёра, либо сообщите в Центральный офис IMWIRSA.",
       },
     },
+    // 15.09.2026, Andrey: пояснение для строки MWA-ID в Настройках →
+    // Членство. Из пяти пунктов черновика два вырезаны как технически
+    // нереальные в приложении сейчас: система сообщений, завязанных на
+    // MWA-ID, нигде не существует; MWA-ID генерируется локально при
+    // установке без записи на сервере, поэтому при утере/замене телефона
+    // получится НОВЫЙ MWA-ID, а не восстановленный старый.
+    aboutMwaId: {
+      title: "Что такое MWA-ID",
+      card1: {
+        title: "🆔 Что такое MWA-ID",
+        body: "MWA-ID — ваш уникальный идентификатор в MWApp. Он позволяет пользоваться функциями приложения, не передавая ваше имя и другие личные данные там, где это не требуется.",
+      },
+      card2: {
+        title: "⭐ Активация Premium",
+        body: "Именно к вашему MWA-ID привязывается доступ к MWApp Premium — код доступа на каждый месяц подтверждается на этот же ID.",
+      },
+      card3: {
+        title: "📞 Обращение в поддержку",
+        body: "Если вы обращаетесь в IMWIRSA или в организацию, предоставившую вам Premium, MWA-ID помогает быстро найти именно ваше приложение — без необходимости называть своё имя.",
+      },
+      card4: {
+        title: "👥 Различение пользователей",
+        body: "MWA-ID также позволяет MWApp отличать пользователей друг от друга в обычной работе приложения, не храня при этом ваше имя.",
+      },
+      card5: {
+        title: "🚫 Чем это не является",
+        body: "MWA-ID — не ваше имя, не номер паспорта и не профсоюзный номер. Это технический идентификатор, который использует только MWApp.",
+      },
+    },
     // 14.09.2026, Andrey: та же оговорка, что и у QR — есть ли Wellness в
     // конкретном порту и какие там условия, это данные порта, отвечает
     // карточка порта, не этот экран. Контент из раздела 4 свода фактов.
@@ -1030,7 +1097,7 @@ const I18N = {
       },
       unionDenied: {
         title: "Премиум-услуги благосостояния недоступны",
-        text1: "Ваша карта профсоюза/клуба сейчас не активна, поэтому этот уровень временно недоступен. Вы можете продолжать пользоваться всем в разделе <strong>Стандарт</strong>.",
+        text1: "Ваш доступ к Premium сейчас не активен, поэтому этот уровень временно недоступен. Вы можете продолжать пользоваться всем в разделе <strong>Стандарт</strong>.",
         text2: "Чтобы получить или продлить карту, свяжитесь с поддержкой IMWIRSA:",
         whatsapp: "💬 WhatsApp +372 5561 3815",
         close: "Закрыть",
@@ -1206,9 +1273,9 @@ const I18N = {
       default: "Не уверены? Спросите меня →",
     },
     wellness: {
-      unlockedIntro: "С возвращением — ваша карта профсоюза подтверждена на этот месяц. Вот что вам доступно.",
-      lockedIntro: "Это услуги для членов профсоюза. Чтобы открыть их, подтвердите статус карты в Настройках → Карта профсоюза/клуба.",
-      roleSuffix: "Поддержка профсоюза",
+      unlockedIntro: "Мы приветствуем вас — ваш доступ к MWApp Premium активен. Вот что вам доступно.",
+      lockedIntro: "Это услуги уровня Premium. Чтобы открыть их, подтвердите ваш статус Premium в Настройках → Премиум уровень.",
+      roleSuffix: "Поддержка Premium",
     },
     // 11.09.2026, Markus's mixed-regression point 9: these used to claim
     // "not my department" and promise "once online mode is running, I'll
@@ -1308,6 +1375,8 @@ const I18N = {
     home: {
       tapToChat: "Sohbet etmek için dokun →",
       heroGreeting: "{port} Limanı'na hoş geldin. Yerel yardım için aşağıdan bir kategori seç ya da doğrudan bana sor.",
+      accessToggleStd: "⚓ Standard",
+      accessTogglePremium: "★ Premium",
       emergencyContacts: "Acil durum irtibatları",
       categories: {
         centre: "Denizci<br>Merkezi",
@@ -1376,7 +1445,7 @@ const I18N = {
       textSizeLarge: "Büyük",
       membership: "Üyelik",
       yourMwaId: "MWApp-ID'in",
-      unionCard: "Sendika / Kulüp Kartı",
+      unionCard: "Premium", // 15.09.2026: renamed from "Sendika / Kulüp Kartı" -- TR wording not reviewed by a native speaker yet, flagged to Andrey
       unionActive: "Bu ay aktif ✓",
       unionActiveUntil: "Premium bitiş",
       unionNeedsReconfirm: "Yeniden onay gerekiyor ›",
@@ -1416,7 +1485,7 @@ const I18N = {
       },
       unionDenied: {
         title: "Premium Refah Hizmetleri kullanılamıyor",
-        text1: "Sendika / kulüp kartın şu anda aktif değil, bu yüzden bu seviye şu an kullanılamıyor. <strong>Standart</strong> altındaki her şeyi kullanmaya devam edebilirsin.",
+        text1: "Premium erişimin şu anda aktif değil, bu yüzden bu seviye şu an kullanılamıyor. <strong>Standart</strong> altındaki her şeyi kullanmaya devam edebilirsin.", // TODO: TR wording not reviewed by a native speaker yet
         text2: "Kart almak veya yenilemek için IMWIRSA destek ile iletişime geç:",
         whatsapp: "💬 WhatsApp +372 5561 3815",
         close: "Kapat",
@@ -1507,9 +1576,9 @@ const I18N = {
       default: "Emin değil misin? Bana sor →",
     },
     wellness: {
-      unlockedIntro: "Tekrar hoş geldin — Sendika kartın bu ay için onaylandı. İşte sana sunulanlar.",
-      lockedIntro: "Bunlar Sendika üyesi hizmetleridir. Bunları açmak için lütfen Ayarlar → Sendika / Kulüp Kartı'ndan kart durumunu onayla.",
-      roleSuffix: "Sendika Desteği",
+      unlockedIntro: "Tekrar hoş geldin — MWApp Premium erişimin bu ay için aktif. İşte sana sunulanlar.", // TODO: TR wording not reviewed by a native speaker yet
+      lockedIntro: "Bunlar Premium üyesi hizmetleridir. Bunları açmak için lütfen Ayarlar → Premium Durumu'ndan durumunu onayla.", // TODO: same
+      roleSuffix: "Premium Desteği", // TODO: same
     },
     demoReplies: [
       // 04.09.2026 — good-faith translation, NOT verified by a native
@@ -1608,6 +1677,8 @@ const I18N = {
     home: {
       tapToChat: "I-tap para mag-chat →",
       heroGreeting: "Maligayang pagdating sa Daungan ng {port}. Pumili ng kategorya sa ibaba para sa lokal na tulong, o tanungin mo na lang ako.",
+      accessToggleStd: "⚓ Standard",
+      accessTogglePremium: "★ Premium",
       emergencyContacts: "Mga emergency contact",
       categories: {
         centre: "Sentro ng<br>mga Marino",
@@ -1676,7 +1747,7 @@ const I18N = {
       textSizeLarge: "Malaki",
       membership: "Membership",
       yourMwaId: "Ang Iyong MWApp-ID",
-      unionCard: "Union / Club Card",
+      unionCard: "Premium", // 15.09.2026: renamed from "Union / Club Card" -- FIL wording not reviewed by a native speaker yet, flagged to Andrey
       unionActive: "Aktibo ngayong buwan ✓",
       unionActiveUntil: "Premium hanggang",
       unionNeedsReconfirm: "Kailangan ng muling kumpirmasyon ›",
@@ -1716,7 +1787,7 @@ const I18N = {
       },
       unionDenied: {
         title: "Hindi available ang Premium Welfare Services",
-        text1: "Hindi kasalukuyang aktibo ang iyong Trade Union / club card, kaya hindi available ang level na ito sa ngayon. Puwede mo pa ring gamitin ang lahat sa ilalim ng <strong>Standard</strong>.",
+        text1: "Hindi kasalukuyang aktibo ang iyong Premium access, kaya hindi available ang level na ito sa ngayon. Puwede mo pa ring gamitin ang lahat sa ilalim ng <strong>Standard</strong>.", // TODO: FIL wording not reviewed by a native speaker yet
         text2: "Para makakuha o mag-renew ng card, makipag-ugnayan sa IMWIRSA support:",
         whatsapp: "💬 WhatsApp +372 5561 3815",
         close: "Isara",
@@ -1742,8 +1813,8 @@ const I18N = {
         gotIt: "Nakuha ko",
       },
       gate: {
-        msg: "Available sa mga may hawak ng Trade Union card",
-        sub: "Mabubuksan ang mga contact at booking kapag nakumpirma na ang aktibo mong Trade Union card.",
+        msg: "Available sa Premium", // TODO: FIL wording not reviewed
+        sub: "Mabubuksan ang mga contact at booking kapag nakumpirma na ang aktibo mong Premium status.", // TODO: same
         confirm: "Kumpirmahin ang card",
       },
       newChat: {
@@ -1808,9 +1879,9 @@ const I18N = {
       default: "Hindi sigurado? Tanungin ako →",
     },
     wellness: {
-      unlockedIntro: "Muling pagbati — nakumpirma na ang iyong Trade Union card para sa buwang ito. Narito ang mga available sa iyo.",
-      lockedIntro: "Ito ay mga serbisyo para sa miyembro ng Trade Union. Para ma-unlock ang mga ito, kumpirmahin ang status ng iyong card sa Settings → Union / Trade Card.",
-      roleSuffix: "Suporta ng Trade Union",
+      unlockedIntro: "Muling pagbati — aktibo na ang iyong access sa MWApp Premium ngayong buwan. Narito ang mga available sa iyo.", // TODO: FIL wording not reviewed by a native speaker yet
+      lockedIntro: "Ito ay mga serbisyo ng Premium. Para ma-unlock ang mga ito, kumpirmahin ang status mo sa Settings → Premium Status.", // TODO: same
+      roleSuffix: "Suporta ng Premium", // TODO: same
     },
     demoReplies: [
       // 04.09.2026 — good-faith translation, NOT verified by a native
